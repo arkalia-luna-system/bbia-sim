@@ -695,7 +695,8 @@ class BBIAHuggingFace:
                     self.use_llm_chat = False
                     return False
                 except Exception as e:
-                    # Gérer les erreurs de cancellation (ex: "The operation was canceled")
+                    # Gérer les erreurs de cancellation
+                    # (ex: "The operation was canceled")
                     error_msg = str(e).lower()
                     if "cancel" in error_msg or "interrupt" in error_msg:
                         logger.warning(
