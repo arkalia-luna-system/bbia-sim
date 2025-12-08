@@ -1349,7 +1349,8 @@ class BBIAHuggingFace:
                         )
                     else:
                         logger.debug(
-                            "Thread partagé déchargement auto Hugging Face arrêté (plus d'instances)",
+                            "Thread partagé déchargement auto Hugging Face "
+                            "arrêté (plus d'instances)",
                         )
         except (AttributeError, RuntimeError, TypeError):
             # Ignorer erreurs lors de la destruction
