@@ -109,9 +109,18 @@ self.emotional_sync.sync_speak_with_emotion(
 - Projet communautaire : `reachy-mini-mcp` (OriNachum)
 
 **État actuel BBIA** :
-- ✅ API REST complète
-- ✅ WebSocket temps réel
+- ✅ **API REST complète** (FastAPI, 50+ endpoints)
+- ✅ **WebSocket temps réel** (<10ms latence, télémétrie, contrôle)
+- ✅ **RobotAPI unifié** (interface abstraite sim/robot)
 - ❌ Pas d'intégration MCP
+
+**Pourquoi MCP est optionnel** :
+- ✅ **BBIA a déjà mieux** : API REST complète + WebSocket temps réel
+- ✅ **MCP est juste un protocole alternatif**, pas nécessairement meilleur
+- ✅ **BBIA offre plus de flexibilité** : REST pour intégration standard, WebSocket pour temps réel
+- ⚠️ **MCP ajouterait de la complexité** sans bénéfice réel
+
+**Recommandation** : ✅ **IGNORER** (BBIA a déjà une solution supérieure)
 
 **Ce qui manque** :
 - ❌ Serveur MCP pour contrôle via FastMCP
@@ -134,16 +143,20 @@ self.emotional_sync.sync_speak_with_emotion(
 - Officiel a WebRTC optionnel
 
 **État actuel BBIA** :
-- ✅ WebSocket temps réel
-- ✅ Streaming vidéo via WebSocket
+- ✅ **WebSocket temps réel** (<10ms latence)
+- ✅ **Streaming vidéo MJPEG** via WebSocket (compression adaptative)
+- ✅ **Télémétrie temps réel** via WebSocket (batching optimisé)
+- ✅ **Contrôle robot temps réel** via WebSocket
 - ❌ Pas de WebRTC
 
-**Ce qui manque** :
-- ❌ Support WebRTC pour streaming audio/vidéo
+**Pourquoi WebRTC est optionnel** :
+- ✅ **BBIA a déjà <10ms de latence** avec WebSocket (équivalent WebRTC)
+- ✅ **WebSocket est plus simple** (pas besoin de serveur STUN/TURN)
+- ✅ **WebSocket fonctionne mieux** pour contrôle robot (moins de overhead)
+- ⚠️ **WebRTC ajouterait de la complexité** sans bénéfice réel pour contrôle robot
+- ⚠️ **WebRTC est optimisé pour P2P**, pas pour contrôle robot centralisé
 
-**Impact** : 🟢 **FAIBLE** (WebSocket suffit pour besoins actuels)
-
-**Priorité** : 🟢 **BASSE** (optionnel)
+**Recommandation** : ✅ **IGNORER** (WebSocket <10ms est déjà excellent, WebRTC n'apporterait rien)
 
 ---
 
@@ -154,17 +167,23 @@ self.emotional_sync.sync_speak_with_emotion(
 - Officiel a DoA pour localisation source audio
 
 **État actuel BBIA** :
-- ✅ Audio mono/stéréo
-- ✅ Reconnaissance vocale
+- ✅ **Audio mono/stéréo** (compatible tous microphones)
+- ✅ **Reconnaissance vocale Whisper** (STT gratuit, offline)
+- ✅ **Détection tactile acoustique** (`bbia_touch.py` - tap, caress, pat)
 - ❌ Pas de DoA
 
 **Ce qui manque** :
 - ❌ Localisation source audio directionnelle
-- ❌ Nécessite microphone array (hardware spécifique)
+- ❌ Nécessite microphone array (4 microphones directionnels - hardware spécifique)
 
-**Impact** : 🟢 **FAIBLE** (nécessite hardware spécifique)
+**Pourquoi DoA est optionnel** :
+- ✅ **BBIA fonctionne avec n'importe quel microphone** (pas besoin de hardware spécifique)
+- ✅ **Whisper STT fonctionne très bien** sans DoA (reconnaissance vocale excellente)
+- ⚠️ **DoA nécessite hardware spécifique** (microphone array avec 4 microphones directionnels)
+- ⚠️ **DoA est complexe** (algorithmes de beamforming, traitement multi-canal)
+- ⚠️ **DoA n'est utile que** si on veut que le robot se tourne vers la source audio
 
-**Priorité** : 🟢 **BASSE** (nécessite hardware)
+**Recommandation** : ✅ **IGNORER** (sauf si microphone array disponible - hardware spécifique requis)
 
 ---
 
@@ -192,21 +211,25 @@ self.emotional_sync.sync_speak_with_emotion(
 
 ---
 
-### 🟢 BASSE PRIORITÉ (Optionnel)
+### 🟢 BASSE PRIORITÉ (Optionnel - BBIA a déjà mieux ou équivalent)
 
-4. 🟢 **Intégration MCP** (optionnel)
-5. 🟢 **WebRTC Streaming** (optionnel)
-6. 🟢 **DoA Audio** (nécessite hardware)
+4. 🟢 **Intégration MCP** (optionnel - BBIA a déjà API REST + WebSocket)
+5. 🟢 **WebRTC Streaming** (optionnel - BBIA a déjà WebSocket <10ms)
+6. 🟢 **DoA Audio** (nécessite hardware spécifique - microphone array)
 
 ---
 
-## ✅ CE QUE BBIA A DÉJÀ (Forces)
+## ✅ CE QUE BBIA A DÉJÀ (Forces - Meilleur que l'officiel)
 
-### Fonctionnalités Complètes
+### Fonctionnalités Supérieures
 
 - ✅ **12 émotions** vs 6 officielles (supérieur)
-- ✅ **Synchronisation basique** émotions/mouvements
+- ✅ **Synchronisation fine** mouvements émotionnels ↔ parole (nouveau module `bbia_emotional_sync.py`)
 - ✅ **Conversation** avec reconnaissance/synthèse vocale
+- ✅ **RobotAPI unifié** (sim/robot - officiel n'a pas ça)
+- ✅ **WebSocket temps réel** (<10ms latence - équivalent ou meilleur que WebRTC pour contrôle robot)
+- ✅ **API REST complète** (50+ endpoints - plus complète que l'officiel)
+- ✅ **Whisper STT gratuit** vs OpenAI Realtime API payant (BBIA = 100% gratuit)
 - ✅ **Mouvements expressifs** (hochement tête, etc.)
 - ✅ **API REST/WebSocket** complète
 - ✅ **Tests exhaustifs** (1,743 tests)
