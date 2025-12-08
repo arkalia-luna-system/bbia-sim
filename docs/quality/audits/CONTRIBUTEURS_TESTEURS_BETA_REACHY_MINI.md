@@ -1,6 +1,6 @@
 # 👥 CONTRIBUTEURS ET TESTEURS BÊTA - Reachy Mini Officiel
 
-**Date** : 7 Décembre 2025 (Mise à jour)  
+**Date** : 8 Décembre 2025 (Mise à jour)  
 **Source** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini)  
 **Version SDK** : v1.1.1 (Latest - Nov 25, 2025)  
 **Objectif** : Documenter les 20 contributeurs et testeurs bêta du projet officiel
@@ -9,9 +9,9 @@
 
 ## 📊 RÉSUMÉ EXÉCUTIF
 
-**Total contributeurs** : 20 contributeurs identifiés (nouveau : iizukak)  
+**Total contributeurs** : 20 contributeurs identifiés  
 **Période analysée** : 11 mai 2025 au 7 décembre 2025  
-**Commits totaux** : ~1,600+ commits  
+**Commits totaux** : ~1,400+ commits (471 + 297 + 188 + 118 + 104 + 42 + 18 + 16 + 10 + 9 + 6 + 4 + 3 + 3 + 2 + 2 + 2 + 1 + 1 + 1)  
 **Branche principale** : `develop` / `main`  
 **Testeurs bêta** : Communauté active (Hugging Face Spaces, GitHub, projets communautaires)  
 **Statut BBIA** : En développement (1 développeur principal)
@@ -25,9 +25,9 @@
 #### 1. @pierre-rouanet
 **Rôle** : Core Developer Principal  
 **Contributions** :
-- **467 commits** (29.8% du total)
-- **33,909 ++** (ajouts)
-- **29,321 --** (suppressions)
+- **471 commits** (30.1% du total)
+- **34,423 ++** (ajouts)
+- **29,718 --** (suppressions)
 - **Pic d'activité** : 47 commits/semaine max
 - Architecture principale du SDK
 - Développement daemon
@@ -54,9 +54,9 @@
 #### 2. @apirrone
 **Rôle** : Core Developer (Simulation)  
 **Contributions** :
-- **278 commits** (17.8% du total)
-- **57,029 ++** (ajouts)
-- **43,590 --** (suppressions)
+- **297 commits** (19.0% du total)
+- **57,894 ++** (ajouts)
+- **43,988 --** (suppressions)
 - **Pic d'activité** : 32 commits/semaine max
 - Simulation MuJoCo
 - Modèles 3D
@@ -83,9 +83,9 @@
 #### 3. @FabienDanieau
 **Rôle** : Core Developer (Dashboard & API)  
 **Contributions** :
-- **171 commits** (10.9% du total)
-- **10,632 ++** (ajouts)
-- **2,806 --** (suppressions)
+- **188 commits** (12.0% du total)
+- **10,898 ++** (ajouts)
+- **11,957 --** (suppressions)
 - **Pic d'activité** : 29 commits/semaine max
 - Dashboard web
 - API REST
@@ -138,7 +138,7 @@
 
 ---
 
-#### 5. @askuric
+#### 5. @askurique
 **Rôle** : Contributor (Documentation)  
 **Contributions** :
 - **104 commits** (6.6% du total)
@@ -157,7 +157,7 @@
 - Démonstrations
 - Tutoriels
 
-**GitHub** : [@askuric](https://github.com/askuric)
+**GitHub** : [@askurique](https://github.com/askurique)
 
 **Comparaison BBIA** :
 - ✅ BBIA : 219 fichiers MD (supérieur)
@@ -195,7 +195,7 @@
 
 #### 7. @alozowski
 **Rôle** : Contributor (Vision)  
-**Contributions** : 16 commits (1,344 ++, 349 --)  
+**Contributions** : 18 commits (1,527 ++, 479 --)  
 **Travail** :
 - Intégration caméra
 - Vision par ordinateur
@@ -313,9 +313,9 @@
 
 ---
 
-#### 12. @CarolinePascal
+#### 8. @CarolinePascal
 **Rôle** : Contributor (Qualité)  
-**Contributions** : 5 commits (108 ++, 60 --)  
+**Contributions** : 16 commits (409 ++, 148 --)  
 **Travail** :
 - Tests qualité
 - Validation
@@ -361,9 +361,9 @@
 
 ---
 
-#### 14. @andimarafioti
+#### 6. @andimarafioti
 **Rôle** : Contributor (Exemples)  
-**Contributions** : 3 commits (11 ++, 5 --)  
+**Contributions** : 42 commits (1,848 ++, 1,125 --)  
 **Travail** :
 - Exemples d'utilisation
 - Démonstrations
@@ -650,7 +650,7 @@
 
 ---
 
-**Dernière mise à jour** : 7 Décembre 2025  
+**Dernière mise à jour** : 8 Décembre 2025  
 **Version SDK** : v1.1.1 (Latest - Nov 25, 2025)  
 **Voir aussi** :
 - [AUDIT_REACHY_MINI_DECEMBRE_2025.md](AUDIT_REACHY_MINI_DECEMBRE_2025.md) - Audit complet décembre 2025

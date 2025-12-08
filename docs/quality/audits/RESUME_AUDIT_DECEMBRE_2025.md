@@ -1,6 +1,6 @@
 # 📊 RÉSUMÉ AUDIT REACHY MINI - DÉCEMBRE 2025
 
-**Date** : 7 Décembre 2025  
+**Date** : 8 Décembre 2025  
 **Version SDK Officiel** : v1.1.1 (Nov 25, 2025)  
 **Version BBIA** : 1.4.0
 
