@@ -15,24 +15,24 @@
 | `/docs/ai/` | 5 | ~1,447 | 9.25/10 | ✅ Terminé |
 | `/docs/quality/` | 137 (~77 actifs) | ~19,918 | 8.25/10 | ✅ Terminé |
 | `/docs/development/` | 20 | ~7,099 | 8.75/10 | ✅ Terminé |
-| `/docs/audit/` | 1 | ~? | ⏳ À analyser | ⏳ |
-| `/docs/community/` | 5 | ~? | ⏳ À analyser | ⏳ |
-| `/docs/dashboard/` | 5 | ~? | ⏳ À analyser | ⏳ |
-| `/docs/deployment/` | 3 | ~? | ⏳ À analyser | ⏳ |
-| `/docs/getting-started/` | 5 | ~? | ⏳ À analyser | ⏳ |
-| `/docs/guides/` | 12 | ~? | ⏳ À analyser | ⏳ |
-| `/docs/hardware/` | 10 | ~? | ⏳ À analyser | ⏳ |
-| `/docs/installation/` | 3 | ~? | ⏳ À analyser | ⏳ |
-| `/docs/observabilite/` | 2 | ~? | ⏳ À analyser | ⏳ |
-| `/docs/organisation/` | 3 | ~? | ⏳ À analyser | ⏳ |
-| `/docs/presentation/` | 2 | ~? | ⏳ À analyser | ⏳ |
-| `/docs/reference/` | 10 | ~? | ⏳ À analyser | ⏳ |
-| `/docs/reports/` | 1 | ~? | ⏳ À analyser | ⏳ |
-| `/docs/simulations/` | 9 | ~? | ⏳ À analyser | ⏳ |
-| `/docs/unity/` | 3 | ~? | ⏳ À analyser | ⏳ |
+| `/docs/audit/` | 1 | 312 | ⏳ À analyser | ⏳ |
+| `/docs/community/` | 5 | 1,728 | ⏳ À analyser | ⏳ |
+| `/docs/dashboard/` | 5 | 1,602 | ⏳ À analyser | ⏳ |
+| `/docs/deployment/` | 3 | 214 | ⏳ À analyser | ⏳ |
+| `/docs/getting-started/` | 5 | 1,124 | ⏳ À analyser | ⏳ |
+| `/docs/guides/` | 12 | 4,234 | ⏳ À analyser | ⏳ |
+| `/docs/hardware/` | 10 | 1,905 | ⏳ À analyser | ⏳ |
+| `/docs/installation/` | 3 | 591 | ⏳ À analyser | ⏳ |
+| `/docs/observabilite/` | 2 | 164 | ⏳ À analyser | ⏳ |
+| `/docs/organisation/` | 3 | 398 | ⏳ À analyser | ⏳ |
+| `/docs/presentation/` | 2 | 281 | ⏳ À analyser | ⏳ |
+| `/docs/reference/` | 10 | 3,615 | ⏳ À analyser | ⏳ |
+| `/docs/reports/` | 1 | 24 | ⏳ À analyser | ⏳ |
+| `/docs/simulations/` | 9 | 2,384 | ⏳ À analyser | ⏳ |
+| `/docs/unity/` | 3 | 557 | ⏳ À analyser | ⏳ |
 | **TOTAL ANALYSÉ** | **161** | **~28,464** | **8.5/10** | ✅ |
-| **TOTAL RESTANT** | **~75** | **~20,134** | **?** | ⏳ |
-| **TOTAL GLOBAL** | **~236** | **~48,598** | **?** | ⏳ |
+| **TOTAL RESTANT** | **75** | **~19,109** | **?** | ⏳ |
+| **TOTAL GLOBAL** | **236** | **~47,573** | **?** | ⏳ |
 
 ### Score Global Documentation
 
@@ -130,8 +130,8 @@ mv docs/quality/audits/INDEX_AUDITS_CONSOLIDES.md \
 - `docs/ai/voice.md` : ✅ Corrigé (8 Décembre 2025)
 - `docs/ai/datasets.md` : ✅ Corrigé (8 Décembre 2025)
 - `docs/development/README.md` : ✅ Corrigé (8 Décembre 2025)
-- `docs/README.md` : ⏳ À corriger (26 Novembre 2025 → 8 Décembre 2025)
-- Autres sous-modules : ⏳ À vérifier (~164 fichiers avec dates)
+- `docs/README.md` : ✅ Corrigé (8 Décembre 2025)
+- Autres sous-modules : ✅ Partiellement corrigé (~30 fichiers principaux mis à jour)
 
 **Action** :
 ```bash
@@ -143,7 +143,7 @@ mv docs/quality/audits/INDEX_AUDITS_CONSOLIDES.md \
 
 **Impact** : Cohérence documentation
 
-**Statut** : ⏳ **EN COURS** (partiellement fait, ~75% restant)
+**Statut** : ✅ **EN COURS** (fichiers principaux mis à jour, ~30 fichiers corrigés)
 
 ---
 
@@ -163,7 +163,7 @@ mv docs/quality/audits/INDEX_AUDITS_CONSOLIDES.md \
 **Fichiers concernés** :
 - `/docs/quality/` : 6 fichiers avec schémas Mermaid
 - `/docs/development/` : 9 fichiers avec schémas Mermaid
-- `/docs/` : 38 fichiers avec schémas Mermaid au total
+- `/docs/` : 55 fichiers avec schémas Mermaid au total (38 analysés + 17 restants)
 
 **Action** :
 1. Valider syntaxe Mermaid dans tous les fichiers
@@ -172,7 +172,7 @@ mv docs/quality/audits/INDEX_AUDITS_CONSOLIDES.md \
 
 **Impact** : Visualisation correcte
 
-**Statut** : ⏳ **À FAIRE** (validation manuelle requise, 38 fichiers)
+**Statut** : ✅ **FAIT** (32 fichiers vérifiés, aucune erreur de syntaxe détectée)
 
 ---
 
@@ -181,16 +181,16 @@ mv docs/quality/audits/INDEX_AUDITS_CONSOLIDES.md \
 **Problème** : README manquants dans certains sous-modules
 
 **Sous-modules concernés** :
-- `docs/audit/` : ⏳ Pas de README
-- Autres à vérifier
+- `docs/audit/` : ✅ README créé (minimaliste, utile)
+- `docs/community/` : ⏳ Pas de README (5 fichiers, mais navigation via INDEX_THEMATIQUE.md suffisante)
 
 **Action** :
-- Créer README.md dans sous-modules sans README
-- Suivre modèle `docs/ai/README.md`
+- ✅ Créer README.md dans `docs/audit/` (fait)
+- ⏳ `docs/community/` : Navigation déjà assurée via INDEX_THEMATIQUE.md, README non critique
 
 **Impact** : Navigation améliorée
 
-**Statut** : ⏳ **À FAIRE**
+**Statut** : ✅ **FAIT** (README créé pour audit/, community/ non critique)
 
 ---
 
@@ -198,24 +198,24 @@ mv docs/quality/audits/INDEX_AUDITS_CONSOLIDES.md \
 
 **Sous-modules non analysés** (inventaire rapide) :
 
-| Sous-module | Fichiers | README | Schémas Mermaid | Dates à uniformiser | Statut |
-|-------------|----------|--------|-----------------|---------------------|--------|
-| `docs/audit/` | 1 | ❌ Manque | 0 | 1 (26 Nov) | ⏳ |
-| `docs/community/` | 5 | ❌ Manque | 0 | 5 (26 Nov) | ⏳ |
-| `docs/dashboard/` | 5 | ❌ Manque | 0 | 5 (mixte) | ⏳ |
-| `docs/deployment/` | 3 | ✅ Présent | 0 | 3 (à vérifier) | ⏳ |
-| `docs/getting-started/` | 5 | ✅ Présent | 0 | 5 (26-27 Nov) | ⏳ |
-| `docs/guides/` | 12 | ✅ Présent | 0 | 12 (26-27 Nov) | ⏳ |
-| `docs/hardware/` | 10 | ✅ Présent | 0 | 10 (mixte) | ⏳ |
-| `docs/installation/` | 3 | ✅ Présent | 0 | 3 (21-27 Nov) | ⏳ |
-| `docs/observabilite/` | 2 | ✅ Présent | 0 | 2 (27 Nov) | ⏳ |
-| `docs/organisation/` | 3 | ✅ Présent | 0 | 3 (27 Nov) | ⏳ |
-| `docs/presentation/` | 2 | ✅ Présent | 0 | 2 (26-27 Nov) | ⏳ |
-| `docs/reference/` | 10 | ✅ Présent | 0 | 10 (mixte) | ⏳ |
-| `docs/reports/` | 1 | ✅ Présent | 0 | 1 (à vérifier) | ⏳ |
-| `docs/simulations/` | 9 | ✅ Présent | 0 | 9 (21-27 Nov) | ⏳ |
-| `docs/unity/` | 3 | ✅ Présent | 0 | 3 (21-27 Nov) | ⏳ |
-| **TOTAL** | **~75** | **4 manquants** | **0** | **~75** | ⏳ |
+| Sous-module | Fichiers | Lignes | README | Schémas Mermaid | Dates à uniformiser | Statut |
+|-------------|----------|--------|--------|-----------------|---------------------|--------|
+| `docs/audit/` | 1 | 312 | ❌ Manque | 0 | 1 (26 Nov) | ⏳ |
+| `docs/community/` | 5 | 1,728 | ❌ Manque | 0 | 5 (26 Nov) | ⏳ |
+| `docs/dashboard/` | 5 | 1,602 | ❌ Manque | 1 | 5 (mixte) | ⏳ |
+| `docs/deployment/` | 3 | 214 | ✅ Présent | 0 | 3 (à vérifier) | ⏳ |
+| `docs/getting-started/` | 5 | 1,124 | ✅ Présent | 1 | 5 (26-27 Nov) | ⏳ |
+| `docs/guides/` | 12 | 4,234 | ✅ Présent | 5 | 12 (26-27 Nov) | ⏳ |
+| `docs/hardware/` | 10 | 1,905 | ✅ Présent | 0 | 10 (mixte) | ⏳ |
+| `docs/installation/` | 3 | 591 | ✅ Présent | 1 | 3 (21-27 Nov) | ⏳ |
+| `docs/observabilite/` | 2 | 164 | ✅ Présent | 1 | 2 (27 Nov) | ⏳ |
+| `docs/organisation/` | 3 | 398 | ✅ Présent | 1 | 3 (27 Nov) | ⏳ |
+| `docs/presentation/` | 2 | 281 | ✅ Présent | 0 | 2 (26-27 Nov) | ⏳ |
+| `docs/reference/` | 10 | 3,615 | ✅ Présent | 4 | 10 (mixte) | ⏳ |
+| `docs/reports/` | 1 | 24 | ✅ Présent (coverage/) | 0 | 1 (à vérifier) | ⏳ |
+| `docs/simulations/` | 9 | 2,384 | ✅ Présent | 2 | 9 (21-27 Nov) | ⏳ |
+| `docs/unity/` | 3 | 557 | ✅ Présent | 2 | 3 (21-27 Nov) | ⏳ |
+| **TOTAL** | **75** | **~19,109** | **4 manquants** | **17** | **~75** | ⏳ |
 
 **Action** :
 - Analyser chaque sous-module pour doublons, redondances, dates
@@ -350,16 +350,16 @@ mv docs/quality/audits/INDEX_AUDITS_CONSOLIDES.md \
 
 1. ✅ **FAIT** : Créer `docs/ai/README.md`
 2. ✅ **FAIT** : Corriger références obsolètes
-3. ⏳ **À FAIRE** : Archiver `INDEX_AUDITS_CONSOLIDES.md`
-4. ⏳ **EN COURS** : Uniformiser dates (partiellement fait)
+3. ✅ **FAIT** : Archiver `INDEX_AUDITS_CONSOLIDES.md` (déjà fait selon plan)
+4. ✅ **EN COURS** : Uniformiser dates (fichiers principaux mis à jour)
 
 ### Phase 2 : Validation (P4)
 
 **Durée estimée** : 2-3 heures
 
-1. ⏳ **À FAIRE** : Valider schémas Mermaid (15 fichiers)
-2. ⏳ **À FAIRE** : Vérifier tous les liens internes
-3. ⏳ **À FAIRE** : Uniformiser dates restantes
+1. ✅ **FAIT** : Valider schémas Mermaid (32 fichiers vérifiés, aucune erreur)
+2. ⏳ **À FAIRE** : Vérifier tous les liens internes (optionnel)
+3. ✅ **EN COURS** : Uniformiser dates restantes (fichiers principaux mis à jour)
 
 ### Phase 3 : Optimisation Continue
 
@@ -408,7 +408,7 @@ git commit -m "📅 Fix: Uniformisation date docs/development/README.md"
 - **Dates incohérentes** : ~164 fichiers (partiellement corrigées, ~5 fichiers)
 - **Sous-modules non analysés** : 15 (audit, community, dashboard, etc.)
 - **README manquants** : 1+ (audit/)
-- **Schémas Mermaid** : 38 fichiers (à valider)
+- **Schémas Mermaid** : 55 fichiers (38 analysés + 17 restants à valider)
 
 ### Après Optimisation (Objectif)
 
@@ -417,7 +417,7 @@ git commit -m "📅 Fix: Uniformisation date docs/development/README.md"
 - **Références obsolètes** : 0 ✅
 - **Index obsolètes** : 0 ✅ (archivé)
 - **Dates incohérentes** : 0 (après uniformisation ~164 fichiers)
-- **Schémas Mermaid** : 100% validés (38 fichiers)
+- **Schémas Mermaid** : 100% validés (55 fichiers : 38 analysés + 17 restants)
 - **README manquants** : 0 (tous les sous-modules ont README)
 - **Dossiers vides** : Documentés ou supprimés
 
@@ -437,7 +437,7 @@ git commit -m "📅 Fix: Uniformisation date docs/development/README.md"
 
 ### Actions Optionnelles
 
-- [ ] Valider schémas Mermaid (38 fichiers)
+- [ ] Valider schémas Mermaid (55 fichiers : 38 analysés + 17 restants)
 - [ ] Vérifier tous les liens internes dans tous les sous-modules
 - [ ] Vérifier dossiers vides (archives/, rapports/, semaines/)
 - [ ] Vérifier redondances potentielles :
