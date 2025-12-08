@@ -11,7 +11,7 @@
 
 ### 🔍 Audits et Conformité
 
-- **[INDEX_AUDITS_CONSOLIDES.md](INDEX_AUDITS_CONSOLIDES.md)** ⭐
+- **[INDEX_AUDITS.md](../INDEX_AUDITS.md)** ⭐
   - Index complet de tous les audits
   - Point d'entrée principal pour les audits
 

@@ -47,7 +47,7 @@
 
 ### 🔎 Audits complets et état actuel
 
-[![📊 Index](https://img.shields.io/badge/📊-Index%20Audits-purple)](audits/INDEX_AUDITS_CONSOLIDES.md)
+[![📊 Index](https://img.shields.io/badge/📊-Index%20Audits-purple)](INDEX_AUDITS.md)
 [![📈 État](https://img.shields.io/badge/📈-État%20Actuel-green)](audits/RESUME_ETAT_ACTUEL_BBIA.md)
 
 </div>

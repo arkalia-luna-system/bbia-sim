@@ -100,7 +100,7 @@ flowchart TB
 ### Conformité SDK
 
 - ✅ **[Conformité Complète](quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md)** — Validation SDK officiel
-- 🔍 **[Audit Synthèse](quality/audits/INDEX_AUDITS_CONSOLIDES.md)** — Audits consolidés
+- 🔍 **[Audit Synthèse](quality/INDEX_AUDITS.md)** — Audits consolidés
 
 ### Qualité Code
 

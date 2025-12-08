@@ -37,7 +37,7 @@ def kill_processes_on_port(port: int) -> int:
             raise FileNotFoundError("lsof or kill not found in PATH")
 
         result = subprocess.run(
-            [lsof_path, "-ti", f":{port}"],  # nosec B603 - lsof_path est validé
+            [lsof_path, "-ti", f":{port}"],  # nosec B603
             capture_output=True,
             text=True,
             check=False,
@@ -48,7 +48,11 @@ def kill_processes_on_port(port: int) -> int:
                 if pid:
                     try:
                         subprocess.run(
-                            [kill_path, "-TERM", pid],  # nosec B603 - kill_path est validé
+                            [
+                                kill_path,
+                                "-TERM",
+                                pid,
+                            ],  # nosec B603
                             check=False,
                             timeout=2,
                         )
@@ -61,7 +65,7 @@ def kill_processes_on_port(port: int) -> int:
                 time.sleep(1)
                 # Force kill si toujours actif
                 result = subprocess.run(
-                    [lsof_path, "-ti", f":{port}"],  # nosec B603 - lsof_path est validé
+                    [lsof_path, "-ti", f":{port}"],  # nosec B603
                     capture_output=True,
                     text=True,
                     check=False,
@@ -72,12 +76,16 @@ def kill_processes_on_port(port: int) -> int:
                         if pid:
                             try:
                                 subprocess.run(
-                                    [kill_path, "-KILL", pid],  # nosec B603 - kill_path est validé
+                                    [
+                                        kill_path,
+                                        "-KILL",
+                                        pid,
+                                    ],  # nosec B603
                                     check=False,
                                     timeout=2,
                                 )
                                 logging.info(f"💀 Force kill PID {pid}")
-                            except Exception:
+                            except Exception:  # nosec B110 - Ignorer erreurs force kill
                                 pass
     except FileNotFoundError:
         # lsof non disponible, essayer avec psutil si disponible

@@ -1,6 +1,6 @@
 # 🏗️ Architecture BBIA-SIM - Guide Complet
 
-**Date** : 26 Novembre 2025
+**Date** : 8 Décembre 2025
 **Version** : 1.4.0
 
 ---
@@ -38,4 +38,4 @@ BBIA-SIM est un moteur cognitif Python pour robot Reachy Mini avec :
 
 ---
 
-**Dernière mise à jour** : 26 Novembre 2025
+**Dernière mise à jour** : 8 Décembre 2025

@@ -50,7 +50,7 @@
 ### ✅ QA / Tests
 
 1. [Guide de Test](development/testing.md) — Guide complet
-2. [Index Audits](quality/audits/INDEX_AUDITS_CONSOLIDES.md) — Tous les audits
+2. [Index Audits](quality/INDEX_AUDITS.md) — Tous les audits
 3. [Corrections Appliquées](quality/corrections/applied.md) — Corrections
 4. [Validation Qualité](quality/validation/VALIDATION_FINALE_QUALITE_2025.md) — Rapports
 
