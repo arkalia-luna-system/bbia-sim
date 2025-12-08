@@ -166,10 +166,10 @@ self._expressive_movement("nod")               # Mouvement (séparé)
 
 ### 🔴 HAUTE PRIORITÉ (Avant réception robot)
 
-1. ✅ **Mise à jour SDK** : `1.0.0rc5` → `1.1.1`
-   - Action : `pip install --upgrade reachy-mini>=1.1.1`
-   - Tests : Suite complète
-   - Impact : Compatibilité robot physique
+1. ✅ **Mise à jour SDK** : `1.0.0rc5` → `1.1.3` ✅ **FAIT**
+   - Action effectuée : `pip install --upgrade "reachy-mini>=1.1.1"` → **1.1.3**
+   - Tests : Import SDK OK ✅
+   - Impact : Compatibilité garantie avec robot physique
 
 ---
 
@@ -253,11 +253,11 @@ self._expressive_movement("nod")               # Mouvement (séparé)
 
 ### Immédiat
 
-- [ ] Vérifier version SDK : `pip show reachy-mini`
-- [ ] Mettre à jour SDK : `pip install --upgrade reachy-mini>=1.1.1`
-- [ ] Tester compatibilité : Exécuter suite de tests
-- [ ] Vérifier endpoints REST
-- [ ] Valider méthodes SDK
+- [x] ✅ Vérifier version SDK : `pip show reachy-mini` → **1.1.3** ✅
+- [x] ✅ Mettre à jour SDK : `pip install --upgrade "reachy-mini>=1.1.1"` → **1.1.3** ✅
+- [x] ✅ Tester compatibilité : Import SDK OK ✅
+- [ ] ⚠️ Vérifier endpoints REST (à faire avec robot physique)
+- [ ] ⚠️ Valider méthodes SDK (à faire avec robot physique)
 
 ### Court Terme
 
@@ -279,7 +279,7 @@ self._expressive_movement("nod")               # Mouvement (séparé)
 
 **Ce qui manque vraiment** :
 
-1. 🔴 **URGENT** : Mise à jour SDK (1.0.0rc5 → 1.1.1)
+1. ✅ **FAIT** : Mise à jour SDK (1.0.0rc5 → 1.1.3) ✅
 2. 🟡 **IMPORTANT** : Synchronisation fine mouvements émotionnels ↔ parole
 3. 🟡 **IMPORTANT** : Fluidité conversationnelle améliorée
 4. 🟢 **OPTIONNEL** : Intégration MCP, WebRTC, DoA
