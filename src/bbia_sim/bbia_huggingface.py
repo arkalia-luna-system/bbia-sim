@@ -1508,7 +1508,8 @@ class BBIAHuggingFace:
                         )
 
             # 3. Générer réponse avec LLM si disponible, sinon réponses enrichies
-            # Convertir SentimentResult en SentimentDict (nécessaire pour les deux branches)
+            # Convertir SentimentResult en SentimentDict
+            # (nécessaire pour les deux branches)
             sentiment_dict: SentimentDict = {
                 "label": sentiment.get("sentiment", "neutral"),
                 "score": sentiment.get("score", 0.5),
