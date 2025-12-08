@@ -200,22 +200,86 @@ self.emotional_sync.sync_speak_with_emotion(
 
 ### 🟡 MOYENNE PRIORITÉ (Améliore expérience)
 
-2. ⚠️ **Synchronisation fine mouvements émotionnels ↔ parole**
-   - Inspiration : `reachy-mini-plugin` (LAURA-agent)
-   - Action : Créer module `bbia_emotional_sync.py`
-   - Impact : Expérience utilisateur améliorée
+2. ✅ **Synchronisation fine mouvements émotionnels ↔ parole** - **FAIT**
+   - Module créé : `bbia_emotional_sync.py`
+   - États conversationnels : IDLE, LISTENING, THINKING, SPEAKING, REACTING
+   - Tests : 23 tests, tous passent
 
-3. ⚠️ **Fluidité conversationnelle améliorée**
-   - Action : Enrichir `ConversationBehavior`
-   - Impact : Interactions plus naturelles
+3. ⚠️ **Timing adaptatif selon rythme parole** (inspiration LAURA-agent)
+   - **État actuel** : Timing fixe (150 mots/min)
+   - **À faire** : Analyser rythme réel parole, ajuster timing dynamiquement
+   - **Technique** : Détection pauses, accélérations dans parole
+   - **Impact** : Synchronisation plus naturelle
+   - **Priorité** : 🟡 Moyenne
+   - **Temps estimé** : 4-6h
+
+4. ⚠️ **Micro-mouvements plus subtils pendant écoute** (inspiration LAURA-agent)
+   - **État actuel** : Micro-mouvements basiques
+   - **À faire** : Animations plus subtiles (micro-expressions, respiration)
+   - **Technique** : Micro-mouvements très petits (0.01-0.02 rad)
+   - **Impact** : Robot plus vivant
+   - **Priorité** : 🟡 Moyenne
+   - **Temps estimé** : 3-4h
+
+5. ⚠️ **Découverte automatique robots** (inspiration @pierre-rouanet)
+   - **État actuel** : Configuration manuelle
+   - **À faire** : Détection automatique robots sur réseau local via Zenoh
+   - **Technique** : Utiliser `zenoh.discover()` pour lister robots
+   - **Impact** : Plus besoin de configurer manuellement
+   - **Priorité** : 🟡 Moyenne
+   - **Temps estimé** : 4-6h
+
+6. ⚠️ **Support simultané sim/robot réel** (inspiration @pierre-rouanet)
+   - **État actuel** : BBIA choisit un backend (sim OU robot)
+   - **À faire** : Support simultané via même daemon
+   - **Technique** : Multi-backends avec routing selon commande
+   - **Impact** : Tests sim pendant utilisation robot réel
+   - **Priorité** : 🟡 Moyenne
+   - **Temps estimé** : 6-8h
+
+7. ⚠️ **Modèle simplifié pour tests rapides** (inspiration @apirrone)
+   - **État actuel** : Toujours modèle complet (16 joints)
+   - **À faire** : Support modèle 7 joints pour tests rapides
+   - **Technique** : Flag `--fast` pour charger `reachy_mini.xml`
+   - **Impact** : Tests 2-3x plus rapides
+   - **Priorité** : 🟡 Moyenne
+   - **Temps estimé** : 2-3h
+
+8. ⚠️ **Mode débutant dashboard** (inspiration @FabienDanieau)
+   - **État actuel** : Interface complète mais complexe
+   - **À faire** : Mode "débutant" avec contrôles simplifiés
+   - **Technique** : Toggle mode débutant/expert
+   - **Impact** : Accessibilité pour nouveaux utilisateurs
+   - **Priorité** : 🟡 Moyenne
+   - **Temps estimé** : 4-6h
+
+9. ⚠️ **Tests de performance avec baselines** (inspiration @RemiFabre)
+   - **État actuel** : Tests de performance basiques
+   - **À faire** : Baselines p50/p95/p99 avec validation automatique
+   - **Technique** : Exporter métriques JSONL, valider fourchette en CI
+   - **Impact** : Détection régression performance
+   - **Priorité** : 🟡 Moyenne
+   - **Temps estimé** : 4-6h
 
 ---
 
 ### 🟢 BASSE PRIORITÉ (Optionnel - BBIA a déjà mieux ou équivalent)
 
-4. 🟢 **Intégration MCP** (optionnel - BBIA a déjà API REST + WebSocket)
-5. 🟢 **WebRTC Streaming** (optionnel - BBIA a déjà WebSocket <10ms)
-6. 🟢 **DoA Audio** (nécessite hardware spécifique - microphone array)
+10. 🟢 **Chargement lazy assets STL** (inspiration @apirrone) - 3-4h
+11. 🟢 **Scènes complexes avec objets** (inspiration @apirrone) - 4-6h
+12. 🟢 **Timestep adaptatif** (inspiration @apirrone) - 3-4h
+13. 🟢 **Rate limiting granulaire** (inspiration @FabienDanieau) - 2-3h
+14. 🟢 **Documentation OpenAPI détaillée** (inspiration @FabienDanieau) - 3-4h
+15. 🟢 **Sharding tests** (inspiration @RemiFabre) - 2-3h
+16. 🟢 **MyPy strict mode** (inspiration @RemiFabre) - 8-12h
+17. 🟢 **Pre-commit hooks complets** (inspiration @RemiFabre) - 2-3h
+18. 🟢 **Exemples erreurs communes** (inspiration @askurique) - 3-4h
+19. 🟢 **Exemples exécutables validés** (inspiration @askurique) - 4-6h
+20. 🟢 **Cache modèles agressif** (inspiration @apirrone) - 2-3h
+21. 🟢 **Batch processing mouvements** (inspiration @apirrone) - 4-6h
+22. 🟢 **Intégration MCP** (optionnel - BBIA a déjà API REST + WebSocket)
+23. 🟢 **WebRTC Streaming** (optionnel - BBIA a déjà WebSocket <10ms)
+24. 🟢 **DoA Audio** (nécessite hardware spécifique - microphone array)
 
 ---
 
@@ -290,11 +354,11 @@ self.emotional_sync.sync_speak_with_emotion(
 
 ### Court Terme
 
-- [ ] Examiner `reachy-mini-plugin` (LAURA-agent)
-- [ ] Créer module `bbia_emotional_sync.py`
-- [ ] Améliorer `ConversationBehavior`
-- [ ] Ajouter micro-mouvements conversationnels
-- [ ] Tester synchronisation fine
+- [x] ✅ Examiner `reachy-mini-plugin` (LAURA-agent)
+- [x] ✅ Créer module `bbia_emotional_sync.py`
+- [x] ✅ Améliorer `ConversationBehavior`
+- [x] ✅ Ajouter micro-mouvements conversationnels
+- [x] ✅ Tester synchronisation fine (23 tests, tous passent)
 
 ### Long Terme (Optionnel)
 
@@ -309,17 +373,15 @@ self.emotional_sync.sync_speak_with_emotion(
 **Ce qui manque vraiment** :
 
 1. ✅ **FAIT** : Mise à jour SDK (1.0.0rc5 → 1.1.3) ✅
-2. 🟡 **IMPORTANT** : Synchronisation fine mouvements émotionnels ↔ parole
-3. 🟡 **IMPORTANT** : Fluidité conversationnelle améliorée
-4. 🟢 **OPTIONNEL** : Intégration MCP, WebRTC, DoA
+2. ✅ **FAIT** : Synchronisation fine mouvements émotionnels ↔ parole ✅
+3. ✅ **FAIT** : Fluidité conversationnelle améliorée ✅
+4. 🟢 **OPTIONNEL** : Intégration MCP, WebRTC, DoA (BBIA a déjà mieux)
 
-**BBIA a déjà une base solide** :
-- ✅ 12 émotions (supérieur)
-- ✅ Synchronisation basique fonctionnelle
+**BBIA a une base solide** :
+- ✅ 12 émotions
+- ✅ Synchronisation fine fonctionnelle
 - ✅ Conversation opérationnelle
 - ✅ API complète
-
-**Recommandation** : Se concentrer sur mise à jour SDK (urgent) et améliorations synchronisation fine (important).
 
 ---
 

@@ -49,9 +49,177 @@
 
 ## Tâches Restantes (Optionnel - Priorité Moyenne/Basse)
 
-### Priorité Moyenne
+### 🟡 Priorité Moyenne - Inspiration Contributeurs
 
-#### 1. Streaming Audio Optimisé (Optionnel)
+#### 1. Découverte automatique robots (Inspiration @pierre-rouanet)
+
+**Durée estimée** : 4-6h
+
+**État actuel** : Configuration manuelle (`BBIA_HOSTNAME`, `BBIA_PORT`)
+
+**Actions** :
+- Détection automatique robots sur réseau local via Zenoh
+- Utiliser `zenoh.discover()` pour lister robots disponibles
+- API `/robots/list` pour lister robots détectés
+
+**Impact** : Plus besoin de configurer manuellement, découverte automatique
+
+**Fichiers concernés** :
+- `src/bbia_sim/daemon/bridge.py` (améliorer découverte Zenoh)
+- `src/bbia_sim/robot_registry.py` (créer si nécessaire)
+- `src/bbia_sim/daemon/app/routers/robots.py` (créer endpoint list)
+
+---
+
+#### 2. Support simultané sim/robot réel (Inspiration @pierre-rouanet)
+
+**Durée estimée** : 6-8h
+
+**État actuel** : BBIA choisit un backend (sim OU robot)
+
+**Actions** :
+- Support simultané via même daemon (sim + robot réel)
+- Multi-backends avec routing selon commande
+- API pour choisir backend par commande
+
+**Impact** : Tests sim pendant utilisation robot réel
+
+**Fichiers concernés** :
+- `src/bbia_sim/daemon/app/main.py` (gestion multi-backends)
+- `src/bbia_sim/robot_factory.py` (support multi-instances)
+
+---
+
+#### 3. Modèle simplifié pour tests rapides (Inspiration @apirrone)
+
+**Durée estimée** : 2-3h
+
+**État actuel** : Toujours modèle complet (16 joints)
+
+**Actions** :
+- Support modèle 7 joints pour tests rapides
+- Flag `--fast` pour charger `reachy_mini.xml` (7 joints)
+- Auto-détection : modèle simplifié si tests unitaires
+
+**Impact** : Tests 2-3x plus rapides (moins de joints)
+
+**Fichiers concernés** :
+- `src/bbia_sim/backends/mujoco_backend.py` (support modèle simplifié)
+- `src/bbia_sim/__main__.py` (flag `--fast`)
+
+---
+
+#### 4. Mode débutant dashboard (Inspiration @FabienDanieau)
+
+**Durée estimée** : 4-6h
+
+**État actuel** : Interface complète mais complexe
+
+**Actions** :
+- Mode "débutant" avec contrôles simplifiés (on/off, mouvements basiques)
+- Toggle mode débutant/expert dans dashboard
+- Masquer fonctionnalités avancées en mode débutant
+
+**Impact** : Accessibilité pour nouveaux utilisateurs
+
+**Fichiers concernés** :
+- `src/bbia_sim/daemon/app/dashboard/templates/base.html` (toggle mode)
+- `src/bbia_sim/daemon/app/dashboard/static/js/beginner_mode.js` (créer)
+
+---
+
+#### 5. Timing adaptatif selon rythme parole (Inspiration LAURA-agent)
+
+**Durée estimée** : 4-6h
+
+**État actuel** : Timing fixe (150 mots/min)
+
+**Actions** :
+- Analyser rythme réel parole (détection pauses, accélérations)
+- Ajuster timing mouvements dynamiquement selon rythme
+- Synchronisation plus naturelle
+
+**Impact** : Synchronisation plus naturelle, mouvements adaptés
+
+**Fichiers concernés** :
+- `src/bbia_sim/bbia_emotional_sync.py` (ajouter analyse rythme)
+- `src/bbia_sim/behaviors/conversation.py` (intégrer timing adaptatif)
+
+---
+
+#### 6. Tests de performance avec baselines (Inspiration @RemiFabre)
+
+**Durée estimée** : 4-6h
+
+**État actuel** : Tests de performance basiques (pas de validation)
+
+**Actions** :
+- Baselines p50/p95/p99 avec validation automatique
+- Exporter métriques JSONL, valider fourchette en CI
+- Détection régression performance automatique
+
+**Impact** : Détection régression performance automatique
+
+**Fichiers concernés** :
+- `scripts/bbia_performance_benchmarks.py` (ajouter export JSONL)
+- `.github/workflows/ci.yml` (validation baselines)
+- `tests/benchmarks/test_performance.py` (ajouter validation)
+
+---
+
+### 🟢 Priorité Basse - Inspiration Contributeurs
+
+#### 7. Chargement lazy assets STL (Inspiration @apirrone)
+
+**Durée estimée** : 3-4h
+
+**Actions** :
+- Chargement à la demande (lazy loading) des assets STL
+- Charger assets seulement si nécessaire pour rendu
+
+**Impact** : Démarrage plus rapide, moins de RAM
+
+---
+
+#### 8. Scènes complexes avec objets (Inspiration @apirrone)
+
+**Durée estimée** : 4-6h
+
+**Actions** :
+- Créer scènes XML avec objets (tables, objets à manipuler)
+- Support interactions avec objets
+
+**Impact** : Tests manipulation objets, interactions
+
+---
+
+#### 9. Heartbeat WebSocket robuste (Inspiration @FabienDanieau)
+
+**Durée estimée** : 3-4h
+
+**Actions** :
+- Heartbeat adaptatif selon latence
+- Reconnection automatique côté client
+
+**Impact** : Connexions plus stables
+
+---
+
+#### 10. Guides par niveau (Inspiration @askurique)
+
+**Durée estimée** : 4-6h
+
+**Actions** :
+- Organiser guides par niveau (débutant → intermédiaire → expert)
+- Structure `docs/beginner/`, `docs/intermediate/`, `docs/advanced/`
+
+**Impact** : Navigation plus claire, progression naturelle
+
+---
+
+### Priorité Moyenne (Autres)
+
+#### 11. Streaming Audio Optimisé (Optionnel)
 
 **Durée estimée** : 2-3 jours
 

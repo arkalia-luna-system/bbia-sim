@@ -243,31 +243,263 @@ Ce document analyse le **travail technique concret** de chaque contributeur, leu
 4. **Documentation** : 219 fichiers MD vs complète officielle
 5. **Dashboards** : 4 dashboards vs 1 officiel
 
-### 💡 Améliorations Possibles (Inspiration Contributeurs)
+### 💡 AMÉLIORATIONS POSSIBLES - Inspiration Contributeurs
+
+#### 🏗️ Architecture & Infrastructure
 
 1. **Découverte automatique robots** (inspiration @pierre-rouanet)
-   - Détection automatique robots sur réseau local
-   - Support multi-robots simultanés
+   - **État actuel** : Configuration manuelle (`BBIA_HOSTNAME`, `BBIA_PORT`)
+   - **À faire** : Détection automatique robots sur réseau local via Zenoh
+   - **Technique** : Utiliser `zenoh.discover()` pour lister robots disponibles
+   - **Bénéfice** : Plus besoin de configurer manuellement, découverte automatique
+   - **Priorité** : 🟡 Moyenne
+   - **Temps estimé** : 4-6h
 
-2. **Modèle simplifié pour tests** (inspiration @apirrone)
-   - Support modèle 7 joints pour tests rapides
-   - Chargement lazy assets STL
+2. **Support simultané sim/robot réel** (inspiration @pierre-rouanet)
+   - **État actuel** : BBIA choisit un backend (sim OU robot)
+   - **À faire** : Support simultané via même daemon (sim + robot réel)
+   - **Technique** : Multi-backends avec routing selon commande
+   - **Bénéfice** : Tests sim pendant utilisation robot réel
+   - **Priorité** : 🟡 Moyenne
+   - **Temps estimé** : 6-8h
 
-3. **Interface plus simple** (inspiration @FabienDanieau)
-   - Mode débutant avec contrôles basiques
-   - Intégration Hugging Face Spaces plus poussée
+3. **Fallback automatique sim → robot** (inspiration @pierre-rouanet)
+   - **État actuel** : Choix manuel du backend
+   - **À faire** : Détection automatique robot, fallback vers sim si absent
+   - **Technique** : Try robot réel, catch → sim automatiquement
+   - **Bénéfice** : Expérience utilisateur améliorée (pas de config)
+   - **Priorité** : 🟡 Moyenne
+   - **Temps estimé** : 2-3h
 
-4. **Tests de performance** (inspiration @RemiFabre)
-   - Baselines performance avec validation
-   - Sharding tests si durée > 10 min
+#### 🎮 Simulation MuJoCo
 
-5. **Micro-mouvements subtils** (inspiration LAURA-agent)
-   - Animations plus naturelles pendant écoute
-   - Timing adaptatif selon rythme parole
+4. **Modèle simplifié pour tests rapides** (inspiration @apirrone)
+   - **État actuel** : Toujours modèle complet (16 joints)
+   - **À faire** : Support modèle 7 joints pour tests rapides
+   - **Technique** : Flag `--fast` pour charger `reachy_mini.xml` (7 joints)
+   - **Bénéfice** : Tests 2-3x plus rapides (moins de joints)
+   - **Priorité** : 🟡 Moyenne
+   - **Temps estimé** : 2-3h
+
+5. **Chargement lazy assets STL** (inspiration @apirrone)
+   - **État actuel** : Tous les assets STL chargés au démarrage
+   - **À faire** : Chargement à la demande (lazy loading)
+   - **Technique** : Charger assets seulement si nécessaire pour rendu
+   - **Bénéfice** : Démarrage plus rapide, moins de RAM
+   - **Priorité** : 🟢 Basse
+   - **Temps estimé** : 3-4h
+
+6. **Scènes complexes avec objets interactifs** (inspiration @apirrone)
+   - **État actuel** : Scène vide (minimal.xml)
+   - **À faire** : Scènes avec objets (tables, objets à manipuler)
+   - **Technique** : Créer scènes XML avec objets MuJoCo
+   - **Bénéfice** : Tests manipulation objets, interactions
+   - **Priorité** : 🟢 Basse
+   - **Temps estimé** : 4-6h
+
+7. **Timestep adaptatif** (inspiration @apirrone)
+   - **État actuel** : Timestep fixe 0.01s (100Hz)
+   - **À faire** : Timestep adaptatif selon complexité scène
+   - **Technique** : Ajuster timestep dynamiquement (0.005s-0.02s)
+   - **Bénéfice** : Performance optimale selon scène
+   - **Priorité** : 🟢 Basse
+   - **Temps estimé** : 3-4h
+
+#### 🌐 Dashboard & API
+
+8. **Mode débutant avec contrôles basiques** (inspiration @FabienDanieau)
+   - **État actuel** : Interface complète mais complexe
+   - **À faire** : Mode "débutant" avec contrôles simplifiés (on/off, mouvements basiques)
+   - **Technique** : Toggle mode débutant/expert dans dashboard
+   - **Bénéfice** : Accessibilité pour nouveaux utilisateurs
+   - **Priorité** : 🟡 Moyenne
+   - **Temps estimé** : 4-6h
+
+9. **Intégration Hugging Face Spaces plus poussée** (inspiration @FabienDanieau)
+   - **État actuel** : Intégration basique (recherche apps)
+   - **À faire** : Installation apps directement depuis dashboard
+   - **Technique** : API HF Hub pour téléchargement/installation apps
+   - **Bénéfice** : Écosystème apps plus riche
+   - **Priorité** : 🟡 Moyenne
+   - **Temps estimé** : 6-8h
+
+10. **Rate limiting plus granulaire** (inspiration @FabienDanieau)
+    - **État actuel** : Rate limiting global
+    - **À faire** : Rate limiting par endpoint (motion, state, media, etc.)
+    - **Technique** : Middleware FastAPI avec limites par route
+    - **Bénéfice** : Protection plus fine, meilleure UX
+    - **Priorité** : 🟢 Basse
+    - **Temps estimé** : 2-3h
+
+11. **Documentation OpenAPI plus détaillée** (inspiration @FabienDanieau)
+    - **État actuel** : Documentation OpenAPI basique
+    - **À faire** : Exemples complets dans OpenAPI (request/response)
+    - **Technique** : Ajouter `examples` dans Pydantic models
+    - **Bénéfice** : Meilleure compréhension API pour développeurs
+    - **Priorité** : 🟢 Basse
+    - **Temps estimé** : 3-4h
+
+12. **Heartbeat WebSocket plus robuste** (inspiration @FabienDanieau)
+    - **État actuel** : Heartbeat basique (30s)
+    - **À faire** : Heartbeat adaptatif + reconnection automatique
+    - **Technique** : Heartbeat selon latence, auto-reconnect côté client
+    - **Bénéfice** : Connexions plus stables, récupération automatique
+    - **Priorité** : 🟡 Moyenne
+    - **Temps estimé** : 3-4h
+
+#### 🧪 Tests & Qualité
+
+13. **Tests de performance avec baselines** (inspiration @RemiFabre)
+    - **État actuel** : Tests de performance basiques (pas de validation)
+    - **À faire** : Baselines p50/p95/p99 avec validation automatique
+    - **Technique** : Exporter métriques JSONL, valider fourchette en CI
+    - **Bénéfice** : Détection régression performance automatique
+    - **Priorité** : 🟡 Moyenne
+    - **Temps estimé** : 4-6h
+
+14. **Tests de conformité SDK plus exhaustifs** (inspiration @RemiFabre)
+    - **État actuel** : 37 tests de conformité
+    - **À faire** : Tests edge cases, limites, erreurs
+    - **Technique** : Ajouter tests limites joints, erreurs réseau, timeouts
+    - **Bénéfice** : Conformité SDK garantie à 100%
+    - **Priorité** : 🟡 Moyenne
+    - **Temps estimé** : 6-8h
+
+15. **Sharding tests si durée > 10 min** (inspiration @RemiFabre)
+    - **État actuel** : Tests séquentiels (long si beaucoup de tests)
+    - **À faire** : Sharding avec pytest-xdist pour parallélisation
+    - **Technique** : `pytest -n auto` pour tests parallèles
+    - **Bénéfice** : CI plus rapide (2-3x plus rapide)
+    - **Priorité** : 🟢 Basse
+    - **Temps estimé** : 2-3h
+
+16. **Tests headless MuJoCo plus robustes** (inspiration @RemiFabre)
+    - **État actuel** : Tests headless parfois instables
+    - **À faire** : Retry automatique, meilleure gestion erreurs
+    - **Technique** : Fixtures pytest avec retry, timeout plus longs
+    - **Bénéfice** : CI plus stable, moins de flaky tests
+    - **Priorité** : 🟡 Moyenne
+    - **Temps estimé** : 3-4h
+
+17. **MyPy strict mode** (inspiration @RemiFabre)
+    - **État actuel** : MyPy permissive (beaucoup de `# type: ignore`)
+    - **À faire** : MyPy strict mode progressif (fichier par fichier)
+    - **Technique** : Activer strict mode progressivement, corriger types
+    - **Bénéfice** : Sécurité types garantie, moins de bugs
+    - **Priorité** : 🟢 Basse
+    - **Temps estimé** : 8-12h (progressif)
+
+18. **Pre-commit hooks plus complets** (inspiration @RemiFabre)
+    - **État actuel** : Pre-commit hooks basiques
+    - **À faire** : Ajouter tests unitaires rapides, validation docs
+    - **Technique** : Hook pour lancer tests rapides avant commit
+    - **Bénéfice** : Détection erreurs avant push
+    - **Priorité** : 🟢 Basse
+    - **Temps estimé** : 2-3h
+
+#### 📚 Documentation & Exemples
+
+19. **Guides par niveau** (inspiration @askurique)
+    - **État actuel** : Documentation tout mélangé (débutant/expert)
+    - **À faire** : Organiser guides par niveau (débutant → intermédiaire → expert)
+    - **Technique** : Structure `docs/beginner/`, `docs/intermediate/`, `docs/advanced/`
+    - **Bénéfice** : Navigation plus claire, progression naturelle
+    - **Priorité** : 🟡 Moyenne
+    - **Temps estimé** : 4-6h
+
+20. **Exemples avec erreurs communes** (inspiration @askurique)
+    - **État actuel** : Exemples basiques (fonctionnent toujours)
+    - **À faire** : Exemples avec erreurs communes et solutions
+    - **Technique** : Ajouter section "Erreurs communes" dans exemples
+    - **Bénéfice** : Apprentissage plus rapide, moins de frustration
+    - **Priorité** : 🟢 Basse
+    - **Temps estimé** : 3-4h
+
+21. **Exemples exécutables avec validation** (inspiration @askurique)
+    - **État actuel** : Exemples Python (pas de validation automatique)
+    - **À faire** : Validation automatique exemples (tests)
+    - **Technique** : Tests qui exécutent exemples et valident sortie
+    - **Bénéfice** : Garantie exemples toujours fonctionnels
+    - **Priorité** : 🟢 Basse
+    - **Temps estimé** : 4-6h
+
+#### 🎭 Mouvements & Synchronisation
+
+22. **Timing adaptatif selon rythme parole** (inspiration LAURA-agent)
+    - **État actuel** : Timing fixe (150 mots/min)
+    - **À faire** : Analyser rythme réel parole, ajuster timing dynamiquement
+    - **Technique** : Détection pauses, accélérations dans parole
+    - **Bénéfice** : Synchronisation plus naturelle, mouvements adaptés
+    - **Priorité** : 🟡 Moyenne
+    - **Temps estimé** : 4-6h
+
+23. **Micro-mouvements plus subtils pendant écoute** (inspiration LAURA-agent)
+    - **État actuel** : Micro-mouvements basiques (tête, antennes)
+    - **À faire** : Animations plus subtiles (micro-expressions, respiration)
+    - **Technique** : Ajouter micro-mouvements très petits (0.01-0.02 rad)
+    - **Bénéfice** : Robot plus vivant, interactions plus naturelles
+    - **Priorité** : 🟡 Moyenne
+    - **Temps estimé** : 3-4h
+
+24. **Cache plus agressif pour modèles fréquents** (inspiration @apirrone)
+    - **État actuel** : Cache basique
+    - **À faire** : Cache LRU pour modèles MuJoCo fréquemment utilisés
+    - **Technique** : `functools.lru_cache` pour modèles XML
+    - **Bénéfice** : Chargement modèles plus rapide
+    - **Priorité** : 🟢 Basse
+    - **Temps estimé** : 2-3h
+
+25. **Batch processing mouvements multiples** (inspiration @apirrone)
+    - **État actuel** : Mouvements séquentiels
+    - **À faire** : Batch processing pour mouvements simultanés
+    - **Technique** : Grouper mouvements, exécuter en batch
+    - **Bénéfice** : Performance améliorée (moins d'appels SDK)
+    - **Priorité** : 🟢 Basse
+    - **Temps estimé** : 4-6h
+
+---
+
+## 📋 PRIORISATION DES AMÉLIORATIONS
+
+### 🟡 Priorité Moyenne (Impact Utilisateur)
+
+1. **Découverte automatique robots** (4-6h)
+2. **Support simultané sim/robot réel** (6-8h)
+3. **Fallback automatique sim → robot** (2-3h)
+4. **Modèle simplifié pour tests** (2-3h)
+5. **Mode débutant dashboard** (4-6h)
+6. **Intégration HF Spaces plus poussée** (6-8h)
+7. **Heartbeat WebSocket robuste** (3-4h)
+8. **Tests performance avec baselines** (4-6h)
+9. **Tests conformité SDK exhaustifs** (6-8h)
+10. **Tests headless MuJoCo robustes** (3-4h)
+11. **Guides par niveau** (4-6h)
+12. **Timing adaptatif parole** (4-6h)
+13. **Micro-mouvements subtils** (3-4h)
+
+**Total priorité moyenne** : ~50-70h
+
+### 🟢 Priorité Basse (Améliorations Futures)
+
+14. **Chargement lazy assets STL** (3-4h)
+15. **Scènes complexes** (4-6h)
+16. **Timestep adaptatif** (3-4h)
+17. **Rate limiting granulaire** (2-3h)
+18. **Documentation OpenAPI détaillée** (3-4h)
+19. **Sharding tests** (2-3h)
+20. **MyPy strict mode** (8-12h)
+21. **Pre-commit hooks complets** (2-3h)
+22. **Exemples erreurs communes** (3-4h)
+23. **Exemples exécutables validés** (4-6h)
+24. **Cache modèles agressif** (2-3h)
+25. **Batch processing mouvements** (4-6h)
+
+**Total priorité basse** : ~40-60h
 
 ---
 
 **Dernière mise à jour** : 8 Décembre 2025  
 **Voir aussi** :
 - `CE_QUI_MANQUE_VRAIMENT_BBIA_DEC2025.md` - Ce qui manque vraiment
+- `TACHES_RESTANTES_CONSOLIDEES.md` - Tâches restantes consolidées
 - `AUDIT_REACHY_MINI_DECEMBRE_2025.md` - Audit complet décembre 2025
