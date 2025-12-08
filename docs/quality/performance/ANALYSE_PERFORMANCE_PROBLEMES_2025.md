@@ -4,7 +4,7 @@
 >
 > Voir `docs/reference/project-status.md` → "Performance" pour l’état actuel (tests latence/jitter) et les baselines/axes futurs.
 
-**Date :** 21 Novembre 2025
+**Date :** 8 Décembre 2025
 **Objectif :** Identifier les goulots d'étranglement et responsables des lenteurs
 
 ---
@@ -27,7 +27,7 @@ Impact :
 - Latence perçue très élevée pour l'utilisateur
 - Utilisation CPU/mémoire inutile
 
-✅ **Corrections appliquées (vérifié dans code 21 Novembre 2025) :**
+✅ **Corrections appliquées (vérifié dans code 8 Décembre 2025) :**
 
 - ✅ Cache global `_pyttsx3_engine_cache` créé (ligne 38)
 - ✅ Fonction `_get_pyttsx3_engine()` réutilise moteur en cache (lignes 43-59)
@@ -52,7 +52,7 @@ Impact :
 - Latence ~50-100ms par appel
 - Multiplication des appels = latence cumulée
 
-✅ **Corrections appliquées (vérifié dans code 21 Novembre 2025) :**
+✅ **Corrections appliquées (vérifié dans code 8 Décembre 2025) :**
 
 - ✅ Cache `_bbia_voice_id_cache` créé (ligne 39)
 - ✅ Fonction `_get_cached_voice_id()` recherche voix **1 seule fois** (lignes 62-76)
@@ -68,7 +68,7 @@ Gain mesuré : **~−50 à −100 ms par appel après le premier** ✅
 
 **Statut :** ✅ **OPTIMISÉ** - Cache `self.models` présent (ligne 123)
 
-**Vérification code (21 Novembre 2025) :**
+**Vérification code (8 Décembre 2025) :**
 
 - ✅ Dictionnaire `self.models` pour cache des modèles chargés
 - ✅ Modèles réutilisés via `self.models[model_name]` si déjà chargé
@@ -132,7 +132,7 @@ Gain : environ −1.7 s par synthèse vocale
 
 ---
 
-## ✅ Statut vérifications (21 Novembre 2025)
+## ✅ Statut vérifications (8 Décembre 2025)
 
 1. ✅ Logique chargement pipelines Hugging Face → **Optimisé** (cache `self.models`)
 2. ⏳ Vérifier instances multiples BBIAVision → **Non critique** (usage normal = instance unique)

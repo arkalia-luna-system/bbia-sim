@@ -142,7 +142,7 @@ graph LR
 
 ```
 
-### 🤖 Tests Backend Reachy Mini (26 Novembre 2025)
+### 🤖 Tests Backend Reachy Mini (8 Décembre 2025)
 
 **📊 Statistiques**:
 

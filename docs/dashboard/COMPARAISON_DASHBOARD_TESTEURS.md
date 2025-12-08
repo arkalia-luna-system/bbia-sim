@@ -1,9 +1,9 @@
 # 🎨 Comparaison Dashboard BBIA vs Dashboard Testeurs Reachy Mini
 
-**Date** : 26 Novembre 2025  
+**Date** : 8 Décembre 2025  
 **Version BBIA** : 1.4.0  
 **Référence** : Email Pollen Robotics + Dashboard officiel v0.2.1  
-**Dernière mise à jour** : 26 Novembre 2025
+**Dernière mise à jour** : 8 Décembre 2025
 
 ---
 

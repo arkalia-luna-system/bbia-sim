@@ -25,4 +25,4 @@ Bienvenue dans BBIA-SIM ! Ce dossier contient tout ce dont vous avez besoin pour
 
 ---
 
-**Dernière mise à jour** : 27 Novembre 2025
+**Dernière mise à jour** : 8 Décembre 2025

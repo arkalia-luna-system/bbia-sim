@@ -196,31 +196,149 @@ mv docs/quality/audits/INDEX_AUDITS_CONSOLIDES.md \
 
 #### P4-006 : ANALYSER - Autres sous-modules
 
-**Sous-modules non analysés** :
-- `docs/audit/` : 1 fichier
-- `docs/community/` : 5 fichiers
-- `docs/dashboard/` : 5 fichiers
-- `docs/deployment/` : 3 fichiers
-- `docs/getting-started/` : 5 fichiers
-- `docs/guides/` : 12 fichiers
-- `docs/hardware/` : 10 fichiers
-- `docs/installation/` : 3 fichiers
-- `docs/observabilite/` : 2 fichiers
-- `docs/organisation/` : 3 fichiers
-- `docs/presentation/` : 2 fichiers
-- `docs/reference/` : 10 fichiers
-- `docs/reports/` : 1 fichier
-- `docs/simulations/` : 9 fichiers
-- `docs/unity/` : 3 fichiers
+**Sous-modules non analysés** (inventaire rapide) :
+
+| Sous-module | Fichiers | README | Schémas Mermaid | Dates à uniformiser | Statut |
+|-------------|----------|--------|-----------------|---------------------|--------|
+| `docs/audit/` | 1 | ❌ Manque | 0 | 1 (26 Nov) | ⏳ |
+| `docs/community/` | 5 | ❌ Manque | 0 | 5 (26 Nov) | ⏳ |
+| `docs/dashboard/` | 5 | ❌ Manque | 0 | 5 (mixte) | ⏳ |
+| `docs/deployment/` | 3 | ✅ Présent | 0 | 3 (à vérifier) | ⏳ |
+| `docs/getting-started/` | 5 | ✅ Présent | 0 | 5 (26-27 Nov) | ⏳ |
+| `docs/guides/` | 12 | ✅ Présent | 0 | 12 (26-27 Nov) | ⏳ |
+| `docs/hardware/` | 10 | ✅ Présent | 0 | 10 (mixte) | ⏳ |
+| `docs/installation/` | 3 | ✅ Présent | 0 | 3 (21-27 Nov) | ⏳ |
+| `docs/observabilite/` | 2 | ✅ Présent | 0 | 2 (27 Nov) | ⏳ |
+| `docs/organisation/` | 3 | ✅ Présent | 0 | 3 (27 Nov) | ⏳ |
+| `docs/presentation/` | 2 | ✅ Présent | 0 | 2 (26-27 Nov) | ⏳ |
+| `docs/reference/` | 10 | ✅ Présent | 0 | 10 (mixte) | ⏳ |
+| `docs/reports/` | 1 | ✅ Présent | 0 | 1 (à vérifier) | ⏳ |
+| `docs/simulations/` | 9 | ✅ Présent | 0 | 9 (21-27 Nov) | ⏳ |
+| `docs/unity/` | 3 | ✅ Présent | 0 | 3 (21-27 Nov) | ⏳ |
+| **TOTAL** | **~75** | **4 manquants** | **0** | **~75** | ⏳ |
 
 **Action** :
 - Analyser chaque sous-module pour doublons, redondances, dates
-- Vérifier README présents
-- Uniformiser dates
+- Créer README manquants (audit/, community/, dashboard/, reports/)
+- Uniformiser dates (~75 fichiers)
+- Vérifier liens internes
 
 **Impact** : Documentation complète et cohérente
 
 **Statut** : ⏳ **À FAIRE** (~75 fichiers restants)
+
+**Détails par sous-module** :
+
+##### P4-006-001 : `docs/audit/` (1 fichier)
+
+- **Fichier** : `AUDIT_ROS2_FOXY_NECESSITE.md`
+- **README** : ❌ Manque
+- **Dates** : 26 Novembre 2025 (à uniformiser)
+- **Action** : Créer README, uniformiser date
+
+##### P4-006-002 : `docs/community/` (5 fichiers)
+
+- **Fichiers** : CONTRIBUTION_GUIDE.md, GUIDE_COMMUNAUTE.md, GUIDE_CONTRIBUTEURS_COMPLET.md, GUIDE_HUGGINGFACE_SPACES.md, INNOVATIONS_BBIA.md
+- **README** : ❌ Manque
+- **Dates** : 26 Novembre 2025 (à uniformiser)
+- **Action** : Créer README, uniformiser dates, vérifier redondances (GUIDE_COMMUNAUTE vs GUIDE_CONTRIBUTEURS_COMPLET)
+
+##### P4-006-003 : `docs/dashboard/` (5 fichiers)
+
+- **Fichiers** : COMPARAISON_DASHBOARD_TESTEURS.md, DASHBOARD_OFFICIEL_LIKE.md, GUIDE_DASHBOARD_MODERNE.md, GUIDE_INSTALLATION_PWA.md, ROADMAP_DASHBOARD.md
+- **README** : ❌ Manque
+- **Dates** : Mixte (19-26 Nov, 7 Déc) (à uniformiser)
+- **Action** : Créer README, uniformiser dates
+
+##### P4-006-004 : `docs/deployment/` (3 fichiers)
+
+- **Fichiers** : PIPELINE_CI.md, README.md, RENDER_HOWTO.md
+- **README** : ✅ Présent
+- **Dates** : À vérifier
+- **Action** : Uniformiser dates si nécessaire
+
+##### P4-006-005 : `docs/getting-started/` (5 fichiers)
+
+- **Fichiers** : contributing.md, INSTALLATION.md, NAVIGATION.md, README.md, troubleshooting.md
+- **README** : ✅ Présent
+- **Dates** : 26-27 Novembre 2025 (à uniformiser)
+- **Action** : Uniformiser dates
+
+##### P4-006-006 : `docs/guides/` (12 fichiers)
+
+- **Fichiers** : 12 guides (GUIDE_DEMARRAGE.md, GUIDE_AVANCE.md, etc.)
+- **README** : ✅ Présent
+- **Dates** : 21-27 Novembre 2025 (à uniformiser)
+- **Action** : Uniformiser dates, vérifier redondances (GUIDE_LLM_CONVERSATION vs GUIDE_CHAT_BBIA)
+
+##### P4-006-007 : `docs/hardware/` (10 fichiers)
+
+- **Fichiers** : 10 fichiers (MOUVEMENTS_REACHY_MINI.md, SECURITE_ROBOT.md, etc.)
+- **README** : ✅ Présent
+- **Dates** : Mixte (Oct/Nov 2025, 26-27 Nov) (à uniformiser)
+- **Action** : Uniformiser dates
+
+##### P4-006-008 : `docs/installation/` (3 fichiers)
+
+- **Fichiers** : AUDIO_SETUP.md, README.md, RESPEAKER_SETUP.md
+- **README** : ✅ Présent
+- **Dates** : 21-27 Novembre 2025 (à uniformiser)
+- **Action** : Uniformiser dates
+
+##### P4-006-009 : `docs/observabilite/` (2 fichiers)
+
+- **Fichiers** : OBSERVABILITE.md, README.md
+- **README** : ✅ Présent
+- **Dates** : 27 Novembre 2025 (à uniformiser)
+- **Action** : Uniformiser dates
+
+##### P4-006-010 : `docs/organisation/` (3 fichiers)
+
+- **Fichiers** : ORGANISATION_TESTS_INTELLIGENCE.md, PROCESS_MANAGEMENT.md, README.md
+- **README** : ✅ Présent
+- **Dates** : 27 Novembre 2025 (à uniformiser)
+- **Action** : Uniformiser dates
+
+##### P4-006-011 : `docs/presentation/` (2 fichiers)
+
+- **Fichiers** : PORTFOLIO_ONEPAGER.md, README.md
+- **README** : ✅ Présent
+- **Dates** : 26-27 Novembre 2025 (à uniformiser)
+- **Action** : Uniformiser dates
+
+##### P4-006-012 : `docs/reference/` (10 fichiers)
+
+- **Fichiers** : 10 fichiers (INDEX_THEMATIQUE.md, project-status.md, etc.)
+- **README** : ✅ Présent
+- **Dates** : Mixte (Oct/Nov 2025, 24-27 Nov) (à uniformiser)
+- **Action** : Uniformiser dates
+
+##### P4-006-013 : `docs/reports/` (1 fichier)
+
+- **Fichiers** : coverage/README.md
+- **README** : ✅ Présent (dans coverage/)
+- **Dates** : À vérifier
+- **Action** : Vérifier date, créer README racine si nécessaire
+
+##### P4-006-014 : `docs/simulations/` (9 fichiers)
+
+- **Fichiers** : 9 fichiers (MUJOCO_SIMULATION_GUIDE.md, SIMULATION_BBIA_COMPLETE.md, etc.)
+- **README** : ✅ Présent
+- **Dates** : 21-27 Novembre 2025 (à uniformiser)
+- **Action** : Uniformiser dates
+
+##### P4-006-015 : `docs/unity/` (3 fichiers)
+
+- **Fichiers** : UNITY_BBIA_GUIDE.md, UNITY_TROUBLESHOOTING.md, README.md
+- **README** : ✅ Présent
+- **Dates** : 21-27 Novembre 2025 (à uniformiser)
+- **Action** : Uniformiser dates
+
+**Priorités** :
+1. **P4-006-001** : Créer README manquants (4 sous-modules)
+2. **P4-006-002** : Uniformiser dates (~75 fichiers)
+3. **P4-006-003** : Vérifier doublons/redondances
+4. **P4-006-004** : Vérifier liens internes
 
 ---
 
@@ -313,15 +431,18 @@ git commit -m "📅 Fix: Uniformisation date docs/development/README.md"
 - [x] Corriger références obsolètes dans `INDEX_FINAL.md`
 - [x] Corriger références obsolètes dans `quality/README.md`
 - [x] Archiver `INDEX_AUDITS_CONSOLIDES.md`
-- [ ] Uniformiser dates restantes (~164 fichiers)
-- [ ] Analyser autres sous-modules (~75 fichiers)
+- [ ] Uniformiser dates restantes (~164 fichiers dans tous les sous-modules)
+- [ ] Créer README manquants (audit/, community/, dashboard/, reports/)
+- [ ] Analyser autres sous-modules (~75 fichiers) pour doublons/redondances
 
 ### Actions Optionnelles
 
 - [ ] Valider schémas Mermaid (38 fichiers)
-- [ ] Vérifier tous les liens internes
-- [ ] Créer README manquants (audit/)
+- [ ] Vérifier tous les liens internes dans tous les sous-modules
 - [ ] Vérifier dossiers vides (archives/, rapports/, semaines/)
+- [ ] Vérifier redondances potentielles :
+  - `community/GUIDE_COMMUNAUTE.md` vs `GUIDE_CONTRIBUTEURS_COMPLET.md`
+  - `guides/GUIDE_LLM_CONVERSATION.md` vs `GUIDE_CHAT_BBIA.md`
 
 ---
 
@@ -341,14 +462,17 @@ La documentation BBIA-SIM est **de qualité élevée** (score 8.5/10) avec :
 
 **Critiques** :
 1. ✅ Archiver `INDEX_AUDITS_CONSOLIDES.md` (P3-001) - FAIT
-2. Uniformiser dates restantes (P4-002) - ~164 fichiers
-3. Analyser autres sous-modules (P4-006) - ~75 fichiers
+2. Uniformiser dates restantes (P4-002) - ~164 fichiers dans tous les sous-modules
+3. Créer README manquants (P4-005) - 4 sous-modules (audit/, community/, dashboard/, reports/)
+4. Analyser autres sous-modules (P4-006) - ~75 fichiers pour doublons/redondances
 
 **Optionnelles** :
 1. Valider schémas Mermaid (P4-004) - 38 fichiers
-2. Créer README manquants (P4-005) - audit/
-3. Vérifier dossiers vides (P3-002) - archives/, rapports/, semaines/
-4. Vérifier liens internes supplémentaires
+2. Vérifier dossiers vides (P3-002) - archives/, rapports/, semaines/
+3. Vérifier liens internes supplémentaires dans tous les sous-modules
+4. Vérifier redondances potentielles :
+   - `community/GUIDE_COMMUNAUTE.md` vs `GUIDE_CONTRIBUTEURS_COMPLET.md`
+   - `guides/GUIDE_LLM_CONVERSATION.md` vs `GUIDE_CHAT_BBIA.md`
 
 ### Impact Attendu
 

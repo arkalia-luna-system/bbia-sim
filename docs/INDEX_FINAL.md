@@ -15,9 +15,9 @@
 | **Dashboard** | `python src/bbia_sim/dashboard_advanced.py` | Instant | [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) |
 | **Premier robot** | Voir guide | 5 min | [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) ⭐ |
 
-**Configuration :** Python 3.11+ requis • **Version** : v1.4.0 • **Date** : 26 Novembre 2025
+**Configuration :** Python 3.11+ requis • **Version** : v1.4.0 • **Date** : 8 Décembre 2025
 
-**Mise à jour 26 Novembre 2025** :
+**Mise à jour 8 Décembre 2025** :
 - 44 exemples disponibles
 - Comportements, endpoints et modules avec exemples dédiés
 
@@ -189,7 +189,7 @@ export BBIA_TELEMETRY_TIMEOUT=1.0
 
 ## 📋 Organisation de la Documentation
 
-La documentation a été réorganisée le **27 Novembre 2025** pour une meilleure navigation :
+La documentation a été réorganisée le **8 Décembre 2025** pour une meilleure navigation :
 
 - ✅ **Dossiers vides supprimés** : `rapports/`, `semaines/`
 - ✅ **Fichiers obsolètes archivés** : Voir `quality/audits/archives/`
@@ -203,4 +203,4 @@ La documentation a été réorganisée le **27 Novembre 2025** pour une meilleur
 **Retour à** : [README Documentation](README.md)  
 **Voir aussi** : [Index Thématique](reference/INDEX_THEMATIQUE.md)
 
-**Dernière mise à jour** : 27 Novembre 2025
+**Dernière mise à jour** : 8 Décembre 2025

@@ -951,7 +951,7 @@ asyncio.run(validate_integration())
 
 ---
 
-## 📱 Intégration Applications Mobiles (24 Novembre 2025)
+## 📱 Intégration Applications Mobiles (8 Décembre 2025)
 
 ### 🎯 Vue d'Ensemble
 

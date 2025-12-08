@@ -5,7 +5,7 @@
 **🤖 Conversations naturelles avec votre robot Reachy Mini**
 * IA avancée • Réponses contextuelles • Personnalités multiples*
 
-**Version** : 1.4.0 • **Date** : 26 Novembre 2025
+**Version** : 1.4.0 • **Date** : 8 Décembre 2025
 
 [📚 FAQ](../getting-started/troubleshooting.md) • [🧠 Guide NLP](../guides/GUIDE_NLP_SMOLVLM.md) • [📊 État actuel](../quality/audits/RESUME_ETAT_ACTUEL_BBIA.md)
 
@@ -222,7 +222,7 @@ bbia.chat("Je suis très content aujourd'hui")
         "user": "Message utilisateur",
         "bbia": "Réponse BBIA",
         "sentiment": {"sentiment": "POSITIVE", "score": 0.95},
-        "timestamp": "26 Novembre 2025"
+        "timestamp": "8 Décembre 2025"
     },
     ...
 ]

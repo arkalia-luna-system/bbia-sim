@@ -1,6 +1,6 @@
 # 🔧 Dépannage Unity - BBIA Reachy Mini Wireless
 
-**Date** : 21 Novembre 2025
+**Date** : 8 Décembre 2025
 
 > Référence état global
 >

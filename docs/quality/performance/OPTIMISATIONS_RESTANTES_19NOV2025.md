@@ -1,12 +1,12 @@
 # ⏳ Optimisations Performance - Reste à Faire
 
-**Date** : 21 Novembre 2025  
-**Dernière mise à jour** : 21 Novembre 2025  
-**Statut** : ✅ **100% TERMINÉ** (21 Novembre 2025) - Phase 1 + optimisations mineures complétées, code propre
+**Date** : 8 Décembre 2025  
+**Dernière mise à jour** : 8 Décembre 2025  
+**Statut** : ✅ **100% TERMINÉ** (8 Décembre 2025) - Phase 1 + optimisations mineures complétées, code propre
 
 ---
 
-## ✅ Ce qui a été fait (21 Novembre 2025)
+## ✅ Ce qui a été fait (8 Décembre 2025)
 
 ### Vision
 - ✅ Réduction résolution image YOLO (640x480 au lieu de 1280x720)
@@ -77,7 +77,7 @@
 
 ### ✅ RÉSUMÉ PHASE 1 : Toutes les optimisations prioritaires sont terminées !
 
-**Optimisations complétées le 21 Novembre 2025 :**
+**Optimisations complétées le 8 Décembre 2025 :**
 1. ✅ Réduction résolution YOLO (640x480)
 2. ✅ Fonction transcribe_audio() avec cache
 3. ✅ Tests benchmarks créés
@@ -92,7 +92,7 @@
 #### 4. Stream vidéo optimisé avancé ✅ **TERMINÉ**
 **État actuel** : ✅ Stream MJPEG optimisé avec compression adaptative et frame rate adaptatif
 
-**Améliorations appliquées (21 Novembre 2025) :**
+**Améliorations appliquées (8 Décembre 2025) :**
 - ✅ Compression adaptative (JPEG quality ajustée selon taille frames, 60-95)
 - ✅ Frame rate adaptatif (15-30 FPS, ajustement dynamique selon latence)
 - ✅ Buffer optimisé (deque maxlen=5 pour frames)
@@ -115,7 +115,7 @@
 #### 6. Optimiser WebSocket dashboard existant ✅ **TERMINÉ**
 **État actuel** : ✅ WebSocket dashboard optimisé avec batching et heartbeat
 
-**Améliorations appliquées (21 Novembre 2025) :**
+**Améliorations appliquées (8 Décembre 2025) :**
 - ✅ Batching messages (grouper updates toutes les 100ms)
 - ✅ Heartbeat optimisé (30s au lieu de 10s)
 - ✅ Métriques utilisent batching automatique
@@ -162,9 +162,9 @@
 
 ---
 
-**✅ Phase 1 terminée** : Toutes les optimisations prioritaires sont complétées (21 Novembre 2025).
+**✅ Phase 1 terminée** : Toutes les optimisations prioritaires sont complétées (8 Décembre 2025).
 
-**Vérification finale (21 Novembre 2025) :**
+**Vérification finale (8 Décembre 2025) :**
 - ✅ Tests passent (8/8 tests dashboard media)
 - ✅ Imports OK (BBIAChat, Behaviors)
 - ✅ Code quality OK (black, ruff, mypy)
@@ -177,7 +177,7 @@
 
 ## 📋 RÉSUMÉ FINAL
 
-**Phase 1 :** ✅ **100% TERMINÉE** (21 Novembre 2025)
+**Phase 1 :** ✅ **100% TERMINÉE** (8 Décembre 2025)
 - ✅ Cache poses LRU
 - ✅ Threading asynchrone vision
 - ✅ Threading asynchrone audio
@@ -187,7 +187,7 @@
 **Phase 2 :** ⏳ **OPTIONNEL** (streaming optimisé)
 **Phase 3 :** ⏳ **OPTIONNEL** (optimisations mémoire)
 
-**Statut global optimisations :** ✅ **88.75% TERMINÉ** (score réaliste basé sur audit complet - 21 Novembre 2025)
+**Statut global optimisations :** ✅ **88.75% TERMINÉ** (score réaliste basé sur audit complet - 8 Décembre 2025)
 
 **Détail** :
 - Optimisations Cache : 95% ✅
@@ -197,11 +197,11 @@
 
 **Voir** : `docs/quality/audits/AUDIT_COMPLET_REALISTE_26NOV2025.md` pour détails complets.
 
-**Optimisations streaming complétées (21 Novembre 2025) :**
+**Optimisations streaming complétées (8 Décembre 2025) :**
 - ✅ Stream vidéo avec compression adaptative et frame rate adaptatif
 - ✅ WebSocket dashboard avec batching et heartbeat optimisé (30s)
 
-**Optimisations mineures vérifiées (21 Novembre 2025) :**
+**Optimisations mineures vérifiées (8 Décembre 2025) :**
 - ✅ Cache regex compilées (`bbia_huggingface.py`)
 - ✅ Pool objets réutilisables (Whisper temp files, vision simulated objects)
 - ✅ Lazy imports (TYPE_CHECKING utilisé partout)
