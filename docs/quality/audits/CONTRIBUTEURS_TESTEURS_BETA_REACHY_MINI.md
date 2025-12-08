@@ -267,7 +267,7 @@
 
 ---
 
-#### 9. @tfrere
+#### 10. @tfrere
 **Rôle** : Contributor (Wireless)  
 **Contributions** : 9 commits (217 ++, 123 --)  
 **Travail** :
@@ -291,7 +291,7 @@
 
 ---
 
-#### 10. @haixuanTao
+#### 11. @haixuanTao
 **Rôle** : Contributor (IA)  
 **Contributions** : 6 commits (32 ++, 19 --)  
 **Travail** :
@@ -414,7 +414,57 @@
 
 ---
 
-#### 15. @iizukak (Nouveau - Novembre 2025)
+#### 13. @cdussieux
+**Rôle** : Contributor (Hardware)  
+**Contributions** : 3 commits (6 ++, 5 --)  
+**Pic d'activité** : 1 commit/semaine max  
+**Travail** :
+- Support hardware
+- Communication USB
+- Détection périphériques
+- Troubleshooting hardware
+
+**Travail documenté** :
+- Support USB (version Lite)
+- Détection ports série
+- Communication hardware
+- Résolution problèmes USB
+
+**GitHub** : [@cdussieux](https://github.com/cdussieux)
+
+**Comparaison BBIA** :
+- ✅ BBIA : Support USB via backend
+- ✅ Détection automatique périphériques
+- ✅ Gestion gracieuse hardware absent
+
+---
+
+#### 14. @Matthieu-Lapeyre
+**Rôle** : Contributor (Performance)  
+**Contributions** : 3 commits (174 ++, 32 --)  
+**Pic d'activité** : 2 commits/semaine max  
+**Travail** :
+- Optimisations performance
+- Réduction latence
+- Optimisation mémoire
+- Performance système
+
+**Travail documenté** :
+- Optimisations performance
+- Réduction latence
+- Optimisation mémoire
+- Performance système
+
+**GitHub** : [@Matthieu-Lapeyre](https://github.com/Matthieu-Lapeyre)
+
+**Comparaison BBIA** :
+- ✅ BBIA : Optimisations appliquées
+- ✅ Latence minimale
+- ✅ Performance optimale
+
+---
+
+#### 15. @iizukak
 **Rôle** : Nouveau Contributor  
 **Contributions** : 2 commits (7 ++, 1 --)  
 **Période** : Novembre 2025  
