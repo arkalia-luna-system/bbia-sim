@@ -1,6 +1,6 @@
 # Audit IA : Modules Pré-entraînés dans BBIA
 
-**Date** : 26 Novembre 2025  
+**Date** : 8 Décembre 2025  
 **Dernière mise à jour :** 8 Décembre 2025  
 **Objectif** : Vérifier quels modèles IA pré-entraînés sont utilisés, où ils sont utilisés, et identifier ce qui manque.
 
@@ -17,6 +17,46 @@
 7. [Résumé](#-résumé---ce-qui-existe-vs-manque)
 8. [Priorités Recommandées](#-priorités-recommandées-opensource--gratuit)
 9. [Navigation](#-navigation)
+
+---
+
+## 🏗️ Architecture Modules IA
+
+```mermaid
+graph TB
+    subgraph "Modules IA BBIA"
+        Vision[Vision Module<br/>YOLOv8n, MediaPipe, CLIP, BLIP]
+        LLM[LLM Module<br/>Mistral 7B, Phi-2, TinyLlama]
+        Voice[Voice Module<br/>Whisper STT, Coqui TTS]
+        Emotion[Emotion Module<br/>DeepFace, RoBERTa]
+    end
+    
+    subgraph "Intégration"
+        BBIAVision[BBIAVision]
+        BBIAHuggingFace[BBIAHuggingFace]
+        BBIAVoice[BBIAVoice]
+    end
+    
+    subgraph "Backends"
+        YOLO[YOLODetector]
+        MediaPipe[MediaPipe Face/Pose]
+        HuggingFace[Hugging Face Models]
+        Whisper[WhisperSTT]
+        Coqui[CoquiTTS]
+    end
+    
+    Vision --> BBIAVision
+    LLM --> BBIAHuggingFace
+    Voice --> BBIAVoice
+    Emotion --> BBIAVision
+    Emotion --> BBIAHuggingFace
+    
+    BBIAVision --> YOLO
+    BBIAVision --> MediaPipe
+    BBIAHuggingFace --> HuggingFace
+    BBIAVoice --> Whisper
+    BBIAVoice --> Coqui
+```
 
 ---
 
@@ -164,7 +204,7 @@ result = vision.scan_environment()
 - ✅ **Phi-2** (2.7B) - Microsoft, ~5GB RAM - **AJOUTÉ** (ligne 164)
 - ✅ **TinyLlama** (1.1B) - Ultra-léger, ~2GB RAM - **AJOUTÉ** (ligne 165-166)
 
-**Vérification code (26 Novembre 2025)** :
+**Vérification code (8 Décembre 2025)** :
 
 - ✅ `bbia_huggingface.py` (lignes 164-166) : Configs Phi-2 et TinyLlama ajoutées
 - ✅ `enable_llm_chat("phi2")` et `enable_llm_chat("tinyllama")` fonctionnent
