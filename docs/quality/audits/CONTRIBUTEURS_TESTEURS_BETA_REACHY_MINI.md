@@ -348,10 +348,10 @@ Ce document analyse le **travail technique concret** de chaque contributeur, leu
 
 #### 🧪 Tests & Qualité
 
-13. **Tests de performance avec baselines** (inspiration @RemiFabre)
-    - **État actuel** : Tests de performance basiques (pas de validation)
-    - **À faire** : Baselines p50/p95/p99 avec validation automatique
-    - **Technique** : Exporter métriques JSONL, valider fourchette en CI
+13. ✅ **Tests de performance avec baselines** (inspiration @RemiFabre) - **FAIT** (8 Déc 2025)
+    - **État actuel** : ✅ Baselines p50/p95/p99 avec validation automatique
+    - **Réalisé** : Export JSONL, validation automatique, détection régression
+    - **Technique** : Export métriques JSONL, validation fourchette en CI
     - **Bénéfice** : Détection régression performance automatique
     - **Priorité** : 🟡 Moyenne
     - **Temps estimé** : 4-6h
