@@ -108,7 +108,7 @@ Toutes les fonctionnalités critiques sont implémentées et testées.
 **Fichiers** :
 - ✅ `src/bbia_sim/__main__.py` (flag `--fast` ajouté)
 - ✅ `src/bbia_sim/robot_factory.py` (support `fast=True`)
-- ⏳ Tests à créer
+- ✅ `tests/test_robot_factory.py` (24 tests, coverage 95.95%)
 
 ---
 
