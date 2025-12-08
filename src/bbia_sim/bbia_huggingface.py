@@ -1339,7 +1339,8 @@ class BBIAHuggingFace:
                         0.5 if os.environ.get("CI", "false").lower() == "true" else 2.0
                     )
                     BBIAHuggingFace._shared_unload_thread.join(timeout=timeout)
-                    if BBIAHuggingFace._shared_unload_thread.is_alive():
+                    thread = BBIAHuggingFace._shared_unload_thread
+                    if thread.is_alive():
                         # Thread daemon se terminera automatiquement à l'arrêt du processus
                         logger.debug(
                             "Thread partagé déchargement auto Hugging Face en cours d'arrêt (daemon)",
