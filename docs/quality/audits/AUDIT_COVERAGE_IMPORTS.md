@@ -78,6 +78,20 @@
 - **Solution :** Créé `tests/test_sanity_router.py` avec 7 tests complets
 - **Résultat :** Coverage : **89.19%** (33 lignes sur 37 couvertes)
 
+**`robot_factory.py`** ✅ **95.95%** (corrigé - 8 Décembre 2025)
+- **Avant :** 55.41% coverage
+- **Problème :** Tests dispersés dans plusieurs fichiers, capacités non testées
+- **Solution :** Créé `tests/test_robot_factory.py` avec 24 tests complets
+- **Ajouté :** Tests pour tous les backends (mujoco, reachy, reachy_mini), mode fast, paramètres personnalisés, gestion erreurs, create_robot_registry, create_multi_backend
+- **Résultat :** Coverage amélioré de 55.41% → **95.95%** (1 ligne non couverte : TYPE_CHECKING)
+
+**`bbia_emotional_sync.py`** ✅ **87.85%** (corrigé - 8 Décembre 2025)
+- **Avant :** 15.51% → 77.01% coverage
+- **Problème :** Beaucoup de cas d'erreur et branches conditionnelles non testées
+- **Solution :** Ajouté 16 nouveaux tests dans `tests/test_bbia_emotional_sync.py`
+- **Ajouté :** Tests pour ImportError, timeout threads, branches hasattr, gestion exceptions, cas sans robot_api, branches elif
+- **Résultat :** Coverage amélioré de 15.51% → **87.85%** (39 tests au total)
+
 ---
 
 ### 3. **Modules avec coverage faible** ⚠️
@@ -106,8 +120,10 @@
 | Module | Coverage | Status |
 |--------|----------|--------|
 | `model_optimizer.py` | **100%** | ✅ Excellent |
+| `robot_factory.py` | **95.95%** | ✅ Excellent |
 | `dashboard.py` | **90.48%** | ✅ Excellent |
 | `daemon/app/routers/sanity.py` | **89.19%** | ✅ Excellent |
+| `bbia_emotional_sync.py` | **87.85%** | ✅ Excellent |
 | `daemon/app/__main__.py` | **87.50%** | ✅ Excellent |
 | `face_recognition.py` | **82.01%** | ✅ Excellent |
 | `bbia_awake.py` | **~80%+** | ✅ Excellent |
@@ -131,16 +147,20 @@
 
 ### Modules corrigés
 - ✅ `model_optimizer.py` : **100%** coverage (9 tests créés)
+- ✅ `robot_factory.py` : **95.95%** coverage (24 tests créés)
 - ✅ `daemon/app/routers/sanity.py` : **89.19%** coverage (8 tests créés)
+- ✅ `bbia_emotional_sync.py` : **87.85%** coverage (39 tests, 16 nouveaux ajoutés)
 - ✅ `daemon/app/__main__.py` : **87.50%** coverage (amélioré via imports directs)
-- ✅ `__main__.py` : **~70%+** coverage (13 tests, amélioré)
-- ✅ `bbia_awake.py` : **~80%+** coverage (4 tests, amélioré)
-- ✅ `bbia_integration.py` : **57.83%** coverage (amélioré via imports directs)
-- ✅ `face_recognition.py` : **82.01%** coverage (amélioré via imports directs)
 - ✅ `dashboard.py` : **90.48%** coverage (amélioré via imports directs)
+- ✅ `face_recognition.py` : **82.01%** coverage (amélioré via imports directs)
+- ✅ `bbia_awake.py` : **~80%+** coverage (4 tests, amélioré)
+- ✅ `__main__.py` : **~70%+** coverage (13 tests, amélioré)
+- ✅ `bbia_integration.py` : **57.83%** coverage (amélioré via imports directs)
 
 ### Tests créés/améliorés
 - ✅ `tests/test_model_optimizer.py` - 9 tests, coverage 100%
+- ✅ `tests/test_robot_factory.py` - 24 tests, coverage 95.95%
+- ✅ `tests/test_bbia_emotional_sync.py` - 39 tests (16 nouveaux), coverage 87.85%
 - ✅ `tests/test_sanity_router.py` - 8 tests, coverage 89.19%
 - ✅ `tests/test_main.py` - 13 tests (amélioré), coverage ~70%+
 - ✅ `tests/test_bbia_awake.py` - 4 tests (amélioré), coverage ~80%+
@@ -205,9 +225,9 @@ Certains modules affichent encore des warnings "Module never imported" même apr
 - ✅ Créer tests manquants pour modules sans coverage
 
 **Statistiques finales :**
-- **Fichiers modifiés** : 13
-- **Fichiers créés** : 2
-- **Tests ajoutés** : 10
+- **Fichiers modifiés** : 15
+- **Fichiers créés** : 3
+- **Tests ajoutés** : 50+ (10 initiaux + 24 robot_factory + 16 bbia_emotional_sync)
 - **Imports corrigés** : 130+
 - **Fichiers problématiques restants** : **0** ✅
 

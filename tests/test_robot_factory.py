@@ -4,9 +4,8 @@
 from __future__ import annotations
 
 import os
-from unittest.mock import Mock, patch
-
-import pytest
+from typing import Any
+from unittest.mock import patch
 
 from bbia_sim.backends.mujoco_backend import MuJoCoBackend
 from bbia_sim.backends.reachy_backend import ReachyBackend
@@ -229,6 +228,7 @@ class TestRobotFactory:
 
     def test_create_multi_backend_partial_failure(self) -> None:
         """Test création multi-backends avec échec partiel."""
+
         # Simuler un backend qui lève une exception
         def mock_create_backend(backend_type: str, **kwargs: Any) -> Any:
             if backend_type == "mujoco":
@@ -259,4 +259,3 @@ class TestRobotFactory:
             assert isinstance(multi_backends, dict)
             assert "mujoco" in multi_backends
             assert multi_backends["mujoco"] is None
-
