@@ -1,6 +1,6 @@
 # 🔍 Audit Vision BBIA - Support Webcam USB
 
-**Date** : Oct / Nov. 2025  
+**Date** : 8 Décembre 2025  
 **Objectif** : Évaluer l'état actuel du système de vision et identifier ce qui manque pour utiliser une webcam USB Logitech MX Brio.
 
 ---
@@ -231,4 +231,4 @@ python scripts/test_vision_webcam.py
 
 ---
 
-**Dernière mise à jour** : 26 Novembre 2025
+**Dernière mise à jour** : 8 Décembre 2025

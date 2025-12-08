@@ -144,4 +144,4 @@ def _get_cached_voice_id():
 ## 🎯 Navigation
 
 **Retour à** : [README Documentation](../README.md)  
-**Voir aussi** : [Index Audits](../quality/audits/INDEX_AUDITS_CONSOLIDES.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
+**Voir aussi** : [Index Audits](../INDEX_AUDITS.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)

@@ -1,6 +1,6 @@
 # 📦 Profils d'Environnement (venv) et Caméra – Guide Rapide
 
-**Date** : Oct / Nov. 2025
+**Date** : 8 Décembre 2025
 
 ## Objectif
 
@@ -241,4 +241,4 @@ pip install mujoco
 
 ---
 
-**Dernière mise à jour** : 26 Novembre 2025
+**Dernière mise à jour** : 8 Décembre 2025

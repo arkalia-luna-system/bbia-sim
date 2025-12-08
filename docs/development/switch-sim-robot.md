@@ -1,6 +1,6 @@
 # 🔄 Switch Sim → Robot
 
-**Date** : Oct / Nov. 2025  
+**Date** : 8 Décembre 2025  
 **Version** : 1.0
 
 > **Compatibilité Python et CI** :
@@ -329,4 +329,4 @@ python examples/demo_emotion_ok.py --emotion happy
 
 ---
 
-**Dernière mise à jour** : Oct / Nov. 2025
+**Dernière mise à jour** : 8 Décembre 2025

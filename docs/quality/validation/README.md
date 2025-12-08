@@ -18,7 +18,7 @@
 ## 🔗 Liens Utiles
 
 - **[Conformité SDK](../compliance/CONFORMITE_REACHY_MINI_COMPLETE.md)** — Tests de conformité
-- **[Audits](../audits/INDEX_AUDITS_CONSOLIDES.md)** — Tous les audits
+- **[Audits](../INDEX_AUDITS.md)** — Tous les audits
 - **[Performance](../../performance/)** — Optimisations et analyses
 
 ---
