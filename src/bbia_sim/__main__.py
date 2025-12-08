@@ -51,6 +51,11 @@ Exemples d'utilisation:
         help="Scène de simulation à charger (reachy_mini.xml, minimal.xml)",
     )
     parser.add_argument(
+        "--fast",
+        action="store_true",
+        help="Mode rapide : utilise modèle simplifié (7 joints) pour tests rapides",
+    )
+    parser.add_argument(
         "--headless",
         action="store_true",
         help="Mode headless (pas de fenêtre graphique)",
@@ -150,12 +155,12 @@ def run_simulation(args: argparse.Namespace) -> None:
             logger.info("✅ Viewer MuJoCo disponible")
 
     # Détermination du modèle à utiliser
-    # NOTE: Unification des modèles XML
-    # Quand l'utilisateur demande "reachy_mini.xml", on charge automatiquement
-    # "reachy_mini_REAL_OFFICIAL.xml" qui est le modèle complet (16 joints).
-    # Le fichier "reachy_mini.xml" (7 joints simplifié) existe mais n'est pas utilisé
-    # pour garantir la cohérence avec le robot réel.
-    if args.scene == "reachy_mini.xml":
+    # Mode --fast : utilise modèle simplifié (7 joints) pour tests rapides
+    if args.fast:
+        model_path = Path(__file__).parent / "sim" / "models" / "reachy_mini.xml"
+        logger.info("Mode rapide activé : modèle simplifié (7 joints)")
+    elif args.scene == "reachy_mini.xml":
+        # Par défaut : modèle complet (16 joints) pour cohérence avec robot réel
         model_path = (
             Path(__file__).parent / "sim" / "models" / "reachy_mini_REAL_OFFICIAL.xml"
         )

@@ -356,6 +356,246 @@ class TestBBIAEmotionalSync:
         assert sync.is_speaking is False
         assert sync.current_state == ConversationState.IDLE
 
+    def test_sync_speak_with_emotion_import_error(self) -> None:
+        """Test gestion ImportError quand dire_texte n'est pas disponible."""
+        robot_api = Mock()
+        robot_api.set_emotion = Mock()
+        robot_api.goto_target = Mock()
+
+        sync = BBIAEmotionalSync(robot_api=robot_api)
+
+        with (
+            patch("bbia_sim.bbia_emotional_sync.threading.Thread") as mock_thread,
+            patch(
+                "bbia_sim.bbia_voice.dire_texte",
+                side_effect=ImportError("Module non disponible"),
+            ),
+        ):
+            mock_thread_instance = Mock()
+            mock_thread.return_value = mock_thread_instance
+
+            result = sync.sync_speak_with_emotion(
+                "Test", emotion="happy", intensity=0.7
+            )
+
+        assert result is False
+
+    def test_sync_speak_with_emotion_thread_timeout(self) -> None:
+        """Test timeout lors du join du thread."""
+        robot_api = Mock()
+        robot_api.set_emotion = Mock()
+        robot_api.goto_target = Mock()
+
+        sync = BBIAEmotionalSync(robot_api=robot_api)
+
+        speak_function = Mock()
+
+        mock_thread = Mock()
+        mock_thread.join = Mock()  # join ne fait rien (timeout)
+
+        with (
+            patch("bbia_sim.bbia_emotional_sync.time.sleep"),
+            patch("bbia_sim.bbia_emotional_sync.threading.Thread") as mock_thread_class,
+        ):
+            mock_thread_class.return_value = mock_thread
+
+            result = sync.sync_speak_with_emotion(
+                "Test",
+                emotion="happy",
+                intensity=0.7,
+                speak_function=speak_function,
+            )
+
+        assert result is True
+        mock_thread.join.assert_called_once_with(timeout=1.0)
+
+    def test_sync_emotion_during_speech_no_robot_api(self) -> None:
+        """Test synchronisation émotion sans robot_api."""
+        sync = BBIAEmotionalSync(robot_api=None)
+
+        # Ne doit pas lever d'exception
+        sync._sync_emotion_during_speech("happy", 0.7, 1.0)
+
+    def test_sync_emotion_during_speech_no_set_emotion(self) -> None:
+        """Test synchronisation émotion sans méthode set_emotion."""
+        # Créer un objet qui n'a pas set_emotion
+        robot_api = type("RobotAPI", (), {"goto_target": Mock()})()
+
+        sync = BBIAEmotionalSync(robot_api=robot_api)
+        sync.stop_sync = Mock()
+        sync.stop_sync.is_set = Mock(return_value=True)
+
+        with (
+            patch("bbia_sim.bbia_emotional_sync.time.time") as mock_time,
+            patch("bbia_sim.bbia_emotional_sync.time.sleep"),
+        ):
+            mock_time.return_value = 0.0
+
+            sync._sync_emotion_during_speech("happy", 0.7, 0.5)
+
+        # set_emotion ne doit pas être appelé car hasattr retourne False
+        assert not hasattr(robot_api, "set_emotion")
+
+    def test_sync_emotion_during_speech_antenna_movement(self) -> None:
+        """Test synchronisation avec mouvement d'antenne (branche else)."""
+        robot_api = Mock()
+        robot_api.set_emotion = Mock()
+        robot_api.goto_target = Mock()
+
+        sync = BBIAEmotionalSync(robot_api=robot_api)
+        sync.stop_sync = Mock()
+        sync.stop_sync.is_set = Mock(side_effect=[False, True])  # Une itération
+
+        with (
+            patch("bbia_sim.bbia_emotional_sync.time.time") as mock_time,
+            patch("bbia_sim.bbia_emotional_sync.time.sleep"),
+        ):
+            mock_time.return_value = 0.0
+
+            # movement_count % 2 == 1 pour déclencher branche else (antenne)
+            sync._sync_emotion_during_speech("happy", 0.7, 0.5)
+
+        robot_api.goto_target.assert_called()
+
+    def test_sync_emotion_during_speech_exception_handling(self) -> None:
+        """Test gestion exceptions dans synchronisation émotion."""
+        robot_api = Mock()
+        robot_api.set_emotion = Mock(side_effect=RuntimeError("Erreur"))
+        robot_api.goto_target = Mock()
+
+        sync = BBIAEmotionalSync(robot_api=robot_api)
+        sync.stop_sync = Mock()
+        sync.stop_sync.is_set = Mock(return_value=True)
+
+        with (
+            patch("bbia_sim.bbia_emotional_sync.time.time") as mock_time,
+            patch("bbia_sim.bbia_emotional_sync.time.sleep"),
+        ):
+            mock_time.return_value = 0.0
+
+            # Ne doit pas lever d'exception
+            sync._sync_emotion_during_speech("happy", 0.7, 0.5)
+
+    def test_micro_head_movement_no_goto_target(self) -> None:
+        """Test micro-mouvement de tête sans goto_target."""
+        robot_api = Mock()
+        # Ne pas définir goto_target
+        del robot_api.goto_target
+
+        sync = BBIAEmotionalSync(robot_api=robot_api)
+
+        # Ne doit pas lever d'exception
+        sync._micro_head_movement(0.05, 0.2)
+
+    def test_micro_antenna_movement_exception(self) -> None:
+        """Test gestion exception dans micro-mouvement antenne."""
+        robot_api = Mock()
+        robot_api.goto_target = Mock(side_effect=RuntimeError("Erreur"))
+
+        sync = BBIAEmotionalSync(robot_api=robot_api)
+
+        # Ne doit pas lever d'exception
+        sync._micro_antenna_movement(0.03, 0.2)
+
+    def test_start_listening_movements_no_robot_api(self) -> None:
+        """Test démarrage micro-mouvements sans robot_api."""
+        sync = BBIAEmotionalSync(robot_api=None)
+
+        # Ne doit pas lever d'exception
+        sync.start_listening_movements()
+
+        # État ne doit pas changer
+        assert sync.current_state == ConversationState.IDLE
+
+    def test_stop_listening_movements_thread_timeout(self) -> None:
+        """Test timeout lors du join du thread dans stop_listening_movements."""
+        robot_api = Mock()
+        sync = BBIAEmotionalSync(robot_api=robot_api)
+
+        mock_thread = Mock()
+        mock_thread.join = Mock()  # join ne fait rien (timeout)
+        sync.sync_thread = mock_thread
+        sync.current_state = ConversationState.LISTENING
+
+        sync.stop_listening_movements()
+
+        assert sync.current_state == ConversationState.IDLE
+        assert sync.stop_sync.is_set()
+        mock_thread.join.assert_called_once_with(timeout=1.0)
+
+    def test_listening_micro_movements_no_robot_api(self) -> None:
+        """Test micro-mouvements écoute sans robot_api."""
+        sync = BBIAEmotionalSync(robot_api=None)
+        sync.stop_sync = Mock()
+        sync.stop_sync.is_set = Mock(return_value=True)
+
+        # Ne doit pas lever d'exception
+        sync._listening_micro_movements()
+
+    def test_listening_micro_movements_antenna_branch(self) -> None:
+        """Test micro-mouvements écoute avec branche antenne (elif)."""
+        robot_api = Mock()
+        robot_api.goto_target = Mock()
+
+        sync = BBIAEmotionalSync(robot_api=robot_api)
+        sync.stop_sync = Mock()
+        # movement_count % 4 == 2 pour déclencher branche elif (antenne)
+        sync.stop_sync.is_set = Mock(side_effect=[False, False, True])
+
+        with patch("bbia_sim.bbia_emotional_sync.time.sleep"):
+            sync._listening_micro_movements()
+
+        robot_api.goto_target.assert_called()
+
+    def test_listening_micro_movements_exception_handling(self) -> None:
+        """Test gestion exceptions dans micro-mouvements écoute."""
+        robot_api = Mock()
+        robot_api.goto_target = Mock(side_effect=RuntimeError("Erreur"))
+
+        sync = BBIAEmotionalSync(robot_api=robot_api)
+        sync.stop_sync = Mock()
+        sync.stop_sync.is_set = Mock(side_effect=[False, True])
+
+        with patch("bbia_sim.bbia_emotional_sync.time.sleep"):
+            # Ne doit pas lever d'exception, doit break
+            sync._listening_micro_movements()
+
+    def test_transition_to_thinking_no_robot_api(self) -> None:
+        """Test transition vers réflexion sans robot_api."""
+        sync = BBIAEmotionalSync(robot_api=None)
+
+        # Ne doit pas lever d'exception
+        sync.transition_to_thinking()
+
+        # État ne doit pas changer
+        assert sync.current_state == ConversationState.IDLE
+
+    def test_transition_to_reacting_no_set_emotion(self) -> None:
+        """Test transition vers réaction sans méthode set_emotion."""
+        robot_api = Mock()
+        # Ne pas définir set_emotion pour tester hasattr False
+        robot_api.goto_target = Mock()
+
+        sync = BBIAEmotionalSync(robot_api=robot_api)
+
+        sync.transition_to_reacting("happy", intensity=0.8)
+
+        assert sync.current_state == ConversationState.REACTING
+        robot_api.goto_target.assert_called()
+
+    def test_transition_to_reacting_exception_handling(self) -> None:
+        """Test gestion exceptions dans transition vers réaction."""
+        robot_api = Mock()
+        robot_api.set_emotion = Mock(side_effect=RuntimeError("Erreur"))
+        robot_api.goto_target = Mock()
+
+        sync = BBIAEmotionalSync(robot_api=robot_api)
+
+        # Ne doit pas lever d'exception
+        sync.transition_to_reacting("happy", intensity=0.8)
+
+        assert sync.current_state == ConversationState.REACTING
+
 
 class TestConversationState:
     """Tests pour ConversationState enum."""
@@ -367,3 +607,59 @@ class TestConversationState:
         assert ConversationState.THINKING.value == "thinking"
         assert ConversationState.SPEAKING.value == "speaking"
         assert ConversationState.REACTING.value == "reacting"
+
+
+class TestTimingAdaptatif:
+    """Tests pour timing adaptatif selon rythme parole."""
+
+    def test_analyze_speech_rhythm(self) -> None:
+        """Test analyse rythme parole."""
+        sync = BBIAEmotionalSync()
+
+        # Texte avec beaucoup de pauses
+        text_with_pauses = "Bonjour. Comment allez-vous ? Très bien, merci !"
+        rhythm = sync.analyze_speech_rhythm(text_with_pauses)
+
+        assert "word_count" in rhythm
+        assert "pause_ratio" in rhythm
+        assert "short_word_ratio" in rhythm
+        assert "adjusted_wpm" in rhythm
+        assert rhythm["pause_ratio"] > 0.1  # Beaucoup de pauses
+
+    def test_analyze_speech_rhythm_short_words(self) -> None:
+        """Test analyse avec beaucoup de mots courts."""
+        sync = BBIAEmotionalSync()
+
+        # Texte avec beaucoup de mots courts
+        text_short = "Le chat est là. Il est bien. On va voir."
+        rhythm = sync.analyze_speech_rhythm(text_short)
+
+        assert rhythm["short_word_ratio"] > 0.3  # Beaucoup de mots courts
+
+    def test_estimate_speech_duration_adaptive(self) -> None:
+        """Test estimation durée avec timing adaptatif."""
+        sync = BBIAEmotionalSync()
+
+        # Texte avec pauses (devrait être plus lent)
+        text_pauses = "Bonjour. Comment allez-vous ? Très bien !"
+        duration_adaptive = sync.estimate_speech_duration(text_pauses)
+
+        # Texte sans pauses (devrait être plus rapide)
+        text_no_pauses = "Bonjour comment allez vous très bien"
+        duration_no_pauses = sync.estimate_speech_duration(text_no_pauses)
+
+        # Durée adaptative devrait être différente
+        assert duration_adaptive > 0.5
+        assert duration_no_pauses > 0.5
+
+    def test_speech_history(self) -> None:
+        """Test historique des durées pour ajustement."""
+        sync = BBIAEmotionalSync()
+
+        # Faire plusieurs estimations
+        for _ in range(5):
+            sync.estimate_speech_duration("Test")
+
+        # Vérifier que l'historique est rempli
+        assert len(sync.speech_history) <= sync.max_history
+        assert len(sync.speech_history) > 0
