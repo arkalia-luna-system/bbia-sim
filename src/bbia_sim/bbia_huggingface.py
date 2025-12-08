@@ -3454,11 +3454,7 @@ def _normalize_response_sets() -> None:
             out.append(t)
         return out
 
-    global (
-        _expert_quality_padding,
-        _EXPERT_TEST_PADDING_RESPONSES,
-        _EXPERT_TEST_CANONICAL_RESPONSES,
-    )
+    global _expert_quality_padding, _EXPERT_TEST_PADDING_RESPONSES, _EXPERT_TEST_CANONICAL_RESPONSES
     _expert_quality_padding = _unique(_expert_quality_padding)
     _EXPERT_TEST_PADDING_RESPONSES = _unique(_EXPERT_TEST_PADDING_RESPONSES)
     # noqa: E501 - Chaînes longues intentionnelles pour tests
