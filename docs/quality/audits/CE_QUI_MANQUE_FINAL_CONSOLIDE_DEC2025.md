@@ -35,83 +35,78 @@ Toutes les fonctionnalités critiques sont implémentées et testées.
 
 #### 1. Timing adaptatif selon rythme parole
 
-**Statut** : ⏳ À faire  
+**Statut** : ✅ **FAIT** (8 Décembre 2025)  
 **Durée** : 4-6h  
 **Inspiration** : LAURA-agent (`reachy-mini-plugin`)
 
 **État actuel** :
-- Timing fixe (150 mots/min)
-- Synchronisation basique
+- ✅ Timing adaptatif implémenté
+- ✅ Analyse rythme réel (pauses, mots courts)
+- ✅ Ajustement dynamique avec historique
 
-**À faire** :
-- Analyser rythme réel parole (détection pauses, accélérations)
-- Ajuster timing mouvements dynamiquement
-- Synchronisation plus naturelle
+**Fonctionnalités** :
+- `analyze_speech_rhythm()` : Analyse rythme parole
+- `estimate_speech_duration()` : Estimation adaptative
+- Historique des durées pour affinage progressif
 
 **Fichiers** :
-- `src/bbia_sim/bbia_emotional_sync.py` (ajouter analyse rythme)
-- `src/bbia_sim/behaviors/conversation.py` (intégrer timing adaptatif)
+- ✅ `src/bbia_sim/bbia_emotional_sync.py` (analyse rythme ajoutée)
+- ✅ `tests/test_bbia_emotional_sync.py::TestTimingAdaptatif` (4 tests)
 
 ---
 
 #### 2. Découverte automatique robots
 
-**Statut** : ⏳ À faire  
+**Statut** : ⏳ **INFRASTRUCTURE CRÉÉE** (8 Décembre 2025)  
 **Durée** : 4-6h  
 **Inspiration** : @pierre-rouanet
 
 **État actuel** :
-- Configuration manuelle (`BBIA_HOSTNAME`, `BBIA_PORT`)
-
-**À faire** :
-- Détection automatique robots sur réseau local via Zenoh
-- Utiliser `zenoh.discover()` pour lister robots
-- API `/robots/list` pour robots détectés
+- ✅ Infrastructure créée (`RobotRegistry`)
+- ✅ `discover_robots()` : Découverte via Zenoh (infrastructure)
+- ⏳ Découverte complète à finaliser
+- ⏳ API `/robots/list` à créer
 
 **Fichiers** :
-- `src/bbia_sim/daemon/bridge.py` (améliorer découverte Zenoh)
-- `src/bbia_sim/robot_registry.py` (créer si nécessaire)
-- `src/bbia_sim/daemon/app/routers/robots.py` (créer endpoint list)
+- ✅ `src/bbia_sim/robot_registry.py` (créé)
+- ⏳ `src/bbia_sim/daemon/app/routers/robots.py` (endpoint à créer)
+- ⏳ Tests à créer
 
 ---
 
 #### 3. Support simultané sim/robot réel
 
-**Statut** : ⏳ À faire  
+**Statut** : ⏳ **INFRASTRUCTURE CRÉÉE** (8 Décembre 2025)  
 **Durée** : 6-8h  
 **Inspiration** : @pierre-rouanet
 
 **État actuel** :
-- BBIA choisit un backend (sim OU robot)
-
-**À faire** :
-- Support simultané via même daemon (sim + robot réel)
-- Multi-backends avec routing selon commande
-- API pour choisir backend par commande
+- ✅ Infrastructure créée (`create_multi_backend()`)
+- ✅ Support création plusieurs backends simultanément
+- ⏳ Routing API à finaliser
 
 **Fichiers** :
-- `src/bbia_sim/daemon/app/main.py` (gestion multi-backends)
-- `src/bbia_sim/robot_factory.py` (support multi-instances)
+- ✅ `src/bbia_sim/robot_factory.py` (`create_multi_backend()` ajouté)
+- ⏳ `src/bbia_sim/daemon/app/main.py` (routing API à finaliser)
+- ⏳ Tests à créer
 
 ---
 
 #### 4. Modèle simplifié pour tests rapides
 
-**Statut** : ⏳ À faire  
+**Statut** : ✅ **FAIT** (8 Décembre 2025)  
 **Durée** : 2-3h  
 **Inspiration** : @apirrone
 
 **État actuel** :
-- Toujours modèle complet (16 joints)
-
-**À faire** :
-- Support modèle 7 joints pour tests rapides
-- Flag `--fast` pour charger `reachy_mini.xml` (7 joints)
-- Auto-détection : modèle simplifié si tests unitaires
+- ✅ Flag `--fast` implémenté
+- ✅ Support modèle 7 joints pour tests rapides
+- ✅ `RobotFactory.create_backend(fast=True)` supporté
 
 **Fichiers** :
-- `src/bbia_sim/backends/mujoco_backend.py` (support modèle simplifié)
-- `src/bbia_sim/__main__.py` (flag `--fast`)
+- ✅ `src/bbia_sim/__main__.py` (flag `--fast` ajouté)
+- ✅ `src/bbia_sim/robot_factory.py` (support `fast=True`)
+- ⏳ Tests à créer
 
 ---
 
@@ -158,20 +153,18 @@ Toutes les fonctionnalités critiques sont implémentées et testées.
 
 #### 7. Micro-mouvements plus subtils pendant écoute
 
-**Statut** : ⏳ À faire  
+**Statut** : ✅ **FAIT** (8 Décembre 2025)  
 **Durée** : 3-4h  
 **Inspiration** : LAURA-agent
 
 **État actuel** :
-- Micro-mouvements basiques
-
-**À faire** :
-- Animations plus subtiles (micro-expressions, respiration)
-- Micro-mouvements très petits (0.01-0.02 rad)
-- Robot plus vivant
+- ✅ Micro-mouvements réduits (0.01-0.02 rad)
+- ✅ Effet "respiration" pendant écoute
+- ✅ Intervalles variables pour plus de naturel
 
 **Fichiers** :
-- `src/bbia_sim/bbia_emotional_sync.py` (améliorer micro-mouvements)
+- ✅ `src/bbia_sim/bbia_emotional_sync.py` (micro-mouvements améliorés)
+- ✅ Tests existants mis à jour
 
 ---
 
@@ -328,13 +321,13 @@ except Exception as e:
 | Priorité | Tâche | Durée | Statut |
 |----------|-------|-------|--------|
 | 🔴 HAUTE | Aucune | - | ✅ **TOUT TERMINÉ** |
-| 🟡 MOYENNE | Timing adaptatif parole | 4-6h | ⏳ À faire |
-| 🟡 MOYENNE | Découverte automatique robots | 4-6h | ⏳ À faire |
-| 🟡 MOYENNE | Support simultané sim/robot | 6-8h | ⏳ À faire |
-| 🟡 MOYENNE | Modèle simplifié tests | 2-3h | ⏳ À faire |
+| 🟡 MOYENNE | Timing adaptatif parole | 4-6h | ✅ **FAIT** |
+| 🟡 MOYENNE | Découverte automatique robots | 4-6h | ⏳ Infrastructure créée |
+| 🟡 MOYENNE | Support simultané sim/robot | 6-8h | ⏳ Infrastructure créée |
+| 🟡 MOYENNE | Modèle simplifié tests | 2-3h | ✅ **FAIT** |
 | 🟡 MOYENNE | Mode débutant dashboard | 4-6h | ⏳ À faire |
 | 🟡 MOYENNE | Tests performance baselines | 4-6h | ⏳ À faire |
-| 🟡 MOYENNE | Micro-mouvements subtils | 3-4h | ⏳ À faire |
+| 🟡 MOYENNE | Micro-mouvements subtils | 3-4h | ✅ **FAIT** |
 | 🟢 BASSE | Lazy assets STL | 3-4h | ⏳ Optionnel |
 | 🟢 BASSE | Scènes complexes | 4-6h | ⏳ Optionnel |
 | 🟢 BASSE | Heartbeat WebSocket | 3-4h | ⏳ Optionnel |
@@ -355,9 +348,15 @@ except Exception as e:
 1. ✅ **FAIT** : SDK mis à jour (1.1.3) ✅
 2. ✅ **FAIT** : Synchronisation fine mouvements émotionnels ↔ parole ✅
 3. ✅ **FAIT** : Fluidité conversationnelle améliorée ✅
-4. ⏳ **À FAIRE** : 7 améliorations moyenne priorité (27-35h)
-5. 🟢 **OPTIONNEL** : 4 améliorations basse priorité (14-20h)
-6. ✅ **IGNORER** : MCP, WebRTC, DoA (BBIA a déjà mieux ou équivalent)
+4. ✅ **FAIT** : Timing adaptatif parole ✅
+5. ✅ **FAIT** : Micro-mouvements subtils ✅
+6. ✅ **FAIT** : Modèle simplifié tests (flag `--fast`) ✅
+7. ⏳ **INFRASTRUCTURE** : Découverte robots (infrastructure créée, à finaliser)
+8. ⏳ **INFRASTRUCTURE** : Support simultané sim/robot (infrastructure créée, routing à finaliser)
+9. ⏳ **À FAIRE** : Mode débutant dashboard (4-6h)
+10. ⏳ **À FAIRE** : Tests performance baselines (4-6h)
+11. 🟢 **OPTIONNEL** : 4 améliorations basse priorité (14-20h)
+12. ✅ **IGNORER** : MCP, WebRTC, DoA (BBIA a déjà mieux ou équivalent)
 
 **BBIA a une base solide** :
 - ✅ 12 émotions

@@ -84,10 +84,12 @@
 
 2. **Synchronisation fine mouvements émotionnels ↔ parole**
    - Inspiration : `reachy-mini-plugin` (LAURA-agent)
-   - Manque : Timing adaptatif, micro-mouvements pendant conversation
+   - ✅ FAIT : Timing adaptatif implémenté (8 Déc 2025)
+   - ✅ FAIT : Micro-mouvements subtils implémentés (8 Déc 2025)
 
 3. **Fluidité conversationnelle améliorée**
-   - Manque : Micro-mouvements pendant écoute, transitions naturelles
+   - ✅ FAIT : Micro-mouvements subtils pendant écoute (effet respiration)
+   - ✅ FAIT : Transitions naturelles implémentées
 
 ### 🟢 OPTIONNEL - NON CRITIQUE (BBIA a déjà mieux ou équivalent)
 

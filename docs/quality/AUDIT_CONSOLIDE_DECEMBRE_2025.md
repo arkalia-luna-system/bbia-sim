@@ -30,8 +30,8 @@
 - Intégration : `ConversationBehavior` utilise `BBIAEmotionalSync`
 - Fonctionnalités :
   - Synchronisation fine : mouvements pendant la parole
-  - Timing adaptatif selon rythme de la parole
-  - Micro-mouvements pendant conversation
+  - ✅ Timing adaptatif selon rythme de la parole (FAIT - 8 Déc 2025)
+  - ✅ Micro-mouvements subtils pendant conversation (FAIT - 8 Déc 2025)
   - États conversationnels (IDLE, LISTENING, THINKING, SPEAKING, REACTING)
 - Tests : 23 tests, tous passent ✅
 

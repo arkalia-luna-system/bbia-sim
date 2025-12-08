@@ -205,45 +205,42 @@ self.emotional_sync.sync_speak_with_emotion(
    - États conversationnels : IDLE, LISTENING, THINKING, SPEAKING, REACTING
    - Tests : 23 tests, tous passent
 
-3. ⚠️ **Timing adaptatif selon rythme parole** (inspiration LAURA-agent)
-   - **État actuel** : Timing fixe (150 mots/min)
-   - **À faire** : Analyser rythme réel parole, ajuster timing dynamiquement
+3. ✅ **Timing adaptatif selon rythme parole** (inspiration LAURA-agent) - **FAIT** (8 Déc 2025)
+   - **État actuel** : ✅ Timing adaptatif implémenté
+   - **Réalisé** : Analyse rythme réel parole, ajustement dynamique
    - **Technique** : Détection pauses, accélérations dans parole
    - **Impact** : Synchronisation plus naturelle
-   - **Priorité** : 🟡 Moyenne
-   - **Temps estimé** : 4-6h
+   - **Fichiers** : `bbia_emotional_sync.py` (analyse rythme), tests (4 tests)
 
-4. ⚠️ **Micro-mouvements plus subtils pendant écoute** (inspiration LAURA-agent)
-   - **État actuel** : Micro-mouvements basiques
-   - **À faire** : Animations plus subtiles (micro-expressions, respiration)
-   - **Technique** : Micro-mouvements très petits (0.01-0.02 rad)
+4. ✅ **Micro-mouvements plus subtils pendant écoute** (inspiration LAURA-agent) - **FAIT** (8 Déc 2025)
+   - **État actuel** : ✅ Micro-mouvements subtils (0.01-0.02 rad)
+   - **Réalisé** : Animations subtiles (micro-expressions, respiration)
+   - **Technique** : Micro-mouvements très petits (0.01-0.02 rad), effet respiration
    - **Impact** : Robot plus vivant
-   - **Priorité** : 🟡 Moyenne
-   - **Temps estimé** : 3-4h
+   - **Fichiers** : `bbia_emotional_sync.py` (amélioré)
 
-5. ⚠️ **Découverte automatique robots** (inspiration @pierre-rouanet)
-   - **État actuel** : Configuration manuelle
-   - **À faire** : Détection automatique robots sur réseau local via Zenoh
+5. ⏳ **Découverte automatique robots** (inspiration @pierre-rouanet) - **INFRASTRUCTURE CRÉÉE** (8 Déc 2025)
+   - **État actuel** : ✅ Infrastructure créée (`RobotRegistry`)
+   - **Réalisé** : Classe `RobotRegistry`, méthode `discover_robots()`
+   - **À finaliser** : Découverte complète Zenoh, API `/robots/list`
    - **Technique** : Utiliser `zenoh.discover()` pour lister robots
    - **Impact** : Plus besoin de configurer manuellement
-   - **Priorité** : 🟡 Moyenne
-   - **Temps estimé** : 4-6h
+   - **Fichiers** : ✅ `robot_registry.py` (créé), ⏳ endpoint API à créer
 
-6. ⚠️ **Support simultané sim/robot réel** (inspiration @pierre-rouanet)
-   - **État actuel** : BBIA choisit un backend (sim OU robot)
-   - **À faire** : Support simultané via même daemon
+6. ⏳ **Support simultané sim/robot réel** (inspiration @pierre-rouanet) - **INFRASTRUCTURE CRÉÉE** (8 Déc 2025)
+   - **État actuel** : ✅ Infrastructure créée (`create_multi_backend()`)
+   - **Réalisé** : Support création plusieurs backends simultanément
+   - **À finaliser** : Routing API selon commande
    - **Technique** : Multi-backends avec routing selon commande
    - **Impact** : Tests sim pendant utilisation robot réel
-   - **Priorité** : 🟡 Moyenne
-   - **Temps estimé** : 6-8h
+   - **Fichiers** : ✅ `robot_factory.py` (ajouté), ⏳ routing API à finaliser
 
-7. ⚠️ **Modèle simplifié pour tests rapides** (inspiration @apirrone)
-   - **État actuel** : Toujours modèle complet (16 joints)
-   - **À faire** : Support modèle 7 joints pour tests rapides
+7. ✅ **Modèle simplifié pour tests rapides** (inspiration @apirrone) - **FAIT** (8 Déc 2025)
+   - **État actuel** : ✅ Flag `--fast` implémenté
+   - **Réalisé** : Support modèle 7 joints pour tests rapides
    - **Technique** : Flag `--fast` pour charger `reachy_mini.xml`
    - **Impact** : Tests 2-3x plus rapides
-   - **Priorité** : 🟡 Moyenne
-   - **Temps estimé** : 2-3h
+   - **Fichiers** : ✅ `__main__.py` (flag ajouté), ✅ `robot_factory.py` (support)
 
 8. ⚠️ **Mode débutant dashboard** (inspiration @FabienDanieau)
    - **État actuel** : Interface complète mais complexe

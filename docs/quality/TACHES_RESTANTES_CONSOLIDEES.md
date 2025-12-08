@@ -92,20 +92,22 @@
 
 #### 3. Modèle simplifié pour tests rapides (Inspiration @apirrone)
 
-**Durée estimée** : 2-3h
+**Durée estimée** : 2-3h  
+**Statut** : ✅ **FAIT** (8 Décembre 2025)
 
-**État actuel** : Toujours modèle complet (16 joints)
+**État actuel** : ✅ Flag `--fast` implémenté
 
-**Actions** :
-- Support modèle 7 joints pour tests rapides
-- Flag `--fast` pour charger `reachy_mini.xml` (7 joints)
-- Auto-détection : modèle simplifié si tests unitaires
+**Actions réalisées** :
+- ✅ Support modèle 7 joints pour tests rapides
+- ✅ Flag `--fast` pour charger `reachy_mini.xml` (7 joints)
+- ✅ Support dans `RobotFactory.create_backend(fast=True)`
 
 **Impact** : Tests 2-3x plus rapides (moins de joints)
 
 **Fichiers concernés** :
-- `src/bbia_sim/backends/mujoco_backend.py` (support modèle simplifié)
-- `src/bbia_sim/__main__.py` (flag `--fast`)
+- ✅ `src/bbia_sim/__main__.py` (flag `--fast` ajouté)
+- ✅ `src/bbia_sim/robot_factory.py` (support `fast=True`)
+- ✅ `tests/test_robot_factory.py` (24 tests, coverage 95.95%)
 
 ---
 
@@ -130,20 +132,21 @@
 
 #### 5. Timing adaptatif selon rythme parole (Inspiration LAURA-agent)
 
-**Durée estimée** : 4-6h
+**Durée estimée** : 4-6h  
+**Statut** : ✅ **FAIT** (8 Décembre 2025)
 
-**État actuel** : Timing fixe (150 mots/min)
+**État actuel** : ✅ Timing adaptatif implémenté
 
-**Actions** :
-- Analyser rythme réel parole (détection pauses, accélérations)
-- Ajuster timing mouvements dynamiquement selon rythme
-- Synchronisation plus naturelle
+**Actions réalisées** :
+- ✅ Analyser rythme réel parole (détection pauses, accélérations)
+- ✅ Ajuster timing mouvements dynamiquement selon rythme
+- ✅ Synchronisation plus naturelle avec historique
 
 **Impact** : Synchronisation plus naturelle, mouvements adaptés
 
 **Fichiers concernés** :
-- `src/bbia_sim/bbia_emotional_sync.py` (ajouter analyse rythme)
-- `src/bbia_sim/behaviors/conversation.py` (intégrer timing adaptatif)
+- ✅ `src/bbia_sim/bbia_emotional_sync.py` (analyse rythme ajoutée)
+- ✅ `tests/test_bbia_emotional_sync.py::TestTimingAdaptatif` (4 tests)
 
 ---
 
@@ -471,7 +474,7 @@ Les patterns try/except étaient répétés ~383 fois dans le code. La factorisa
 - Micro-mouvements automatiques pendant écoute
 - Transitions d'état naturelles (réflexion, réaction)
 
-**Tests** : `tests/test_bbia_emotional_sync.py` (23 tests, tous passent)
+**Tests** : `tests/test_bbia_emotional_sync.py` (39 tests, tous passent, coverage 87.85%)
 **Validation** : Black, Ruff, MyPy, Bandit ✅
 
 ---

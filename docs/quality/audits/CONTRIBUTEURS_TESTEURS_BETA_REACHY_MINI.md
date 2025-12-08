@@ -30,7 +30,7 @@ Ce document analyse le **travail technique concret** de chaque contributeur, leu
 **Ce que BBIA peut s'inspirer** :
 - ✅ **Déjà fait** : BBIA a daemon FastAPI similaire (`src/bbia_sim/daemon/app/main.py`)
 - 💡 **À améliorer** : Lifespan context manager plus robuste (gestion erreurs startup)
-- 💡 **À améliorer** : Support simultané sim/robot réel (actuellement BBIA choisit un backend)
+- ⏳ **INFRASTRUCTURE CRÉÉE** (8 Déc 2025) : Support simultané sim/robot réel (infrastructure créée, routing à finaliser)
 
 #### Architecture Zenoh pour Communication
 - **Pattern** : Communication distribuée via Zenoh (pub/sub, discovery automatique)
@@ -40,7 +40,7 @@ Ce document analyse le **travail technique concret** de chaque contributeur, leu
 
 **Ce que BBIA peut s'inspirer** :
 - ✅ **Déjà fait** : BBIA a bridge Zenoh (`src/bbia_sim/daemon/bridge.py`)
-- 💡 **À améliorer** : Découverte automatique robots sur réseau (actuellement configuration manuelle)
+- ⏳ **INFRASTRUCTURE CRÉÉE** (8 Déc 2025) : Découverte automatique robots (infrastructure créée, découverte complète à finaliser)
 - 💡 **À améliorer** : Support multi-robots simultanés via Zenoh
 
 #### Backends USB et Wireless
@@ -68,7 +68,7 @@ Ce document analyse le **travail technique concret** de chaque contributeur, leu
 
 **Ce que BBIA peut s'inspirer** :
 - ✅ **Déjà fait** : BBIA utilise `reachy_mini_REAL_OFFICIAL.xml` (modèle complet)
-- 💡 **À améliorer** : Support modèle simplifié pour tests rapides (actuellement toujours complet)
+- ✅ **FAIT** (8 Déc 2025) : Support modèle simplifié pour tests rapides (flag `--fast` implémenté)
 - 💡 **À améliorer** : Chargement lazy des assets STL (actuellement tout chargé au démarrage)
 
 #### Intégration Physique Réaliste
@@ -214,8 +214,8 @@ Ce document analyse le **travail technique concret** de chaque contributeur, leu
 **Ce que BBIA peut s'inspirer** :
 - ✅ **Déjà fait** : BBIA a `bbia_emotional_sync.py` avec synchronisation fine
 - ✅ **Déjà fait** : BBIA a états conversationnels (IDLE, LISTENING, THINKING, SPEAKING, REACTING)
-- 💡 **À améliorer** : Micro-mouvements plus subtils pendant écoute (actuellement basiques)
-- 💡 **À améliorer** : Timing adaptatif selon rythme parole (actuellement fixe)
+- ✅ **FAIT** (8 Déc 2025) : Micro-mouvements plus subtils pendant écoute (0.01-0.02 rad, effet respiration)
+- ✅ **FAIT** (8 Déc 2025) : Timing adaptatif selon rythme parole (analyse pauses, mots courts)
 
 ---
 
@@ -273,13 +273,12 @@ Ce document analyse le **travail technique concret** de chaque contributeur, leu
 
 #### 🎮 Simulation MuJoCo
 
-4. **Modèle simplifié pour tests rapides** (inspiration @apirrone)
-   - **État actuel** : Toujours modèle complet (16 joints)
-   - **À faire** : Support modèle 7 joints pour tests rapides
+4. ✅ **Modèle simplifié pour tests rapides** (inspiration @apirrone) - **FAIT** (8 Déc 2025)
+   - **État actuel** : ✅ Flag `--fast` implémenté
+   - **Réalisé** : Support modèle 7 joints pour tests rapides
    - **Technique** : Flag `--fast` pour charger `reachy_mini.xml` (7 joints)
    - **Bénéfice** : Tests 2-3x plus rapides (moins de joints)
-   - **Priorité** : 🟡 Moyenne
-   - **Temps estimé** : 2-3h
+   - **Fichiers** : `__main__.py` (flag ajouté), `robot_factory.py` (support)
 
 5. **Chargement lazy assets STL** (inspiration @apirrone)
    - **État actuel** : Tous les assets STL chargés au démarrage
@@ -425,21 +424,19 @@ Ce document analyse le **travail technique concret** de chaque contributeur, leu
 
 #### 🎭 Mouvements & Synchronisation
 
-22. **Timing adaptatif selon rythme parole** (inspiration LAURA-agent)
-    - **État actuel** : Timing fixe (150 mots/min)
-    - **À faire** : Analyser rythme réel parole, ajuster timing dynamiquement
+22. ✅ **Timing adaptatif selon rythme parole** (inspiration LAURA-agent) - **FAIT** (8 Déc 2025)
+    - **État actuel** : ✅ Timing adaptatif implémenté
+    - **Réalisé** : Analyse rythme réel parole, ajustement dynamique
     - **Technique** : Détection pauses, accélérations dans parole
     - **Bénéfice** : Synchronisation plus naturelle, mouvements adaptés
-    - **Priorité** : 🟡 Moyenne
-    - **Temps estimé** : 4-6h
+    - **Fichiers** : `bbia_emotional_sync.py`, tests (4 tests)
 
-23. **Micro-mouvements plus subtils pendant écoute** (inspiration LAURA-agent)
-    - **État actuel** : Micro-mouvements basiques (tête, antennes)
-    - **À faire** : Animations plus subtiles (micro-expressions, respiration)
-    - **Technique** : Ajouter micro-mouvements très petits (0.01-0.02 rad)
+23. ✅ **Micro-mouvements plus subtils pendant écoute** (inspiration LAURA-agent) - **FAIT** (8 Déc 2025)
+    - **État actuel** : ✅ Micro-mouvements subtils (0.01-0.02 rad)
+    - **Réalisé** : Animations subtiles (micro-expressions, respiration)
+    - **Technique** : Micro-mouvements très petits (0.01-0.02 rad), effet respiration
     - **Bénéfice** : Robot plus vivant, interactions plus naturelles
-    - **Priorité** : 🟡 Moyenne
-    - **Temps estimé** : 3-4h
+    - **Fichiers** : `bbia_emotional_sync.py` (amélioré)
 
 24. **Cache plus agressif pour modèles fréquents** (inspiration @apirrone)
     - **État actuel** : Cache basique
@@ -463,10 +460,10 @@ Ce document analyse le **travail technique concret** de chaque contributeur, leu
 
 ### 🟡 Priorité Moyenne (Impact Utilisateur)
 
-1. **Découverte automatique robots** (4-6h)
-2. **Support simultané sim/robot réel** (6-8h)
+1. ⏳ **Découverte automatique robots** (4-6h) - Infrastructure créée
+2. ⏳ **Support simultané sim/robot réel** (6-8h) - Infrastructure créée
 3. **Fallback automatique sim → robot** (2-3h)
-4. **Modèle simplifié pour tests** (2-3h)
+4. ✅ **Modèle simplifié pour tests** (2-3h) - **FAIT**
 5. **Mode débutant dashboard** (4-6h)
 6. **Intégration HF Spaces plus poussée** (6-8h)
 7. **Heartbeat WebSocket robuste** (3-4h)
@@ -474,8 +471,8 @@ Ce document analyse le **travail technique concret** de chaque contributeur, leu
 9. **Tests conformité SDK exhaustifs** (6-8h)
 10. **Tests headless MuJoCo robustes** (3-4h)
 11. **Guides par niveau** (4-6h)
-12. **Timing adaptatif parole** (4-6h)
-13. **Micro-mouvements subtils** (3-4h)
+12. ✅ **Timing adaptatif parole** (4-6h) - **FAIT**
+13. ✅ **Micro-mouvements subtils** (3-4h) - **FAIT**
 
 **Total priorité moyenne** : ~50-70h
 
