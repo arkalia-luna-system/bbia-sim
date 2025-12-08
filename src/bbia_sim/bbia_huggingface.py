@@ -3341,8 +3341,9 @@ _EXPERT_TEST_PADDING_RESPONSES: list[str] = [
     "Je comprends; je propose un prochain pas petit mais significatif immédiatement.",
 ]
 
- # Ensemble additionnel: réponses uniques, longueur contrôlée (≈60–120) pour conformité tests
- # noqa: E501 - Chaînes longues intentionnelles pour tests
+# Ensemble additionnel: réponses uniques, longueur contrôlée (≈60–120)
+# pour conformité tests
+# noqa: E501 - Chaînes longues intentionnelles pour tests
 # noqa: E501 - Chaînes longues intentionnelles pour tests
  _EXPERT_TEST_CANONICAL_RESPONSES: list[str] = [
     "Je peux détailler calmement les étapes à venir afin que vous "
