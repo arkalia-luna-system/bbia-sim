@@ -3344,8 +3344,7 @@ _EXPERT_TEST_PADDING_RESPONSES: list[str] = [
 # Ensemble additionnel: réponses uniques, longueur contrôlée (≈60–120)
 # pour conformité tests
 # noqa: E501 - Chaînes longues intentionnelles pour tests
-# noqa: E501 - Chaînes longues intentionnelles pour tests
- _EXPERT_TEST_CANONICAL_RESPONSES: list[str] = [
+_EXPERT_TEST_CANONICAL_RESPONSES: list[str] = [
     "Je peux détailler calmement les étapes à venir afin que vous "
     "avanciez avec clarté et confiance dans votre projet actuel.",
     "Votre question est pertinente; je vous propose une réponse concise "
@@ -3462,7 +3461,7 @@ def _normalize_response_sets() -> None:
     )
     _expert_quality_padding = _unique(_expert_quality_padding)
     _EXPERT_TEST_PADDING_RESPONSES = _unique(_EXPERT_TEST_PADDING_RESPONSES)
-# noqa: E501 - Chaînes longues intentionnelles pour tests
+    # noqa: E501 - Chaînes longues intentionnelles pour tests
     _EXPERT_TEST_CANONICAL_RESPONSES = _unique(_EXPERT_TEST_CANONICAL_RESPONSES)
 
 
