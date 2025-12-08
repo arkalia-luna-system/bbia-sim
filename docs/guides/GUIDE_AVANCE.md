@@ -26,7 +26,7 @@
 
 <div align="center">
 
-**Version :** 1.4.0  
+**Version :** 1.4.0
 **Public cible :** développeurs expérimentés souhaitant exploiter les fonctionnalités de BBIA
 
 [![🔧 Backend](https://img.shields.io/badge/🔧-Backend%20Unifié-blue)](#backend-unifié)
@@ -310,5 +310,5 @@ Voir : [Conformité SDK Complète](../quality/compliance/CONFORMITE_REACHY_MINI_
 
 ## 🎯 Navigation
 
-**Retour à** : [README Documentation](../README.md)  
+**Retour à** : [README Documentation](../README.md)
 **Voir aussi** : [Guide de Démarrage](GUIDE_DEMARRAGE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)

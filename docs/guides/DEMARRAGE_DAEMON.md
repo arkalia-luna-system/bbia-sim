@@ -152,5 +152,5 @@ Toutes les fonctionnalités sont disponibles :
 
 ## 🎯 Navigation
 
-**Retour à** : [README Documentation](../README.md)  
+**Retour à** : [README Documentation](../README.md)
 **Voir aussi** : [Guide de Démarrage](GUIDE_DEMARRAGE.md) • [Guide Avancé](GUIDE_AVANCE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)

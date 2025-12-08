@@ -1,8 +1,8 @@
 # 🎨 Comparaison Dashboard BBIA vs Dashboard Testeurs Reachy Mini
 
-**Date** : 8 Décembre 2025  
-**Version BBIA** : 1.4.0  
-**Référence** : Email Pollen Robotics + Dashboard officiel v0.2.1  
+**Date** : 8 Décembre 2025
+**Version BBIA** : 1.4.0
+**Référence** : Email Pollen Robotics + Dashboard officiel v0.2.1
 **Dernière mise à jour** : 8 Décembre 2025
 
 ---
@@ -300,12 +300,12 @@ Le dashboard BBIA est **fonctionnel et conforme au SDK**, et a été **amélior�
 
 ---
 
-**Document créé le :** Novembre 2024  
-**Dernière mise à jour :** 8 Décembre 2025  
-**Version BBIA :** 1.4.0  
-**Référence Dashboard Testeurs :** Email Pollen Robotics (Nov 2024) + v0.2.1  
-**Statut Phase 1 :** ✅ **TERMINÉ** (19 nov 2025) - Contrôles media visuels + Tests unitaires (8 tests)  
-**Statut Phase 2.2 :** ✅ **TERMINÉ** (19 nov 2025) - Vue 3D Robot (Three.js + robot_3d.js + canvas)  
-**Statut Phase 2.3 :** ✅ **TERMINÉ** (19 nov 2025) - Design épuré (fond blanc, Quick Actions, FPS display)  
+**Document créé le :** Novembre 2024
+**Dernière mise à jour :** 8 Décembre 2025
+**Version BBIA :** 1.4.0
+**Référence Dashboard Testeurs :** Email Pollen Robotics (Nov 2024) + v0.2.1
+**Statut Phase 1 :** ✅ **TERMINÉ** (19 nov 2025) - Contrôles media visuels + Tests unitaires (8 tests)
+**Statut Phase 2.2 :** ✅ **TERMINÉ** (19 nov 2025) - Vue 3D Robot (Three.js + robot_3d.js + canvas)
+**Statut Phase 2.3 :** ✅ **TERMINÉ** (19 nov 2025) - Design épuré (fond blanc, Quick Actions, FPS display)
 **Statut Intégration Robot :** ✅ **TERMINÉ** (19 nov 2025) - Intégration complète avec robot.media (speaker, microphone, camera)
 

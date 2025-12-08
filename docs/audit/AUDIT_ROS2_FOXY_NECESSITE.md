@@ -1,7 +1,7 @@
 # 🔍 Audit : Nécessité de ROS 2 Foxy pour BBIA-SIM
 
-**Date** : 8 Décembre 2025  
-**Version BBIA-SIM** : 1.4.0  
+**Date** : 8 Décembre 2025
+**Version BBIA-SIM** : 1.4.0
 **Question** : ROS 2 Foxy est-il nécessaire pour contrôler le robot Reachy Mini réel ?
 
 ---
@@ -305,8 +305,8 @@ def test_zenoh_import(self) -> None:
 
 ---
 
-**Date de l'audit :** 8 Décembre 2025  
-**Auditeur :** Analyse automatique du codebase BBIA-SIM + vérification repo officiel  
-**Statut :** ✅ Architecture validée, ROS 2 non nécessaire  
+**Date de l'audit :** 8 Décembre 2025
+**Auditeur :** Analyse automatique du codebase BBIA-SIM + vérification repo officiel
+**Statut :** ✅ Architecture validée, ROS 2 non nécessaire
 **Confirmation repo officiel :** ✅ Vérifié - Zenoh utilisé, pas ROS 2
 

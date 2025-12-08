@@ -337,7 +337,7 @@ R : Oui, le mode simulation est inclus. Vous pouvez développer maintenant et te
 
 ### Q : C'est compatible Mac/Linux/Windows ?
 
-R : Mac/Linux : oui  
+R : Mac/Linux : oui
 Windows : à tester
 
 ### Q : Puis-je créer mes propres émotions ?

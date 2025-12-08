@@ -1,6 +1,6 @@
 # 🔍 Audits Techniques - Documentation BBIA-SIM
 
-**Date** : 8 Décembre 2025  
+**Date** : 8 Décembre 2025
 **Objectif** : Vue d'ensemble des audits techniques et analyses de conformité.
 
 ---
@@ -15,6 +15,6 @@
 
 ## 🎯 Navigation
 
-**Retour à** : [README Documentation](../README.md)  
-**Voir aussi** : [Index Thématique](../reference/INDEX_THEMATIQUE.md)  
-**Audits Qualité** : [Index Audits](../quality/audits/INDEX_AUDITS.md)
+**Retour à** : [README Documentation](../README.md)
+**Voir aussi** : [Index Thématique](../reference/INDEX_THEMATIQUE.md)
+**Audits Qualité** : [Index Audits](../quality/INDEX_AUDITS.md)

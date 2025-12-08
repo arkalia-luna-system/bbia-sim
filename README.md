@@ -114,8 +114,8 @@ BBIA utilise une stack IA lourde pour permettre des interactions naturelles et u
 - 🎨 **2 styles visuels** : Clean (apaisant) et Wireframe (énergique) selon le contexte
 - 🎯 **Assets d'interface** : HUD Cyber-HUD, icônes, bannières pour une expérience cohérente
 
-**Note** : Les logos sont un **gadget visuel** pour l'identité de BBIA. La **simulation principale** utilise MuJoCo (voir section "Voir le robot en 3D").  
-**🎨 [Voir tous les logos →](http://localhost:8000/test-logos)** *(Lancez le dashboard d'abord)*  
+**Note** : Les logos sont un **gadget visuel** pour l'identité de BBIA. La **simulation principale** utilise MuJoCo (voir section "Voir le robot en 3D").
+**🎨 [Voir tous les logos →](http://localhost:8000/test-logos)** *(Lancez le dashboard d'abord)*
 **Documentation** : [`assets/logos/bbia/README.md`](assets/logos/bbia/README.md)
 
 ## 🏆 Qualité Code
@@ -135,7 +135,7 @@ BBIA-SIM suit des standards de qualité:
 
 Version 1.4.0 – Simulation complète avec exemples fonctionnels, tests et documentation.
 
-**Mise à jour 26 Novembre 2025** : 
+**Mise à jour 26 Novembre 2025** :
 - 19 issues Reachy officiel traitées
 - Optimisations logging (performance améliorée)
 - Nouveaux exemples (sleeping_pose, collision, registry)
@@ -485,7 +485,7 @@ python examples/reachy_mini/minimal_demo.py
 
 **Note** : Cette interface est un **gadget visuel** pour explorer l'identité de BBIA. La **vraie simulation** se fait avec MuJoCo (voir ci-dessus).
 
-> 🚀 **Accès direct** : [`http://localhost:8000/bbia-interface`](http://localhost:8000/bbia-interface)  
+> 🚀 **Accès direct** : [`http://localhost:8000/bbia-interface`](http://localhost:8000/bbia-interface)
 > 💡 *Lancez d'abord* : `python -m uvicorn bbia_sim.daemon.app.main:app --host 127.0.0.1 --port 8000`
 
 **Fonctionnalités** :
@@ -655,7 +655,7 @@ La documentation HTML offre :
 
 - **[Guide de Démarrage](docs/guides/GUIDE_DEMARRAGE.md)** : Guide pour démarrer
 - **[Guide Avancé](docs/guides/GUIDE_AVANCE.md)** : Guide avancé
-- **[Vertical Slices](docs/quality/audits/VERTICAL_SLICES_ACCOMPLIS.md)** : Documentation des vertical slices
+- **[Vertical Slices](docs/quality/audits/archives/obsoletes_decembre_2025/VERTICAL_SLICES_ACCOMPLIS.md)** : Documentation des vertical slices
 - **[Index thématique (par profils)](docs/INDEX_FINAL.md)**
 - **[FAQ Troubleshooting](docs/development/troubleshooting.md)**
 - **[Observabilité (logs/metrics/santé)](docs/observabilite/OBSERVABILITE.md)**

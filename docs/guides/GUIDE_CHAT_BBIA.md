@@ -7,7 +7,7 @@
 
 **Version** : 1.4.0 • **Date** : 8 Décembre 2025
 
-[📚 FAQ](../getting-started/troubleshooting.md) • [🧠 Guide NLP](../guides/GUIDE_NLP_SMOLVLM.md) • [📊 État actuel](../quality/audits/RESUME_ETAT_ACTUEL_BBIA.md)
+[📚 FAQ](../getting-started/troubleshooting.md) • [🧠 Guide NLP](../guides/GUIDE_NLP_SMOLVLM.md) • [📊 État actuel](../quality/audits/archives/obsoletes_decembre_2025/RESUME_ETAT_ACTUEL_BBIA.md)
 
 </div>
 
@@ -506,6 +506,6 @@ if "heureux" in response.lower():
 
 ## 🎯 Navigation
 
-**Retour à** : [README Documentation](../README.md)  
+**Retour à** : [README Documentation](../README.md)
 **Voir aussi** : [Guide NLP](GUIDE_NLP_SMOLVLM.md) • [Guide de Démarrage](GUIDE_DEMARRAGE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
 

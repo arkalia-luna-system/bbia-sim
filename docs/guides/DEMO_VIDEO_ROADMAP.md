@@ -1,6 +1,6 @@
 # 📹 Roadmap Démo Vidéo - BBIA-SIM
 
-**Date de création** : 8 Décembre 2025  
+**Date de création** : 8 Décembre 2025
 **Date de mise à jour** : 8 Décembre 2025
 **Statut** : ✅ **Vidéos disponibles** - 3 vidéos de démonstration créées
 
@@ -185,7 +185,7 @@ Une fois les vidéos créées, elles seront intégrées dans :
 
 ## 🎯 Navigation
 
-**Retour à** : [README Documentation](../README.md)  
+**Retour à** : [README Documentation](../README.md)
 **Voir aussi** : [Guide de Démarrage](GUIDE_DEMARRAGE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
 
 **Contribuer** : Si vous souhaitez contribuer à la création de ces vidéos, contactez les maintainers via GitHub Issues.

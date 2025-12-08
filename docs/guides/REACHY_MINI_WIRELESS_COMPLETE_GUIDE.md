@@ -1,6 +1,6 @@
 # 🤖 Guide Complet Reachy Mini Wireless - Préparation BBIA
 
-**Date** : 8 Décembre 2025  
+**Date** : 8 Décembre 2025
 **Version** : 1.4.0
 
 > **Compatibilité Python et CI**
@@ -570,11 +570,11 @@ Le **Reachy Mini Wireless** fournit une base solide pour BBIA :
 
 ## 🎯 Navigation
 
-**Retour à** : [README Documentation](../README.md)  
+**Retour à** : [README Documentation](../README.md)
 **Voir aussi** : [Guide de Démarrage](GUIDE_DEMARRAGE.md) • [Guide Avancé](GUIDE_AVANCE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
 
 ---
 
-**Version** : 1.0  
-**Date** : 8 Décembre 2025  
+**Version** : 1.0
+**Date** : 8 Décembre 2025
 **Statut** : Guide Reachy Mini Wireless

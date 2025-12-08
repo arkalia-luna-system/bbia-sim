@@ -1,7 +1,7 @@
 # 🧠 Guide LLM Conversationnel BBIA
 
-**Date** : 8 Décembre 2025  
-**Version BBIA** : 1.4.0  
+**Date** : 8 Décembre 2025
+**Version BBIA** : 1.4.0
 **Objectif** : Guide complet pour utiliser l'intelligence conversationnelle de BBIA
 
 ---
@@ -396,13 +396,13 @@ response = hf.chat("Regarde à droite", enable_tools=True)
 
 ### Troubleshooting
 
-**Problème** : Modèle ne charge pas  
+**Problème** : Modèle ne charge pas
 **Solution** : Vérifier RAM disponible, utiliser modèle plus léger
 
-**Problème** : Latence élevée  
+**Problème** : Latence élevée
 **Solution** : Utiliser `tinyllama` ou désactiver LLM (`disable_llm_chat()`)
 
-**Problème** : Modèle non trouvé  
+**Problème** : Modèle non trouvé
 **Solution** : Vérifier connexion internet, modèles téléchargés automatiquement
 
 ### Références
@@ -413,8 +413,8 @@ response = hf.chat("Regarde à droite", enable_tools=True)
 
 ---
 
-**Document créé le :** 8 Décembre 2025  
-**Dernière mise à jour :** 8 Décembre 2025 (Issue #384)  
-**Version BBIA :** 1.3.2  
+**Document créé le :** 8 Décembre 2025
+**Dernière mise à jour :** 8 Décembre 2025 (Issue #384)
+**Version BBIA :** 1.3.2
 **Auteur :** Arkalia Luna System
 

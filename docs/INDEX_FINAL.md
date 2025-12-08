@@ -1,6 +1,6 @@
 # 📚 Index Complet — Documentation BBIA-SIM
 
-> **Documentation complète du moteur cognitif BBIA-SIM**  
+> **Documentation complète du moteur cognitif BBIA-SIM**
 > *Organisée par usage • Navigation intuitive • Contenu exhaustif*
 
 ---
@@ -200,7 +200,7 @@ La documentation a été réorganisée le **8 Décembre 2025** pour une meilleur
 
 ## 🎯 Navigation
 
-**Retour à** : [README Documentation](README.md)  
+**Retour à** : [README Documentation](README.md)
 **Voir aussi** : [Index Thématique](reference/INDEX_THEMATIQUE.md)
 
 **Dernière mise à jour** : 8 Décembre 2025

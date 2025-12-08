@@ -1,6 +1,6 @@
 # 📊 Dashboard - Documentation BBIA-SIM
 
-**Date** : 8 Décembre 2025  
+**Date** : 8 Décembre 2025
 **Objectif** : Documentation complète du dashboard BBIA-SIM et comparaisons.
 
 ---
@@ -19,7 +19,7 @@
 
 ## 🎯 Navigation
 
-**Retour à** : [README Documentation](../README.md)  
-**Voir aussi** : [Index Thématique](../reference/INDEX_THEMATIQUE.md)  
+**Retour à** : [README Documentation](../README.md)
+**Voir aussi** : [Index Thématique](../reference/INDEX_THEMATIQUE.md)
 **Development** : [Dashboard Avancé](../development/dashboard-advanced.md)
 
