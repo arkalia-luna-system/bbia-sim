@@ -60,7 +60,9 @@ def kill_processes_on_port(port: int) -> int:
                     for pid in pids:
                         if pid:
                             try:
-                                subprocess.run(["kill", "-KILL", pid], check=False, timeout=2)
+                                subprocess.run(
+                                    ["kill", "-KILL", pid], check=False, timeout=2
+                                )
                                 logging.info(f"💀 Force kill PID {pid}")
                             except Exception:
                                 pass

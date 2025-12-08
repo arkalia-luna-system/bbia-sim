@@ -41,12 +41,13 @@ class TestPoseDetectionErrorHandling:
         mock_mp.solutions.pose.Pose.side_effect = RuntimeError("Erreur initialisation")
 
         # Patcher directement bbia_sim.pose_detection.mp car mp est déjà importé
-        with patch("bbia_sim.pose_detection.mp", mock_mp):
-        with patch("bbia_sim.pose_detection.MEDIAPIPE_POSE_AVAILABLE", True):
-                detector = BBIAPoseDetection()
-                # Doit initialiser sans crasher
-                assert detector is not None
-                # is_initialized devrait être False en cas d'erreur
+        with patch("bbia_sim.pose_detection.mp", mock_mp), patch(
+            "bbia_sim.pose_detection.MEDIAPIPE_POSE_AVAILABLE", True
+        ):
+            detector = BBIAPoseDetection()
+            # Doit initialiser sans crasher
+            assert detector is not None
+            # is_initialized devrait être False en cas d'erreur
                 assert detector.is_initialized is False
 
     @pytest.mark.unit
