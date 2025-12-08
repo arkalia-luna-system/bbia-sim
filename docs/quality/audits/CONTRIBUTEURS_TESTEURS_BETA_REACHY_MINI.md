@@ -1,24 +1,24 @@
 # 👥 CONTRIBUTEURS ET TESTEURS BÊTA - Reachy Mini Officiel
 
-**Date** : 27 Novembre 2025 (Mise à jour)  
+**Date** : 7 Décembre 2025 (Mise à jour)  
 **Source** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini)  
 **Version SDK** : v1.1.1 (Latest - Nov 25, 2025)  
-**Objectif** : Documenter les 19 contributeurs et testeurs bêta du projet officiel
+**Objectif** : Documenter les 20 contributeurs et testeurs bêta du projet officiel
 
 ---
 
 ## 📊 RÉSUMÉ EXÉCUTIF
 
-**Total contributeurs** : 19 contributeurs identifiés  
-**Période analysée** : 11 mai 2025 au 23 novembre 2025  
-**Commits totaux** : 1,566 commits  
-**Branche principale** : `develop`  
-**Testeurs bêta** : Communauté active (Hugging Face Spaces, GitHub)  
+**Total contributeurs** : 20 contributeurs identifiés (nouveau : iizukak)  
+**Période analysée** : 11 mai 2025 au 7 décembre 2025  
+**Commits totaux** : ~1,600+ commits  
+**Branche principale** : `develop` / `main`  
+**Testeurs bêta** : Communauté active (Hugging Face Spaces, GitHub, projets communautaires)  
 **Statut BBIA** : En développement (1 développeur principal)
 
 ---
 
-## 👨‍💻 CONTRIBUTEURS OFFICIELS (19 contributeurs)
+## 👨‍💻 CONTRIBUTEURS OFFICIELS (20 contributeurs)
 
 ### Contributeurs Principaux (Core Developers)
 
@@ -385,13 +385,30 @@
 
 ---
 
-#### 15-19. Contributeurs Occasionnels
+#### 15. @iizukak (Nouveau - Novembre 2025)
+**Rôle** : Nouveau Contributor  
+**Contributions** : 2 commits (7 ++, 1 --)  
+**Période** : Novembre 2025  
+**Travail** :
+- Contributions à la version v1.1.0
+- Préparation production en série version sans fil
+- Tests et validation
 
-**15. @iizukak** - 2 commits (7 ++, 1 --)  
+**GitHub** : [@iizukak](https://github.com/iizukak)
+
+**Comparaison BBIA** :
+- ⚠️ BBIA : 1 développeur principal
+- ✅ BBIA : Contributions consolidées
+
+---
+
+#### 16-20. Contributeurs Occasionnels
+
 **16. @Gregwar** - 2 commits (153 ++, 1 --)  
 **17. @Copilote** - 1 commit (1 ++, 1 --)  
-**18. @OriNachum** - 1 commit (5 ++, 4 --)  
-**19. @Augustin-Crampette** - 1 commit (4 ++, 0 --)
+**18. @OriNachum** - 1 commit (5 ++, 4 --) - Auteur `reachy-mini-mcp`  
+**19. @Augustin-Crampette** - 1 commit (4 ++, 0 --)  
+**20. @codeur d'ondes cérébrales9** - 2 commits (143 ++, 21 --)
 
 **Rôle** : Contributors  
 **Contributions** :
@@ -412,9 +429,50 @@
 
 ---
 
-## 🧪 TESTEURS BÊTA
+## 🧪 TESTEURS BÊTA ET PROJETS COMMUNAUTAIRES
 
-### Sources Identifiées
+### Projets Communautaires Identifiés
+
+#### 1. reachy-mini-plugin (LAURA-agent)
+
+**Dépôt** : [LAURA-agent/reachy-mini-plugin](https://github.com/LAURA-agent/reachy-mini-plugin)  
+**Développeur** : LAURA-agent  
+**Description** : Plugin pour intégrer des mouvements émotionnels naturels lors des conversations avec Reachy Mini
+
+**Fonctionnalités** :
+- Mouvements émotionnels naturels
+- Intégration conversationnelle
+- Synchronisation émotions/mouvements
+
+**Inspiration pour BBIA** :
+- ✅ BBIA a déjà 12 émotions (supérieur)
+- ✅ BBIA a synchronisation émotions/mouvements
+- ⚠️ BBIA pourrait améliorer mouvements naturels conversationnels
+- 💡 **Action** : Examiner plugin pour améliorer fluidité mouvements émotionnels
+
+---
+
+#### 2. reachy-mini-mcp (OriNachum)
+
+**Dépôt** : [OriNachum/reachy-mini-mcp](https://github.com/OriNachum/reachy-mini-mcp)  
+**Développeur** : OriNachum (contributeur officiel)  
+**Description** : Serveur MCP pour contrôler Reachy Mini via FastMCP
+
+**Fonctionnalités** :
+- Contrôle via FastMCP
+- Intégration Model Context Protocol
+- Interface standardisée
+
+**Inspiration pour BBIA** :
+- ⚠️ BBIA n'a pas d'intégration MCP
+- 💡 **Action** : Évaluer intégration MCP pour BBIA (optionnel)
+- ✅ BBIA a déjà API REST/WebSocket complète
+
+---
+
+### Testeurs Bêta Identifiés
+
+#### Sources Identifiées
 
 #### 1. Hugging Face Spaces
 
@@ -430,7 +488,8 @@
 - Cas d'usage réels
 - Feedback utilisateurs
 
-**Comparaison BBIA** :
+**Action BBIA** :
+- ⚠️ Rechercher espaces HF avec tag `reachy-mini` ou `pollen-robotics`
 - ⚠️ BBIA : Espaces à créer
 - ✅ BBIA : Applications prêtes
 - ✅ BBIA : Démonstrations disponibles
@@ -451,7 +510,8 @@
 - Discussions
 - Feedback communauté
 
-**Comparaison BBIA** :
+**Action BBIA** :
+- ⚠️ Explorer projets GitHub publics liés à Reachy Mini
 - ⚠️ BBIA : Communauté à développer
 - ✅ BBIA : Issues traitées (95%)
 - ✅ BBIA : Documentation complète
@@ -461,7 +521,7 @@
 #### 3. Early Adopters
 
 **Utilisateurs avec robots physiques** :
-- Tests hardware
+- Tests hardware (livraisons fin été 2025)
 - Feedback utilisateur
 - Cas d'usage réels
 - Améliorations suggérées
@@ -472,7 +532,8 @@
 - Cas d'usage documentés
 - Améliorations proposées
 
-**Comparaison BBIA** :
+**Action BBIA** :
+- ⚠️ Participer forum Pollen Robotics pour feedback
 - ⚠️ BBIA : Tests hardware à effectuer
 - ✅ BBIA : Prêt pour robot réel
 - ✅ BBIA : Documentation hardware
@@ -485,7 +546,7 @@
 
 | Aspect | Reachy Mini Officiel | BBIA-SIM | Statut |
 |--------|---------------------|----------|--------|
-| **Nombre contributeurs** | 19 contributeurs | 1 développeur principal | ⚠️ **Moins de contributeurs** |
+| **Nombre contributeurs** | 20 contributeurs | 1 développeur principal | ⚠️ **Moins de contributeurs** |
 | **Core developers** | 4-5 core | 1 principal | ⚠️ **Moins de core** |
 | **Contributions** | Diversifiées | Consolidées | ✅ **Consolidées** |
 | **Spécialisations** | Multiples | Toutes intégrées | ✅ **Toutes intégrées** |
@@ -555,10 +616,11 @@
 ### Résumé
 
 **Reachy Mini Officiel** :
-- ✅ 19 contributeurs actifs
-- ✅ Communauté testeurs bêta
-- ✅ Hugging Face Spaces
-- ✅ Feedback régulier
+- ✅ 20 contributeurs actifs (nouveau : iizukak)
+- ✅ Version v1.1.1 (Nov 25, 2025)
+- ✅ Première production en série version sans fil (v1.1.0)
+- ✅ Communauté testeurs bêta active
+- ✅ Projets communautaires (plugin, MCP)
 
 **BBIA-SIM** :
 - ⚠️ 1 développeur principal (à développer)
@@ -588,7 +650,9 @@
 
 ---
 
-**Dernière mise à jour** : 27 Novembre 2025  
+**Dernière mise à jour** : 7 Décembre 2025  
 **Version SDK** : v1.1.1 (Latest - Nov 25, 2025)  
-**Voir aussi** : [MISE_A_JOUR_REACHY_MINI_NOVEMBRE_2025.md](MISE_A_JOUR_REACHY_MINI_NOVEMBRE_2025.md)
+**Voir aussi** :
+- [AUDIT_REACHY_MINI_DECEMBRE_2025.md](AUDIT_REACHY_MINI_DECEMBRE_2025.md) - Audit complet décembre 2025
+- [MISE_A_JOUR_REACHY_MINI_NOVEMBRE_2025.md](MISE_A_JOUR_REACHY_MINI_NOVEMBRE_2025.md) - Mise à jour novembre
 
