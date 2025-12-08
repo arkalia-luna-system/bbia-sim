@@ -289,9 +289,10 @@
 
 ---
 
-#### 11. @AnneCharlotte-pollen
+#### 12. @AnneCharlotte-pollen
 **Rôle** : Contributor (Documentation)  
 **Contributions** : 4 commits (11 ++, 3 --)  
+**Pic d'activité** : 2 commits/semaine max  
 **Travail** :
 - Documentation utilisateur
 - Guides
@@ -313,33 +314,35 @@
 
 ---
 
-#### 8. @CarolinePascal
-**Rôle** : Contributor (Qualité)  
-**Contributions** : 16 commits (409 ++, 148 --)  
+#### 13. @cdussieux
+**Rôle** : Contributor (Hardware)  
+**Contributions** : 3 commits (6 ++, 5 --)  
+**Pic d'activité** : 1 commit/semaine max  
 **Travail** :
-- Tests qualité
-- Validation
-- Assurance qualité
-- Tests utilisateur
+- Support hardware
+- Communication USB
+- Détection périphériques
+- Troubleshooting hardware
 
 **Travail documenté** :
-- Tests qualité
-- Validation fonctionnelle
-- Assurance qualité
-- Tests utilisateur
+- Support USB (version Lite)
+- Détection ports série
+- Communication hardware
+- Résolution problèmes USB
 
-**GitHub** : [@CarolinePascal](https://github.com/CarolinePascal)
+**GitHub** : [@cdussieux](https://github.com/cdussieux)
 
 **Comparaison BBIA** :
-- ✅ BBIA : 1,743 tests (supérieur)
-- ✅ Coverage 68.86%
-- ✅ Qualité excellente
+- ✅ BBIA : Support USB via backend
+- ✅ Détection automatique périphériques
+- ✅ Gestion gracieuse hardware absent
 
 ---
 
-#### 13. @matthieu-lapeyre
+#### 14. @Matthieu-Lapeyre
 **Rôle** : Contributor (Performance)  
 **Contributions** : 3 commits (174 ++, 32 --)  
+**Pic d'activité** : 2 commits/semaine max  
 **Travail** :
 - Optimisations performance
 - Réduction latence
@@ -352,7 +355,7 @@
 - Optimisation mémoire
 - Performance système
 
-**GitHub** : [@matthieu-lapeyre](https://github.com/matthieu-lapeyre)
+**GitHub** : [@Matthieu-Lapeyre](https://github.com/Matthieu-Lapeyre)
 
 **Comparaison BBIA** :
 - ✅ BBIA : Optimisations appliquées
@@ -404,11 +407,11 @@
 
 #### 16-20. Contributeurs Occasionnels
 
-**16. @Gregwar** - 2 commits (153 ++, 1 --)  
-**17. @Copilote** - 1 commit (1 ++, 1 --)  
+**16. @codeur d'ondes cérébrales9** - 2 commits (143 ++, 21 --)  
+**17. @Gregwar** - 2 commits (153 ++, 1 --)  
 **18. @OriNachum** - 1 commit (5 ++, 4 --) - Auteur `reachy-mini-mcp`  
-**19. @Augustin-Crampette** - 1 commit (4 ++, 0 --)  
-**20. @codeur d'ondes cérébrales9** - 2 commits (143 ++, 21 --)
+**19. @Copilote** - 1 commit (1 ++, 1 --)  
+**20. @Augustin-Crampette** - 1 commit (4 ++, 0 --)
 
 **Rôle** : Contributors  
 **Contributions** :
