@@ -295,16 +295,27 @@ class TestPerformance:
         if not await client.check_health():
             pytest.skip("API non accessible - serveur non démarré")
 
-        joints_command = [{"joint_name": "yaw_body", "position": 0.1}]
+        # Créer un client avec un timeout plus long pour ce test
+        extended_timeout = 15.0
+        extended_client = httpx.AsyncClient(timeout=extended_timeout)
+        try:
+            joints_command = [{"joint_name": "yaw_body", "position": 0.1}]
 
-        start_time = time.time()
-        await client.set_joint_positions(joints_command)
-        response_time = time.time() - start_time
+            start_time = time.time()
+            response = await extended_client.post(
+                f"{API_URL}/api/motion/joints",
+                json=joints_command,
+                headers=HEADERS,
+            )
+            response.raise_for_status()
+            response_time = time.time() - start_time
 
-        # La réponse devrait être rapide (< 1 seconde)
-        assert response_time < 1.0, f"Réponse trop lente: {response_time:.3f}s"
+            # La réponse devrait être rapide (< 1 seconde)
+            assert response_time < 1.0, f"Réponse trop lente: {response_time:.3f}s"
 
-        logger.info(f"✅ Temps de réponse mouvement: {response_time:.3f}s")
+            logger.info(f"✅ Temps de réponse mouvement: {response_time:.3f}s")
+        finally:
+            await extended_client.aclose()
 
     @pytest.mark.skipif(
         os.getenv("CI", "").lower() == "true",
