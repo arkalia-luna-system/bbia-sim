@@ -1064,7 +1064,8 @@ class BBIAHuggingFace:
 
                 if os.environ.get("CI", "false").lower() != "true":
                     logger.error(
-                        f"❌ Processeur {processor_key} non disponible après chargement",
+                        f"❌ Processeur {processor_key} "
+                        f"non disponible après chargement",
                     )
                 return "Erreur (answer_question): processeur non disponible"
             if model_key not in self.models:
