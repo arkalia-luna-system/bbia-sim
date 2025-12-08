@@ -1231,7 +1231,8 @@ class BBIAHuggingFace:
                     maxlen=50,
                 )
 
-                # Identifier modèles inactifs pour toutes les instances actives
+                # Identifier modèles inactifs
+                # pour toutes les instances actives
                 with BBIAHuggingFace._shared_unload_thread_lock:
                     # Faire une copie de la liste pour éviter modification pendant itération
                     active_instances = list(BBIAHuggingFace._shared_instances)
