@@ -16,6 +16,8 @@
 2. ✅ **Synchronisation fine mouvements émotionnels ↔ parole** : Module `bbia_emotional_sync.py` créé
 3. ✅ **Fluidité conversationnelle améliorée** : Intégration dans `ConversationBehavior`
 4. ✅ **Tests complets** : 1,685+ tests passent
+   - ✅ `robot_factory.py` : 24 tests, coverage 95.95%
+   - ✅ `bbia_emotional_sync.py` : 39 tests, coverage 87.85%
 5. ✅ **Qualité code** : Black, Ruff, MyPy, Bandit ✅
 6. ✅ **Documentation** : Audit complet réalisé (8.5/10)
 
@@ -51,7 +53,7 @@ Toutes les fonctionnalités critiques sont implémentées et testées.
 
 **Fichiers** :
 - ✅ `src/bbia_sim/bbia_emotional_sync.py` (analyse rythme ajoutée)
-- ✅ `tests/test_bbia_emotional_sync.py::TestTimingAdaptatif` (4 tests)
+- ✅ `tests/test_bbia_emotional_sync.py` (39 tests, coverage 87.85%)
 
 ---
 
