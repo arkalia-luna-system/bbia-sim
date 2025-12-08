@@ -48,7 +48,7 @@ class TestPoseDetectionErrorHandling:
             # Doit initialiser sans crasher
             assert detector is not None
             # is_initialized devrait être False en cas d'erreur
-                assert detector.is_initialized is False
+            assert detector.is_initialized is False
 
     @pytest.mark.unit
     @pytest.mark.fast
