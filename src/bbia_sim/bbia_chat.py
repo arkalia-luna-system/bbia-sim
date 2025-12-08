@@ -335,13 +335,16 @@ class BBIAChat:
             error: Exception levée
             model_name: Nom du modèle (ex: "Phi-2", "TinyLlama")
             config_key: Clé de configuration à détecter (ex: "PhiConfig", "LlamaConfig")
-            is_fallback: Si True, c'est le fallback (TinyLlama), donc réinitialiser les attributs
+            is_fallback: Si True, c'est le fallback (TinyLlama),
+                donc réinitialiser les attributs
         """
         error_msg = str(error)
-        # Détecter les erreurs d'import de modules de configuration (dépendances manquantes)
+        # Détecter les erreurs d'import de modules de configuration
+        # (dépendances manquantes)
         if "Could not import module" in error_msg or config_key in error_msg:
             logger.debug(
-                f"⚠️ Impossible de charger {model_name} (dépendances manquantes): {error}"
+                f"⚠️ Impossible de charger {model_name} "
+                f"(dépendances manquantes): {error}"
             )
             if is_fallback:
                 logger.info("Mode fallback: réponses basiques (sans LLM)")

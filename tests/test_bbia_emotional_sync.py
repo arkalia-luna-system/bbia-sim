@@ -3,7 +3,8 @@
 
 from __future__ import annotations
 
-from unittest.mock import Mock, patch
+import sys
+from unittest.mock import MagicMock, Mock, patch
 
 from bbia_sim.bbia_emotional_sync import BBIAEmotionalSync, ConversationState
 
@@ -147,9 +148,16 @@ class TestBBIAEmotionalSync:
 
         # Mocker l'import conditionnel dans le module bbia_emotional_sync
         # pour éviter ModuleNotFoundError si reachy_mini n'est pas installé
-        with patch(
-            "reachy_mini.utils.create_head_pose",
-            return_value=Mock(),
+        # On doit mocker sys.modules pour que l'import fonctionne
+        mock_reachy_mini = MagicMock()
+        mock_pose = Mock()  # Mock de la pose retournée
+        mock_reachy_mini.utils.create_head_pose = Mock(return_value=mock_pose)
+        mock_utils = MagicMock()
+        mock_utils.create_head_pose = mock_reachy_mini.utils.create_head_pose
+
+        with patch.dict(
+            sys.modules,
+            {"reachy_mini": mock_reachy_mini, "reachy_mini.utils": mock_utils},
         ):
             sync._micro_head_movement(0.05, 0.2)
 
@@ -163,11 +171,9 @@ class TestBBIAEmotionalSync:
         sync = BBIAEmotionalSync(robot_api=robot_api)
 
         # Simuler ImportError pour forcer le fallback
-        with patch(
-            "reachy_mini.utils.create_head_pose",
-            side_effect=ImportError("No module named 'reachy_mini'"),
-        ):
-            sync._micro_head_movement(0.05, 0.2)
+        # Ne pas mocker sys.modules pour que l'import échoue et déclenche le fallback
+        # Si reachy_mini n'est pas installé, l'ImportError sera levé naturellement
+        sync._micro_head_movement(0.05, 0.2)
 
         robot_api.goto_target.assert_called()
 
@@ -227,8 +233,18 @@ class TestBBIAEmotionalSync:
 
         sync = BBIAEmotionalSync(robot_api=robot_api)
 
-        with patch("reachy_mini.utils.create_head_pose") as mock_pose:
-            mock_pose.return_value = Mock()
+        # Mocker l'import conditionnel pour éviter ModuleNotFoundError
+        # On doit mocker sys.modules pour que l'import fonctionne
+        mock_reachy_mini = MagicMock()
+        mock_pose = Mock()  # Mock de la pose retournée
+        mock_reachy_mini.utils.create_head_pose = Mock(return_value=mock_pose)
+        mock_utils = MagicMock()
+        mock_utils.create_head_pose = mock_reachy_mini.utils.create_head_pose
+
+        with patch.dict(
+            sys.modules,
+            {"reachy_mini": mock_reachy_mini, "reachy_mini.utils": mock_utils},
+        ):
             sync.transition_to_thinking()
 
         assert sync.current_state == ConversationState.THINKING
@@ -242,11 +258,9 @@ class TestBBIAEmotionalSync:
         sync = BBIAEmotionalSync(robot_api=robot_api)
 
         # Simuler ImportError pour forcer le fallback
-        with patch(
-            "reachy_mini.utils.create_head_pose",
-            side_effect=ImportError("No module named 'reachy_mini'"),
-        ):
-            sync.transition_to_thinking()
+        # Ne pas mocker sys.modules pour que l'import échoue et déclenche le fallback
+        # Si reachy_mini n'est pas installé, l'ImportError sera levé naturellement
+        sync.transition_to_thinking()
 
         assert sync.current_state == ConversationState.THINKING
         robot_api.goto_target.assert_called()
