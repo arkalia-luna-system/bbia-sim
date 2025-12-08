@@ -1,6 +1,7 @@
 # Audit IA : Modules Pré-entraînés dans BBIA
 
 **Date** : 26 Novembre 2025  
+**Dernière mise à jour :** 8 Décembre 2025  
 **Objectif** : Vérifier quels modèles IA pré-entraînés sont utilisés, où ils sont utilisés, et identifier ce qui manque.
 
 ---
@@ -480,7 +481,7 @@ hf.enable_llm_chat("tinyllama")  # ✅ Fonctionne (~2GB RAM)
 
 ---
 
-**Dernière mise à jour** : 26 Novembre 2025
+**Dernière mise à jour** : 8 Décembre 2025
 
 ---
 

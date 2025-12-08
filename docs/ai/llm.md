@@ -1,7 +1,7 @@
 # Intelligence conversationnelle LLM - guide complet
 
 **Date :** 26 Novembre 2025  
-**Dernière mise à jour :** 26 Novembre 2025  
+**Dernière mise à jour :** 8 Décembre 2025  
 **Objectif :** LLM conversationnel léger (Phi-2/TinyLlama) pour conversations intelligentes
 
 ---
