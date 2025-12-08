@@ -1341,7 +1341,8 @@ class BBIAHuggingFace:
                     BBIAHuggingFace._shared_unload_thread.join(timeout=timeout)
                     thread = BBIAHuggingFace._shared_unload_thread
                     if thread.is_alive():
-                        # Thread daemon se terminera automatiquement à l'arrêt du processus
+                        # Thread daemon se terminera automatiquement
+                        # à l'arrêt du processus
                         logger.debug(
                             "Thread partagé déchargement auto Hugging Face en cours d'arrêt (daemon)",
                         )
