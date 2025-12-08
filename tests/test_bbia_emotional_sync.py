@@ -243,7 +243,7 @@ class TestBBIAEmotionalSync:
 
         # Simuler ImportError pour forcer le fallback
         with patch(
-            "bbia_sim.bbia_emotional_sync.create_head_pose",
+            "reachy_mini.utils.create_head_pose",
             side_effect=ImportError("No module named 'reachy_mini'"),
         ):
             sync.transition_to_thinking()
