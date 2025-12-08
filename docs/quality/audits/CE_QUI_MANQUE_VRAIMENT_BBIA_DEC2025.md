@@ -34,33 +34,39 @@ pip install --upgrade "reachy-mini>=1.1.1"  # ✅ Mis à jour vers 1.1.3
 
 ### 2. Synchronisation Fine Mouvements Émotionnels ↔ Parole
 
-**Problème identifié** :
-- BBIA a déjà `set_emotion()` et synchronisation basique
-- **Manque** : Synchronisation fine avec timing de la parole (comme `reachy-mini-plugin` de LAURA-agent)
+**Statut** : ✅ **IMPLÉMENTÉ** - Module créé et intégré
 
 **État actuel BBIA** :
 ```python
-# Dans conversation.py - Synchronisation basique
-response = self.hf_chat.chat(texte)
-dire_texte(response, robot_api=self.robot_api)  # Parole
-self.robot_api.set_emotion(emotion, 0.6)       # Émotion (séparé)
-self._expressive_movement("nod")               # Mouvement (séparé)
+# Dans conversation.py - Synchronisation fine avec bbia_emotional_sync
+from bbia_sim.bbia_emotional_sync import BBIAEmotionalSync
+
+self.emotional_sync = BBIAEmotionalSync(robot_api=robot_api)
+self.emotional_sync.sync_speak_with_emotion(
+    response,
+    emotion=emotion,
+    intensity=intensity,
+    speak_function=dire_texte,
+)
 ```
 
-**Ce qui manque** :
-- ❌ Synchronisation fine : mouvements pendant la parole (pas avant/après)
-- ❌ Timing adaptatif : mouvements selon rythme de la parole
-- ❌ Micro-mouvements : petites animations pendant conversation
-- ❌ Transitions fluides : passage d'une émotion à l'autre pendant parole
+**Fonctionnalités implémentées** :
+- ✅ Synchronisation fine : mouvements pendant la parole (pas avant/après)
+- ✅ Timing adaptatif : mouvements selon rythme de la parole
+- ✅ Micro-mouvements : petites animations pendant conversation
+- ✅ Transitions fluides : passage d'une émotion à l'autre pendant parole
+- ✅ États conversationnels : IDLE, LISTENING, THINKING, SPEAKING, REACTING
+- ✅ Micro-mouvements pendant écoute : animations subtiles pendant reconnaissance vocale
 
-**Inspiration** : `reachy-mini-plugin` (LAURA-agent)
-- Mouvements émotionnels naturels pendant conversation
-- Synchronisation fine avec timing parole
-- Micro-mouvements expressifs
+**Module créé** : `src/bbia_sim/bbia_emotional_sync.py`
+- Classe `BBIAEmotionalSync` pour synchronisation fine
+- Enum `ConversationState` pour états conversationnels
+- Tests complets : `tests/test_bbia_emotional_sync.py` (23 tests, tous passent)
 
-**Action recommandée** :
-1. Examiner `reachy-mini-plugin` pour comprendre approche
-2. Créer module `bbia_emotional_sync.py` pour synchronisation fine
+**Intégration** :
+- `ConversationBehavior` utilise maintenant `BBIAEmotionalSync`
+- Micro-mouvements automatiques pendant écoute
+- Transitions d'état naturelles (réflexion, réaction)
 3. Intégrer timing adaptatif dans `ConversationBehavior`
 
 **Priorité** : 🟡 **MOYENNE** (améliore expérience utilisateur)

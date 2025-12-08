@@ -169,27 +169,28 @@
 
 ### Contributeurs Spécialisés
 
-#### 6. @cdussieux
-**Rôle** : Contributor (Hardware)  
-**Contributions** : 3 commits (6 ++, 5 --)  
+#### 6. @andimarafioti
+**Rôle** : Contributor (Exemples)  
+**Contributions** : 42 commits (1,848 ++, 1,125 --)  
+**Pic d'activité** : 11 commits/semaine max  
 **Travail** :
-- Support hardware
-- Communication USB
-- Détection périphériques
-- Troubleshooting hardware
+- Exemples d'utilisation
+- Démonstrations
+- Cas d'usage
+- Tutoriels
 
 **Travail documenté** :
-- Support USB (version Lite)
-- Détection ports série
-- Communication hardware
-- Résolution problèmes USB
+- Exemples de base
+- Démonstrations
+- Cas d'usage simples
+- Tutoriels
 
-**GitHub** : [@cdussieux](https://github.com/cdussieux)
+**GitHub** : [@andimarafioti](https://github.com/andimarafioti)
 
 **Comparaison BBIA** :
-- ✅ BBIA : Support USB via backend
-- ✅ Détection automatique périphériques
-- ✅ Gestion gracieuse hardware absent
+- ✅ BBIA : 67 exemples (supérieur)
+- ✅ Démonstrations complètes
+- ✅ Cas d'usage avancés
 
 ---
 
@@ -217,7 +218,32 @@
 
 ---
 
-#### 8. @oxkitsune
+#### 8. @CarolinePascal
+**Rôle** : Contributor (Qualité)  
+**Contributions** : 16 commits (409 ++, 148 --)  
+**Pic d'activité** : 9 commits/semaine max  
+**Travail** :
+- Tests qualité
+- Validation
+- Assurance qualité
+- Tests utilisateur
+
+**Travail documenté** :
+- Tests qualité
+- Validation fonctionnelle
+- Assurance qualité
+- Tests utilisateur
+
+**GitHub** : [@CarolinePascal](https://github.com/CarolinePascal)
+
+**Comparaison BBIA** :
+- ✅ BBIA : 1,743 tests (supérieur)
+- ✅ Coverage 68.86%
+- ✅ Qualité excellente
+
+---
+
+#### 9. @oxkitsune
 **Rôle** : Contributor (Audio)  
 **Contributions** : 10 commits (524 ++, 576 --)  
 **Travail** :
