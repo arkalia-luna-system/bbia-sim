@@ -2812,9 +2812,12 @@ class BBIAHuggingFace:
                     "Qu'est-ce qui cause cette difficulté ? Je veux vous aider.",
                 ],
                 "enthusiastic": [
-                    "Courage ! Même dans les moments difficiles, on peut trouver des raisons d'espérer !",
-                    "Je comprends que c'est dur, mais vous êtes capable de surmonter ça !",
-                    "On va s'en sortir ! Parlez-moi de ce qui ne va pas, on va trouver une solution !",
+                    "Courage ! Même dans les moments difficiles, "
+                    "on peut trouver des raisons d'espérer !",  # noqa: E501
+                    "Je comprends que c'est dur, "
+                    "mais vous êtes capable de surmonter ça !",  # noqa: E501
+                    "On va s'en sortir ! Parlez-moi de ce qui ne va pas, "
+                    "on va trouver une solution !",  # noqa: E501
                 ],
                 "calm": [
                     "Prenez votre temps. Je suis là, sans jugement.",
