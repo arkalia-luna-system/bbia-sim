@@ -75,7 +75,7 @@
 
 ---
 
-### 5. Qualité Exceptionnelle ⭐⭐⭐⭐ (VALEUR ÉLEVÉE)
+### 5. Qualité Élevée ⭐⭐⭐⭐ (VALEUR ÉLEVÉE)
 
 **Pourquoi c'est la plus-value #5** :
 - ✅ **1,743 tests** : Couverture exceptionnelle

@@ -1,8 +1,10 @@
-# 📚 Index des Audits et Corrections - 26 Novembre 2025
+# Index des Audits et Corrections
 
-**Date** : 26 Novembre 2025  
-**Dernière mise à jour** : 26 Novembre 2025
+**Date** : 8 Décembre 2025  
+**Dernière mise à jour** : 8 Décembre 2025  
 **Objectif** : Référence centralisée pour tous les audits et corrections effectués
+
+**Note** : Ce document est obsolète. Voir `../INDEX_AUDITS.md` pour l'index actuel.
 
 ---
 
