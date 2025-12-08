@@ -145,8 +145,11 @@ class TestBBIAEmotionalSync:
 
         sync = BBIAEmotionalSync(robot_api=robot_api)
 
-        with patch("reachy_mini.utils.create_head_pose") as mock_pose:
-            mock_pose.return_value = Mock()
+        # Mocker l'import conditionnel reachy_mini.utils.create_head_pose
+        mock_pose = Mock()
+        with patch(
+            "reachy_mini.utils.create_head_pose", return_value=mock_pose
+        ) as mock_create_pose:
             sync._micro_head_movement(0.05, 0.2)
 
         robot_api.goto_target.assert_called()

@@ -100,11 +100,16 @@
 
 ### Schémas Mermaid
 
-**Résultat** : ❌ **Aucun schéma Mermaid** dans `/docs/ai/`
+**Résultat** : ✅ **3 schémas Mermaid ajoutés** dans `/docs/ai/`
 
-**Impact** : Documentation textuelle uniquement, pas de visualisation
+**Détails** :
+- ✅ `modules.md` : Schéma architecture modules IA (graphique)
+- ✅ `llm.md` : Schéma flux conversation LLM (flowchart)
+- ✅ `voice.md` : Schéma flux TTS/STT (flowchart)
 
-**Recommandation** : 🟢 **OPTIONNEL** - Ajouter schémas si utile (architecture modules, flux données)
+**Impact** : Documentation visuelle améliorée ✅
+
+**Recommandation** : ✅ **TERMINÉ** - Schémas ajoutés pour visualisation
 
 ---
 
@@ -240,6 +245,7 @@
 - ✅ **Référencés INDEX_FINAL.md** (tous présents)
 - ✅ **README présent** (navigation optimale)
 - ✅ **Dates uniformisées** (toutes à "8 Décembre 2025")
+- ✅ **Schémas Mermaid ajoutés** (3 schémas pour visualisation)
 - ⚠️ **Vision/Émotions fragmentées** (mais pas critique)
 
 ### Recommandations
@@ -247,16 +253,16 @@
 1. ✅ **CONSERVER** tous les fichiers (complémentarité guide/audit)
 2. ✅ **README.md** déjà présent et complet
 3. ✅ **DATES UNIFORMISÉES** à "8 Décembre 2025"
-4. 🟢 **OPTIONNEL** : Ajouter schémas Mermaid si utile
+4. ✅ **SCHÉMAS MERMAID** ajoutés (3 schémas dans modules.md, llm.md, voice.md)
 
 ### Score qualité
 
 - **Clarté** : 9/10 (bien structuré, README présent)
 - **Structure** : 9/10 (hiérarchie logique)
 - **Maintenabilité** : 9/10 (dates uniformisées)
-- **Complétude** : 9/10 (information complète)
+- **Complétude** : 10/10 (information complète + schémas visuels)
 
-**Score global** : **9/10** ✅
+**Score global** : **9.25/10** ✅
 
 ---
 

@@ -7,6 +7,7 @@ Le daemon démarre automatiquement la simulation MuJoCo au démarrage.
 """
 
 import logging
+import shutil
 import subprocess
 import sys
 import time
@@ -29,8 +30,14 @@ def kill_processes_on_port(port: int) -> int:
     killed = 0
     try:
         # Trouver les processus sur le port
+        # Utilisation de chemins absolus pour sécurité (bandit B607)
+        lsof_path = shutil.which("lsof")
+        kill_path = shutil.which("kill")
+        if not lsof_path or not kill_path:
+            raise FileNotFoundError("lsof or kill not found in PATH")
+
         result = subprocess.run(
-            ["lsof", "-ti", f":{port}"],
+            [lsof_path, "-ti", f":{port}"],  # nosec B603 - lsof_path est validé
             capture_output=True,
             text=True,
             check=False,
@@ -40,7 +47,11 @@ def kill_processes_on_port(port: int) -> int:
             for pid in pids:
                 if pid:
                     try:
-                        subprocess.run(["kill", "-TERM", pid], check=False, timeout=2)
+                        subprocess.run(
+                            [kill_path, "-TERM", pid],  # nosec B603 - kill_path est validé
+                            check=False,
+                            timeout=2,
+                        )
                         killed += 1
                         logging.info(f"🛑 Processus {pid} sur port {port} arrêté")
                     except Exception as e:
@@ -50,7 +61,7 @@ def kill_processes_on_port(port: int) -> int:
                 time.sleep(1)
                 # Force kill si toujours actif
                 result = subprocess.run(
-                    ["lsof", "-ti", f":{port}"],
+                    [lsof_path, "-ti", f":{port}"],  # nosec B603 - lsof_path est validé
                     capture_output=True,
                     text=True,
                     check=False,
@@ -61,7 +72,9 @@ def kill_processes_on_port(port: int) -> int:
                         if pid:
                             try:
                                 subprocess.run(
-                                    ["kill", "-KILL", pid], check=False, timeout=2
+                                    [kill_path, "-KILL", pid],  # nosec B603 - kill_path est validé
+                                    check=False,
+                                    timeout=2,
                                 )
                                 logging.info(f"💀 Force kill PID {pid}")
                             except Exception:
