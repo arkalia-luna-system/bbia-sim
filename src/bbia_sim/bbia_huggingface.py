@@ -322,7 +322,8 @@ class BBIAHuggingFace:
         return device
 
     def _load_bbia_chat_lazy(self) -> None:
-        """OPTIMISATION RAM: Charge BBIAChat uniquement à la demande (lazy loading strict).
+        """OPTIMISATION RAM: Charge BBIAChat uniquement à la demande
+        (lazy loading strict).
 
         Gain RAM estimé: ~500MB-1GB au démarrage.
         BBIAChat n'est chargé que lors du premier appel à chat().
