@@ -89,8 +89,8 @@ Toutes les fonctionnalités critiques sont implémentées et testées.
 
 **Fichiers** :
 - ✅ `src/bbia_sim/robot_factory.py` (`create_multi_backend()` ajouté)
+- ✅ `tests/test_robot_factory.py` (24 tests, coverage 95.95%, inclut tests create_multi_backend)
 - ⏳ `src/bbia_sim/daemon/app/main.py` (routing API à finaliser)
-- ⏳ Tests à créer
 
 ---
 
