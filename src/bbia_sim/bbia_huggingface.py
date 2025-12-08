@@ -1220,7 +1220,8 @@ class BBIAHuggingFace:
             BBIAHuggingFace._shared_unload_thread_stop.is_set()
         ):
             try:
-                # Attendre 10 secondes entre vérifications (ou arrêt immédiat si demandé)
+                # Attendre 10 secondes entre vérifications
+                # (ou arrêt immédiat si demandé)
                 if BBIAHuggingFace._shared_unload_thread_stop.wait(10.0):
                     break  # Arrêt demandé
 
