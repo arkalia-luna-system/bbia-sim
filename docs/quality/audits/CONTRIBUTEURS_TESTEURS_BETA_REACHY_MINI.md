@@ -390,31 +390,7 @@
 
 ---
 
-#### 6. @andimarafioti
-**Rôle** : Contributor (Exemples)  
-**Contributions** : 42 commits (1,848 ++, 1,125 --)  
-**Travail** :
-- Exemples d'utilisation
-- Démonstrations
-- Cas d'usage
-- Tutoriels
-
-**Travail documenté** :
-- Exemples de base
-- Démonstrations
-- Cas d'usage simples
-- Tutoriels
-
-**GitHub** : [@andimarafioti](https://github.com/andimarafioti)
-
-**Comparaison BBIA** :
-- ✅ BBIA : 67 exemples (supérieur)
-- ✅ Démonstrations complètes
-- ✅ Cas d'usage avancés
-
----
-
-#### 13. @cdussieux
+#### 15. @iizukak
 **Rôle** : Contributor (Hardware)  
 **Contributions** : 3 commits (6 ++, 5 --)  
 **Pic d'activité** : 1 commit/semaine max  
