@@ -4,7 +4,7 @@
 
 ---
 
-## Documents Principaux à Consulter
+## Documents Principaux
 
 ### 1. Audit Consolidé
 - **`AUDIT_CONSOLIDE_DECEMBRE_2025.md`** - Document unique consolidé
@@ -21,8 +21,8 @@
 
 ### 3. Ce Qui Manque
 - **`CE_QUI_MANQUE_VRAIMENT_BBIA_DEC2025.md`** - Détails fonctionnalités manquantes
-  - Synchronisation fine : ✅ FAIT
-  - Fluidité conversationnelle : ✅ FAIT
+  - Synchronisation fine : FAIT
+  - Fluidité conversationnelle : FAIT
   - WebRTC/MCP/DoA : Optionnel (BBIA a déjà mieux)
 
 ### 4. Audit Reachy Mini
