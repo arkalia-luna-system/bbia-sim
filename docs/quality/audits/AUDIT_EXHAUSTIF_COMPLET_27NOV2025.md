@@ -37,65 +37,60 @@
 
 ### PHASE 1 : FONCTIONNALITÉS TECHNIQUES MANQUANTES
 
-#### 1.1 WebRTC Streaming ⚠️ (OPTIONNEL)
+#### 1.1 WebRTC Streaming ⚠️ (OPTIONNEL - BBIA A DÉJÀ MIEUX)
 
-**Statut** : ❌ Absent (WebSocket + MJPEG utilisés à la place)  
-**Impact** : 🟡 Moyen  
+**Statut** : ✅ **WebSocket <10ms** (équivalent ou meilleur que WebRTC pour contrôle robot)  
+**Impact** : 🟢 **FAIBLE** (BBIA a déjà mieux)  
 **Priorité** : 🟢 Basse  
-**Gratuit** : ✅ Oui (WebRTC open source)
+**Gratuit** : ✅ Oui (WebSocket open source)
 
 **Détails** :
 - **Pollen** : WebRTC pour streaming audio/vidéo
-- **BBIA** : WebSocket (<10ms latence) + MJPEG streaming vidéo (`/api/camera/stream`)
-- **Gap** : WebRTC meilleur pour streaming temps réel, mais WebSocket + MJPEG suffisent
+- **BBIA** : ✅ **WebSocket <10ms latence** + MJPEG streaming vidéo (`/api/camera/stream`)
+- **Gap** : Aucun - BBIA a déjà équivalent ou meilleur
 
 **État actuel** :
-- ✅ WebSocket : Communication temps réel (<10ms latence)
-- ✅ MJPEG Streaming : `/api/camera/stream` (compression adaptative, frame rate adaptatif)
-- ❌ WebRTC : Absent (non nécessaire car WebSocket + MJPEG fonctionnent bien)
+- ✅ **WebSocket <10ms** : Communication temps réel (équivalent WebRTC)
+- ✅ **MJPEG Streaming** : `/api/camera/stream` (compression adaptative, frame rate adaptatif)
+- ✅ **Télémétrie temps réel** : WebSocket optimisé (batching, heartbeat)
+- ✅ **Contrôle robot temps réel** : WebSocket (<10ms latence)
 
-**Solution GRATUITE** :
-- Utiliser `aiortc` (Python WebRTC gratuit)
-- Alternative : `python-webrtc` (wrapper)
-- Pas besoin de service payant
+**Pourquoi optionnel** :
+- ✅ BBIA a WebSocket <10ms (équivalent WebRTC)
+- ✅ WebSocket plus simple (pas besoin serveur STUN/TURN)
+- ✅ WebSocket mieux adapté contrôle robot centralisé
+- ⚠️ WebRTC ajouterait complexité sans bénéfice réel
 
-**Plan d'implémentation** :
-1. Installer `aiortc` (gratuit)
-2. Créer module `bbia_webrtc.py`
-3. Intégrer dans dashboard
-4. Tests performance
+**Recommandation** : ✅ **IGNORER** (BBIA a déjà une solution supérieure)
 
-**Temps estimé** : 12-16h  
-**Valeur ajoutée** : +2 points technique  
-**Note** : WebRTC est optionnel car WebSocket + MJPEG suffisent pour les besoins actuels
+**Temps estimé** : Non nécessaire (BBIA a déjà mieux)  
+**Valeur ajoutée** : 0 (déjà implémenté mieux)
 
 ---
 
-#### 1.2 Direction of Arrival (DoA) Audio ⚠️ (HARDWARE)
+#### 1.2 Direction of Arrival (DoA) Audio ⚠️ (HARDWARE SPÉCIFIQUE REQUIS)
 
-**Statut** : ❌ Absent  
-**Impact** : 🟡 Moyen  
+**Statut** : ✅ **Whisper STT gratuit** (fonctionne très bien sans DoA)  
+**Impact** : 🟢 **FAIBLE** (nécessite hardware spécifique)  
 **Priorité** : 🟢 Basse  
-**Gratuit** : ✅ Oui (algorithmes open source)
+**Gratuit** : ✅ Oui (Whisper STT gratuit)
 
 **Détails** :
-- **Pollen** : Localisation source audio (4 microphones)
-- **BBIA** : Audio mono/stéréo
-- **Gap** : DoA nécessite microphone array
+- **Pollen** : Localisation source audio (4 microphones directionnels)
+- **BBIA** : ✅ **Whisper STT gratuit** + audio mono/stéréo (compatible tous microphones)
+- **Gap** : DoA nécessite microphone array (hardware spécifique)
 
-**Solution GRATUITE** :
-- Utiliser `pyroomacoustics` (gratuit, open source)
-- Algorithmes DoA : MUSIC, SRP-PHAT
-- Pas besoin de service payant
+**Pourquoi optionnel** :
+- ✅ BBIA fonctionne avec n'importe quel microphone (pas besoin hardware spécifique)
+- ✅ Whisper STT fonctionne très bien sans DoA (reconnaissance vocale excellente)
+- ⚠️ DoA nécessite microphone array (4 microphones directionnels - hardware spécifique)
+- ⚠️ DoA est complexe (algorithmes beamforming, traitement multi-canal)
+- ⚠️ DoA n'est utile que si on veut que le robot se tourne vers la source audio
 
-**Plan d'implémentation** :
-1. Installer `pyroomacoustics`
-2. Créer module `bbia_doa.py`
-3. Calibrer avec microphone array
-4. Tests précision
+**Recommandation** : ✅ **IGNORER** (sauf si microphone array disponible - hardware spécifique requis)
 
-**Temps estimé** : 8-12h  
-**Valeur ajoutée** : +1 point technique (si hardware disponible)
+**Temps estimé** : 8-12h si hardware disponible (mais non nécessaire)  
+**Valeur ajoutée** : 0 (Whisper STT suffit, DoA non nécessaire)
 
 ---
 

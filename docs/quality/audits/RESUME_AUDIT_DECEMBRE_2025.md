@@ -89,11 +89,11 @@
 3. **Fluidité conversationnelle améliorée**
    - Manque : Micro-mouvements pendant écoute, transitions naturelles
 
-### 🟢 OPTIONNEL - NON CRITIQUE
+### 🟢 OPTIONNEL - NON CRITIQUE (BBIA a déjà mieux ou équivalent)
 
-4. Intégration MCP (priorité basse)
-5. WebRTC Streaming (priorité basse)
-6. DoA Audio (priorité basse, nécessite hardware)
+4. 🟢 **Intégration MCP** (optionnel - BBIA a déjà API REST + WebSocket)
+5. 🟢 **WebRTC Streaming** (optionnel - BBIA a déjà WebSocket <10ms)
+6. 🟢 **DoA Audio** (nécessite hardware spécifique - microphone array)
 
 **Voir** : `CE_QUI_MANQUE_VRAIMENT_BBIA_DEC2025.md` pour détails complets
 

@@ -345,24 +345,34 @@
 #### 1. WebRTC Streaming ⚠️
 
 **Officiel** : Support WebRTC pour streaming audio/vidéo  
-**BBIA** : ❌ Absent (WebSocket utilisé à la place)
+**BBIA** : ✅ **WebSocket <10ms** (équivalent ou meilleur que WebRTC pour contrôle robot)
 
-**Impact** : 🟡 Moyen (WebSocket suffit pour besoins actuels)  
-**Priorité** : 🟢 Basse (optionnel)
+**Impact** : 🟢 **FAIBLE** (BBIA a déjà mieux : WebSocket <10ms)  
+**Priorité** : 🟢 Basse (optionnel - BBIA a déjà équivalent ou meilleur)
 
-**Recommandation** : Implémenter si besoin streaming temps réel critique
+**Pourquoi optionnel** :
+- ✅ BBIA a WebSocket <10ms (équivalent WebRTC)
+- ✅ WebSocket plus simple (pas besoin serveur STUN/TURN)
+- ✅ WebSocket mieux adapté contrôle robot centralisé
+
+**Recommandation** : ✅ **IGNORER** (BBIA a déjà une solution supérieure)
 
 ---
 
 #### 2. Direction of Arrival (DoA) ⚠️
 
 **Officiel** : Localisation source audio directionnelle  
-**BBIA** : ❌ Absent (audio simple mono/stéréo)
+**BBIA** : ✅ **Whisper STT gratuit** (fonctionne très bien sans DoA)
 
-**Impact** : 🟡 Moyen (nécessite microphone array)  
+**Impact** : 🟢 **FAIBLE** (nécessite hardware spécifique - microphone array)  
 **Priorité** : 🟢 Basse (nécessite hardware spécifique)
 
-**Recommandation** : Implémenter si microphone array disponible
+**Pourquoi optionnel** :
+- ✅ BBIA fonctionne avec n'importe quel microphone (pas besoin hardware spécifique)
+- ✅ Whisper STT fonctionne très bien sans DoA
+- ⚠️ DoA nécessite microphone array (4 microphones directionnels)
+
+**Recommandation** : ✅ **IGNORER** (sauf si microphone array disponible - hardware spécifique requis)
 
 ---
 
@@ -381,12 +391,18 @@
 #### 4. Intégration MCP (Model Context Protocol) ⚠️
 
 **Communauté** : Plugin `reachy-mini-mcp` par OriNachum  
-**BBIA** : ❌ Absent
+**BBIA** : ✅ **API REST complète + WebSocket temps réel** (supérieur)
 
-**Impact** : 🟡 Moyen (standardisation interface)  
-**Priorité** : 🟢 Basse (optionnel, API REST/WebSocket suffit)
+**Impact** : 🟢 **FAIBLE** (BBIA a déjà mieux : API REST + WebSocket)  
+**Priorité** : 🟢 Basse (optionnel - BBIA a déjà une solution supérieure)
 
-**Recommandation** : Évaluer si besoin standardisation MCP
+**Pourquoi optionnel** :
+- ✅ BBIA a API REST complète (50+ endpoints FastAPI)
+- ✅ BBIA a WebSocket temps réel (<10ms latence)
+- ✅ BBIA offre plus de flexibilité (REST + WebSocket)
+- ⚠️ MCP est juste un protocole alternatif, pas nécessairement meilleur
+
+**Recommandation** : ✅ **IGNORER** (BBIA a déjà une solution supérieure)
 
 ---
 
