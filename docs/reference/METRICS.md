@@ -2,7 +2,7 @@
 
 > **Source de vérité centralisée pour toutes les métriques du projet**
 
-**Dernière mise à jour** : 24 Novembre 2025
+**Dernière mise à jour** : 8 Décembre 2025
 **Source** : [arkalia-metrics-collector](https://github.com/arkalia-luna-system/arkalia-metrics-collector) + CI/CD GitHub Actions + Codecov
 
 ---

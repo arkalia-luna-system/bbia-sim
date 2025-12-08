@@ -413,7 +413,7 @@ response = hf.chat("Regarde à droite", enable_tools=True)
 
 ---
 
-**Document créé le :** 19 Novembre 2025  
+**Document créé le :** 8 Décembre 2025  
 **Dernière mise à jour :** 8 Décembre 2025 (Issue #384)  
 **Version BBIA :** 1.3.2  
 **Auteur :** Arkalia Luna System

@@ -1,33 +1,20 @@
-# Documentation Audit - BBIA-SIM
+# 🔍 Audits Techniques - Documentation BBIA-SIM
 
 **Date** : 8 Décembre 2025  
-**Version** : v1.4.0
+**Objectif** : Vue d'ensemble des audits techniques et analyses de conformité.
 
 ---
 
-## Vue d'ensemble
+## 📋 Fichiers Principaux
 
-Ce dossier contient les audits techniques et analyses spécifiques de BBIA-SIM.
+### Audits Techniques
 
----
-
-## Fichiers présents
-
-### Audit ROS 2 Foxy
-
-- **`AUDIT_ROS2_FOXY_NECESSITE.md`** : Analyse de la nécessité de ROS 2 Foxy pour contrôler le robot Reachy Mini réel
-
-**Résumé** : ROS 2 Foxy n'est **PAS nécessaire** car le SDK Reachy Mini officiel utilise Zenoh (pas ROS 2) pour la communication.
+- **[AUDIT_ROS2_FOXY_NECESSITE.md](AUDIT_ROS2_FOXY_NECESSITE.md)** : Analyse de la nécessité de ROS2 Foxy pour BBIA-SIM.
 
 ---
 
-## Navigation
+## 🎯 Navigation
 
 **Retour à** : [README Documentation](../README.md)  
-**Index principal** : [INDEX_FINAL.md](../INDEX_FINAL.md)  
-**Index audits qualité** : [INDEX_AUDITS.md](../quality/INDEX_AUDITS.md)
-
----
-
-**Dernière mise à jour** : 8 Décembre 2025
-
+**Voir aussi** : [Index Thématique](../reference/INDEX_THEMATIQUE.md)  
+**Audits Qualité** : [Index Audits](../quality/audits/INDEX_AUDITS.md)

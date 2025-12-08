@@ -1,6 +1,6 @@
 # 📱 Guide d'Installation PWA - BBIA Dashboard
 
-**Date** : 24 Novembre 2025  
+**Date** : 8 Décembre 2025  
 **Version** : 1.0
 
 ---
@@ -215,6 +215,6 @@ Une **Progressive Web App (PWA)** est une application web qui peut être install
 
 ---
 
-**Dernière mise à jour** : 24 Novembre 2025  
+**Dernière mise à jour** : 8 Décembre 2025  
 **Version BBIA** : 1.3.2
 

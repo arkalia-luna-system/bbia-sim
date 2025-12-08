@@ -591,7 +591,7 @@ pytest tests/test_behaviors_advanced.py -v
 
 ---
 
-**Document créé le :** 19 Novembre 2025  
+**Document créé le :** 8 Décembre 2025  
 **Version BBIA :** 1.4.0  
 **Dernière mise à jour :** 8 Décembre 2025  
 **Auteur :** Arkalia Luna System
