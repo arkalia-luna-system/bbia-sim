@@ -1344,7 +1344,8 @@ class BBIAHuggingFace:
                         # Thread daemon se terminera automatiquement
                         # à l'arrêt du processus
                         logger.debug(
-                            "Thread partagé déchargement auto Hugging Face en cours d'arrêt (daemon)",
+                            "Thread partagé déchargement auto Hugging Face "
+                            "en cours d'arrêt (daemon)",
                         )
                     else:
                         logger.debug(
