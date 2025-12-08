@@ -42,9 +42,15 @@ Voir `docs/observabilite/OBSERVABILITE.md` pour plus de détails.
 
 | Module | Coverage | Tests | Statut |
 |--------|----------|-------|--------|
-| `dashboard_advanced.py` | 76.71% | 47 | ✅ |
+| `model_optimizer.py` | 100% | 9 | ✅ |
+| `utils/constants.py` | 100% | 5 | ✅ |
+| `backends/simulation_shims.py` | 100% | 21 | ✅ |
+| `robot_registry.py` | 93.85% | 13 | ✅ |
+| `robot_factory.py` | 95.95% | 24 | ✅ |
 | `vision_yolo.py` | 99.45% | - | ✅ |
 | `voice_whisper.py` | 92.52% | - | ✅ |
+| `dashboard_advanced.py` | 76.71% | 47 | ✅ |
+| `bbia_emotional_sync.py` | 87.85% | 39 | ✅ |
 | `daemon_bridge.py` | 54.86% | 10 | ✅ |
 
 ### Tests de conformité SDK

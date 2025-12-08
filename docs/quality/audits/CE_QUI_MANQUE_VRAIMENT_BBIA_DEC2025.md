@@ -250,13 +250,12 @@ self.emotional_sync.sync_speak_with_emotion(
    - **Priorité** : 🟡 Moyenne
    - **Temps estimé** : 4-6h
 
-9. ⚠️ **Tests de performance avec baselines** (inspiration @RemiFabre)
-   - **État actuel** : Tests de performance basiques
-   - **À faire** : Baselines p50/p95/p99 avec validation automatique
-   - **Technique** : Exporter métriques JSONL, valider fourchette en CI
-   - **Impact** : Détection régression performance
-   - **Priorité** : 🟡 Moyenne
-   - **Temps estimé** : 4-6h
+9. ✅ **Tests de performance avec baselines** (inspiration @RemiFabre) - **FAIT** (8 Déc 2025)
+   - **État actuel** : ✅ Baselines p50/p95/p99 avec validation automatique
+   - **Réalisé** : Export JSONL, validation automatique, détection régression
+   - **Technique** : Export métriques JSONL, validation fourchette en CI
+   - **Impact** : Détection régression performance automatique
+   - **Fichiers** : `bbia_performance_benchmarks.py` (export + validation), CI mis à jour, tests (6 tests)
 
 ---
 

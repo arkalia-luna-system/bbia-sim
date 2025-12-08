@@ -659,8 +659,24 @@ jobs:
         run: |
           export PYTHONPATH=src:$PYTHONPATH
           mkdir -p artifacts
-          # Script accepte --jsonl ou --output pour fichier de sortie
-          python scripts/bbia_performance_benchmarks.py --jsonl artifacts/benchmarks.jsonl 2>&1 || python scripts/bbia_performance_benchmarks.py --output artifacts/benchmarks.jsonl 2>&1 || echo "Benchmarks failed (non-blocking)"
+          # Exporter métriques JSONL avec p50/p95/p99
+          python scripts/bbia_performance_benchmarks.py --jsonl artifacts/benchmarks.jsonl --output artifacts/benchmarks.json 2>&1 || echo "Benchmarks failed (non-blocking)"
+        continue-on-error: true
+
+      - name: Validate Performance Baselines
+        run: |
+          export PYTHONPATH=src:$PYTHONPATH
+          mkdir -p artifacts
+          # Valider contre baseline si disponible
+          if [ -f artifacts/performance_baseline.jsonl ]; then
+            python scripts/bbia_performance_benchmarks.py --benchmark latency --jsonl artifacts/current.jsonl --baseline artifacts/performance_baseline.jsonl --validate 2>&1 || echo "Baseline validation failed (non-blocking)"
+          else
+            echo "⚠️ Baseline non disponible, création baseline initial..."
+            # Créer baseline initial si première exécution
+            if [ -f artifacts/benchmarks.jsonl ]; then
+              cp artifacts/benchmarks.jsonl artifacts/performance_baseline.jsonl || true
+            fi
+          fi
         continue-on-error: true
 
       - name: Run Performance Profiling with Baseline

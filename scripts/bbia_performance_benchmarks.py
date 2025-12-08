@@ -62,9 +62,8 @@ class BBIAPerformanceBenchmark:
             self.robot = RobotFactory.create_backend(self.backend)
             if self.robot:
                 connected = self.robot.connect()
-                logger.info(
-                    f"Robot {self.backend} {'connecté' if connected else 'en simulation'}",
-                )
+                status = "connecté" if connected else "en simulation"
+                logger.info(f"Robot {self.backend} {status}")
                 return True
             return False
         except Exception as e:
@@ -525,8 +524,22 @@ class BBIAPerformanceBenchmark:
 
         return all_results
 
-    def save_results(self, results: dict[str, Any], filename: str | None = None):
-        """Sauvegarde les résultats des benchmarks."""
+    def save_results(
+        self,
+        results: dict[str, Any],
+        filename: str | None = None,
+        jsonl_file: str | None = None,
+    ) -> tuple[Path, Path | None]:
+        """Sauvegarde les résultats des benchmarks.
+
+        Args:
+            results: Résultats des benchmarks
+            filename: Fichier JSON de sortie
+            jsonl_file: Fichier JSONL de sortie (une ligne par métrique)
+
+        Returns:
+            Tuple (chemin JSON, chemin JSONL ou None)
+        """
         if filename is None:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             filename = f"bbia_benchmarks_{self.backend}_{timestamp}.json"
@@ -538,7 +551,169 @@ class BBIAPerformanceBenchmark:
             json.dump(results, f, indent=2, ensure_ascii=False)
 
         logger.info(f"📊 Résultats sauvegardés: {filepath}")
-        return filepath
+
+        # Export JSONL si demandé
+        jsonl_path = None
+        if jsonl_file:
+            jsonl_path = Path("artifacts") / jsonl_file
+            jsonl_path.parent.mkdir(exist_ok=True)
+
+            with open(jsonl_path, "w", encoding="utf-8") as f:
+                # Extraire toutes les métriques et les exporter ligne par ligne
+                for metric_name, metric_value in self._extract_metrics(results):
+                    jsonl_line = json.dumps(
+                        {
+                            "metric": metric_name,
+                            "value": metric_value,
+                            "timestamp": results.get(
+                                "timestamp", datetime.now().isoformat()
+                            ),
+                            "backend": results.get("backend", self.backend),
+                        },
+                        ensure_ascii=False,
+                    )
+                    f.write(jsonl_line + "\n")
+
+            logger.info(f"📊 Métriques JSONL exportées: {jsonl_path}")
+
+        return filepath, jsonl_path
+
+    def _extract_metrics(self, results: dict[str, Any]) -> list[tuple[str, float]]:
+        """Extrait toutes les métriques des résultats pour export JSONL.
+
+        Args:
+            results: Résultats des benchmarks
+
+        Returns:
+            Liste de tuples (nom_métrique, valeur)
+        """
+        metrics: list[tuple[str, float]] = []
+
+        if "benchmarks" not in results:
+            return metrics
+
+        benchmarks = results["benchmarks"]
+
+        # Latence
+        if "latency" in benchmarks and "operations" in benchmarks["latency"]:
+            for op_name, op_stats in benchmarks["latency"]["operations"].items():
+                if isinstance(op_stats, dict):
+                    for stat_name, stat_value in op_stats.items():
+                        if isinstance(stat_value, (int, float)):
+                            metrics.append(
+                                (f"latency.{op_name}.{stat_name}", float(stat_value))
+                            )
+
+        # Charge
+        if "load" in benchmarks and "load_tests" in benchmarks["load"]:
+            for test_name, test_data in benchmarks["load"]["load_tests"].items():
+                if isinstance(test_data, dict):
+                    # Métriques globales
+                    for key in ["success_rate", "requests_per_second", "total_time"]:
+                        if key in test_data and isinstance(
+                            test_data[key], (int, float)
+                        ):
+                            metrics.append(
+                                (f"load.{test_name}.{key}", float(test_data[key]))
+                            )
+                    # Latency stats
+                    if "latency_stats" in test_data:
+                        for stat_name, stat_value in test_data["latency_stats"].items():
+                            if isinstance(stat_value, (int, float)):
+                                metrics.append(
+                                    (
+                                        f"load.{test_name}.latency.{stat_name}",
+                                        float(stat_value),
+                                    )
+                                )
+
+        # Mémoire
+        if "memory" in benchmarks and "memory_tests" in benchmarks["memory"]:
+            for test_name, test_data in benchmarks["memory"]["memory_tests"].items():
+                if isinstance(test_data, dict):
+                    for key in ["memory_growth_mb", "peak_memory_mb"]:
+                        if key in test_data and isinstance(
+                            test_data[key], (int, float)
+                        ):
+                            metrics.append(
+                                (f"memory.{test_name}.{key}", float(test_data[key]))
+                            )
+
+        # CPU
+        if "cpu" in benchmarks and "cpu_tests" in benchmarks["cpu"]:
+            for test_name, test_data in benchmarks["cpu"]["cpu_tests"].items():
+                if isinstance(test_data, dict) and "cpu_stats" in test_data:
+                    for stat_name, stat_value in test_data["cpu_stats"].items():
+                        if isinstance(stat_value, (int, float)):
+                            metrics.append(
+                                (f"cpu.{test_name}.{stat_name}", float(stat_value))
+                            )
+
+        return metrics
+
+    def validate_baselines(
+        self,
+        results: dict[str, Any],
+        baseline_file: str,
+        threshold: float = 0.2,
+    ) -> tuple[bool, list[str]]:
+        """Valide les résultats contre un baseline.
+
+        Args:
+            results: Résultats des benchmarks
+            baseline_file: Chemin vers le fichier baseline JSONL
+            threshold: Seuil de tolérance (20% par défaut)
+
+        Returns:
+            Tuple (is_valid, liste des erreurs)
+        """
+        baseline_path = Path(baseline_file)
+        if not baseline_path.exists():
+            logger.warning(f"Baseline non trouvé: {baseline_path}")
+            return True, []  # Pas de baseline = OK
+
+        # Charger baseline
+        baseline_metrics: dict[str, float] = {}
+        try:
+            with open(baseline_path, encoding="utf-8") as f:
+                for line in f:
+                    if line.strip():
+                        baseline_data = json.loads(line)
+                        metric_name = baseline_data.get("metric")
+                        metric_value = baseline_data.get("value")
+                        if metric_name and isinstance(metric_value, (int, float)):
+                            baseline_metrics[metric_name] = float(metric_value)
+        except Exception as e:
+            logger.error(f"Erreur chargement baseline: {e}")
+            return False, [f"Erreur chargement baseline: {e}"]
+
+        # Extraire métriques actuelles
+        current_metrics = dict(self._extract_metrics(results))
+
+        # Valider chaque métrique
+        errors: list[str] = []
+        for metric_name, current_value in current_metrics.items():
+            if metric_name not in baseline_metrics:
+                continue  # Nouvelle métrique, pas de baseline
+
+            baseline_value = baseline_metrics[metric_name]
+            diff_percent = abs((current_value - baseline_value) / baseline_value) * 100
+
+            if diff_percent > threshold * 100:
+                error_msg = (
+                    f"❌ {metric_name}: {current_value:.3f} vs baseline "
+                    f"{baseline_value:.3f} (diff: {diff_percent:.1f}%)"
+                )
+                errors.append(error_msg)
+                logger.error(error_msg)
+            else:
+                logger.info(
+                    f"✅ {metric_name}: {current_value:.3f} vs baseline "
+                    f"{baseline_value:.3f} (diff: {diff_percent:.1f}%)"
+                )
+
+        is_valid = len(errors) == 0
+        return is_valid, errors
 
     def generate_report(self, results: dict[str, Any]) -> str:
         """Génère un rapport textuel des benchmarks."""
@@ -637,7 +812,20 @@ def main():
     )
     parser.add_argument(
         "--output",
-        help="Fichier de sortie pour les résultats",
+        help="Fichier de sortie pour les résultats (JSON)",
+    )
+    parser.add_argument(
+        "--jsonl",
+        help="Fichier de sortie pour les résultats (JSONL, une ligne par métrique)",
+    )
+    parser.add_argument(
+        "--baseline",
+        help="Fichier baseline de référence pour validation",
+    )
+    parser.add_argument(
+        "--validate",
+        action="store_true",
+        help="Valider les résultats contre le baseline",
     )
     parser.add_argument(
         "--report",
@@ -673,7 +861,20 @@ def main():
             results = {"benchmarks": {"cpu": benchmark.benchmark_cpu()}}
 
         # Sauvegarder les résultats
-        filepath = benchmark.save_results(results, args.output)
+        filepath, jsonl_path = benchmark.save_results(results, args.output, args.jsonl)
+
+        # Valider contre baseline si demandé
+        if args.validate and args.baseline:
+            is_valid, errors = benchmark.validate_baselines(
+                results, args.baseline, threshold=0.2
+            )
+            if not is_valid:
+                print("❌ Validation baseline échouée:")
+                for error in errors:
+                    print(f"  {error}")
+                return 1
+            else:
+                print("✅ Validation baseline réussie")
 
         # Générer le rapport
         if args.report:
@@ -685,6 +886,8 @@ def main():
 
         print("✅ Benchmarks terminés avec succès")
         print(f"📊 Résultats sauvegardés: {filepath}")
+        if jsonl_path:
+            print(f"📊 Métriques JSONL: {jsonl_path}")
 
     except Exception as e:
         print(f"❌ Erreur lors des benchmarks: {e}")

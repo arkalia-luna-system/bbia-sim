@@ -7,7 +7,7 @@
 ### 📊 **Statistiques de Couverture ACTUELLES**
 
 - **Coverage total** : **68.86%**
-- **1,743 tests collectés** (1,805 total, 62 deselected) — [✅ Vérifié 26 Novembre 2025](../docs/quality/audits/VERIFICATION_ANALYSE_COMPLETE_26NOV2025.md)
+- **1,782 tests collectés** (1,805 total, 62 deselected) — [✅ Mis à jour 8 Décembre 2025](../docs/quality/audits/AUDIT_COVERAGE_IMPORTS.md)
 - **Tests passent** : Voir résultats pytest récents
 - **Tests skippés** : Tests conditionnels (hardware, CI)
 - **Golden Tests** : 3 traces référence + validation
@@ -35,6 +35,16 @@
 - **daemon/bridge.py** : **55.41%** ✅ (34 tests) - Objectif 30%+ dépassé
 
 **Total tests modules critiques** : **189 tests** pour les 4 modules critiques
+
+### 📊 **Nouveaux Modules Testés (8 Décembre 2025)**
+
+- **robot_registry.py** : **93.85%** ✅ (13 tests) - Découverte automatique robots
+- **utils/constants.py** : **100%** ✅ (5 tests) - Constantes utilitaires
+- **backends/simulation_shims.py** : **100%** ✅ (21 tests) - Shims de simulation
+- **robot_factory.py** : **95.95%** ✅ (24 tests) - Factory pour backends
+- **bbia_emotional_sync.py** : **87.85%** ✅ (39 tests) - Synchronisation émotions/parole
+
+**Total nouveaux tests** : **102 tests** (13 + 5 + 21 + 24 + 39)
 
 ### 🧪 **Golden Tests**
 

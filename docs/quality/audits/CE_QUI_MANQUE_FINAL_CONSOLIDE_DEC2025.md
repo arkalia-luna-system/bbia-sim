@@ -15,9 +15,12 @@
 1. ✅ **SDK mis à jour** : 1.0.0rc5 → 1.1.3
 2. ✅ **Synchronisation fine mouvements émotionnels ↔ parole** : Module `bbia_emotional_sync.py` créé
 3. ✅ **Fluidité conversationnelle améliorée** : Intégration dans `ConversationBehavior`
-4. ✅ **Tests complets** : 1,685+ tests passent
+4. ✅ **Tests complets** : 1,724+ tests passent
    - ✅ `robot_factory.py` : 24 tests, coverage 95.95%
    - ✅ `bbia_emotional_sync.py` : 39 tests, coverage 87.85%
+   - ✅ `robot_registry.py` : 13 tests, coverage 93.85%
+   - ✅ `utils/constants.py` : 5 tests, coverage 100%
+   - ✅ `backends/simulation_shims.py` : 21 tests, coverage 100%
 5. ✅ **Qualité code** : Black, Ruff, MyPy, Bandit ✅
 6. ✅ **Documentation** : Audit complet réalisé (8.5/10)
 
@@ -70,9 +73,9 @@ Toutes les fonctionnalités critiques sont implémentées et testées.
 - ⏳ API `/robots/list` à créer
 
 **Fichiers** :
-- ✅ `src/bbia_sim/robot_registry.py` (créé)
+- ✅ `src/bbia_sim/robot_registry.py` (créé, coverage 93.85%)
+- ✅ `tests/test_robot_registry.py` (13 tests créés)
 - ⏳ `src/bbia_sim/daemon/app/routers/robots.py` (endpoint à créer)
-- ⏳ Tests à créer
 
 ---
 
@@ -134,22 +137,25 @@ Toutes les fonctionnalités critiques sont implémentées et testées.
 
 #### 6. Tests de performance avec baselines
 
-**Statut** : ⏳ À faire  
+**Statut** : ✅ **FAIT** (8 Décembre 2025)  
 **Durée** : 4-6h  
 **Inspiration** : @RemiFabre
 
 **État actuel** :
-- Tests de performance basiques (pas de validation)
+- ✅ Export métriques JSONL avec p50/p95/p99
+- ✅ Validation automatique contre baselines
+- ✅ Détection régression performance automatique
+- ✅ Intégration CI avec validation
 
-**À faire** :
-- Baselines p50/p95/p99 avec validation automatique
-- Exporter métriques JSONL, valider fourchette en CI
-- Détection régression performance automatique
+**Fonctionnalités** :
+- `_extract_metrics()` : Extraction toutes métriques pour JSONL
+- `save_results()` : Export JSON + JSONL
+- `validate_baselines()` : Validation automatique avec seuil 20%
 
 **Fichiers** :
-- `scripts/bbia_performance_benchmarks.py` (ajouter export JSONL)
-- `.github/workflows/ci.yml` (validation baselines)
-- `tests/benchmarks/test_performance.py` (ajouter validation)
+- ✅ `scripts/bbia_performance_benchmarks.py` (export JSONL + validation)
+- ✅ `.github/workflows/ci.yml` (validation baselines ajoutée)
+- ✅ `tests/test_performance_baselines.py` (6 tests, tous passent)
 
 ---
 
@@ -328,7 +334,7 @@ except Exception as e:
 | 🟡 MOYENNE | Support simultané sim/robot | 6-8h | ⏳ Infrastructure créée |
 | 🟡 MOYENNE | Modèle simplifié tests | 2-3h | ✅ **FAIT** |
 | 🟡 MOYENNE | Mode débutant dashboard | 4-6h | ⏳ À faire |
-| 🟡 MOYENNE | Tests performance baselines | 4-6h | ⏳ À faire |
+| 🟡 MOYENNE | Tests performance baselines | 4-6h | ✅ **FAIT** |
 | 🟡 MOYENNE | Micro-mouvements subtils | 3-4h | ✅ **FAIT** |
 | 🟢 BASSE | Lazy assets STL | 3-4h | ⏳ Optionnel |
 | 🟢 BASSE | Scènes complexes | 4-6h | ⏳ Optionnel |

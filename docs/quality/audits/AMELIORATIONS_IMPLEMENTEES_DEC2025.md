@@ -7,12 +7,13 @@
 
 ## Résumé Exécutif
 
-**Statut** : 2/7 améliorations complétées, 5 en cours
+**Statut** : 3/7 améliorations complétées, 4 en cours
 
 ### ✅ Complétées
 
 1. **Timing adaptatif parole** ✅
 2. **Micro-mouvements subtils** ✅
+3. **Tests performance baselines** ✅
 
 ### ⏳ En Cours
 
@@ -20,7 +21,10 @@
 4. **Support simultané sim/robot** (infrastructure créée)
 5. **Modèle simplifié tests** (flag `--fast` ajouté)
 6. **Mode débutant dashboard** (à faire)
-7. **Tests performance baselines** (à faire)
+
+### ✅ Complétées (suite)
+
+7. **Tests performance baselines** ✅
 
 ---
 
@@ -67,7 +71,8 @@
 
 **Statut** : Infrastructure créée, découverte complète à finaliser
 
-**Tests** : À créer
+**Tests** : ✅ Créés (13 tests, coverage 93.85%)
+- `tests/test_robot_registry.py` : Tests pour initialisation, découverte robots (avec/sans Zenoh, variables d'environnement, exceptions), fermeture session, list_robots
 
 ---
 
@@ -81,7 +86,8 @@
 
 **Statut** : Infrastructure créée, routing API à finaliser
 
-**Tests** : À créer
+**Tests** : ✅ Créés (24 tests, coverage 95.95%)
+- `tests/test_robot_factory.py` : Tests pour create_multi_backend, tous les backends, gestion erreurs
 
 ---
 
@@ -93,9 +99,10 @@
 - Flag `--fast` : Mode rapide avec modèle simplifié (7 joints)
 - Support dans `RobotFactory.create_backend(fast=True)`
 
-**Statut** : Implémenté, tests à créer
+**Statut** : Implémenté, tests créés
 
-**Tests** : À créer
+**Tests** : ✅ Créés (24 tests, coverage 95.95%)
+- `tests/test_robot_factory.py` : Tests pour flag `--fast`, mode rapide avec modèle simplifié
 
 ---
 
@@ -109,13 +116,22 @@
 
 ---
 
-### 7. Tests Performance Baselines ⏳
+### 7. Tests Performance Baselines ✅
 
-**Statut** : À implémenter
+**Statut** : ✅ **FAIT** (8 Décembre 2025)
 
-**Fichiers concernés** :
-- `scripts/bbia_performance_benchmarks.py` (à modifier)
-- `.github/workflows/ci.yml` (validation baselines)
+**Fonctionnalités ajoutées** :
+- Export métriques JSONL avec p50/p95/p99
+- Validation automatique contre baselines (seuil 20%)
+- Détection régression performance automatique
+- Intégration CI avec validation
+
+**Fichiers** :
+- ✅ `scripts/bbia_performance_benchmarks.py` (export JSONL + validation)
+- ✅ `.github/workflows/ci.yml` (validation baselines ajoutée)
+- ✅ `tests/test_performance_baselines.py` (6 tests, tous passent)
+
+**Impact** : Détection automatique des régressions de performance
 
 ---
 
@@ -129,6 +145,17 @@
 - `test_speech_history()` : Historique des durées
 
 **Résultat** : 4/4 tests passent ✅
+
+### Tests Performance Baselines
+
+- `test_extract_metrics()` : Extraction métriques depuis résultats
+- `test_save_results_jsonl()` : Sauvegarde résultats en JSONL
+- `test_validate_baselines_valid()` : Validation baseline valide
+- `test_validate_baselines_invalid()` : Validation baseline invalide (régression)
+- `test_validate_baselines_missing_file()` : Gestion baseline manquant
+- `test_validate_baselines_p50_p95_p99()` : Validation spécifique p50/p95/p99
+
+**Résultat** : 6/6 tests passent ✅
 
 ---
 
@@ -144,10 +171,10 @@
 
 1. Finaliser découverte robots (implémentation complète Zenoh)
 2. Finaliser support simultané (routing API)
-3. Créer tests pour robot_registry et multi-backend
+3. ✅ Créer tests pour robot_registry et multi-backend (FAIT - 8 Décembre 2025)
 4. Implémenter mode débutant dashboard
-5. Implémenter tests performance baselines
-6. Mettre à jour documentation
+5. ✅ Implémenter tests performance baselines (FAIT - 8 Décembre 2025)
+6. ✅ Mettre à jour documentation (FAIT - 8 Décembre 2025)
 
 ---
 

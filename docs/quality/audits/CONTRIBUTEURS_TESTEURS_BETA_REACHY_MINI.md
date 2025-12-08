@@ -147,7 +147,7 @@ Ce document analyse le **travail technique concret** de chaque contributeur, leu
 **Ce que BBIA peut s'inspirer** :
 - ✅ **Déjà fait** : BBIA a 1,743 tests (supérieur à l'officiel)
 - 💡 **À améliorer** : Tests de conformité SDK plus exhaustifs (actuellement 37 tests)
-- 💡 **À améliorer** : Tests de performance avec baselines (actuellement basiques)
+- ✅ **FAIT** : Tests de performance avec baselines (export JSONL + validation p50/p95/p99)
 
 #### Pipeline CI/CD GitHub Actions
 - **Pattern** : Workflow multi-étapes (lint, tests, e2e, artifacts)
@@ -467,7 +467,7 @@ Ce document analyse le **travail technique concret** de chaque contributeur, leu
 5. **Mode débutant dashboard** (4-6h)
 6. **Intégration HF Spaces plus poussée** (6-8h)
 7. **Heartbeat WebSocket robuste** (3-4h)
-8. **Tests performance avec baselines** (4-6h)
+8. ✅ **Tests performance avec baselines** (4-6h) - **FAIT** (8 Déc 2025)
 9. **Tests conformité SDK exhaustifs** (6-8h)
 10. **Tests headless MuJoCo robustes** (3-4h)
 11. **Guides par niveau** (4-6h)

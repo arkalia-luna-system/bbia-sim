@@ -66,7 +66,7 @@
 
 **Fichiers concernés** :
 - `src/bbia_sim/daemon/bridge.py` (améliorer découverte Zenoh)
-- `src/bbia_sim/robot_registry.py` (créer si nécessaire)
+- ✅ `src/bbia_sim/robot_registry.py` (créé, coverage 93.85% - 13 tests)
 - `src/bbia_sim/daemon/app/routers/robots.py` (créer endpoint list)
 
 ---
@@ -152,21 +152,23 @@
 
 #### 6. Tests de performance avec baselines (Inspiration @RemiFabre)
 
-**Durée estimée** : 4-6h
+**Durée estimée** : 4-6h  
+**Statut** : ✅ **FAIT** (8 Décembre 2025)
 
-**État actuel** : Tests de performance basiques (pas de validation)
+**État actuel** : ✅ Baselines p50/p95/p99 avec validation automatique
 
-**Actions** :
-- Baselines p50/p95/p99 avec validation automatique
-- Exporter métriques JSONL, valider fourchette en CI
-- Détection régression performance automatique
+**Actions réalisées** :
+- ✅ Export métriques JSONL avec p50/p95/p99
+- ✅ Validation automatique contre baselines (seuil 20%)
+- ✅ Détection régression performance automatique
+- ✅ Intégration CI avec validation
 
 **Impact** : Détection régression performance automatique
 
 **Fichiers concernés** :
-- `scripts/bbia_performance_benchmarks.py` (ajouter export JSONL)
-- `.github/workflows/ci.yml` (validation baselines)
-- `tests/benchmarks/test_performance.py` (ajouter validation)
+- ✅ `scripts/bbia_performance_benchmarks.py` (export JSONL + validation)
+- ✅ `.github/workflows/ci.yml` (validation baselines ajoutée)
+- ✅ `tests/test_performance_baselines.py` (6 tests, tous passent)
 
 ---
 

@@ -92,6 +92,27 @@
 - **Ajouté :** Tests pour ImportError, timeout threads, branches hasattr, gestion exceptions, cas sans robot_api, branches elif
 - **Résultat :** Coverage amélioré de 15.51% → **87.85%** (39 tests au total)
 
+**`robot_registry.py`** ✅ **93.85%** (corrigé - 8 Décembre 2025)
+- **Avant :** 0% coverage
+- **Problème :** Aucun test
+- **Solution :** Créé `tests/test_robot_registry.py` avec 13 tests complets
+- **Ajouté :** Tests pour initialisation, découverte robots (avec/sans Zenoh, variables d'environnement, exceptions), fermeture session, list_robots (vide, avec robots, cache)
+- **Résultat :** Coverage : **93.85%** (seulement 4 lignes non couvertes : import conditionnel zenoh)
+
+**`utils/constants.py`** ✅ **100%** (corrigé - 8 Décembre 2025)
+- **Avant :** 0% coverage
+- **Problème :** Aucun test
+- **Solution :** Créé `tests/test_utils_constants.py` avec 5 tests
+- **Ajouté :** Tests pour URDF_ROOT_PATH, ASSETS_ROOT_PATH, MODELS_ROOT_PATH, validation types et valeurs
+- **Résultat :** Coverage : **100%**
+
+**`backends/simulation_shims.py`** ✅ **100%** (corrigé - 8 Décembre 2025)
+- **Avant :** 0% coverage
+- **Problème :** Aucun test
+- **Solution :** Créé `tests/test_simulation_shims.py` avec 21 tests complets
+- **Ajouté :** Tests pour SimulationIOModule (init, get_camera_stream, get_audio_stream, get_imu), SimulationMediaModule (init, propriétés, play_audio, record_audio), SimulationCamera (get_image, capture, read), SimulationMicrophone (record), SimulationSpeaker (play, play_file)
+- **Résultat :** Coverage : **100%**
+
 ---
 
 ### 3. **Modules avec coverage faible** ⚠️
@@ -120,6 +141,9 @@
 | Module | Coverage | Status |
 |--------|----------|--------|
 | `model_optimizer.py` | **100%** | ✅ Excellent |
+| `utils/constants.py` | **100%** | ✅ Excellent |
+| `backends/simulation_shims.py` | **100%** | ✅ Excellent |
+| `robot_registry.py` | **93.85%** | ✅ Excellent |
 | `robot_factory.py` | **95.95%** | ✅ Excellent |
 | `dashboard.py` | **90.48%** | ✅ Excellent |
 | `daemon/app/routers/sanity.py` | **89.19%** | ✅ Excellent |
@@ -147,6 +171,9 @@
 
 ### Modules corrigés
 - ✅ `model_optimizer.py` : **100%** coverage (9 tests créés)
+- ✅ `utils/constants.py` : **100%** coverage (5 tests créés)
+- ✅ `backends/simulation_shims.py` : **100%** coverage (21 tests créés)
+- ✅ `robot_registry.py` : **93.85%** coverage (13 tests créés)
 - ✅ `robot_factory.py` : **95.95%** coverage (24 tests créés)
 - ✅ `daemon/app/routers/sanity.py` : **89.19%** coverage (8 tests créés)
 - ✅ `bbia_emotional_sync.py` : **87.85%** coverage (39 tests, 16 nouveaux ajoutés)
@@ -159,6 +186,9 @@
 
 ### Tests créés/améliorés
 - ✅ `tests/test_model_optimizer.py` - 9 tests, coverage 100%
+- ✅ `tests/test_utils_constants.py` - 5 tests, coverage 100%
+- ✅ `tests/test_simulation_shims.py` - 21 tests, coverage 100%
+- ✅ `tests/test_robot_registry.py` - 13 tests, coverage 93.85%
 - ✅ `tests/test_robot_factory.py` - 24 tests, coverage 95.95%
 - ✅ `tests/test_bbia_emotional_sync.py` - 39 tests (16 nouveaux), coverage 87.85%
 - ✅ `tests/test_sanity_router.py` - 8 tests, coverage 89.19%
@@ -226,8 +256,8 @@ Certains modules affichent encore des warnings "Module never imported" même apr
 
 **Statistiques finales :**
 - **Fichiers modifiés** : 15
-- **Fichiers créés** : 3
-- **Tests ajoutés** : 50+ (10 initiaux + 24 robot_factory + 16 bbia_emotional_sync)
+- **Fichiers créés** : 6 (model_optimizer, robot_factory, robot_registry, utils_constants, simulation_shims, sanity_router)
+- **Tests ajoutés** : 89+ (9 model_optimizer + 24 robot_factory + 16 bbia_emotional_sync + 13 robot_registry + 5 utils_constants + 21 simulation_shims + 8 sanity_router)
 - **Imports corrigés** : 130+
 - **Fichiers problématiques restants** : **0** ✅
 
