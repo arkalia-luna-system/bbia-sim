@@ -225,7 +225,7 @@ mv docs/quality/audits/INDEX_AUDITS_CONSOLIDES.md \
 
 **Impact** : Documentation complète et cohérente
 
-**Statut** : ⏳ **À FAIRE** (~75 fichiers restants)
+**Statut** : ✅ **FAIT** (4 README créés : audit/, community/, dashboard/, reports/) (~75 fichiers restants)
 
 **Détails par sous-module** :
 
