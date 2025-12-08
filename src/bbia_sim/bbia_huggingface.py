@@ -1216,9 +1216,7 @@ class BBIAHuggingFace:
     @staticmethod
     def _shared_auto_unload_loop() -> None:
         """Boucle de déchargement automatique partagée pour toutes les instances."""
-        while not (
-            BBIAHuggingFace._shared_unload_thread_stop.is_set()
-        ):
+        while not (BBIAHuggingFace._shared_unload_thread_stop.is_set()):
             try:
                 # Attendre 10 secondes entre vérifications
                 # (ou arrêt immédiat si demandé)
