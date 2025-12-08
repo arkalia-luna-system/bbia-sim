@@ -84,7 +84,7 @@
 
 - [Conformité Reachy-Mini](quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md) — Conformité SDK
 - [Validation Qualité](quality/validation/VALIDATION_FINALE_QUALITE_2025.md) — Rapports de validation
-- [Index Audits](quality/audits/INDEX_AUDITS_CONSOLIDES.md) — Tous les audits
+- [Index Audits](quality/INDEX_AUDITS.md) — Tous les audits
 - [Pipeline CI/CD](deployment/PIPELINE_CI.md) — Intégration continue
 
 ### 🧠 Intelligence & IA

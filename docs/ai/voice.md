@@ -19,6 +19,40 @@
 
 ---
 
+## 🔄 Flux Voix BBIA (TTS/STT)
+
+```mermaid
+flowchart TB
+    subgraph "Speech-to-Text (STT)"
+        Audio[Audio Input<br/>Microphone]
+        Audio --> Whisper{Whisper disponible?}
+        Whisper -->|Oui| WhisperSTT[Whisper STT<br/>Haute qualité]
+        Whisper -->|Non| GoogleSTT[Google API<br/>Fallback]
+        WhisperSTT --> Text[Texte transcrit]
+        GoogleSTT --> Text
+    end
+    
+    subgraph "Text-to-Speech (TTS)"
+        TextInput[Texte à synthétiser]
+        TextInput --> Backend{Backend TTS}
+        Backend -->|Coqui| CoquiTTS[Coqui TTS<br/>Pitch + Émotion]
+        Backend -->|Piper| PiperTTS[Piper TTS<br/>Léger]
+        Backend -->|Fallback| Pyttsx3[pyttsx3<br/>Système macOS]
+        CoquiTTS --> AudioOut[Audio généré]
+        PiperTTS --> AudioOut
+        Pyttsx3 --> AudioOut
+    end
+    
+    subgraph "Intégration Robot"
+        AudioOut --> Robot[Reachy Mini<br/>media.speaker]
+        Robot --> Playback[Lecture audio]
+    end
+    
+    Text -.-> TextInput
+```
+
+---
+
 ## 📊 État actuel : Voix BBIA
 
 ### Implémentation actuelle (`bbia_voice.py`)

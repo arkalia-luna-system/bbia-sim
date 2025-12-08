@@ -13,9 +13,9 @@
 | Fichier | Lignes | Taille | Titres (H1-H3) | Schémas Mermaid | Référencé INDEX |
 |---------|--------|--------|----------------|------------------|-----------------|
 | `datasets.md` | 72 | 2.1KB | 12 | 0 | ✅ Oui |
-| `llm.md` | 357 | 8.3KB | 62 | 0 | ✅ Oui |
-| `modules.md` | 490 | 15KB | 42 | 0 | ✅ Oui |
-| `voice.md` | 528 | 13KB | 42 | 0 | ✅ Oui |
+| `llm.md` | 357+ | 8.3KB+ | 62 | 1 | ✅ Oui |
+| `modules.md` | 490+ | 15KB+ | 42 | 1 | ✅ Oui |
+| `voice.md` | 528+ | 13KB+ | 42 | 1 | ✅ Oui |
 
 **Total** : 4 fichiers, 1,447 lignes, ~38.4KB
 
@@ -212,18 +212,21 @@
 
 ---
 
-### P4-003 : AMÉLIORER - Ajouter schémas Mermaid (optionnel)
+### P4-003 : ✅ TERMINÉ - Ajouter schémas Mermaid
 
-**Problème** : Aucun schéma Mermaid dans `/docs/ai/`
+**État** : ✅ **AJOUTÉ** - Schémas Mermaid ajoutés dans les 3 fichiers
 
-**Action** :
-- Ajouter schéma architecture modules dans `modules.md`
-- Ajouter schéma flux LLM dans `llm.md`
-- Ajouter schéma flux voice dans `voice.md`
+**Action effectuée** :
+- ✅ Schéma architecture modules ajouté dans `modules.md` (graphique modules IA et intégration)
+- ✅ Schéma flux LLM ajouté dans `llm.md` (flowchart conversation)
+- ✅ Schéma flux voice ajouté dans `voice.md` (flowchart TTS/STT)
 
-**Impact** : Visualisation améliorée
+**Impact** : Visualisation améliorée ✅
 
-**Priorité** : 🟢 BASSE (optionnel)
+**Fichiers modifiés** :
+- ✅ `docs/ai/modules.md` - Schéma architecture ajouté
+- ✅ `docs/ai/llm.md` - Schéma flux conversation ajouté
+- ✅ `docs/ai/voice.md` - Schéma flux TTS/STT ajouté
 
 ---
 
