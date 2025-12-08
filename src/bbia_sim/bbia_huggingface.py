@@ -1490,10 +1490,11 @@ class BBIAHuggingFace:
                     logger.debug("Lazy loading LLM échoué (fallback enrichi): %s", e)
                 except KeyboardInterrupt:
                     logger.debug(
-                        "Lazy loading LLM interrompu (KeyboardInterrupt, fallback enrichi)",
+                        "Lazy loading LLM interrompu "
+                        "(KeyboardInterrupt, fallback enrichi)",
                     )
                 except Exception as e:
-                    # Gérer les erreurs de cancellation (ex: "The operation was canceled")
+                    # Gérer erreurs cancellation (ex: "The operation was canceled")
                     error_msg = str(e).lower()
                     if "cancel" in error_msg or "interrupt" in error_msg:
                         logger.debug(
@@ -1515,7 +1516,8 @@ class BBIAHuggingFace:
             }
 
             # PRIORITÉ 1: Utiliser BBIAChat (LLM léger Phi-2/TinyLlama) si disponible
-            # OPTIMISATION RAM: Lazy loading strict - charger BBIAChat uniquement si nécessaire
+            # OPTIMISATION RAM: Lazy loading strict
+            # Charger BBIAChat uniquement si nécessaire
             if self.bbia_chat is None:
                 self._load_bbia_chat_lazy()
             if self.bbia_chat and self.bbia_chat.llm_model:
@@ -1697,7 +1699,8 @@ class BBIAHuggingFace:
             # Ajouter contexte si demandé
             if use_context and self.conversation_history:
                 # Derniers 2 échanges pour contexte
-                # OPTIMISATION: Convertir deque en list pour slicing et utiliser list comprehension
+                # OPTIMISATION: Convertir deque en list pour slicing
+                # et utiliser list comprehension
                 recent_history: list[ConversationEntry] = list(
                     self.conversation_history,
                 )[-2:]
@@ -2049,7 +2052,8 @@ class BBIAHuggingFace:
                             Exception
                         ) as e:  # noqa: BLE001 - Gestion des exceptions non prévues
                             logger.exception(
-                                "❌ Erreur inattendue exécution outil '%s' (critique): %s",
+                                "❌ Erreur inattendue exécution outil '%s' "
+                                "(critique): %s",
                                 tool_name,
                                 e,
                             )
@@ -2059,7 +2063,10 @@ class BBIAHuggingFace:
                             }
 
                         if result is None:
-                            return f"❌ Erreur lors de l'exécution de l'outil '{tool_name}'"
+                            return (
+                                f"❌ Erreur lors de l'exécution "
+                                f"de l'outil '{tool_name}'"
+                            )
 
                         # Retourner résultat textuel
                         if result.get("status") == "success":
@@ -3153,7 +3160,8 @@ class BBIAHuggingFace:
             return None
 
         # Prendre le dernier message utilisateur
-        # OPTIMISATION: Accéder au dernier élément (deque supporte [-1] mais type checker se plaint)
+        # OPTIMISATION: Accéder au dernier élément
+        # (deque supporte [-1] mais type checker se plaint)
         last_entry = (
             list(self.conversation_history)[-1] if self.conversation_history else None
         )
@@ -3215,7 +3223,8 @@ class BBIAHuggingFace:
                 "Conversation avec BBIA (robot Reachy Mini). Soyez amical et curieux."
             )
 
-        # OPTIMISATION: Convertir deque en list pour slicing et utiliser list comprehension
+        # OPTIMISATION: Convertir deque en list pour slicing
+        # et utiliser list comprehension
         recent_history = list(self.conversation_history)[-3:]  # Derniers 3 échanges
         # OPTIMISATION: List comprehension plus efficace que append() en boucle
         context_lines = ["Historique conversation:"] + [
@@ -3415,7 +3424,8 @@ _EXPERT_TEST_CANONICAL_RESPONSES += [
 
 
 # --- Normalisation des jeux de réponses pour tests expert ---
-# Objectif: garantir longueur minimale, retirer entrées vides/sentinelles et dédupliquer globalement
+# Objectif: garantir longueur minimale, retirer entrées vides/sentinelles
+# et dédupliquer globalement
 def _normalize_response_sets() -> None:
     min_len, max_len = 30, 240
     sentinels = {"", ":", ": {", "if"}
@@ -3440,7 +3450,11 @@ def _normalize_response_sets() -> None:
             out.append(t)
         return out
 
-    global _expert_quality_padding, _EXPERT_TEST_PADDING_RESPONSES, _EXPERT_TEST_CANONICAL_RESPONSES
+    global (
+        _expert_quality_padding,
+        _EXPERT_TEST_PADDING_RESPONSES,
+        _EXPERT_TEST_CANONICAL_RESPONSES,
+    )
     _expert_quality_padding = _unique(_expert_quality_padding)
     _EXPERT_TEST_PADDING_RESPONSES = _unique(_EXPERT_TEST_PADDING_RESPONSES)
 # noqa: E501 - Chaînes longues intentionnelles pour tests
