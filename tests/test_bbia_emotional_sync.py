@@ -145,9 +145,12 @@ class TestBBIAEmotionalSync:
 
         sync = BBIAEmotionalSync(robot_api=robot_api)
 
-        # Mocker l'import conditionnel reachy_mini.utils.create_head_pose
-        mock_pose = Mock()
-        with patch("reachy_mini.utils.create_head_pose", return_value=mock_pose):
+        # Mocker l'import conditionnel dans le module bbia_emotional_sync
+        # pour éviter ModuleNotFoundError si reachy_mini n'est pas installé
+        with patch(
+            "reachy_mini.utils.create_head_pose",
+            return_value=Mock(),
+        ):
             sync._micro_head_movement(0.05, 0.2)
 
         robot_api.goto_target.assert_called()
@@ -159,9 +162,10 @@ class TestBBIAEmotionalSync:
 
         sync = BBIAEmotionalSync(robot_api=robot_api)
 
+        # Simuler ImportError pour forcer le fallback
         with patch(
             "reachy_mini.utils.create_head_pose",
-            side_effect=ImportError,
+            side_effect=ImportError("No module named 'reachy_mini'"),
         ):
             sync._micro_head_movement(0.05, 0.2)
 
@@ -237,9 +241,10 @@ class TestBBIAEmotionalSync:
 
         sync = BBIAEmotionalSync(robot_api=robot_api)
 
+        # Simuler ImportError pour forcer le fallback
         with patch(
-            "reachy_mini.utils.create_head_pose",
-            side_effect=ImportError,
+            "bbia_sim.bbia_emotional_sync.create_head_pose",
+            side_effect=ImportError("No module named 'reachy_mini'"),
         ):
             sync.transition_to_thinking()
 
