@@ -1,6 +1,6 @@
 # 🔄 Guide de Migration BBIA-SIM : Simulation → Robot Reachy Mini Réel
 
-**Date** : 26 Novembre 2025  
+**Date** : 8 Décembre 2025  
 **Version** : 1.0
 
 ## Vue d'ensemble
@@ -17,7 +17,7 @@ Ce guide vous accompagne dans la migration de votre projet BBIA-SIM depuis la si
 
 ### RobotAPI unifié — avantage clé
 
-```mermaid 📊
+```mermaid
 graph TB
     subgraph "BBIA Modules"
         EMOTIONS[bbia_emotions.py]
@@ -64,7 +64,7 @@ Avantage : aucune modification des modules BBIA nécessaire.
 
 ### Flux de migration
 
-```mermaid 📊
+```mermaid
 flowchart TD
     START[Projet en simulation<br/>MuJoCoBackend] --> CHECK{SDK installé ?}
     CHECK -->|Non| INSTALL[Installer reachy-mini<br/>pip install reachy-mini]
@@ -450,7 +450,7 @@ Le projet BBIA-SIM est prêt pour le robot réel.
 
 ---
 
-**Dernière mise à jour** : 26 Novembre 2025
+**Dernière mise à jour** : 8 Décembre 2025
 
 ---
 

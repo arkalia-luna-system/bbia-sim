@@ -1,6 +1,6 @@
 # 📚 Index Complet — Documentation BBIA-SIM
 
-> **Documentation complète du moteur cognitif BBIA-SIM**  
+> **Documentation complète du moteur cognitif BBIA-SIM**
 > *Organisée par usage • Navigation intuitive • Contenu exhaustif*
 
 ---
@@ -15,9 +15,9 @@
 | **Dashboard** | `python src/bbia_sim/dashboard_advanced.py` | Instant | [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) |
 | **Premier robot** | Voir guide | 5 min | [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) ⭐ |
 
-**Configuration :** Python 3.11+ requis • **Version** : v1.4.0 • **Date** : 26 Novembre 2025
+**Configuration :** Python 3.11+ requis • **Version** : v1.4.0 • **Date** : 8 Décembre 2025
 
-**Mise à jour 26 Novembre 2025** :
+**Mise à jour 8 Décembre 2025** :
 - 44 exemples disponibles
 - Comportements, endpoints et modules avec exemples dédiés
 
@@ -50,7 +50,7 @@
 ### ✅ QA / Tests
 
 1. [Guide de Test](development/testing.md) — Guide complet
-2. [Index Audits](quality/audits/INDEX_AUDITS_CONSOLIDES.md) — Tous les audits
+2. [Index Audits](quality/INDEX_AUDITS.md) — Tous les audits
 3. [Corrections Appliquées](quality/corrections/applied.md) — Corrections
 4. [Validation Qualité](quality/validation/VALIDATION_FINALE_QUALITE_2025.md) — Rapports
 
@@ -84,7 +84,7 @@
 
 - [Conformité Reachy-Mini](quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md) — Conformité SDK
 - [Validation Qualité](quality/validation/VALIDATION_FINALE_QUALITE_2025.md) — Rapports de validation
-- [Index Audits](quality/audits/INDEX_AUDITS_CONSOLIDES.md) — Tous les audits
+- [Index Audits](quality/INDEX_AUDITS.md) — Tous les audits
 - [Pipeline CI/CD](deployment/PIPELINE_CI.md) — Intégration continue
 
 ### 🧠 Intelligence & IA
@@ -189,7 +189,7 @@ export BBIA_TELEMETRY_TIMEOUT=1.0
 
 ## 📋 Organisation de la Documentation
 
-La documentation a été réorganisée le **27 Novembre 2025** pour une meilleure navigation :
+La documentation a été réorganisée le **8 Décembre 2025** pour une meilleure navigation :
 
 - ✅ **Dossiers vides supprimés** : `rapports/`, `semaines/`
 - ✅ **Fichiers obsolètes archivés** : Voir `quality/audits/archives/`
@@ -200,7 +200,7 @@ La documentation a été réorganisée le **27 Novembre 2025** pour une meilleur
 
 ## 🎯 Navigation
 
-**Retour à** : [README Documentation](README.md)  
+**Retour à** : [README Documentation](README.md)
 **Voir aussi** : [Index Thématique](reference/INDEX_THEMATIQUE.md)
 
-**Dernière mise à jour** : 27 Novembre 2025
+**Dernière mise à jour** : 8 Décembre 2025

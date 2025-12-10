@@ -1,6 +1,6 @@
 # 📱 Guide d'Installation PWA - BBIA Dashboard
 
-**Date** : 24 Novembre 2025  
+**Date** : 8 Décembre 2025
 **Version** : 1.0
 
 ---
@@ -25,7 +25,7 @@ Une **Progressive Web App (PWA)** est une application web qui peut être install
 
 1. **Ouvrir le dashboard** dans Chrome Android
    ```
-   http://votre-ip:8000
+ http://votre-ip:8000
    ```
 
 2. **Menu Chrome** (3 points en haut à droite)
@@ -54,7 +54,7 @@ Une **Progressive Web App (PWA)** est une application web qui peut être install
 
 1. **Ouvrir le dashboard** dans Safari iOS
    ```
-   http://votre-ip:8000
+ http://votre-ip:8000
    ```
 
 2. **Bouton de partage** (carré avec flèche)
@@ -86,7 +86,7 @@ Une **Progressive Web App (PWA)** est une application web qui peut être install
 
 1. **Ouvrir le dashboard** dans Chrome ou Edge
    ```
-   http://localhost:8000
+ http://localhost:8000
    ```
 
 2. **Icône d'installation** dans la barre d'adresse
@@ -215,6 +215,6 @@ Une **Progressive Web App (PWA)** est une application web qui peut être install
 
 ---
 
-**Dernière mise à jour** : 24 Novembre 2025  
+**Dernière mise à jour** : 8 Décembre 2025
 **Version BBIA** : 1.3.2
 

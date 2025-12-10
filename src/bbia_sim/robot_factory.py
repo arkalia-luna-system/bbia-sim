@@ -27,6 +27,7 @@ class RobotFactory:
         Args:
             backend_type: Type de backend ("mujoco", "reachy", ou "reachy_mini")
             **kwargs: Arguments spécifiques au backend
+                - fast: Si True, utilise modèle simplifié (7 joints) pour tests rapides
 
         Returns:
             Instance du backend ou None si erreur
@@ -34,10 +35,17 @@ class RobotFactory:
         """
         try:
             if backend_type.lower() == "mujoco":
-                model_path = kwargs.get(
-                    "model_path",
-                    "src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml",
-                )
+                # Support mode rapide (modèle simplifié)
+                if kwargs.get("fast", False):
+                    model_path = kwargs.get(
+                        "model_path",
+                        "src/bbia_sim/sim/models/reachy_mini.xml",  # 7 joints
+                    )
+                else:
+                    model_path = kwargs.get(
+                        "model_path",
+                        "src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml",  # 16 joints
+                    )
                 return MuJoCoBackend(model_path=model_path)
 
             if backend_type.lower() == "reachy":
@@ -126,3 +134,38 @@ class RobotFactory:
             "port": port,
             "backends_available": RobotFactory.get_available_backends(),
         }
+
+    @staticmethod
+    def create_multi_backend(
+        backends: list[str] | None = None, **kwargs: Any
+    ) -> dict[str, "RobotAPI | None"]:
+        """Crée plusieurs backends simultanément pour support sim/robot réel.
+
+        Args:
+            backends: Liste des types de backends à créer. Si None, crée tous disponibles
+            **kwargs: Arguments spécifiques aux backends
+
+        Returns:
+            Dictionnaire {backend_type: backend_instance}
+
+        Note:
+            Permet d'avoir sim ET robot réel actifs simultanément.
+            Routing selon commande via API.
+
+        """
+        if backends is None:
+            backends = RobotFactory.get_available_backends()
+
+        multi_backends: dict[str, RobotAPI | None] = {}
+
+        for backend_type in backends:
+            try:
+                backend = RobotFactory.create_backend(backend_type, **kwargs)
+                if backend:
+                    multi_backends[backend_type] = backend
+                    logger.info("Backend %s créé avec succès", backend_type)
+            except Exception as e:
+                logger.warning("Impossible de créer backend %s: %s", backend_type, e)
+                multi_backends[backend_type] = None
+
+        return multi_backends

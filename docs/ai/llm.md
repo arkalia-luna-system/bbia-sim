@@ -1,7 +1,7 @@
 # Intelligence conversationnelle LLM - guide complet
 
-**Date :** 26 Novembre 2025  
-**Dernière mise à jour :** 26 Novembre 2025  
+**Date :** 8 Décembre 2025  
+**Dernière mise à jour :** 8 Décembre 2025  
 **Objectif :** LLM conversationnel léger (Phi-2/TinyLlama) pour conversations intelligentes
 
 ---
@@ -12,6 +12,33 @@ Remplacer les réponses basées sur règles par un LLM conversationnel qui compr
 
 **Avant :** Règles + sentiment analysis (limité)  
 **Après :** BBIAChat avec Phi-2/TinyLlama (conversations naturelles avec contexte, personnalités, émotions)
+
+---
+
+## 🔄 Flux Conversation LLM
+
+```mermaid
+flowchart LR
+    User[Utilisateur] --> Input[Message utilisateur]
+    Input --> BBIAChat[BBIAChat]
+    
+    BBIAChat --> Check{Modèle chargé?}
+    Check -->|Non| Load[Charger modèle<br/>Phi-2 ou TinyLlama]
+    Load --> Check
+    Check -->|Oui| Process[Traiter message]
+    
+    Process --> Context[Contexte conversation<br/>Historique 10 messages]
+    Context --> Personality[Personnalité<br/>friendly/professional/playful/calm/enthusiastic]
+    Personality --> LLM[Génération LLM]
+    
+    LLM --> Response[Réponse générée]
+    Response --> Emotion[Analyse émotion]
+    Emotion --> Action{Détection action?}
+    Action -->|Oui| Execute[Exécuter action robot]
+    Action -->|Non| Output[Retourner réponse]
+    Execute --> Output
+    Output --> User
+```
 
 ---
 
@@ -347,7 +374,7 @@ response = bbia.chat("Bonjour")
 
 ---
 
-**Status :** ✅ **TERMINÉ** (19 Novembre 2025) - BBIAChat avec Phi-2/TinyLlama, 5 personnalités, émotions, préférences
+**Status :** ✅ **TERMINÉ** (8 Décembre 2025) - BBIAChat avec Phi-2/TinyLlama, 5 personnalités, émotions, préférences
 
 ---
 

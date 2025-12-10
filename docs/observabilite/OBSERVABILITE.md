@@ -1,7 +1,7 @@
 # 📊 Observabilité - Logs, Métriques, Santé
 
-**Date** : Oct / Nov. 2025  
-**Version** : 1.0  
+**Date** : Oct / Nov. 2025
+**Version** : 1.0
 **Compatibilité Python** : 3.11+
 
 > **Liens utiles** : [`docs/reference/INDEX_THEMATIQUE.md`](../reference/INDEX_THEMATIQUE.md), [`docs/reference/project-status.md`](../reference/project-status.md)

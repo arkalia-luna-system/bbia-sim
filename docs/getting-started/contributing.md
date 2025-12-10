@@ -1,6 +1,6 @@
 # 🎯 Good First Issues - Suggestions pour Nouveaux Contributeurs
 
-**Date**: 26 Novembre 2025  
+**Date**: 8 Décembre 2025  
 **Pour nouveaux contributeurs** : Idéal pour débuter avec le projet
 
 ---
@@ -15,7 +15,7 @@
 
 **Description** :
 
-- ⚠️ **Issue GitHub #4** : ✅ **CLARIFICATION AJOUTÉE** (26 Novembre 2025)
+- ⚠️ **Issue GitHub #4** : ✅ **CLARIFICATION AJOUTÉE** (8 Décembre 2025)
 - ⚠️ La fonction `_capture_audio_chunk()` mentionnée dans l'issue **n'existe pas** dans le code actuel
 - ✅ Coverage actuel : **87.76%** (excellent ✅)
 - Tests existants : `test_bbia_audio_coverage_high.py`, `test_bbia_audio_improved.py`
@@ -71,7 +71,7 @@
 **Description** :
 
 - ✅ Coverage actuel : **81.71%** (déjà excellent ✅)
-- **Issue GitHub #6** : ✅ **TESTS IMPLÉMENTÉS** (26 Novembre 2025)
+- **Issue GitHub #6** : ✅ **TESTS IMPLÉMENTÉS** (8 Décembre 2025)
   - ✅ Séquences rapides (happy → sad → excited en < 1 seconde)
   - ✅ Transitions avec durées différentes
   - ✅ Tests de stress (15 transitions successives)
@@ -106,7 +106,7 @@
 
 **Description** :
 
-- **Issue GitHub #7** : ✅ **TESTS IMPLÉMENTÉS** (26 Novembre 2025)
+- **Issue GitHub #7** : ✅ **TESTS IMPLÉMENTÉS** (8 Décembre 2025)
 - ✅ Le code crée bien des bbox avec les 6 champs requis
 - ✅ Test spécifique ajouté pour valider la structure complète
 
@@ -136,7 +136,7 @@
 
 **Description** :
 
-- **Issue GitHub #8** : ✅ **TESTS IMPLÉMENTÉS** (26 Novembre 2025)
+- **Issue GitHub #8** : ✅ **TESTS IMPLÉMENTÉS** (8 Décembre 2025)
 - ✅ Tests basiques existent
 - ✅ Tests avancés ajoutés :
   - ✅ Commandes avec ponctuation (`"salue!"`, `"bonjour?"`, `"regarde-moi!"`)
@@ -392,7 +392,7 @@ assignees: []
 
 ---
 
-**Dernière mise à jour** : 26 Novembre 2025
+**Dernière mise à jour** : 8 Décembre 2025
 
 ---
 

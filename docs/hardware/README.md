@@ -35,4 +35,4 @@
 
 ---
 
-**Dernière mise à jour** : 27 Novembre 2025
+**Dernière mise à jour** : 8 Décembre 2025

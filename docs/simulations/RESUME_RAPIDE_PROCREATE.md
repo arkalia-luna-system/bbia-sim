@@ -1,6 +1,6 @@
 # ⚡ Résumé Rapide - Procreate pour Scène MuJoCo
 
-**Date** : 21 Novembre 2025
+**Date** : 8 Décembre 2025
 
 > **Guide ultra-rapide** : Les essentiels en 2 minutes
 
@@ -81,4 +81,4 @@
 
 ---
 
-*Résumé Rapide - BBIA-SIM - 21 Novembre 2025*
+*Résumé Rapide - BBIA-SIM - 8 Décembre 2025*

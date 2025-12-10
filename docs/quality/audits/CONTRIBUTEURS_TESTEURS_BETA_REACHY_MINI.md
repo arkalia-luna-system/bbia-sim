@@ -1,594 +1,502 @@
-# 👥 CONTRIBUTEURS ET TESTEURS BÊTA - Reachy Mini Officiel
+# 👥 TRAVAIL TECHNIQUE DES CONTRIBUTEURS - Inspiration pour BBIA
 
-**Date** : 27 Novembre 2025 (Mise à jour)  
+**Date** : 8 Décembre 2025 (Mise à jour)  
 **Source** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini)  
 **Version SDK** : v1.1.1 (Latest - Nov 25, 2025)  
-**Objectif** : Documenter les 19 contributeurs et testeurs bêta du projet officiel
+**Objectif** : Analyser le travail technique de chaque contributeur et identifier ce dont BBIA peut s'inspirer
 
 ---
 
-## 📊 RÉSUMÉ EXÉCUTIF
+## 🎯 APPROCHE
 
-**Total contributeurs** : 19 contributeurs identifiés  
-**Période analysée** : 11 mai 2025 au 23 novembre 2025  
-**Commits totaux** : 1,566 commits  
-**Branche principale** : `develop`  
-**Testeurs bêta** : Communauté active (Hugging Face Spaces, GitHub)  
-**Statut BBIA** : En développement (1 développeur principal)
+Ce document analyse le **travail technique concret** de chaque contributeur, leurs **patterns et techniques**, et ce que **BBIA peut s'inspirer** de leur approche.
+
+**Pas de statistiques de commits** - Seulement le travail technique et les innovations.
 
 ---
 
-## 👨‍💻 CONTRIBUTEURS OFFICIELS (19 contributeurs)
+## 👨‍💻 CONTRIBUTEURS PRINCIPAUX - TRAVAIL TECHNIQUE
 
-### Contributeurs Principaux (Core Developers)
+### 1. @pierre-rouanet - Architecture SDK & Daemon
 
-#### 1. @pierre-rouanet
-**Rôle** : Core Developer Principal  
-**Contributions** :
-- **467 commits** (29.8% du total)
-- **33,909 ++** (ajouts)
-- **29,321 --** (suppressions)
-- **Pic d'activité** : 47 commits/semaine max
-- Architecture principale du SDK
-- Développement daemon
-- Intégration SDK officiel
-- Gestion backend simulation/robot réel
+**Travail technique principal** :
 
-**Travail documenté** :
-- Développement principal du SDK Python
-- Architecture daemon FastAPI
-- Intégration MuJoCo
-- Backends USB et wireless
-- Architecture Zenoh pour communication
+#### Architecture Daemon FastAPI
+- **Pattern** : Service d'arrière-plan avec FastAPI pour API REST + WebSocket
+- **Approche** : Séparation claire entre daemon (communication hardware) et SDK (interface Python)
+- **Innovation** : Support simultané simulation MuJoCo ET robot réel via même daemon
+- **Technique** : Lifespan context manager pour gestion cycle de vie (startup/shutdown)
 
-**GitHub** : [@pierre-rouanet](https://github.com/pierre-rouanet)
+**Ce que BBIA peut s'inspirer** :
+- ✅ **Déjà fait** : BBIA a daemon FastAPI similaire (`src/bbia_sim/daemon/app/main.py`)
+- 💡 **À améliorer** : Lifespan context manager plus robuste (gestion erreurs startup)
+- ⏳ **INFRASTRUCTURE CRÉÉE** (8 Déc 2025) : Support simultané sim/robot réel (infrastructure créée, routing à finaliser)
 
-**Comparaison BBIA** :
-- ✅ BBIA utilise le SDK développé par @pierre-rouanet
-- ✅ Architecture daemon similaire (FastAPI)
-- ✅ Backends compatibles
-- ✅ Communication Zenoh intégrée
+#### Architecture Zenoh pour Communication
+- **Pattern** : Communication distribuée via Zenoh (pub/sub, discovery automatique)
+- **Approche** : Abstraction réseau pour communication robot (USB, wireless, réseau)
+- **Innovation** : Découverte automatique robots sur réseau local
+- **Technique** : Configuration Zenoh via variables d'environnement
 
----
+**Ce que BBIA peut s'inspirer** :
+- ✅ **Déjà fait** : BBIA a bridge Zenoh (`src/bbia_sim/daemon/bridge.py`)
+- ⏳ **INFRASTRUCTURE CRÉÉE** (8 Déc 2025) : Découverte automatique robots (infrastructure créée, découverte complète à finaliser)
+- 💡 **À améliorer** : Support multi-robots simultanés via Zenoh
 
-#### 2. @apirrone
-**Rôle** : Core Developer (Simulation)  
-**Contributions** :
-- **278 commits** (17.8% du total)
-- **57,029 ++** (ajouts)
-- **43,590 --** (suppressions)
-- **Pic d'activité** : 32 commits/semaine max
-- Simulation MuJoCo
-- Modèles 3D
-- Intégration physique
-- Scènes simulation
+#### Backends USB et Wireless
+- **Pattern** : Backends séparés mais interface unifiée
+- **Approche** : Détection automatique du type de connexion (USB vs wireless)
+- **Innovation** : Fallback gracieux si un backend échoue
+- **Technique** : Factory pattern pour instanciation backend
 
-**Travail documenté** :
-- Développement simulation MuJoCo
-- Modèles 3D officiels
-- Intégration physique réaliste
-- Scènes (empty, minimal)
-- Optimisations performance simulation
-
-**GitHub** : [@apirrone](https://github.com/apirrone)
-
-**Comparaison BBIA** :
-- ✅ BBIA utilise modèles 3D officiels
-- ✅ Simulation MuJoCo complète
-- ✅ Scènes compatibles
-- ✅ Optimisations appliquées
+**Ce que BBIA peut s'inspirer** :
+- ✅ **Déjà fait** : BBIA a RobotAPI unifié avec backends séparés
+- 💡 **À améliorer** : Détection automatique type connexion (actuellement choix manuel)
+- 💡 **À améliorer** : Fallback automatique sim → robot si robot disponible
 
 ---
 
-#### 3. @FabienDanieau
-**Rôle** : Core Developer (Dashboard & API)  
-**Contributions** :
-- **171 commits** (10.9% du total)
-- **10,632 ++** (ajouts)
-- **2,806 --** (suppressions)
-- **Pic d'activité** : 29 commits/semaine max
-- Dashboard web
-- API REST
-- Interface utilisateur
-- WebSocket
+### 2. @apirrone - Simulation MuJoCo & Modèles 3D
 
-**Travail documenté** :
-- Développement dashboard officiel
-- Endpoints API REST
-- Interface web simple
-- Communication WebSocket
-- Intégration Hugging Face Spaces
+**Travail technique principal** :
 
-**GitHub** : [@FabienDanieau](https://github.com/FabienDanieau)
+#### Modèles 3D Officiels
+- **Pattern** : Modèles XML MuJoCo avec assets STL séparés
+- **Approche** : Modèle simplifié (7 joints) + modèle complet (16 joints)
+- **Innovation** : Chargement conditionnel selon besoins (performance vs précision)
+- **Technique** : Assets STL référencés relativement dans XML
 
-**Comparaison BBIA** :
-- ✅ BBIA a 4 dashboards (supérieur)
-- ✅ API REST conforme + étendue
-- ✅ WebSocket avancé temps réel
-- ✅ Intégration HF Spaces prête
+**Ce que BBIA peut s'inspirer** :
+- ✅ **Déjà fait** : BBIA utilise `reachy_mini_REAL_OFFICIAL.xml` (modèle complet)
+- ✅ **FAIT** (8 Déc 2025) : Support modèle simplifié pour tests rapides (flag `--fast` implémenté)
+- 💡 **À améliorer** : Chargement lazy des assets STL (actuellement tout chargé au démarrage)
 
----
+#### Intégration Physique Réaliste
+- **Pattern** : Physique MuJoCo avec masses, inerties, collisions
+- **Approche** : Timestep fixe 0.01s (100Hz) pour stabilité
+- **Innovation** : Support headless pour CI/CD (pas besoin d'affichage)
+- **Technique** : Viewer MuJoCo optionnel (mode graphique vs headless)
 
-#### 4. @RemiFabre
-**Rôle** : Core Developer (Tests & CI/CD)  
-**Contributions** :
-- **118 commits** (7.5% du total)
-- **16,079 ++** (ajouts)
-- **14,937 --** (suppressions)
-- **Pic d'activité** : 34 commits/semaine max
-- Tests automatisés
-- CI/CD
-- Qualité code
-- Validation
+**Ce que BBIA peut s'inspirer** :
+- ✅ **Déjà fait** : BBIA a simulation MuJoCo complète avec physique
+- 💡 **À améliorer** : Optimisation timestep adaptatif (actuellement fixe 0.01s)
+- 💡 **À améliorer** : Support scènes complexes avec objets interactifs (actuellement scène vide)
 
-**Travail documenté** :
-- Suite de tests
-- Pipeline CI/CD GitHub Actions
-- Qualité code (black, ruff, mypy)
-- Validation conformité
-- Pre-commit hooks
+#### Optimisations Performance Simulation
+- **Pattern** : Cache modèles préchargés, batch processing
+- **Approche** : Limite steps pour éviter boucles infinies
+- **Innovation** : Déchargement modèle après arrêt pour libérer RAM
+- **Technique** : Monitoring performance (FPS, latence) intégré
 
-**GitHub** : [@RemiFabre](https://github.com/RemiFabre)
-
-**Comparaison BBIA** :
-- ✅ BBIA : 1,743 tests (supérieur)
-- ✅ CI/CD complet
-- ✅ Qualité code excellente
-- ✅ Pre-commit configuré
+**Ce que BBIA peut s'inspirer** :
+- ✅ **Déjà fait** : BBIA a limite 10000 steps et déchargement modèle
+- 💡 **À améliorer** : Cache plus agressif pour modèles fréquemment utilisés
+- 💡 **À améliorer** : Batch processing pour mouvements multiples simultanés
 
 ---
 
-#### 5. @askuric
-**Rôle** : Contributor (Documentation)  
-**Contributions** :
-- **104 commits** (6.6% du total)
-- **9,249 ++** (ajouts)
-- **5,081 --** (suppressions)
-- **Pic d'activité** : 16 commits/semaine max
-- Documentation
-- Exemples
-- Guides utilisateur
-- Démonstrations
+### 3. @FabienDanieau - Dashboard Web & API REST
 
-**Travail documenté** :
-- Guides d'utilisation
-- Exemples de base
-- Documentation API
-- Démonstrations
-- Tutoriels
+**Travail technique principal** :
 
-**GitHub** : [@askuric](https://github.com/askuric)
+#### Dashboard Web Simple
+- **Pattern** : Interface web minimaliste avec FastAPI + templates Jinja2
+- **Approche** : Contrôles de base (on/off, mouvements simples)
+- **Innovation** : Intégration Hugging Face Spaces pour recherche apps
+- **Technique** : StaticFiles pour assets, WebSocket pour temps réel
 
-**Comparaison BBIA** :
-- ✅ BBIA : 219 fichiers MD (supérieur)
-- ✅ 67 exemples (supérieur)
-- ✅ Guides détaillés
-- ✅ Documentation exhaustive
+**Ce que BBIA peut s'inspirer** :
+- ✅ **Déjà fait** : BBIA a 4 dashboards (supérieur à l'officiel)
+- 💡 **À améliorer** : Intégration Hugging Face Spaces plus poussée (actuellement basique)
+- 💡 **À améliorer** : Interface plus simple pour débutants (BBIA est très complet mais complexe)
 
----
+#### Endpoints API REST
+- **Pattern** : RESTful API avec OpenAPI/Swagger documentation
+- **Approche** : Endpoints séparés par domaine (motion, state, media, etc.)
+- **Innovation** : Rate limiting et authentification Bearer Token
+- **Technique** : Pydantic models pour validation entrées/sorties
 
-### Contributeurs Spécialisés
+**Ce que BBIA peut s'inspirer** :
+- ✅ **Déjà fait** : BBIA a API REST complète avec 50+ endpoints
+- 💡 **À améliorer** : Rate limiting plus granulaire (actuellement global)
+- 💡 **À améliorer** : Documentation OpenAPI plus détaillée avec exemples
 
-#### 6. @cdussieux
-**Rôle** : Contributor (Hardware)  
-**Contributions** : 3 commits (6 ++, 5 --)  
-**Travail** :
-- Support hardware
-- Communication USB
-- Détection périphériques
-- Troubleshooting hardware
+#### Communication WebSocket
+- **Pattern** : WebSocket pour télémétrie temps réel
+- **Approche** : Batching optimisé pour réduire overhead réseau
+- **Innovation** : Support multi-clients simultanés
+- **Technique** : Heartbeat pour détecter déconnexions
 
-**Travail documenté** :
-- Support USB (version Lite)
-- Détection ports série
-- Communication hardware
-- Résolution problèmes USB
-
-**GitHub** : [@cdussieux](https://github.com/cdussieux)
-
-**Comparaison BBIA** :
-- ✅ BBIA : Support USB via backend
-- ✅ Détection automatique périphériques
-- ✅ Gestion gracieuse hardware absent
+**Ce que BBIA peut s'inspirer** :
+- ✅ **Déjà fait** : BBIA a WebSocket temps réel avec batching
+- 💡 **À améliorer** : Heartbeat plus robuste (actuellement basique)
+- 💡 **À améliorer** : Support reconnection automatique côté client
 
 ---
 
-#### 7. @alozowski
-**Rôle** : Contributor (Vision)  
-**Contributions** : 16 commits (1,344 ++, 349 --)  
-**Travail** :
-- Intégration caméra
-- Vision par ordinateur
-- Détection objets
-- Traitement image
+### 4. @RemiFabre - Tests & CI/CD
 
-**Travail documenté** :
-- Support caméra
-- Vision basique
-- Détection objets simples
-- Traitement image
+**Travail technique principal** :
 
-**GitHub** : [@alozowski](https://github.com/alozowski)
+#### Suite de Tests Automatisés
+- **Pattern** : Tests unitaires + intégration + E2E
+- **Approche** : Fixtures pytest pour setup/teardown
+- **Innovation** : Tests de conformité SDK (validation API)
+- **Technique** : Mocking pour tests sans hardware
 
-**Comparaison BBIA** :
-- ✅ BBIA : YOLO + MediaPipe + SmolVLM2 (supérieur)
-- ✅ Vision avancée
-- ✅ Détection objets/visages complète
+**Ce que BBIA peut s'inspirer** :
+- ✅ **Déjà fait** : BBIA a 1,743 tests (supérieur à l'officiel)
+- 💡 **À améliorer** : Tests de conformité SDK plus exhaustifs (actuellement 37 tests)
+- ✅ **FAIT** : Tests de performance avec baselines (export JSONL + validation p50/p95/p99)
 
----
+#### Pipeline CI/CD GitHub Actions
+- **Pattern** : Workflow multi-étapes (lint, tests, e2e, artifacts)
+- **Approche** : Matrice Python (3.11, 3.12) pour compatibilité
+- **Innovation** : Tests headless MuJoCo en CI (pas besoin d'affichage)
+- **Technique** : Artifacts upload (coverage, logs) sur échec
 
-#### 8. @oxkitsune
-**Rôle** : Contributor (Audio)  
-**Contributions** : 10 commits (524 ++, 576 --)  
-**Travail** :
-- Support audio
-- Microphone array
-- Enregistrement audio
-- Traitement audio
+**Ce que BBIA peut s'inspirer** :
+- ✅ **Déjà fait** : BBIA a CI/CD complet avec matrice Python
+- 💡 **À améliorer** : Tests headless MuJoCo plus robustes (actuellement parfois instables)
+- 💡 **À améliorer** : Sharding tests si durée > 10 min (actuellement séquentiel)
 
-**Travail documenté** :
-- Support microphone array
-- Enregistrement audio
-- Traitement audio basique
-- Support reSpeaker
+#### Qualité Code (Black, Ruff, MyPy)
+- **Pattern** : Pre-commit hooks + CI validation
+- **Approche** : Formatage automatique + linting strict
+- **Innovation** : Type checking MyPy pour sécurité types
+- **Technique** : Configuration partagée via `pyproject.toml`
 
-**GitHub** : [@oxkitsune](https://github.com/oxkitsune)
-
-**Comparaison BBIA** :
-- ✅ BBIA : Audio avancé (Whisper STT)
-- ✅ Gestion gracieuse reSpeaker
-- ✅ Support multiplateforme
+**Ce que BBIA peut s'inspirer** :
+- ✅ **Déjà fait** : BBIA a Black, Ruff, MyPy, Bandit configurés
+- 💡 **À améliorer** : MyPy strict mode (actuellement permissive)
+- 💡 **À améliorer** : Pre-commit hooks plus complets (actuellement basiques)
 
 ---
 
-#### 9. @tfrere
-**Rôle** : Contributor (Wireless)  
-**Contributions** : 9 commits (217 ++, 123 --)  
-**Travail** :
-- Support wireless
-- Communication réseau
-- Wi-Fi
-- Raspberry Pi
+### 5. @askurique - Documentation & Exemples
 
-**Travail documenté** :
-- Support version wireless
-- Communication réseau
-- Configuration Wi-Fi
-- Support Raspberry Pi
+**Travail technique principal** :
 
-**GitHub** : [@tfrere](https://github.com/tfrere)
+#### Guides d'Utilisation
+- **Pattern** : Documentation Markdown avec exemples code
+- **Approche** : Guides par niveau (débutant, intermédiaire, avancé)
+- **Innovation** : Exemples exécutables (scripts Python complets)
+- **Technique** : Liens croisés entre docs pour navigation
 
-**Comparaison BBIA** :
-- ✅ BBIA : Support wireless via backend
-- ✅ Communication réseau
-- ✅ Configuration hostname/port
+**Ce que BBIA peut s'inspirer** :
+- ✅ **Déjà fait** : BBIA a 219 fichiers MD (supérieur à l'officiel)
+- 💡 **À améliorer** : Guides par niveau plus clairs (actuellement tout mélangé)
+- 💡 **À améliorer** : Exemples exécutables avec validation automatique
 
----
+#### Exemples de Base
+- **Pattern** : Exemples simples → complexes (progression)
+- **Approche** : Un exemple = une fonctionnalité
+- **Innovation** : Exemples avec erreurs communes et solutions
+- **Technique** : Commentaires détaillés dans code
 
-#### 10. @haixuanTao
-**Rôle** : Contributor (IA)  
-**Contributions** : 6 commits (32 ++, 19 --)  
-**Travail** :
-- Intégration IA
-- LLM conversationnel
-- NLP
-- Intelligence artificielle
-
-**Travail documenté** :
-- Intégration LLM
-- Conversation basique
-- NLP simple
-- IA optionnelle
-
-**GitHub** : [@haixuanTao](https://github.com/haixuanTao)
-
-**Comparaison BBIA** :
-- ✅ BBIA : IA avancée (15+ modules)
-- ✅ LLM intégré complet
-- ✅ NLP avancé
+**Ce que BBIA peut s'inspirer** :
+- ✅ **Déjà fait** : BBIA a 67 exemples (supérieur à l'officiel)
+- 💡 **À améliorer** : Progression plus claire (débutant → expert)
+- 💡 **À améliorer** : Exemples avec erreurs communes documentées
 
 ---
 
-#### 11. @AnneCharlotte-pollen
-**Rôle** : Contributor (Documentation)  
-**Contributions** : 4 commits (11 ++, 3 --)  
-**Travail** :
-- Documentation utilisateur
-- Guides
-- Tutoriels
-- Support utilisateur
+## 🧪 PROJETS COMMUNAUTAIRES - INSPIRATION
 
-**Travail documenté** :
-- Guides d'utilisation
-- Documentation API
-- Tutoriels
-- Support communauté
+### 1. reachy-mini-plugin (LAURA-agent)
 
-**GitHub** : [@AnneCharlotte-pollen](https://github.com/AnneCharlotte-pollen)
+**Travail technique** :
+- **Pattern** : Plugin pour mouvements émotionnels naturels pendant conversation
+- **Approche** : Synchronisation fine mouvements ↔ timing parole
+- **Innovation** : Micro-mouvements pendant écoute (antennes, tête)
+- **Technique** : États conversationnels (IDLE, LISTENING, THINKING, SPEAKING)
 
-**Comparaison BBIA** :
-- ✅ BBIA : 219 fichiers MD (supérieur)
-- ✅ Guides exhaustifs
-- ✅ Documentation complète
+**Ce que BBIA peut s'inspirer** :
+- ✅ **Déjà fait** : BBIA a `bbia_emotional_sync.py` avec synchronisation fine
+- ✅ **Déjà fait** : BBIA a états conversationnels (IDLE, LISTENING, THINKING, SPEAKING, REACTING)
+- ✅ **FAIT** (8 Déc 2025) : Micro-mouvements plus subtils pendant écoute (0.01-0.02 rad, effet respiration)
+- ✅ **FAIT** (8 Déc 2025) : Timing adaptatif selon rythme parole (analyse pauses, mots courts)
 
 ---
 
-#### 12. @CarolinePascal
-**Rôle** : Contributor (Qualité)  
-**Contributions** : 5 commits (108 ++, 60 --)  
-**Travail** :
-- Tests qualité
-- Validation
-- Assurance qualité
-- Tests utilisateur
+### 2. reachy-mini-mcp (OriNachum)
 
-**Travail documenté** :
-- Tests qualité
-- Validation fonctionnelle
-- Assurance qualité
-- Tests utilisateur
+**Travail technique** :
+- **Pattern** : Serveur MCP (Model Context Protocol) pour contrôle robot
+- **Approche** : Interface standardisée pour intégration LLM
+- **Innovation** : Contrôle robot via FastMCP (protocole standardisé)
+- **Technique** : Bridge MCP ↔ SDK Reachy Mini
 
-**GitHub** : [@CarolinePascal](https://github.com/CarolinePascal)
-
-**Comparaison BBIA** :
-- ✅ BBIA : 1,743 tests (supérieur)
-- ✅ Coverage 68.86%
-- ✅ Qualité excellente
+**Ce que BBIA peut s'inspirer** :
+- ⚠️ **Optionnel** : BBIA a déjà API REST + WebSocket (supérieur à MCP)
+- 💡 **À évaluer** : Intégration MCP si besoin standardisation (actuellement pas nécessaire)
 
 ---
 
-#### 13. @matthieu-lapeyre
-**Rôle** : Contributor (Performance)  
-**Contributions** : 3 commits (174 ++, 32 --)  
-**Travail** :
-- Optimisations performance
-- Réduction latence
-- Optimisation mémoire
-- Performance système
+## 📊 RÉSUMÉ - CE QUE BBIA PEUT S'INSPIRER
 
-**Travail documenté** :
-- Optimisations performance
-- Réduction latence
-- Optimisation mémoire
-- Performance système
+### ✅ Déjà Supérieur à l'Officiel
 
-**GitHub** : [@matthieu-lapeyre](https://github.com/matthieu-lapeyre)
+1. **Architecture** : RobotAPI unifié (officiel n'a pas ça)
+2. **Modules IA** : 15+ modules vs basiques officiels
+3. **Tests** : 1,743 tests vs standards officiels
+4. **Documentation** : 219 fichiers MD vs complète officielle
+5. **Dashboards** : 4 dashboards vs 1 officiel
 
-**Comparaison BBIA** :
-- ✅ BBIA : Optimisations appliquées
-- ✅ Latence minimale
-- ✅ Performance optimale
+### 💡 AMÉLIORATIONS POSSIBLES - Inspiration Contributeurs
 
----
+#### 🏗️ Architecture & Infrastructure
 
-#### 14. @andimarafioti
-**Rôle** : Contributor (Exemples)  
-**Contributions** : 3 commits (11 ++, 5 --)  
-**Travail** :
-- Exemples d'utilisation
-- Démonstrations
-- Cas d'usage
-- Tutoriels
+1. **Découverte automatique robots** (inspiration @pierre-rouanet)
+   - **État actuel** : Configuration manuelle (`BBIA_HOSTNAME`, `BBIA_PORT`)
+   - **À faire** : Détection automatique robots sur réseau local via Zenoh
+   - **Technique** : Utiliser `zenoh.discover()` pour lister robots disponibles
+   - **Bénéfice** : Plus besoin de configurer manuellement, découverte automatique
+   - **Priorité** : 🟡 Moyenne
+   - **Temps estimé** : 4-6h
 
-**Travail documenté** :
-- Exemples de base
-- Démonstrations
-- Cas d'usage simples
-- Tutoriels
+2. **Support simultané sim/robot réel** (inspiration @pierre-rouanet)
+   - **État actuel** : BBIA choisit un backend (sim OU robot)
+   - **À faire** : Support simultané via même daemon (sim + robot réel)
+   - **Technique** : Multi-backends avec routing selon commande
+   - **Bénéfice** : Tests sim pendant utilisation robot réel
+   - **Priorité** : 🟡 Moyenne
+   - **Temps estimé** : 6-8h
 
-**GitHub** : [@andimarafioti](https://github.com/andimarafioti)
+3. **Fallback automatique sim → robot** (inspiration @pierre-rouanet)
+   - **État actuel** : Choix manuel du backend
+   - **À faire** : Détection automatique robot, fallback vers sim si absent
+   - **Technique** : Try robot réel, catch → sim automatiquement
+   - **Bénéfice** : Expérience utilisateur améliorée (pas de config)
+   - **Priorité** : 🟡 Moyenne
+   - **Temps estimé** : 2-3h
 
-**Comparaison BBIA** :
-- ✅ BBIA : 67 exemples (supérieur)
-- ✅ Démonstrations complètes
-- ✅ Cas d'usage avancés
+#### 🎮 Simulation MuJoCo
 
----
+4. ✅ **Modèle simplifié pour tests rapides** (inspiration @apirrone) - **FAIT** (8 Déc 2025)
+   - **État actuel** : ✅ Flag `--fast` implémenté
+   - **Réalisé** : Support modèle 7 joints pour tests rapides
+   - **Technique** : Flag `--fast` pour charger `reachy_mini.xml` (7 joints)
+   - **Bénéfice** : Tests 2-3x plus rapides (moins de joints)
+   - **Fichiers** : `__main__.py` (flag ajouté), `robot_factory.py` (support)
 
-#### 15-19. Contributeurs Occasionnels
+5. **Chargement lazy assets STL** (inspiration @apirrone)
+   - **État actuel** : Tous les assets STL chargés au démarrage
+   - **À faire** : Chargement à la demande (lazy loading)
+   - **Technique** : Charger assets seulement si nécessaire pour rendu
+   - **Bénéfice** : Démarrage plus rapide, moins de RAM
+   - **Priorité** : 🟢 Basse
+   - **Temps estimé** : 3-4h
 
-**15. @iizukak** - 2 commits (7 ++, 1 --)  
-**16. @Gregwar** - 2 commits (153 ++, 1 --)  
-**17. @Copilote** - 1 commit (1 ++, 1 --)  
-**18. @OriNachum** - 1 commit (5 ++, 4 --)  
-**19. @Augustin-Crampette** - 1 commit (4 ++, 0 --)
+6. **Scènes complexes avec objets interactifs** (inspiration @apirrone)
+   - **État actuel** : Scène vide (minimal.xml)
+   - **À faire** : Scènes avec objets (tables, objets à manipuler)
+   - **Technique** : Créer scènes XML avec objets MuJoCo
+   - **Bénéfice** : Tests manipulation objets, interactions
+   - **Priorité** : 🟢 Basse
+   - **Temps estimé** : 4-6h
 
-**Rôle** : Contributors  
-**Contributions** :
-- Bugs fixes
-- Améliorations mineures
-- Documentation
-- Support communauté
+7. **Timestep adaptatif** (inspiration @apirrone)
+   - **État actuel** : Timestep fixe 0.01s (100Hz)
+   - **À faire** : Timestep adaptatif selon complexité scène
+   - **Technique** : Ajuster timestep dynamiquement (0.005s-0.02s)
+   - **Bénéfice** : Performance optimale selon scène
+   - **Priorité** : 🟢 Basse
+   - **Temps estimé** : 3-4h
 
-**Travail documenté** :
-- Corrections bugs
-- Petites améliorations
-- Documentation
-- Support utilisateurs
+#### 🌐 Dashboard & API
 
-**Comparaison BBIA** :
-- ⚠️ BBIA : 1 développeur principal
-- ✅ BBIA : Contributions consolidées
+8. **Mode débutant avec contrôles basiques** (inspiration @FabienDanieau)
+   - **État actuel** : Interface complète mais complexe
+   - **À faire** : Mode "débutant" avec contrôles simplifiés (on/off, mouvements basiques)
+   - **Technique** : Toggle mode débutant/expert dans dashboard
+   - **Bénéfice** : Accessibilité pour nouveaux utilisateurs
+   - **Priorité** : 🟡 Moyenne
+   - **Temps estimé** : 4-6h
 
----
+9. **Intégration Hugging Face Spaces plus poussée** (inspiration @FabienDanieau)
+   - **État actuel** : Intégration basique (recherche apps)
+   - **À faire** : Installation apps directement depuis dashboard
+   - **Technique** : API HF Hub pour téléchargement/installation apps
+   - **Bénéfice** : Écosystème apps plus riche
+   - **Priorité** : 🟡 Moyenne
+   - **Temps estimé** : 6-8h
 
-## 🧪 TESTEURS BÊTA
+10. **Rate limiting plus granulaire** (inspiration @FabienDanieau)
+    - **État actuel** : Rate limiting global
+    - **À faire** : Rate limiting par endpoint (motion, state, media, etc.)
+    - **Technique** : Middleware FastAPI avec limites par route
+    - **Bénéfice** : Protection plus fine, meilleure UX
+    - **Priorité** : 🟢 Basse
+    - **Temps estimé** : 2-3h
 
-### Sources Identifiées
+11. **Documentation OpenAPI plus détaillée** (inspiration @FabienDanieau)
+    - **État actuel** : Documentation OpenAPI basique
+    - **À faire** : Exemples complets dans OpenAPI (request/response)
+    - **Technique** : Ajouter `examples` dans Pydantic models
+    - **Bénéfice** : Meilleure compréhension API pour développeurs
+    - **Priorité** : 🟢 Basse
+    - **Temps estimé** : 3-4h
 
-#### 1. Hugging Face Spaces
+12. **Heartbeat WebSocket plus robuste** (inspiration @FabienDanieau)
+    - **État actuel** : Heartbeat basique (30s)
+    - **À faire** : Heartbeat adaptatif + reconnection automatique
+    - **Technique** : Heartbeat selon latence, auto-reconnect côté client
+    - **Bénéfice** : Connexions plus stables, récupération automatique
+    - **Priorité** : 🟡 Moyenne
+    - **Temps estimé** : 3-4h
 
-**Espaces publics** :
-- Applications conversationnelles Reachy Mini
-- Démonstrations IA
-- Exemples d'utilisation
-- Intégrations LLM
+#### 🧪 Tests & Qualité
 
-**Travail documenté** :
-- Applications publiques
-- Démonstrations temps réel
-- Cas d'usage réels
-- Feedback utilisateurs
+13. ✅ **Tests de performance avec baselines** (inspiration @RemiFabre) - **FAIT** (8 Déc 2025)
+    - **État actuel** : ✅ Baselines p50/p95/p99 avec validation automatique
+    - **Réalisé** : Export JSONL, validation automatique, détection régression
+    - **Technique** : Export métriques JSONL, validation fourchette en CI
+    - **Bénéfice** : Détection régression performance automatique
+    - **Priorité** : 🟡 Moyenne
+    - **Temps estimé** : 4-6h
 
-**Comparaison BBIA** :
-- ⚠️ BBIA : Espaces à créer
-- ✅ BBIA : Applications prêtes
-- ✅ BBIA : Démonstrations disponibles
+14. **Tests de conformité SDK plus exhaustifs** (inspiration @RemiFabre)
+    - **État actuel** : 37 tests de conformité
+    - **À faire** : Tests edge cases, limites, erreurs
+    - **Technique** : Ajouter tests limites joints, erreurs réseau, timeouts
+    - **Bénéfice** : Conformité SDK garantie à 100%
+    - **Priorité** : 🟡 Moyenne
+    - **Temps estimé** : 6-8h
 
----
+15. **Sharding tests si durée > 10 min** (inspiration @RemiFabre)
+    - **État actuel** : Tests séquentiels (long si beaucoup de tests)
+    - **À faire** : Sharding avec pytest-xdist pour parallélisation
+    - **Technique** : `pytest -n auto` pour tests parallèles
+    - **Bénéfice** : CI plus rapide (2-3x plus rapide)
+    - **Priorité** : 🟢 Basse
+    - **Temps estimé** : 2-3h
 
-#### 2. GitHub Community
+16. **Tests headless MuJoCo plus robustes** (inspiration @RemiFabre)
+    - **État actuel** : Tests headless parfois instables
+    - **À faire** : Retry automatique, meilleure gestion erreurs
+    - **Technique** : Fixtures pytest avec retry, timeout plus longs
+    - **Bénéfice** : CI plus stable, moins de flaky tests
+    - **Priorité** : 🟡 Moyenne
+    - **Temps estimé** : 3-4h
 
-**Utilisateurs actifs** :
-- Rapports de bugs
-- Suggestions d'améliorations
-- Questions et réponses
-- Discussions
+17. **MyPy strict mode** (inspiration @RemiFabre)
+    - **État actuel** : MyPy permissive (beaucoup de `# type: ignore`)
+    - **À faire** : MyPy strict mode progressif (fichier par fichier)
+    - **Technique** : Activer strict mode progressivement, corriger types
+    - **Bénéfice** : Sécurité types garantie, moins de bugs
+    - **Priorité** : 🟢 Basse
+    - **Temps estimé** : 8-12h (progressif)
 
-**Travail documenté** :
-- Issues GitHub
-- Pull requests
-- Discussions
-- Feedback communauté
+18. **Pre-commit hooks plus complets** (inspiration @RemiFabre)
+    - **État actuel** : Pre-commit hooks basiques
+    - **À faire** : Ajouter tests unitaires rapides, validation docs
+    - **Technique** : Hook pour lancer tests rapides avant commit
+    - **Bénéfice** : Détection erreurs avant push
+    - **Priorité** : 🟢 Basse
+    - **Temps estimé** : 2-3h
 
-**Comparaison BBIA** :
-- ⚠️ BBIA : Communauté à développer
-- ✅ BBIA : Issues traitées (95%)
-- ✅ BBIA : Documentation complète
+#### 📚 Documentation & Exemples
 
----
+19. **Guides par niveau** (inspiration @askurique)
+    - **État actuel** : Documentation tout mélangé (débutant/expert)
+    - **À faire** : Organiser guides par niveau (débutant → intermédiaire → expert)
+    - **Technique** : Structure `docs/beginner/`, `docs/intermediate/`, `docs/advanced/`
+    - **Bénéfice** : Navigation plus claire, progression naturelle
+    - **Priorité** : 🟡 Moyenne
+    - **Temps estimé** : 4-6h
 
-#### 3. Early Adopters
+20. **Exemples avec erreurs communes** (inspiration @askurique)
+    - **État actuel** : Exemples basiques (fonctionnent toujours)
+    - **À faire** : Exemples avec erreurs communes et solutions
+    - **Technique** : Ajouter section "Erreurs communes" dans exemples
+    - **Bénéfice** : Apprentissage plus rapide, moins de frustration
+    - **Priorité** : 🟢 Basse
+    - **Temps estimé** : 3-4h
 
-**Utilisateurs avec robots physiques** :
-- Tests hardware
-- Feedback utilisateur
-- Cas d'usage réels
-- Améliorations suggérées
+21. **Exemples exécutables avec validation** (inspiration @askurique)
+    - **État actuel** : Exemples Python (pas de validation automatique)
+    - **À faire** : Validation automatique exemples (tests)
+    - **Technique** : Tests qui exécutent exemples et valident sortie
+    - **Bénéfice** : Garantie exemples toujours fonctionnels
+    - **Priorité** : 🟢 Basse
+    - **Temps estimé** : 4-6h
 
-**Travail documenté** :
-- Tests sur robot réel
-- Feedback utilisateur
-- Cas d'usage documentés
-- Améliorations proposées
+#### 🎭 Mouvements & Synchronisation
 
-**Comparaison BBIA** :
-- ⚠️ BBIA : Tests hardware à effectuer
-- ✅ BBIA : Prêt pour robot réel
-- ✅ BBIA : Documentation hardware
+22. ✅ **Timing adaptatif selon rythme parole** (inspiration LAURA-agent) - **FAIT** (8 Déc 2025)
+    - **État actuel** : ✅ Timing adaptatif implémenté
+    - **Réalisé** : Analyse rythme réel parole, ajustement dynamique
+    - **Technique** : Détection pauses, accélérations dans parole
+    - **Bénéfice** : Synchronisation plus naturelle, mouvements adaptés
+    - **Fichiers** : `bbia_emotional_sync.py`, tests (4 tests)
 
----
+23. ✅ **Micro-mouvements plus subtils pendant écoute** (inspiration LAURA-agent) - **FAIT** (8 Déc 2025)
+    - **État actuel** : ✅ Micro-mouvements subtils (0.01-0.02 rad)
+    - **Réalisé** : Animations subtiles (micro-expressions, respiration)
+    - **Technique** : Micro-mouvements très petits (0.01-0.02 rad), effet respiration
+    - **Bénéfice** : Robot plus vivant, interactions plus naturelles
+    - **Fichiers** : `bbia_emotional_sync.py` (amélioré)
 
-## 📊 COMPARAISON BBIA vs OFFICIEL
+24. **Cache plus agressif pour modèles fréquents** (inspiration @apirrone)
+    - **État actuel** : Cache basique
+    - **À faire** : Cache LRU pour modèles MuJoCo fréquemment utilisés
+    - **Technique** : `functools.lru_cache` pour modèles XML
+    - **Bénéfice** : Chargement modèles plus rapide
+    - **Priorité** : 🟢 Basse
+    - **Temps estimé** : 2-3h
 
-### Contributeurs
-
-| Aspect | Reachy Mini Officiel | BBIA-SIM | Statut |
-|--------|---------------------|----------|--------|
-| **Nombre contributeurs** | 19 contributeurs | 1 développeur principal | ⚠️ **Moins de contributeurs** |
-| **Core developers** | 4-5 core | 1 principal | ⚠️ **Moins de core** |
-| **Contributions** | Diversifiées | Consolidées | ✅ **Consolidées** |
-| **Spécialisations** | Multiples | Toutes intégrées | ✅ **Toutes intégrées** |
-
-### Testeurs Bêta
-
-| Aspect | Reachy Mini Officiel | BBIA-SIM | Statut |
-|--------|---------------------|----------|--------|
-| **Communauté** | Active | En développement | ⚠️ **À développer** |
-| **Hugging Face** | Espaces publics | À créer | ⚠️ **À créer** |
-| **Feedback** | Régulier | À recueillir | ⚠️ **À recueillir** |
-| **Tests hardware** | Actifs | À effectuer | ⚠️ **À effectuer** |
-
-### Qualité et Documentation
-
-| Aspect | Reachy Mini Officiel | BBIA-SIM | Statut |
-|--------|---------------------|----------|--------|
-| **Documentation** | Complète | 219 fichiers MD | ✅ **Supérieur** |
-| **Exemples** | Basiques | 67 exemples | ✅ **Supérieur** |
-| **Tests** | Standards | 1,743 tests | ✅ **Supérieur** |
-| **Coverage** | Non spécifié | 68.86% | ✅ **Supérieur** |
-
----
-
-## 🎯 RECOMMANDATIONS POUR BBIA
-
-### Actions Immédiates
-
-1. ✅ **Créer programme contributeurs**
-   - Documenter processus contribution
-   - Créer guide contributeurs
-   - Ouvrir issues "good first issue"
-
-2. ✅ **Créer programme testeurs bêta**
-   - Recruter testeurs simulation
-   - Recruter testeurs hardware
-   - Documenter feedback
-
-3. ✅ **Créer Hugging Face Spaces**
-   - Applications publiques
-   - Démonstrations temps réel
-   - Cas d'usage réels
-
-### Actions Court Terme
-
-4. ✅ **Développer communauté**
-   - Discussions GitHub
-   - Questions/réponses
-   - Support utilisateurs
-
-5. ✅ **Documenter contributions**
-   - Créditer contributeurs
-   - Documenter contributions
-   - Créer hall of fame
-
-### Actions Long Terme
-
-6. ✅ **Devenir référence**
-   - Positionner BBIA comme alternative
-   - Attirer contributeurs
-   - Créer écosystème
-
----
-
-## ✅ CONCLUSION
-
-### Résumé
-
-**Reachy Mini Officiel** :
-- ✅ 19 contributeurs actifs
-- ✅ Communauté testeurs bêta
-- ✅ Hugging Face Spaces
-- ✅ Feedback régulier
-
-**BBIA-SIM** :
-- ⚠️ 1 développeur principal (à développer)
-- ⚠️ Communauté à créer
-- ⚠️ Espaces à créer
-- ✅ Documentation/exemples/tests supérieurs
-
-### Points Forts BBIA
-
-1. ✅ **Documentation** : 219 fichiers MD (supérieur)
-2. ✅ **Exemples** : 67 exemples (supérieur)
-3. ✅ **Tests** : 1,743 tests (supérieur)
-4. ✅ **Qualité** : Coverage 68.86% (supérieur)
-
-### Points à Améliorer
-
-1. ⚠️ **Communauté** : À développer
-2. ⚠️ **Contributeurs** : À recruter
-3. ⚠️ **Testeurs bêta** : À créer
-4. ⚠️ **Visibilité** : À améliorer
-
-### Verdict
-
-**BBIA-SIM a une base technique supérieure mais doit développer sa communauté pour égaler le projet officiel en termes de contributions et de testeurs bêta.**
-
-**Recommandation** : Ouvrir le projet à la communauté et créer un programme de contributeurs/testeurs bêta.
+25. **Batch processing mouvements multiples** (inspiration @apirrone)
+    - **État actuel** : Mouvements séquentiels
+    - **À faire** : Batch processing pour mouvements simultanés
+    - **Technique** : Grouper mouvements, exécuter en batch
+    - **Bénéfice** : Performance améliorée (moins d'appels SDK)
+    - **Priorité** : 🟢 Basse
+    - **Temps estimé** : 4-6h
 
 ---
 
-**Dernière mise à jour** : 27 Novembre 2025  
-**Version SDK** : v1.1.1 (Latest - Nov 25, 2025)  
-**Voir aussi** : [MISE_A_JOUR_REACHY_MINI_NOVEMBRE_2025.md](MISE_A_JOUR_REACHY_MINI_NOVEMBRE_2025.md)
+## 📋 PRIORISATION DES AMÉLIORATIONS
 
+### 🟡 Priorité Moyenne (Impact Utilisateur)
+
+1. ⏳ **Découverte automatique robots** (4-6h) - Infrastructure créée
+2. ⏳ **Support simultané sim/robot réel** (6-8h) - Infrastructure créée
+3. **Fallback automatique sim → robot** (2-3h)
+4. ✅ **Modèle simplifié pour tests** (2-3h) - **FAIT**
+5. **Mode débutant dashboard** (4-6h)
+6. **Intégration HF Spaces plus poussée** (6-8h)
+7. **Heartbeat WebSocket robuste** (3-4h)
+8. ✅ **Tests performance avec baselines** (4-6h) - **FAIT** (8 Déc 2025)
+9. **Tests conformité SDK exhaustifs** (6-8h)
+10. **Tests headless MuJoCo robustes** (3-4h)
+11. **Guides par niveau** (4-6h)
+12. ✅ **Timing adaptatif parole** (4-6h) - **FAIT**
+13. ✅ **Micro-mouvements subtils** (3-4h) - **FAIT**
+
+**Total priorité moyenne** : ~50-70h
+
+### 🟢 Priorité Basse (Améliorations Futures)
+
+14. **Chargement lazy assets STL** (3-4h)
+15. **Scènes complexes** (4-6h)
+16. **Timestep adaptatif** (3-4h)
+17. **Rate limiting granulaire** (2-3h)
+18. **Documentation OpenAPI détaillée** (3-4h)
+19. **Sharding tests** (2-3h)
+20. **MyPy strict mode** (8-12h)
+21. **Pre-commit hooks complets** (2-3h)
+22. **Exemples erreurs communes** (3-4h)
+23. **Exemples exécutables validés** (4-6h)
+24. **Cache modèles agressif** (2-3h)
+25. **Batch processing mouvements** (4-6h)
+
+**Total priorité basse** : ~40-60h
+
+---
+
+**Dernière mise à jour** : 8 Décembre 2025  
+**Voir aussi** :
+- `CE_QUI_MANQUE_VRAIMENT_BBIA_DEC2025.md` - Ce qui manque vraiment
+- `TACHES_RESTANTES_CONSOLIDEES.md` - Tâches restantes consolidées
+- `AUDIT_REACHY_MINI_DECEMBRE_2025.md` - Audit complet décembre 2025

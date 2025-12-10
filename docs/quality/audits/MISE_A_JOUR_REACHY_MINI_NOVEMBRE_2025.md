@@ -1,10 +1,12 @@
 # 🔄 MISE À JOUR REACHY MINI - NOVEMBRE 2025
 
-**Date** : 27 Novembre 2025  
+**Date** : 8 Décembre 2025 (Mise à jour)  
 **Source** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini)  
 **Version SDK Officiel** : v1.1.1 (Latest - Nov 25, 2025)  
 **Version BBIA** : 1.4.0  
 **Objectif** : Synthèse complète des mises à jour, contributeurs et conformité
+
+> **Note** : Ce document a été mis à jour en décembre 2025 avec les dernières informations. Voir `AUDIT_REACHY_MINI_DECEMBRE_2025.md` pour l'audit complet le plus récent.
 
 ---
 
@@ -42,10 +44,10 @@
 
 ### Statistiques Globales
 
-**Total contributeurs** : **19 contributeurs**  
-**Période analysée** : 11 mai 2025 au 23 novembre 2025  
-**Commits totaux** : 1,566 commits  
-**Branche principale** : `develop`
+**Total contributeurs** : **20 contributeurs** (nouveau : iizukak)  
+**Période analysée** : 11 mai 2025 au 7 décembre 2025  
+**Commits totaux** : ~1,600+ commits  
+**Branche principale** : `develop` / `main`
 
 ### Contributeurs Principaux (Top 5)
 
@@ -504,6 +506,9 @@
 
 ---
 
-**Dernière mise à jour** : 27 Novembre 2025  
-**Prochaine révision** : Après réception robot physique ou mise à jour majeure SDK
+**Dernière mise à jour** : 7 Décembre 2025  
+**Prochaine révision** : Après réception robot physique ou mise à jour majeure SDK  
+**Voir aussi** :
+- [AUDIT_REACHY_MINI_DECEMBRE_2025.md](AUDIT_REACHY_MINI_DECEMBRE_2025.md) - Audit complet décembre 2025
+- [CONTRIBUTEURS_TESTEURS_BETA_REACHY_MINI.md](CONTRIBUTEURS_TESTEURS_BETA_REACHY_MINI.md) - Contributeurs et testeurs mis à jour
 

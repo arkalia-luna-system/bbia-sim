@@ -30,4 +30,4 @@ Ce dossier contient toute la documentation technique pour le développement de B
 
 ---
 
-**Dernière mise à jour** : 27 Novembre 2025
+**Dernière mise à jour** : 8 Décembre 2025

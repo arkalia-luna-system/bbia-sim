@@ -47,12 +47,12 @@
 
 ### 🔎 Audits complets et état actuel
 
-[![📊 Index](https://img.shields.io/badge/📊-Index%20Audits-purple)](audits/INDEX_AUDITS_CONSOLIDES.md)
+[![📊 Index](https://img.shields.io/badge/📊-Index%20Audits-purple)](INDEX_AUDITS.md)
 [![📈 État](https://img.shields.io/badge/📈-État%20Actuel-green)](audits/RESUME_ETAT_ACTUEL_BBIA.md)
 
 </div>
 
-- **[📋 Index Audits Consolidés](audits/INDEX_AUDITS_CONSOLIDES.md)** - Index de tous les audits
+- **[📋 Index Audits](INDEX_AUDITS.md)** - Index de tous les audits
 - **[📈 État Actuel BBIA](audits/RESUME_ETAT_ACTUEL_BBIA.md)** - État actuel du projet
 
 ---
@@ -70,7 +70,7 @@
 
 ## 📁 Structure des Sous-dossiers
 
-- **`audits/`** - Audits complets et analyses (voir [INDEX_AUDITS_CONSOLIDES.md](audits/INDEX_AUDITS_CONSOLIDES.md))
+- **`audits/`** - Audits complets et analyses (voir [INDEX_AUDITS.md](INDEX_AUDITS.md))
 - **`compliance/`** - Conformité SDK et checklists
 - **`performance/`** - Optimisations et analyses de performance
 - **`improvements/`** - Améliorations et évolutions
@@ -79,6 +79,6 @@
 
 ---
 
-**Dernière mise à jour** : 27 Novembre 2025
+**Dernière mise à jour** : 8 Décembre 2025
 
 **Retour à la [documentation principale](../README.md)**

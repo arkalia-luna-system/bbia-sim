@@ -26,7 +26,7 @@
 ### Je veux tester / QA
 
 1. **[Guide de Test](../development/testing.md)** — Guide complet
-2. **[Index Audits](../quality/audits/INDEX_AUDITS_CONSOLIDES.md)** — Tous les audits
+2. **[Index Audits](../quality/INDEX_AUDITS.md)** — Tous les audits
 3. **[Corrections Appliquées](../quality/corrections/applied.md)** — Corrections
 4. **[Validation Qualité](../quality/validation/VALIDATION_FINALE_QUALITE_2025.md)** — Rapports
 
@@ -68,7 +68,7 @@ docs/
 
 - [Guide de Test](../development/testing.md)
 - [Conformité SDK](../quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md)
-- [Index Audits](../quality/audits/INDEX_AUDITS_CONSOLIDES.md)
+- [Index Audits](../quality/INDEX_AUDITS.md)
 
 **Performance**
 
@@ -85,4 +85,4 @@ docs/
 
 ---
 
-**Date** : 26 Novembre 2025
+**Date** : 8 Décembre 2025

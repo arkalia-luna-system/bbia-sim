@@ -18,7 +18,7 @@ jobs:
       DISPLAY: ""
       BBIA_DISABLE_AUDIO: "1"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Clean up disk space
         run: |
@@ -33,7 +33,7 @@ jobs:
           df -h
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
           cache: "pip"
@@ -124,7 +124,7 @@ jobs:
 
       - name: Upload security artifacts
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: security-artifacts-${{ matrix.python-version }}
           path: |
@@ -167,7 +167,7 @@ jobs:
       BBIA_DISABLE_VISION_MODELS: "1"
       PYTHONDONTWRITEBYTECODE: 1
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Clean up disk space
         run: |
@@ -182,7 +182,7 @@ jobs:
           df -h
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
           cache: "pip"
@@ -243,15 +243,15 @@ jobs:
           python -m pip cache purge || true
 
       - name: Upload coverage
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v5
         with:
-          file: ./coverage.xml
+          files: ./coverage.xml
           flags: unittests
           name: codecov-umbrella
 
       - name: Upload artifacts on failure
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: ci-artifacts
           path: |
@@ -270,7 +270,7 @@ jobs:
       PYTHONDONTWRITEBYTECODE: 1
       SEED: 42
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Clean up disk space
         run: |
@@ -285,7 +285,7 @@ jobs:
           df -h
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
           cache: "pip"
@@ -351,7 +351,7 @@ jobs:
           fi
 
       - name: Upload test logs
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: always()
         with:
           name: e2e-test-logs
@@ -414,7 +414,7 @@ jobs:
   test-slow:
     runs-on: ubuntu-latest
     needs: [lint, test]
-    timeout-minutes: 30
+    timeout-minutes: 45
     env:
       MUJOCO_GL: disable
       DISPLAY: ""
@@ -423,7 +423,7 @@ jobs:
       BBIA_DISABLE_VISION_MODELS: "1"
       PYTHONDONTWRITEBYTECODE: 1
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Clean up disk space
         run: |
@@ -438,7 +438,7 @@ jobs:
           df -h
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
           cache: "pip"
@@ -487,9 +487,9 @@ jobs:
           python -m pip cache purge || true
 
       - name: Upload coverage (slow tests)
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v5
         with:
-          file: ./coverage.xml
+          files: ./coverage.xml
           flags: slow-tests
           name: codecov-slow-tests
 
@@ -503,7 +503,7 @@ jobs:
       BBIA_DISABLE_AUDIO: "1"
       PYTHONDONTWRITEBYTECODE: 1
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Clean up disk space
         run: |
@@ -518,7 +518,7 @@ jobs:
           df -h
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
           cache: "pip"
@@ -566,7 +566,7 @@ jobs:
     env:
       PYTHONDONTWRITEBYTECODE: 1
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Clean up disk space
         run: |
@@ -581,7 +581,7 @@ jobs:
           df -h
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
           cache: "pip"
@@ -621,7 +621,7 @@ jobs:
       BBIA_DISABLE_AUDIO: "1"
       PYTHONDONTWRITEBYTECODE: 1
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Clean up disk space
         run: |
@@ -636,7 +636,7 @@ jobs:
           df -h
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
           cache: "pip"
@@ -659,8 +659,24 @@ jobs:
         run: |
           export PYTHONPATH=src:$PYTHONPATH
           mkdir -p artifacts
-          # Script accepte --jsonl ou --output pour fichier de sortie
-          python scripts/bbia_performance_benchmarks.py --jsonl artifacts/benchmarks.jsonl 2>&1 || python scripts/bbia_performance_benchmarks.py --output artifacts/benchmarks.jsonl 2>&1 || echo "Benchmarks failed (non-blocking)"
+          # Exporter métriques JSONL avec p50/p95/p99
+          python scripts/bbia_performance_benchmarks.py --jsonl artifacts/benchmarks.jsonl --output artifacts/benchmarks.json 2>&1 || echo "Benchmarks failed (non-blocking)"
+        continue-on-error: true
+
+      - name: Validate Performance Baselines
+        run: |
+          export PYTHONPATH=src:$PYTHONPATH
+          mkdir -p artifacts
+          # Valider contre baseline si disponible
+          if [ -f artifacts/performance_baseline.jsonl ]; then
+            python scripts/bbia_performance_benchmarks.py --benchmark latency --jsonl artifacts/current.jsonl --baseline artifacts/performance_baseline.jsonl --validate 2>&1 || echo "Baseline validation failed (non-blocking)"
+          else
+            echo "⚠️ Baseline non disponible, création baseline initial..."
+            # Créer baseline initial si première exécution
+            if [ -f artifacts/benchmarks.jsonl ]; then
+              cp artifacts/benchmarks.jsonl artifacts/performance_baseline.jsonl || true
+            fi
+          fi
         continue-on-error: true
 
       - name: Run Performance Profiling with Baseline
@@ -679,7 +695,7 @@ jobs:
 
       - name: Upload benchmark results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: benchmark-results
           path: artifacts/benchmarks.jsonl
@@ -697,7 +713,7 @@ jobs:
       DISPLAY: ""
       BBIA_DISABLE_AUDIO: "1"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Clean up disk space
         run: |
@@ -712,7 +728,7 @@ jobs:
           df -h
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
           cache: "pip"

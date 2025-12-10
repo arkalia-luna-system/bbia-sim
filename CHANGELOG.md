@@ -62,7 +62,7 @@ Cette version marque l'atteinte de **100% d'exploitation** de toutes les capacit
 
 #### **Tests et Qualité**
 
-- **Tests améliorés** : 
+- **Tests améliorés** :
   - `tests/test_demo_additional.py` : 10 tests complets avec mocks appropriés (tous passent)
   - Vérification que `main()` existe et est callable pour toutes les démos
   - Tests cohérents avec les autres tests de démos
@@ -109,7 +109,7 @@ Cette version marque l'atteinte de **100% d'exploitation** de toutes les capacit
   - API Endpoints : 100% (11/11 endpoints avec démos dédiées)
   - **Total** : 44 exemples (39 existants + 5 nouveaux)
 
-- **Tests améliorés** : 
+- **Tests améliorés** :
   - `tests/test_demo_additional.py` : 10 tests complets avec mocks appropriés (tous passent)
   - Vérification que `main()` existe et est callable pour toutes les démos
   - Tests cohérents avec les autres tests de démos

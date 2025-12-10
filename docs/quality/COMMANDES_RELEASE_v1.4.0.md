@@ -1,6 +1,6 @@
 # 🚀 COMMANDES POUR RELEASE v1.4.0
 
-**Date** : 26 Novembre 2025  
+**Date** : 8 Décembre 2025  
 **Version** : v1.4.0  
 **Statut** : ✅ Prêt après vérification CI
 

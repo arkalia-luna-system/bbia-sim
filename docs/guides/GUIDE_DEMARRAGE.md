@@ -2,7 +2,7 @@
 
 <div align="center">
 
-**Date** : 26 Novembre 2025
+**Date** : 8 Décembre 2025
 [![Version](https://img.shields.io/badge/version-1.4.0-blue.svg)](https://github.com/arkalia-luna-system/bbia-sim)
 [![Temps](https://img.shields.io/badge/temps-5%20min-orange.svg)](#votre-premier-robot-bbia-en-5-minutes)
 
@@ -337,7 +337,7 @@ R : Oui, le mode simulation est inclus. Vous pouvez développer maintenant et te
 
 ### Q : C'est compatible Mac/Linux/Windows ?
 
-R : Mac/Linux : oui  
+R : Mac/Linux : oui
 Windows : à tester
 
 ### Q : Puis-je créer mes propres émotions ?

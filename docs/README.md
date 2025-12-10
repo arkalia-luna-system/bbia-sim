@@ -1,6 +1,6 @@
 # 📚 Documentation BBIA-SIM — Navigation Rapide
 
-**Date** : 26 Novembre 2025  
+**Date** : 8 Décembre 2025
 **Version** : v1.4.0
 
 > **Moteur cognitif Python pour robot Reachy Mini**
@@ -100,7 +100,7 @@ flowchart TB
 ### Conformité SDK
 
 - ✅ **[Conformité Complète](quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md)** — Validation SDK officiel
-- 🔍 **[Audit Synthèse](quality/audits/INDEX_AUDITS_CONSOLIDES.md)** — Audits consolidés
+- 🔍 **[Audit Synthèse](quality/INDEX_AUDITS.md)** — Audits consolidés
 
 ### Qualité Code
 
@@ -118,7 +118,7 @@ flowchart TB
 
 ## 📋 Organisation de la Documentation
 
-La documentation a été réorganisée le **27 Novembre 2025** :
+La documentation a été réorganisée le **8 Décembre 2025** :
 
 - ✅ **Structure clarifiée** : Tous les dossiers principaux ont un README
 - ✅ **Fichiers obsolètes archivés** : Voir `quality/audits/archives/`
@@ -129,4 +129,4 @@ La documentation a été réorganisée le **27 Novembre 2025** :
 
 **💡 Besoin d'aide ?** Consultez le [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) ou le [Troubleshooting](getting-started/troubleshooting.md)
 
-**Dernière mise à jour** : 27 Novembre 2025
+**Dernière mise à jour** : 8 Décembre 2025

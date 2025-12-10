@@ -1,4 +1,4 @@
-# Résumé des corrections de performance - 21 Novembre 2025
+# Résumé des corrections de performance - 8 Décembre 2025
 
 **Problème :** Code "rame" (lent)
 **Responsable identifié et corrigé :** `pyttsx3.init()` appelé 2 fois par synthèse vocale
@@ -144,4 +144,4 @@ def _get_cached_voice_id():
 ## 🎯 Navigation
 
 **Retour à** : [README Documentation](../README.md)  
-**Voir aussi** : [Index Audits](../quality/audits/INDEX_AUDITS_CONSOLIDES.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
+**Voir aussi** : [Index Audits](../INDEX_AUDITS.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)

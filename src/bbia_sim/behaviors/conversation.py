@@ -28,6 +28,11 @@ except ImportError:
 
 from bbia_sim.behaviors.base import BBIABehavior
 
+try:
+    from bbia_sim.bbia_emotional_sync import BBIAEmotionalSync
+except ImportError:
+    BBIAEmotionalSync = None  # type: ignore[assignment, misc]
+
 logger = logging.getLogger("BBIA")
 
 
@@ -81,6 +86,16 @@ class ConversationBehavior(BBIABehavior):
 
         # Système de réponses enrichies (fallback)
         self.enriched_responses = self._init_enriched_responses()
+
+        # Module de synchronisation fine mouvements émotionnels ↔ parole
+        self.emotional_sync = None
+        if BBIAEmotionalSync is not None:
+            try:
+                self.emotional_sync = BBIAEmotionalSync(robot_api=robot_api)
+                logger.info("✅ Synchronisation fine mouvements émotionnels activée")
+            except (ValueError, AttributeError, RuntimeError) as e:
+                logger.warning("⚠️ Synchronisation fine non disponible: %s", e)
+                self.emotional_sync = None
 
     def _init_enriched_responses(self) -> dict[str, list[str]]:
         """Initialise les réponses enrichies avec variété."""
@@ -163,6 +178,10 @@ class ConversationBehavior(BBIABehavior):
 
         logger.info("Activation du mode conversation intelligente")
 
+        # Démarrer micro-mouvements pendant écoute
+        if self.emotional_sync:
+            self.emotional_sync.start_listening_movements()
+
         # Message d'accueil
         if dire_texte is not None:
             greeting_messages = [
@@ -171,7 +190,16 @@ class ConversationBehavior(BBIABehavior):
                 "Dites-moi ce qui vous passe par la tête.",
             ]
             greeting = secrets.choice(greeting_messages)  # nosec B311
-            dire_texte(greeting, robot_api=self.robot_api)
+            # Utiliser synchronisation fine si disponible
+            if self.emotional_sync:
+                self.emotional_sync.sync_speak_with_emotion(
+                    greeting,
+                    emotion="neutral",
+                    intensity=0.5,
+                    speak_function=dire_texte,
+                )
+            else:
+                dire_texte(greeting, robot_api=self.robot_api)
             logger.info("Synthèse vocale : %s", greeting)
 
         # Reconnaissance vocale
@@ -180,15 +208,21 @@ class ConversationBehavior(BBIABehavior):
             texte = reconnaitre_parole(duree=5, robot_api=self.robot_api)
             logger.info("Texte reconnu : %s", texte)
 
+        # Arrêter micro-mouvements écoute
+        if self.emotional_sync:
+            self.emotional_sync.stop_listening_movements()
+
         if texte:
             texte_lower = texte.lower()
 
             # Utiliser BBIAHuggingFace si disponible
             if self.hf_chat:
                 try:
+                    # Transition vers réflexion
+                    if self.emotional_sync:
+                        self.emotional_sync.transition_to_thinking()
+
                     response = self.hf_chat.chat(texte, enable_tools=True)
-                    if dire_texte is not None:
-                        dire_texte(response, robot_api=self.robot_api)
                     logger.info("Synthèse vocale (HF) : %s", response)
 
                     # Appliquer émotion correspondante
@@ -197,29 +231,66 @@ class ConversationBehavior(BBIABehavior):
                         "sentiment": sentiment_result.get("sentiment", "neutral"),
                         "score": sentiment_result.get("score", 0.5),
                     }
-                    self._apply_sentiment_to_robot(sentiment_dict)
 
-                    # Mouvement expressif (hochement tête)
-                    self._expressive_movement("nod")
+                    # Déterminer émotion
+                    emotion_mapping = {
+                        "POSITIVE": (
+                            "happy",
+                            min(sentiment_dict.get("score", 0.5), 0.9),
+                        ),
+                        "NEGATIVE": ("sad", min(sentiment_dict.get("score", 0.5), 0.7)),
+                        "NEUTRAL": ("neutral", 0.5),
+                    }
+                    sentiment_label = sentiment_dict.get("sentiment", "NEUTRAL")
+                    emotion, intensity = emotion_mapping.get(
+                        sentiment_label, ("neutral", 0.5)
+                    )
+
+                    # Parler avec synchronisation fine
+                    if dire_texte is not None:
+                        if self.emotional_sync:
+                            self.emotional_sync.sync_speak_with_emotion(
+                                response,
+                                emotion=emotion,
+                                intensity=intensity,
+                                speak_function=dire_texte,
+                            )
+                        else:
+                            dire_texte(response, robot_api=self.robot_api)
+                            self._apply_sentiment_to_robot(sentiment_dict)
+                            self._expressive_movement("nod")
 
                     return True
-                except Exception as e:
+                except (
+                    ValueError,
+                    TypeError,
+                    KeyError,
+                    AttributeError,
+                    RuntimeError,
+                ) as e:
                     logger.warning("Erreur BBIAHuggingFace, fallback enrichi : %s", e)
 
             # Système enrichi (fallback)
             response = self._generate_enriched_response(texte_lower)
-            if dire_texte is not None:
-                dire_texte(response, robot_api=self.robot_api)
             logger.info("Synthèse vocale (enrichi) : %s", response)
 
             # Appliquer émotion basique
-            emotion = self._detect_emotion_from_text(texte_lower)
-            if emotion and hasattr(self.robot_api, "set_emotion"):
-                self.robot_api.set_emotion(emotion, 0.6)
-                logger.info("Émotion appliquée : %s", emotion)
+            emotion = self._detect_emotion_from_text(texte_lower) or "neutral"
 
-            # Mouvement expressif
-            self._expressive_movement("nod")
+            # Parler avec synchronisation fine si disponible
+            if dire_texte is not None:
+                if self.emotional_sync:
+                    self.emotional_sync.sync_speak_with_emotion(
+                        response,
+                        emotion=emotion,
+                        intensity=0.6,
+                        speak_function=dire_texte,
+                    )
+                else:
+                    dire_texte(response, robot_api=self.robot_api)
+                    if hasattr(self.robot_api, "set_emotion"):
+                        self.robot_api.set_emotion(emotion, 0.6)
+                    self._expressive_movement("nod")
 
         else:
             # Aucun texte entendu

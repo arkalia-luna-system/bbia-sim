@@ -41,13 +41,15 @@ class TestPoseDetectionErrorHandling:
         mock_mp.solutions.pose.Pose.side_effect = RuntimeError("Erreur initialisation")
 
         # Patcher directement bbia_sim.pose_detection.mp car mp est déjà importé
-        with patch("bbia_sim.pose_detection.mp", mock_mp):
-        with patch("bbia_sim.pose_detection.MEDIAPIPE_POSE_AVAILABLE", True):
-                detector = BBIAPoseDetection()
-                # Doit initialiser sans crasher
-                assert detector is not None
-                # is_initialized devrait être False en cas d'erreur
-                assert detector.is_initialized is False
+        with (
+            patch("bbia_sim.pose_detection.mp", mock_mp),
+            patch("bbia_sim.pose_detection.MEDIAPIPE_POSE_AVAILABLE", True),
+        ):
+            detector = BBIAPoseDetection()
+            # Doit initialiser sans crasher
+            assert detector is not None
+            # is_initialized devrait être False en cas d'erreur
+            assert detector.is_initialized is False
 
     @pytest.mark.unit
     @pytest.mark.fast
@@ -87,13 +89,15 @@ class TestPoseDetectionErrorHandling:
         mock_mp.solutions.pose.Pose.side_effect = RuntimeError("Erreur critique")
 
         # Patcher directement bbia_sim.pose_detection.mp car mp est déjà importé
-        with patch("bbia_sim.pose_detection.mp", mock_mp):
-        with patch("bbia_sim.pose_detection.logger", mock_logger):
-            with patch("bbia_sim.pose_detection.MEDIAPIPE_POSE_AVAILABLE", True):
-                    BBIAPoseDetection()
-                    # Vérifier que logger.error a été appelé
-                    mock_logger.error.assert_called()
-                    assert "critique" in str(mock_logger.error.call_args).lower()
+        with (
+            patch("bbia_sim.pose_detection.mp", mock_mp),
+            patch("bbia_sim.pose_detection.logger", mock_logger),
+            patch("bbia_sim.pose_detection.MEDIAPIPE_POSE_AVAILABLE", True),
+        ):
+            BBIAPoseDetection()
+            # Vérifier que logger.error a été appelé
+            mock_logger.error.assert_called()
+            assert "critique" in str(mock_logger.error.call_args).lower()
 
 
 if __name__ == "__main__":

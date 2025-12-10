@@ -1,6 +1,6 @@
 # 🔍 Guide DeepFace - Reconnaissance Visage Personnalisée + Émotions
 
-**Date** : Oct / Nov. 2025  
+**Date** : 8 Décembre 2025  
 **Version** : 1.0  
 **Compatibilité** : ✅ SDK Reachy Mini officiel, open-source, gratuit
 
@@ -275,4 +275,4 @@ pip install deepface onnxruntime
 
 ---
 
-**Dernière mise à jour** : Oct / Nov. 2025
+**Dernière mise à jour** : 8 Décembre 2025

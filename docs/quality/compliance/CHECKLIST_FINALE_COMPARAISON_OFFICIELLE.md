@@ -1,6 +1,6 @@
 # 📋 CHECKLIST FINALE - COMPARAISON EXHAUSTIVE vs REPO OFFICIEL
 
-**Date**: 21 Novembre 2025 (Mise à jour audit exhaustif)
+**Date**: 8 Décembre 2025 (Mise à jour audit exhaustif)
 **Branche**: future
 **Repo Officiel**: pollen-robotics/reachy_mini (develop)
 **Version BBIA**: 1.3.2
@@ -9,7 +9,7 @@
 
 ## 🎯 RÉSUMÉ EXÉCUTIF
 
-**Total différences détectées**: 173 (audit exhaustif 21 Novembre 2025)
+**Total différences détectées**: 173 (audit exhaustif 8 Décembre 2025)
 
 - 🔴 **CRITICAL**: 0 ✅
 - 🟠 **HIGH**: 0 ✅ (toutes corrigées lors de l'audit précédent)
@@ -19,7 +19,7 @@
 
 **Statut Global**: ✅ **CONFORME** pour endpoints REST critiques
 
-**Dernière vérification**: 21 Novembre 2025 (scripts audit exhaustif exécutés)
+**Dernière vérification**: 8 Décembre 2025 (scripts audit exhaustif exécutés)
 
 ---
 
@@ -360,7 +360,7 @@ pytest tests/test_api_recorded_moves.py -v  # À créer si nécessaire
 
 ## 🔧 QUALITÉ CODE
 
-### Vérifications Effectuées (Audit 21 Novembre 2025)
+### Vérifications Effectuées (Audit 8 Décembre 2025)
 
 - ✅ **Black**: Formatage OK (tous fichiers routers conformes)
 - ✅ **Ruff**: Aucune erreur (all checks passed)
@@ -420,14 +420,14 @@ bandit -r src/bbia_sim/daemon/app/routers/move.py
 - ✅ `datetime.now(UTC)` corrigé (ruff UP017)
 - ✅ BackendAdapter.play_move() maintenant async
 
-**Actions Recommandées** (Audit 21 Novembre 2025):
+**Actions Recommandées** (Audit 8 Décembre 2025):
 
 - ✅ Comparer tests critiques (daemon, collision) - **TERMINÉ**: BBIA a couverture équivalente ou supérieure
 - ⚠️ Tester endpoints recorded-move avec dataset réel (optionnel - nécessite SDK + HuggingFace Hub)
 - ✅ Documenter extensions BBIA - **TERMINÉ**: 24 endpoints INFO documentés comme extensions légitimes
 - ✅ Documenter différences daemon/apps - **TERMINÉ**: Différences `bg_job_register` vs `simulation_service` justifiées et documentées
 
-**Vérification Qualité Code (21 Novembre 2025)**:
+**Vérification Qualité Code (8 Décembre 2025)**:
 
 - ✅ Black: Formatage OK
 - ✅ Ruff: Aucune erreur
@@ -438,7 +438,7 @@ bandit -r src/bbia_sim/daemon/app/routers/move.py
 
 ---
 
-**Date de génération**: 21 Novembre 2025
+**Date de génération**: 8 Décembre 2025
 **Script utilisé**: `scripts/compare_with_official_exhaustive.py`
 **Rapports**: `logs/comparison_official_results.json`, `logs/comparison_official_report.md`
 **Prompt d'audit exhaustif**: `docs/guides/PROMPT_AUDIT_EXHAUSTIF_REACHY_MINI.md` (pour audits futurs automatisés)

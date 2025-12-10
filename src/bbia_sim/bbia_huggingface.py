@@ -322,7 +322,8 @@ class BBIAHuggingFace:
         return device
 
     def _load_bbia_chat_lazy(self) -> None:
-        """OPTIMISATION RAM: Charge BBIAChat uniquement à la demande (lazy loading strict).
+        """OPTIMISATION RAM: Charge BBIAChat uniquement à la demande
+        (lazy loading strict).
 
         Gain RAM estimé: ~500MB-1GB au démarrage.
         BBIAChat n'est chargé que lors du premier appel à chat().
@@ -694,7 +695,8 @@ class BBIAHuggingFace:
                     self.use_llm_chat = False
                     return False
                 except Exception as e:
-                    # Gérer les erreurs de cancellation (ex: "The operation was canceled")
+                    # Gérer les erreurs de cancellation
+                    # (ex: "The operation was canceled")
                     error_msg = str(e).lower()
                     if "cancel" in error_msg or "interrupt" in error_msg:
                         logger.warning(
@@ -1062,7 +1064,8 @@ class BBIAHuggingFace:
 
                 if os.environ.get("CI", "false").lower() != "true":
                     logger.error(
-                        f"❌ Processeur {processor_key} non disponible après chargement",
+                        f"❌ Processeur {processor_key} "
+                        f"non disponible après chargement",
                     )
                 return "Erreur (answer_question): processeur non disponible"
             if model_key not in self.models:
@@ -1213,9 +1216,10 @@ class BBIAHuggingFace:
     @staticmethod
     def _shared_auto_unload_loop() -> None:
         """Boucle de déchargement automatique partagée pour toutes les instances."""
-        while not BBIAHuggingFace._shared_unload_thread_stop.is_set():
+        while not (BBIAHuggingFace._shared_unload_thread_stop.is_set()):
             try:
-                # Attendre 10 secondes entre vérifications (ou arrêt immédiat si demandé)
+                # Attendre 10 secondes entre vérifications
+                # (ou arrêt immédiat si demandé)
                 if BBIAHuggingFace._shared_unload_thread_stop.wait(10.0):
                     break  # Arrêt demandé
 
@@ -1225,9 +1229,11 @@ class BBIAHuggingFace:
                     maxlen=50,
                 )
 
-                # Identifier modèles inactifs pour toutes les instances actives
+                # Identifier modèles inactifs
+                # pour toutes les instances actives
                 with BBIAHuggingFace._shared_unload_thread_lock:
-                    # Faire une copie de la liste pour éviter modification pendant itération
+                    # Faire une copie de la liste
+                    # pour éviter modification pendant itération
                     active_instances = list(BBIAHuggingFace._shared_instances)
                     for instance in active_instances:
                         try:
@@ -1333,14 +1339,18 @@ class BBIAHuggingFace:
                         0.5 if os.environ.get("CI", "false").lower() == "true" else 2.0
                     )
                     BBIAHuggingFace._shared_unload_thread.join(timeout=timeout)
-                    if BBIAHuggingFace._shared_unload_thread.is_alive():
-                        # Thread daemon se terminera automatiquement à l'arrêt du processus
+                    thread = BBIAHuggingFace._shared_unload_thread
+                    if thread.is_alive():
+                        # Thread daemon se terminera automatiquement
+                        # à l'arrêt du processus
                         logger.debug(
-                            "Thread partagé déchargement auto Hugging Face en cours d'arrêt (daemon)",
+                            "Thread partagé déchargement auto Hugging Face "
+                            "en cours d'arrêt (daemon)",
                         )
                     else:
                         logger.debug(
-                            "Thread partagé déchargement auto Hugging Face arrêté (plus d'instances)",
+                            "Thread partagé déchargement auto Hugging Face "
+                            "arrêté (plus d'instances)",
                         )
         except (AttributeError, RuntimeError, TypeError):
             # Ignorer erreurs lors de la destruction
@@ -1480,10 +1490,11 @@ class BBIAHuggingFace:
                     logger.debug("Lazy loading LLM échoué (fallback enrichi): %s", e)
                 except KeyboardInterrupt:
                     logger.debug(
-                        "Lazy loading LLM interrompu (KeyboardInterrupt, fallback enrichi)",
+                        "Lazy loading LLM interrompu "
+                        "(KeyboardInterrupt, fallback enrichi)",
                     )
                 except Exception as e:
-                    # Gérer les erreurs de cancellation (ex: "The operation was canceled")
+                    # Gérer erreurs cancellation (ex: "The operation was canceled")
                     error_msg = str(e).lower()
                     if "cancel" in error_msg or "interrupt" in error_msg:
                         logger.debug(
@@ -1497,7 +1508,8 @@ class BBIAHuggingFace:
                         )
 
             # 3. Générer réponse avec LLM si disponible, sinon réponses enrichies
-            # Convertir SentimentResult en SentimentDict (nécessaire pour les deux branches)
+            # Convertir SentimentResult en SentimentDict
+            # (nécessaire pour les deux branches)
             sentiment_dict: SentimentDict = {
                 "label": sentiment.get("sentiment", "neutral"),
                 "score": sentiment.get("score", 0.5),
@@ -1505,7 +1517,8 @@ class BBIAHuggingFace:
             }
 
             # PRIORITÉ 1: Utiliser BBIAChat (LLM léger Phi-2/TinyLlama) si disponible
-            # OPTIMISATION RAM: Lazy loading strict - charger BBIAChat uniquement si nécessaire
+            # OPTIMISATION RAM: Lazy loading strict
+            # Charger BBIAChat uniquement si nécessaire
             if self.bbia_chat is None:
                 self._load_bbia_chat_lazy()
             if self.bbia_chat and self.bbia_chat.llm_model:
@@ -1687,7 +1700,8 @@ class BBIAHuggingFace:
             # Ajouter contexte si demandé
             if use_context and self.conversation_history:
                 # Derniers 2 échanges pour contexte
-                # OPTIMISATION: Convertir deque en list pour slicing et utiliser list comprehension
+                # OPTIMISATION: Convertir deque en list pour slicing
+                # et utiliser list comprehension
                 recent_history: list[ConversationEntry] = list(
                     self.conversation_history,
                 )[-2:]
@@ -2039,7 +2053,8 @@ class BBIAHuggingFace:
                             Exception
                         ) as e:  # noqa: BLE001 - Gestion des exceptions non prévues
                             logger.exception(
-                                "❌ Erreur inattendue exécution outil '%s' (critique): %s",
+                                "❌ Erreur inattendue exécution outil '%s' "
+                                "(critique): %s",
                                 tool_name,
                                 e,
                             )
@@ -2049,7 +2064,10 @@ class BBIAHuggingFace:
                             }
 
                         if result is None:
-                            return f"❌ Erreur lors de l'exécution de l'outil '{tool_name}'"
+                            return (
+                                f"❌ Erreur lors de l'exécution "
+                                f"de l'outil '{tool_name}'"
+                            )
 
                         # Retourner résultat textuel
                         if result.get("status") == "success":
@@ -2794,9 +2812,12 @@ class BBIAHuggingFace:
                     "Qu'est-ce qui cause cette difficulté ? Je veux vous aider.",
                 ],
                 "enthusiastic": [
-                    "Courage ! Même dans les moments difficiles, on peut trouver des raisons d'espérer !",
-                    "Je comprends que c'est dur, mais vous êtes capable de surmonter ça !",
-                    "On va s'en sortir ! Parlez-moi de ce qui ne va pas, on va trouver une solution !",
+                    "Courage ! Même dans les moments difficiles, "
+                    "on peut trouver des raisons d'espérer !",  # noqa: E501
+                    "Je comprends que c'est dur, "
+                    "mais vous êtes capable de surmonter ça !",  # noqa: E501
+                    "On va s'en sortir ! Parlez-moi de ce qui ne va pas, "
+                    "on va trouver une solution !",  # noqa: E501
                 ],
                 "calm": [
                     "Prenez votre temps. Je suis là, sans jugement.",
@@ -3143,7 +3164,8 @@ class BBIAHuggingFace:
             return None
 
         # Prendre le dernier message utilisateur
-        # OPTIMISATION: Accéder au dernier élément (deque supporte [-1] mais type checker se plaint)
+        # OPTIMISATION: Accéder au dernier élément
+        # (deque supporte [-1] mais type checker se plaint)
         last_entry = (
             list(self.conversation_history)[-1] if self.conversation_history else None
         )
@@ -3205,7 +3227,8 @@ class BBIAHuggingFace:
                 "Conversation avec BBIA (robot Reachy Mini). Soyez amical et curieux."
             )
 
-        # OPTIMISATION: Convertir deque en list pour slicing et utiliser list comprehension
+        # OPTIMISATION: Convertir deque en list pour slicing
+        # et utiliser list comprehension
         recent_history = list(self.conversation_history)[-3:]  # Derniers 3 échanges
         # OPTIMISATION: List comprehension plus efficace que append() en boucle
         context_lines = ["Historique conversation:"] + [
@@ -3318,7 +3341,9 @@ _EXPERT_TEST_PADDING_RESPONSES: list[str] = [
     "Je comprends; je propose un prochain pas petit mais significatif immédiatement.",
 ]
 
-# Ensemble additionnel: réponses uniques, longueur contrôlée (≈60–120) pour conformité tests
+# Ensemble additionnel: réponses uniques, longueur contrôlée (≈60–120)
+# pour conformité tests
+# noqa: E501 - Chaînes longues intentionnelles pour tests
 _EXPERT_TEST_CANONICAL_RESPONSES: list[str] = [
     "Je peux détailler calmement les étapes à venir afin que vous "
     "avanciez avec clarté et confiance dans votre projet actuel.",
@@ -3343,65 +3368,68 @@ _EXPERT_TEST_CANONICAL_RESPONSES: list[str] = [
     "cadrer l'effort et éviter les dérives de portée fréquentes.",
     "Si vous êtes d'accord, je prépare un résumé d'une phrase, une liste "
     "d'étapes minimales, et un critère de succès vérifiable.",
-    "Je propose d'articuler la réponse autour de la valeur utilisateur, en explicitant les compromis et les risques maîtrisés.",
-    "Pour garantir la lisibilité, je segmente la solution en modules simples, testables, et indépendants au maximum les uns des autres.",
-    "Nous viserons une réponse chaleureuse et naturelle, en privilégiant la clarté sur la technicité excessive, pour rester engageants.",
-    "Afin d'éviter les répétitions, je varie les tournures tout en conservant un ton professionnel, empathique et authentique ici.",
-    "Je peux fournir un exemple concret, illustrant la démarche pas à pas, afin de confirmer notre compréhension commune rapidement.",
-    "Pour favoriser l'adoption, nous limiterons la complexité visible et proposerons des interactions courtes, utiles et prévisibles.",
-    "Nous prendrons une décision réversible par défaut, ce qui réduit les coûts d'erreur et fluidifie l'amélioration incrémentale.",
-    "En cas d'incertitude, nous documenterons une hypothèse claire et un test rapide, afin de valider l'approche sans délai excessif.",
-    "La réponse sera concise, respectueuse, et orientée solution; je veille à garder un style humain, positif et compréhensible.",
+    "Je propose d'articuler la réponse autour de la valeur utilisateur, en explicitant les compromis et les risques maîtrisés.",  # noqa: E501
+    "Pour garantir la lisibilité, je segmente la solution en modules simples, testables, et indépendants au maximum les uns des autres.",  # noqa: E501
+    "Nous viserons une réponse chaleureuse et naturelle, en privilégiant la clarté sur la technicité excessive, pour rester engageants.",  # noqa: E501
+    "Afin d'éviter les répétitions, je varie les tournures tout en conservant un ton professionnel, empathique et authentique ici.",  # noqa: E501
+    "Je peux fournir un exemple concret, illustrant la démarche pas à pas, afin de confirmer notre compréhension commune rapidement.",  # noqa: E501
+    "Pour favoriser l'adoption, nous limiterons la complexité visible et proposerons des interactions courtes, utiles et prévisibles.",  # noqa: E501
+    "Nous prendrons une décision réversible par défaut, ce qui réduit les coûts d'erreur et fluidifie l'amélioration incrémentale.",  # noqa: E501
+    "En cas d'incertitude, nous documenterons une hypothèse claire et un test rapide, afin de valider l'approche sans délai excessif.",  # noqa: E501
+    "La réponse sera concise, respectueuse, et orientée solution; je veille à garder un style humain, positif et compréhensible.",  # noqa: E501
 ]
+# noqa: E501 - Chaînes longues intentionnelles pour tests
 _EXPERT_TEST_CANONICAL_RESPONSES += [
-    "Nous validerons chaque étape avec un signal simple, afin d'éviter l'ambiguïté et d'assurer un rythme de progression soutenu.",
-    "Je formalise un court plan d'action; vous pourrez l'ajuster facilement selon les retours et les contraintes opérationnelles.",
-    "Concentrons-nous sur le résultat utile pour l'utilisateur final, puis itérons pour polir les détails sans surcharger la solution.",
-    "Je prépare une synthèse structurée: objectif, métrique de succès, et étapes de mise en œuvre, le tout clair et actionnable.",
-    "Afin d'améliorer la qualité perçue, nous limiterons la longueur des réponses et varierons naturellement les formulations proposées.",
-    "Je vous propose un enchaînement lisible et fiable, avec des décisions réversibles pour réduire les risques et gagner en agilité.",
-    "Pour réduire les doublons, nous diversifions les tournures et alignons le style sur une voix humaine, chaleureuse et concise.",
-    "Je mets en avant la clarté: une idée par phrase, des mots simples, et des transitions douces pour un échange agréable et fluide.",
-    "Nous viserons des réponses de longueur modérée, comprises, engageantes, et adaptées au contexte, sans verbiage superflu.",
-    "Je peux proposer des alternatives équilibrées, chacune avec bénéfices et limites, pour vous aider à trancher sereinement.",
-    "Nous privilégions des messages concrets, exploitables immédiatement, et faciles à relire pour gagner du temps à chaque itération.",
-    "Je garde l'accent sur l'écoute active: je reformule brièvement, puis j'avance une suggestion utile et facilement testable.",
-    "Pour assurer la variété, j'alternerai les structures de phrases et choisirai des synonymes cohérents avec le ton souhaité.",
-    "Je fournis un exemple compact, représentatif et réaliste, afin d'éclairer la démarche sans la rendre lourde à suivre.",
-    "Nous ajusterons la granularité de la réponse selon votre besoin: simple tout d'abord, plus détaillée si nécessaire ensuite.",
-    "Je veille à garder une cohérence stylistique tout en évitant la répétition; l'objectif est une conversation naturelle et claire.",
-    "Pour conclure proprement, je résume en une phrase et propose une suite concrète qui respecte votre contrainte de temps.",
-    "Nous réduisons le bruit en retirant les tournures redondantes et en privilégiant la précision sans rigidité ni jargon inutile.",
-    "Je propose un pas suivant mesurable aujourd'hui, afin de sécuriser un progrès tangible avant d'envisager des raffinements.",
+    "Nous validerons chaque étape avec un signal simple, afin d'éviter l'ambiguïté et d'assurer un rythme de progression soutenu.",  # noqa: E501
+    "Je formalise un court plan d'action; vous pourrez l'ajuster facilement selon les retours et les contraintes opérationnelles.",  # noqa: E501
+    "Concentrons-nous sur le résultat utile pour l'utilisateur final, puis itérons pour polir les détails sans surcharger la solution.",  # noqa: E501
+    "Je prépare une synthèse structurée: objectif, métrique de succès, et étapes de mise en œuvre, le tout clair et actionnable.",  # noqa: E501
+    "Afin d'améliorer la qualité perçue, nous limiterons la longueur des réponses et varierons naturellement les formulations proposées.",  # noqa: E501
+    "Je vous propose un enchaînement lisible et fiable, avec des décisions réversibles pour réduire les risques et gagner en agilité.",  # noqa: E501
+    "Pour réduire les doublons, nous diversifions les tournures et alignons le style sur une voix humaine, chaleureuse et concise.",  # noqa: E501
+    "Je mets en avant la clarté: une idée par phrase, des mots simples, et des transitions douces pour un échange agréable et fluide.",  # noqa: E501
+    "Nous viserons des réponses de longueur modérée, comprises, engageantes, et adaptées au contexte, sans verbiage superflu.",  # noqa: E501
+    "Je peux proposer des alternatives équilibrées, chacune avec bénéfices et limites, pour vous aider à trancher sereinement.",  # noqa: E501
+    "Nous privilégions des messages concrets, exploitables immédiatement, et faciles à relire pour gagner du temps à chaque itération.",  # noqa: E501
+    "Je garde l'accent sur l'écoute active: je reformule brièvement, puis j'avance une suggestion utile et facilement testable.",  # noqa: E501
+    "Pour assurer la variété, j'alternerai les structures de phrases et choisirai des synonymes cohérents avec le ton souhaité.",  # noqa: E501
+    "Je fournis un exemple compact, représentatif et réaliste, afin d'éclairer la démarche sans la rendre lourde à suivre.",  # noqa: E501
+    "Nous ajusterons la granularité de la réponse selon votre besoin: simple tout d'abord, plus détaillée si nécessaire ensuite.",  # noqa: E501
+    "Je veille à garder une cohérence stylistique tout en évitant la répétition; l'objectif est une conversation naturelle et claire.",  # noqa: E501
+    "Pour conclure proprement, je résume en une phrase et propose une suite concrète qui respecte votre contrainte de temps.",  # noqa: E501
+    "Nous réduisons le bruit en retirant les tournures redondantes et en privilégiant la précision sans rigidité ni jargon inutile.",  # noqa: E501
+    "Je propose un pas suivant mesurable aujourd'hui, afin de sécuriser un progrès tangible avant d'envisager des raffinements.",  # noqa: E501
 ]
 
 # Renfort de variété: réponses uniques (≈40–120 caractères), sans doublons
+# noqa: E501 - Chaînes longues intentionnelles pour tests
 _EXPERT_TEST_CANONICAL_RESPONSES += [
-    "Je reformule brièvement, puis je suggère une étape concrète pour avancer sereinement.",
-    "Je précise l'objectif en une phrase, puis j'indique une action simple et mesurable.",
-    "Je vous propose un choix court entre deux options raisonnables, selon votre contexte.",
-    "Je relie ce point à votre objectif principal pour garder le cap et éviter la dispersion.",
-    "Je propose d'essayer une solution légère d'abord, puis d'ajuster selon les retours.",
+    "Je reformule brièvement, puis je suggère une étape concrète pour avancer sereinement.",  # noqa: E501
+    "Je précise l'objectif en une phrase, puis j'indique une action simple et mesurable.",  # noqa: E501
+    "Je vous propose un choix court entre deux options raisonnables, selon votre contexte.",  # noqa: E501
+    "Je relie ce point à votre objectif principal pour garder le cap et éviter la dispersion.",  # noqa: E501
+    "Je propose d'essayer une solution légère d'abord, puis d'ajuster selon les retours.",  # noqa: E501
     "Je garde un ton clair et humain, avec des exemples courts pour rester concret.",
-    "Je suggère une validation rapide pour réduire l'incertitude et décider en confiance.",
+    "Je suggère une validation rapide pour réduire l'incertitude et décider en confiance.",  # noqa: E501
     "Je propose une version simple, puis une variante plus détaillée si nécessaire.",
-    "Je sépare l'essentiel du secondaire pour rendre la décision plus évidente et fluide.",
+    "Je sépare l'essentiel du secondaire pour rendre la décision plus évidente et fluide.",  # noqa: E501
     "Je vous accompagne avec un plan minimal viable, prêt à être ajusté immédiatement.",
-    "Je propose des mots simples et une structure claire pour rendre la réponse accessible.",
+    "Je propose des mots simples et une structure claire pour rendre la réponse accessible.",  # noqa: E501
     "Je reste concis tout en couvrant l'essentiel, sans détour superflu.",
-    "Je suggère un test rapide aujourd'hui, puis une consolidation si le résultat est positif.",
-    "Je propose une estimation prudente et une marge de sécurité pour votre contrainte temps.",
-    "Je recommande une approche progressive afin de limiter les risques et garder de la souplesse.",
-    "Je priorise les actions à fort impact et faible coût avant toute complexification.",
-    "Je propose une synthèse d'une phrase puis une question ouverte pour valider l'alignement.",
+    "Je suggère un test rapide aujourd'hui, puis une consolidation si le résultat est positif.",  # noqa: E501
+    "Je propose une estimation prudente et une marge de sécurité pour votre contrainte temps.",  # noqa: E501
+    "Je recommande une approche progressive afin de limiter les risques et garder de la souplesse.",  # noqa: E501
+    "Je priorise les actions à fort impact et faible coût avant toute complexification.",  # noqa: E501
+    "Je propose une synthèse d'une phrase puis une question ouverte pour valider l'alignement.",  # noqa: E501
     "Je clarifie la prochaine étape et qui s'en charge pour éviter toute ambiguïté.",
     "Je propose un exemple compact et réaliste afin d'illustrer la marche à suivre.",
-    "Je précise les critères d'arrêt pour éviter de prolonger l'effort au-delà du nécessaire.",
+    "Je précise les critères d'arrêt pour éviter de prolonger l'effort au-delà du nécessaire.",  # noqa: E501
 ]
 
 
 # --- Normalisation des jeux de réponses pour tests expert ---
-# Objectif: garantir longueur minimale, retirer entrées vides/sentinelles et dédupliquer globalement
+# Objectif: garantir longueur minimale, retirer entrées vides/sentinelles
+# et dédupliquer globalement
 def _normalize_response_sets() -> None:
     min_len, max_len = 30, 240
     sentinels = {"", ":", ": {", "if"}
@@ -3429,6 +3457,7 @@ def _normalize_response_sets() -> None:
     global _expert_quality_padding, _EXPERT_TEST_PADDING_RESPONSES, _EXPERT_TEST_CANONICAL_RESPONSES
     _expert_quality_padding = _unique(_expert_quality_padding)
     _EXPERT_TEST_PADDING_RESPONSES = _unique(_EXPERT_TEST_PADDING_RESPONSES)
+    # noqa: E501 - Chaînes longues intentionnelles pour tests
     _EXPERT_TEST_CANONICAL_RESPONSES = _unique(_EXPERT_TEST_CANONICAL_RESPONSES)
 
 

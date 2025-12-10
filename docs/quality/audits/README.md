@@ -1,7 +1,9 @@
-# 📊 Audits, Analyses et Rapports
+# Audits, Analyses et Rapports
 
-**Date** : 21 Novembre 2025  
+**Date** : 8 Décembre 2025  
 **Objectif** : Audits techniques, analyses et rapports d'évaluation du projet
+
+**Note** : Voir `../INDEX_AUDITS.md` pour l'index actuel des audits.
 
 ---
 
@@ -9,7 +11,7 @@
 
 ### 🔍 Audits et Conformité
 
-- **[INDEX_AUDITS_CONSOLIDES.md](INDEX_AUDITS_CONSOLIDES.md)** ⭐
+- **[INDEX_AUDITS.md](../INDEX_AUDITS.md)** ⭐
   - Index complet de tous les audits
   - Point d'entrée principal pour les audits
 

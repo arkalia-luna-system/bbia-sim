@@ -11,14 +11,14 @@
 - **[VALIDATION_FINALE_QUALITE_2025.md](VALIDATION_FINALE_QUALITE_2025.md)** ⭐ **RECOMMANDÉ**
   - Rapports de validation complets
   - Tests, couverture, qualité code
-  - Date : 21 Novembre 2025
+  - Date : 8 Décembre 2025
 
 ---
 
 ## 🔗 Liens Utiles
 
 - **[Conformité SDK](../compliance/CONFORMITE_REACHY_MINI_COMPLETE.md)** — Tests de conformité
-- **[Audits](../audits/INDEX_AUDITS_CONSOLIDES.md)** — Tous les audits
+- **[Audits](../INDEX_AUDITS.md)** — Tous les audits
 - **[Performance](../../performance/)** — Optimisations et analyses
 
 ---

@@ -1,6 +1,6 @@
 # 🗂️ Datasets & Golden Images
 
-**Date** : 26 Novembre 2025  
+**Date** : 8 Décembre 2025  
 **Version** : 1.0
 
 > **Voir aussi** : [`docs/reference/INDEX_THEMATIQUE.md`](../reference/INDEX_THEMATIQUE.md) et [`docs/reference/project-status.md`](../reference/project-status.md)
@@ -62,7 +62,7 @@ python scripts/record_trace.py --emotion happy --duration 2 --out current_trace.
 
 ---
 
-**Dernière mise à jour** : 21 Novembre 2025
+**Dernière mise à jour** : 8 Décembre 2025
 
 ---
 

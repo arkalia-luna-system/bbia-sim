@@ -1,6 +1,6 @@
 # 🚀 Guide de Démarrage du Daemon BBIA-SIM
 
-**Date:** 26 Novembre 2025
+**Date:** 8 Décembre 2025
 **Note importante:** ✅ Fonctionne en mode simulation (MuJoCo) **sans robot physique**
 
 ---
@@ -152,5 +152,5 @@ Toutes les fonctionnalités sont disponibles :
 
 ## 🎯 Navigation
 
-**Retour à** : [README Documentation](../README.md)  
+**Retour à** : [README Documentation](../README.md)
 **Voir aussi** : [Guide de Démarrage](GUIDE_DEMARRAGE.md) • [Guide Avancé](GUIDE_AVANCE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)

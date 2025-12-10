@@ -2,7 +2,7 @@
 
 > **Source de vérité centralisée pour toutes les métriques du projet**
 
-**Dernière mise à jour** : 24 Novembre 2025
+**Dernière mise à jour** : 8 Décembre 2025
 **Source** : [arkalia-metrics-collector](https://github.com/arkalia-luna-system/arkalia-metrics-collector) + CI/CD GitHub Actions + Codecov
 
 ---
@@ -42,9 +42,15 @@ Voir `docs/observabilite/OBSERVABILITE.md` pour plus de détails.
 
 | Module | Coverage | Tests | Statut |
 |--------|----------|-------|--------|
-| `dashboard_advanced.py` | 76.71% | 47 | ✅ |
+| `model_optimizer.py` | 100% | 9 | ✅ |
+| `utils/constants.py` | 100% | 5 | ✅ |
+| `backends/simulation_shims.py` | 100% | 21 | ✅ |
+| `robot_registry.py` | 93.85% | 13 | ✅ |
+| `robot_factory.py` | 95.95% | 24 | ✅ |
 | `vision_yolo.py` | 99.45% | - | ✅ |
 | `voice_whisper.py` | 92.52% | - | ✅ |
+| `dashboard_advanced.py` | 76.71% | 47 | ✅ |
+| `bbia_emotional_sync.py` | 87.85% | 39 | ✅ |
 | `daemon_bridge.py` | 54.86% | 10 | ✅ |
 
 ### Tests de conformité SDK
@@ -91,7 +97,7 @@ Voir `docs/observabilite/OBSERVABILITE.md` pour plus de détails.
 ## 🔄 Version
 
 - **Version actuelle** : 1.4.0
-- **Date release** : 26 Novembre 2025
+- **Date release** : 8 Décembre 2025
 
 ---
 

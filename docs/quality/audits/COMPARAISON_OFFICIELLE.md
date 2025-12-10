@@ -1,6 +1,6 @@
 # 📊 COMPARAISON OFFICIELLE - Documentation et Application Conversation
 
-**Date :** 21 Novembre 2025  
+**Date :** 8 Décembre 2025  
 **Source :** Documentation officielle `pollen-robotics/reachy_mini`  
 **Version BBIA :** 1.3.2  
 **Objectif :** Comparer BBIA-SIM avec la documentation officielle et l'application conversation officielle
@@ -79,7 +79,7 @@ with ReachyMini() as reachy_mini:
 - Recherche d'espaces Hugging Face
 
 **BBIA:**
-- ✅ **Dashboard officiel-like CRÉÉ** (21 Novembre 2025) :
+- ✅ **Dashboard officiel-like CRÉÉ** (8 Décembre 2025) :
   - Templates Jinja2 modulaires (identique structure)
   - Design minimaliste avec Tailwind CSS
   - Sections : daemon, apps, appstore, move_player
@@ -263,4 +263,4 @@ with ReachyMini() as reachy_mini:
 
 ---
 
-**Dernière mise à jour :** 21 Novembre 2025
+**Dernière mise à jour :** 8 Décembre 2025

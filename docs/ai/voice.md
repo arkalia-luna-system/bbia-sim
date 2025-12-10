@@ -1,6 +1,7 @@
 # 🎤 Analyse Complète : Voix & Intelligence BBIA
 
-**Date :** 26 Novembre 2025  
+**Date :** 8 Décembre 2025  
+**Dernière mise à jour :** 8 Décembre 2025  
 **Auteur :** Analyse Expert  
 **Objectif :** Identifier blocages macOS, solutions voix alternatives, et état intelligence BBIA
 
@@ -15,6 +16,40 @@
 5. [Plan d'Implémentation](#-plan-dimplémentation)
 6. [Résumé des Blocages](#-résumé-des-blocages)
 7. [Navigation](#-navigation)
+
+---
+
+## 🔄 Flux Voix BBIA (TTS/STT)
+
+```mermaid
+flowchart TB
+    subgraph "Speech-to-Text (STT)"
+        Audio[Audio Input<br/>Microphone]
+        Audio --> Whisper{Whisper disponible?}
+        Whisper -->|Oui| WhisperSTT[Whisper STT<br/>Haute qualité]
+        Whisper -->|Non| GoogleSTT[Google API<br/>Fallback]
+        WhisperSTT --> Text[Texte transcrit]
+        GoogleSTT --> Text
+    end
+    
+    subgraph "Text-to-Speech (TTS)"
+        TextInput[Texte à synthétiser]
+        TextInput --> Backend{Backend TTS}
+        Backend -->|Coqui| CoquiTTS[Coqui TTS<br/>Pitch + Émotion]
+        Backend -->|Piper| PiperTTS[Piper TTS<br/>Léger]
+        Backend -->|Fallback| Pyttsx3[pyttsx3<br/>Système macOS]
+        CoquiTTS --> AudioOut[Audio généré]
+        PiperTTS --> AudioOut
+        Pyttsx3 --> AudioOut
+    end
+    
+    subgraph "Intégration Robot"
+        AudioOut --> Robot[Reachy Mini<br/>media.speaker]
+        Robot --> Playback[Lecture audio]
+    end
+    
+    Text -.-> TextInput
+```
 
 ---
 

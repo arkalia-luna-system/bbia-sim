@@ -1,6 +1,6 @@
 # Notes de version - BBIA-SIM
 
-**Date** : 26 Novembre 2025
+**Date** : 8 Décembre 2025
 
 ## Version 1.4.0 - 100% d'exploitation des capacités
 
@@ -321,4 +321,4 @@ python scripts/record_trace.py --emotion happy --duration 5
 
 ---
 
-*Dernière mise à jour : 26 Novembre 2025*
+*Dernière mise à jour : 8 Décembre 2025*

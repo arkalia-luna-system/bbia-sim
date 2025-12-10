@@ -1,6 +1,6 @@
 # 🎬 Guide Vidéos de Démonstration BBIA-SIM
 
-**Date** : 26 Novembre 2025  
+**Date** : 8 Décembre 2025
 **Objectif** : Créer des vidéos courtes (30-60 secondes) pour démontrer chaque comportement et fonctionnalité
 
 ---
@@ -13,9 +13,9 @@
 - **Format** : MP4, 1080p minimum
 - **Audio** : Voix off ou sous-titres
 - **Structure** :
-  1. Introduction (5s) : "BBIA-SIM - [Nom Comportement]"
-  2. Démonstration (20-45s) : Comportement en action
-  3. Conclusion (5s) : Lien GitHub, badge qualité
+ 1. Introduction (5s) : "BBIA-SIM - [Nom Comportement]"
+ 2. Démonstration (20-45s) : Comportement en action
+ 3. Conclusion (5s) : Lien GitHub, badge qualité
 
 ---
 
@@ -305,6 +305,6 @@
 
 ---
 
-**Date de création** : 21 Novembre 2025  
-**Dernière mise à jour** : 26 Novembre 2025
+**Date de création** : 8 Décembre 2025
+**Dernière mise à jour** : 8 Décembre 2025
 
