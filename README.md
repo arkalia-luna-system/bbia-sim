@@ -27,7 +27,7 @@
 
 ## 🧠 Moteur Cognitif Python pour Robot Reachy Mini
 
-### Simulation Fidèle • IA Avancée • SDK Conforme
+### Simulation Fidèle • IA Avancée • SDK Conforme • Production Ready
 
 [![🚀 Quick Start](https://img.shields.io/badge/🚀-Quick%20Start-green)](#-démarrage-rapide)
 [![📚 Documentation](https://img.shields.io/badge/📚-Documentation-blue)](docs/)
