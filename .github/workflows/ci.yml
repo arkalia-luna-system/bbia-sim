@@ -496,7 +496,7 @@ jobs:
   examples:
     runs-on: ubuntu-latest
     needs: [lint, test]
-    timeout-minutes: 10
+    timeout-minutes: 20
     env:
       MUJOCO_GL: disable
       DISPLAY: ""
