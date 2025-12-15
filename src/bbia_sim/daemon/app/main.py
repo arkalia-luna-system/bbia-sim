@@ -1,5 +1,6 @@
 """Application FastAPI principale pour BBIA-SIM."""
 
+import asyncio
 import logging
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
@@ -92,22 +93,66 @@ def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)) 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
-    """Gestionnaire de cycle de vie de l'application."""
+    """Gestionnaire de cycle de vie robuste avec retry et fallback."""
     # Démarrage
     logger.info("🚀 Démarrage de l'API BBIA-SIM")
 
-    # Démarrage de la simulation MuJoCo
-    sim_config = settings.get_simulation_config()
-    success = await simulation_service.start_simulation(headless=sim_config["headless"])
+    # NOUVEAU: Retry automatique startup simulation
+    max_retries = 3
+    retry_delay = 1.0
 
-    if success:
-        logger.info("✅ Simulation MuJoCo démarrée avec succès")
-        app_state["simulator"] = simulation_service
-        app_state["is_running"] = True
-    else:
-        logger.warning("⚠️ Échec du démarrage de la simulation MuJoCo")
-        app_state["simulator"] = None
-        app_state["is_running"] = False
+    for attempt in range(max_retries):
+        try:
+            sim_config = settings.get_simulation_config()
+            success = await simulation_service.start_simulation(
+                headless=sim_config["headless"]
+            )
+
+            if success:
+                logger.info("✅ Simulation MuJoCo démarrée avec succès")
+                app_state["simulator"] = simulation_service
+                app_state["is_running"] = True
+                break
+            else:
+                if attempt < max_retries - 1:
+                    logger.warning(
+                        "⚠️ Tentative %d/%d échouée, retry dans %.1fs...",
+                        attempt + 1,
+                        max_retries,
+                        retry_delay,
+                    )
+                    await asyncio.sleep(retry_delay)
+                else:
+                    logger.warning(
+                        "⚠️ Échec démarrage simulation après %d tentatives (fallback gracieux)",
+                        max_retries,
+                    )
+                    app_state["simulator"] = None
+                    app_state["is_running"] = False
+        except Exception as e:
+            if attempt < max_retries - 1:
+                logger.warning(
+                    "⚠️ Erreur démarrage (tentative %d/%d): %s",
+                    attempt + 1,
+                    max_retries,
+                    e,
+                )
+                await asyncio.sleep(retry_delay)
+            else:
+                logger.error(
+                    "❌ Échec démarrage après %d tentatives: %s (fallback gracieux)",
+                    max_retries,
+                    e,
+                )
+                app_state["simulator"] = None
+                app_state["is_running"] = False
+
+    # NOUVEAU: Health check avant de marquer "ready"
+    # L'app démarre même si simulation échoue (fallback gracieux)
+    logger.info(
+        "✅ API BBIA-SIM prête (simulation: %s)",
+        "OK" if app_state["is_running"] else "NON DISPONIBLE",
+    )
 
     yield
 

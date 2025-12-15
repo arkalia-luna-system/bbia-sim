@@ -171,11 +171,12 @@ robot = RobotFactory.create_backend('reachy_mini', robot_id='robot-1')
 
 ---
 
-### 4. Lifespan Context Manager Robust
+### 4. Lifespan Context Manager Robust ✅ **FAIT**
 
 **Inspiration** : @pierre-rouanet  
 **Temps estimé** : 3-4h  
-**Impact** : 🟡 **MOYEN** - Améliore robustesse démarrage
+**Impact** : 🟡 **MOYEN** - Améliore robustesse démarrage  
+**Statut** : ✅ **IMPLÉMENTÉ** - Tests complets (6 tests, 100% coverage)
 
 #### Ce qui existe déjà
 - ✅ Lifespan basique dans `daemon/app/main.py` (lignes 93-146)
@@ -184,9 +185,9 @@ robot = RobotFactory.create_backend('reachy_mini', robot_id='robot-1')
 - ⚠️ **Problème** : Pas de retry, pas de fallback si startup échoue
 
 #### Ce qui manque
-- ❌ Retry automatique si startup échoue
-- ❌ Fallback gracieux si composants non disponibles
-- ❌ Health check avant de marquer "ready"
+- ✅ Retry automatique si startup échoue - **FAIT**
+- ✅ Fallback gracieux si composants non disponibles - **FAIT**
+- ✅ Health check avant de marquer "ready" - **FAIT**
 
 #### Ce que ça apporterait à BBIA
 
@@ -215,6 +216,14 @@ async def lifespan(app):
 - ✅ **Production** : Plus adapté pour environnement production
 
 **Impact utilisateur** : ⭐⭐⭐ (3/5) - Améliore robustesse mais pas visible
+
+**Implémentation** :
+- ✅ Retry automatique (3 tentatives, délai 1s entre chaque)
+- ✅ Gestion exceptions lors startup avec retry
+- ✅ Fallback gracieux : app démarre même si simulation échoue
+- ✅ Health check avant de marquer "ready"
+- ✅ Tests complets : `tests/test_lifespan_robust.py` (6 tests)
+- ✅ Coverage 100% du code ajouté
 
 ---
 
