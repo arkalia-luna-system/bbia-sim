@@ -41,12 +41,20 @@ Le Reachy Mini Wireless contient un **Raspberry Pi 5** intégré. Comme un ordin
 - ✅ Système d'exploitation installé
 - ✅ Robot prêt à l'emploi
 
-### 🤔 MAIS... Elle est Peut-être Incluse !
+### ✅ BONNE NOUVELLE : Elle est PROBABLEMENT INCLUSE !
 
-**D'après la documentation officielle** :
-- Le kit inclut "TOUT le matériel nécessaire"
-- Mais la carte SD n'est pas toujours mentionnée explicitement
-- **Il faut vérifier à la réception** (18 décembre)
+**D'après la documentation officielle GitHub** ([source](https://github.com/pollen-robotics/reachy_mini/blob/develop/docs/platforms/reachy_mini/get_started.md)) :
+
+> **"Tools: Everything is included in the box."**
+
+**Cela signifie** :
+- ✅ **Tous les outils** sont inclus
+- ✅ **Tout le matériel nécessaire** est inclus
+- ✅ Le Raspberry Pi est **pré-configuré** (donc carte SD avec OS déjà installé)
+
+**Conclusion** : La carte SD est **probablement incluse** avec le système d'exploitation déjà installé dessus !
+
+**MAIS** : Il faut quand même **vérifier à la réception** (18 décembre) pour être sûr.
 
 ---
 
