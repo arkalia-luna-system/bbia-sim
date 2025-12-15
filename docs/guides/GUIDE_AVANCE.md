@@ -36,7 +36,7 @@
   - [📋 Table des Matières](#-table-des-matières)
   - [🏗️ Architecture Détaillée](#️-architecture-détaillée)
     - [🔧 Backend Unifié](#-backend-unifié)
-    - [🌟 Développez une fois, déployez partout !](#-développez-une-fois-déployez-partout-)
+    - [Backend unifié](#backend-unifié)
       - [Flux Backend Unifié](#flux-backend-unifié)
     - [🧠 Modules BBIA Avancés](#-modules-bbia-avancés)
       - [🏛️ Architecture Modules BBIA](#️-architecture-modules-bbia)
@@ -61,7 +61,7 @@
 
 <div align="center">
 
-### 🌟 Développez une fois, déployez partout !
+### Backend unifié
 
 [![🔄 Unifié](https://img.shields.io/badge/🔄-Simulation%20↔%20Robot-blue)](#flux-backend-unifié)
 [![⚡ Performance](https://img.shields.io/badge/⚡-Performance%20Optimisée-green)](#optimisations-de-performance)

@@ -662,7 +662,7 @@ bandit -r src/bbia_sim/backends/reachy_mini_backend.py -ll
 | Docs/UX | 8/10 | 10% |
 | **TOTAL** | **8.9/10** | 100% |
 
-**Recommandation :** Module très conforme SDK (audit Oct / Nov. 2025). Watchdog fonctionnel (timeout 2s vs 1s SDK acceptable, plus conservateur). Tests robustes (91 passed). Qualité code excellente (ruff OK, black OK, bandit OK, lignes ≤100). Prêt production. Reste à mesurer benchmarks latence emergency_stop (p50/p95) et jitter boucle 50Hz selon backlog pour compléter métriques performance.
+**Recommandation :** Module conforme SDK (audit Oct / Nov. 2025). Watchdog fonctionnel (timeout 2s vs 1s SDK acceptable, plus conservateur). Tests robustes (91 passed). Qualité code validée (ruff OK, black OK, bandit OK, lignes ≤100). Prêt production. Reste à mesurer benchmarks latence emergency_stop (p50/p95) et jitter boucle 50Hz selon backlog pour compléter métriques performance.
 
 ---
 

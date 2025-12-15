@@ -6,7 +6,7 @@
 **Version BBIA** : 1.4.0  
 **Objectif** : Synthèse complète des mises à jour, contributeurs et conformité
 
-> **Note** : Ce document a été mis à jour en décembre 2025 avec les dernières informations. Voir `AUDIT_REACHY_MINI_DECEMBRE_2025.md` pour l'audit complet le plus récent.
+Ce document a été mis à jour en décembre 2025 avec les dernières informations. Voir `AUDIT_REACHY_MINI_DECEMBRE_2025.md` pour l'audit complet le plus récent.
 
 ---
 

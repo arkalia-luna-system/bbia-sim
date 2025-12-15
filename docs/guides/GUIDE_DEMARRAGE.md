@@ -16,7 +16,7 @@
 
 <div align="center">
 
-### 🌟 De zéro à robot intelligent en quelques clics !
+### Démarrage rapide
 
 [![🚀 Quick Start](https://img.shields.io/badge/🚀-Quick%20Start-green)](#-installation)
 [![🤖 Robot](https://img.shields.io/badge/🤖-Robot%20Intelligent-blue)](#-premier-programme-python)
@@ -238,7 +238,7 @@ robot.disconnect()
 
 <div align="center">
 
-### 🎯 Voir votre robot prendre vie en 3D !
+### Simulation 3D MuJoCo
 
 [![🎮 3D](https://img.shields.io/badge/🎮-Simulation%203D-purple)](#-démos-principales)
 [![👁️ Visual](https://img.shields.io/badge/👁️-Visualisation-orange)](#-animations-émotions)
