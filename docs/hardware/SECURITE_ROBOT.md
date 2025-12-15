@@ -1,7 +1,4 @@
-# 🔒 Sécurité Robot - Guide Complet
-
-**Date** : 8 Décembre 2025  
-**Version** : 1.4.0
+# Sécurité Robot - Guide Complet
 
 > Voir aussi : [`docs/reference/INDEX_THEMATIQUE.md`](../reference/INDEX_THEMATIQUE.md) et [`docs/reference/project-status.md`](../reference/project-status.md)
 
@@ -43,4 +40,4 @@
 
 ---
 
-**Dernière mise à jour** : 8 Décembre 2025
+**Dernière mise à jour** : 15 Décembre 2025
