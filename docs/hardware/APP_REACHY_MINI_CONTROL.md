@@ -2,7 +2,10 @@
 
 **Date** : 15 Décembre 2025  
 **App** : Reachy Mini Control (officielle Pollen Robotics)  
-**Emplacement** : `/Volumes/Reachy Mini Control/Reachy Mini Control.app`
+**Version** : **0.7.18** (décembre 2025)  
+**Bundle ID** : `com.pollen-robotics.reachy-mini`  
+**Emplacement** : `/Volumes/Reachy Mini Control/Reachy Mini Control.app`  
+**Système requis** : macOS 10.15+ (Catalina ou supérieur)
 
 ---
 
@@ -10,13 +13,23 @@
 
 **Reachy Mini Control** est l'application officielle de Pollen Robotics pour contrôler votre robot Reachy Mini depuis un appareil (Mac, Windows, iOS, Android).
 
+### Informations Techniques
+
+- **Version** : 0.7.18
+- **Python** : 3.12 (intégré dans l'app)
+- **Port daemon** : **8000** (HTTP) - ⚠️ **Important** : Port différent de BBIA (8080)
+- **Protocole** : HTTP/HTTPS + Bonjour (découverte automatique)
+- **Réseau** : Accès réseau local requis
+
 ### Fonctionnalités Principales
 
 - ✅ **Contrôle des mouvements** : Tête, antennes, corps
 - ✅ **Vision en direct** : Stream caméra du robot
 - ✅ **Audio** : Microphone et haut-parleur
-- ✅ **Émotions** : Contrôle des expressions
+- ✅ **Émotions** : Contrôle des expressions (6 émotions officielles)
 - ✅ **Configuration** : Paramètres réseau, Wi-Fi, etc.
+- ✅ **Installation apps** : Gestion et installation d'applications Reachy Mini depuis Hugging Face Spaces
+- ✅ **Découverte automatique** : Détection automatique du robot sur le réseau local (Bonjour)
 
 ---
 
@@ -27,8 +40,19 @@
 **BBIA est compatible avec Reachy Mini Control** car :
 
 1. **Même SDK** : Les deux utilisent le SDK officiel `reachy_mini`
-2. **Même API** : Endpoints REST identiques (`/api/state/*`, `/api/move/*`)
-3. **Même protocole** : Communication via Zenoh (port 7447) ou HTTP (port 8080)
+2. **API similaire** : Endpoints REST similaires mais ports différents
+3. **Protocole** : Communication via HTTP (ports différents)
+
+### ⚠️ Ports Différents
+
+| Service | Port | Note |
+|---------|------|------|
+| **Reachy Mini Control** | **8000** | Port par défaut de l'app |
+| **BBIA Dashboard** | **8000** | Port par défaut BBIA |
+| **BBIA Daemon** | **8080** | Port alternatif BBIA |
+| **Zenoh** | **7447** | Protocole sous-jacent (les deux) |
+
+**⚠️ Attention** : Si BBIA et l'app tournent en même temps, ils peuvent entrer en conflit sur le port 8000. Utiliser des ports différents si nécessaire.
 
 ### ⚠️ Différences
 
