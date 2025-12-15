@@ -332,7 +332,7 @@ Si vous avez des questions :
 3. 💬 Créez une issue avec le label `question`
 4. 🤝 Contactez les maintainers
 
-**Merci de contribuer à BBIA-SIM !** 🚀
+**Contributions bienvenues**
 
 ---
 

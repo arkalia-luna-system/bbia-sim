@@ -5,7 +5,7 @@
 
 > **Voir aussi** : [`docs/reference/INDEX_THEMATIQUE.md`](../reference/INDEX_THEMATIQUE.md) et [`docs/reference/project-status.md`](../reference/project-status.md)
 
-Bienvenue dans la communauté BBIA-SIM ! Ce guide vous aidera à contribuer efficacement au projet.
+Ce guide décrit le processus de contribution au projet BBIA-SIM.
 
 > **💡 Nouveau contributeur ?**  
 > Commencez par consulter les [Good First Issues](../getting-started/contributing.md) pour trouver des tâches adaptées aux nouveaux contributeurs.
@@ -384,4 +384,4 @@ Si vous avez des questions :
 3. 💬 Créez une issue avec le label `question`
 4. 🤝 Contactez les maintainers
 
-**Merci de contribuer à BBIA-SIM !** 🚀
+**Contributions bienvenues**

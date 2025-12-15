@@ -108,7 +108,7 @@ Ce document analyse le **travail technique concret** de chaque contributeur, leu
 **Ce que BBIA peut s'inspirer** :
 - ✅ **Déjà fait** : BBIA a 4 dashboards (supérieur à l'officiel)
 - 💡 **À améliorer** : Intégration Hugging Face Spaces plus poussée (actuellement basique)
-- 💡 **À améliorer** : Interface plus simple pour débutants (BBIA est très complet mais complexe)
+- 💡 **À améliorer** : Interface plus simple pour nouveaux utilisateurs (BBIA est très complet mais complexe)
 
 #### Endpoints API REST
 - **Pattern** : RESTful API avec OpenAPI/Swagger documentation
@@ -179,7 +179,7 @@ Ce document analyse le **travail technique concret** de chaque contributeur, leu
 
 #### Guides d'Utilisation
 - **Pattern** : Documentation Markdown avec exemples code
-- **Approche** : Guides par niveau (débutant, intermédiaire, avancé)
+- **Approche** : Guides par niveau (premiers pas, intermédiaire, avancé)
 - **Innovation** : Exemples exécutables (scripts Python complets)
 - **Technique** : Liens croisés entre docs pour navigation
 
@@ -196,7 +196,7 @@ Ce document analyse le **travail technique concret** de chaque contributeur, leu
 
 **Ce que BBIA peut s'inspirer** :
 - ✅ **Déjà fait** : BBIA a 67 exemples (supérieur à l'officiel)
-- 💡 **À améliorer** : Progression plus claire (débutant → expert)
+- 💡 **À améliorer** : Progression plus claire (premiers pas → expert)
 - 💡 **À améliorer** : Exemples avec erreurs communes documentées
 
 ---
@@ -306,10 +306,10 @@ Ce document analyse le **travail technique concret** de chaque contributeur, leu
 
 #### 🌐 Dashboard & API
 
-8. **Mode débutant avec contrôles basiques** (inspiration @FabienDanieau)
+8. **Mode simplifié avec contrôles essentiels** (inspiration @FabienDanieau)
    - **État actuel** : Interface complète mais complexe
-   - **À faire** : Mode "débutant" avec contrôles simplifiés (on/off, mouvements basiques)
-   - **Technique** : Toggle mode débutant/expert dans dashboard
+   - **À faire** : Mode simplifié avec contrôles essentiels (on/off, mouvements basiques)
+   - **Technique** : Toggle mode simplifié/avancé dans dashboard
    - **Bénéfice** : Accessibilité pour nouveaux utilisateurs
    - **Priorité** : 🟡 Moyenne
    - **Temps estimé** : 4-6h
@@ -399,8 +399,8 @@ Ce document analyse le **travail technique concret** de chaque contributeur, leu
 #### 📚 Documentation & Exemples
 
 19. **Guides par niveau** (inspiration @askurique)
-    - **État actuel** : Documentation tout mélangé (débutant/expert)
-    - **À faire** : Organiser guides par niveau (débutant → intermédiaire → expert)
+    - **État actuel** : Documentation tout mélangé (premiers pas/expert)
+    - **À faire** : Organiser guides par niveau (premiers pas → intermédiaire → expert)
     - **Technique** : Structure `docs/beginner/`, `docs/intermediate/`, `docs/advanced/`
     - **Bénéfice** : Navigation plus claire, progression naturelle
     - **Priorité** : 🟡 Moyenne
@@ -464,7 +464,7 @@ Ce document analyse le **travail technique concret** de chaque contributeur, leu
 2. ⏳ **Support simultané sim/robot réel** (6-8h) - Infrastructure créée
 3. **Fallback automatique sim → robot** (2-3h)
 4. ✅ **Modèle simplifié pour tests** (2-3h) - **FAIT**
-5. **Mode débutant dashboard** (4-6h)
+5. **Mode simplifié dashboard** (4-6h)
 6. **Intégration HF Spaces plus poussée** (6-8h)
 7. **Heartbeat WebSocket robuste** (3-4h)
 8. ✅ **Tests performance avec baselines** (4-6h) - **FAIT** (8 Déc 2025)

@@ -5,7 +5,7 @@
 **🎯 Vue d'ensemble de l'état du projet par axe**
 *Fiabilité • Performance • Sécurité • CI/CD • Plus*
 
-**Version** : 1.4.0 • **Dernière mise à jour : 15 Décembre 2025
+**Version** : 1.4.0 • **Dernière mise à jour** : 15 Décembre 2025
 **Prêt pour arrivée robot** 🤖
 
 **Mise à jour 8 Décembre 2025** : 100% d'exploitation des capacités
@@ -44,8 +44,7 @@
 
 ## 🖥️ État Opérationnel
 
-> **💡 Note** : Cette section décrit l'état opérationnel actuel du système (dashboard, commandes, tests).  
-> Pour les métriques détaillées, voir [METRICS.md](METRICS.md). Pour l'installation, voir [INSTALLATION.md](../getting-started/INSTALLATION.md).
+Cette section décrit l'état opérationnel actuel du système (dashboard, commandes, tests). Pour les métriques détaillées, voir [METRICS.md](METRICS.md). Pour l'installation, voir [INSTALLATION.md](../getting-started/INSTALLATION.md).
 
 ### Dashboard Web
 
@@ -82,7 +81,7 @@
 
 # Via terminal (RECOMMANDÉ)
 mjpython examples/demo_chat_bbia_3d.py
-# ⚠️ Note: demo_chat_simple.py est déprécié
+**Important** : `demo_chat_simple.py` est déprécié
 ```
 
 ### Commandes Principales

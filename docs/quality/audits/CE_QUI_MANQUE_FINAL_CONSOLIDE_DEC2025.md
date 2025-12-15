@@ -115,7 +115,7 @@ Toutes les fonctionnalités critiques sont implémentées et testées.
 
 ---
 
-#### 5. Mode débutant dashboard
+#### 5. Mode simplifié dashboard
 
 **Statut** : ⏳ À faire  
 **Durée** : 4-6h  
@@ -125,9 +125,9 @@ Toutes les fonctionnalités critiques sont implémentées et testées.
 - Interface complète mais complexe
 
 **À faire** :
-- Mode "débutant" avec contrôles simplifiés (on/off, mouvements basiques)
-- Toggle mode débutant/expert dans dashboard
-- Masquer fonctionnalités avancées en mode débutant
+- Mode simplifié avec contrôles essentiels (on/off, mouvements basiques)
+- Toggle mode simplifié/avancé dans dashboard
+- Masquer fonctionnalités avancées en mode simplifié
 
 **Fichiers** :
 - `src/bbia_sim/daemon/app/dashboard/templates/base.html` (toggle mode)
@@ -333,7 +333,7 @@ except Exception as e:
 | 🟡 MOYENNE | Découverte automatique robots | 4-6h | ⏳ Infrastructure créée |
 | 🟡 MOYENNE | Support simultané sim/robot | 6-8h | ⏳ Infrastructure créée |
 | 🟡 MOYENNE | Modèle simplifié tests | 2-3h | ✅ **FAIT** |
-| 🟡 MOYENNE | Mode débutant dashboard | 4-6h | ⏳ À faire |
+| 🟡 MOYENNE | Mode simplifié dashboard | 4-6h | ⏳ À faire |
 | 🟡 MOYENNE | Tests performance baselines | 4-6h | ✅ **FAIT** |
 | 🟡 MOYENNE | Micro-mouvements subtils | 3-4h | ✅ **FAIT** |
 | 🟢 BASSE | Lazy assets STL | 3-4h | ⏳ Optionnel |
@@ -361,7 +361,7 @@ except Exception as e:
 6. ✅ **FAIT** : Modèle simplifié tests (flag `--fast`) ✅
 7. ⏳ **INFRASTRUCTURE** : Découverte robots (infrastructure créée, à finaliser)
 8. ⏳ **INFRASTRUCTURE** : Support simultané sim/robot (infrastructure créée, routing à finaliser)
-9. ⏳ **À FAIRE** : Mode débutant dashboard (4-6h)
+9. ⏳ **À FAIRE** : Mode simplifié dashboard (4-6h)
 10. ⏳ **À FAIRE** : Tests performance baselines (4-6h)
 11. 🟢 **OPTIONNEL** : 4 améliorations basse priorité (14-20h)
 12. ✅ **IGNORER** : MCP, WebRTC, DoA (BBIA a déjà mieux ou équivalent)

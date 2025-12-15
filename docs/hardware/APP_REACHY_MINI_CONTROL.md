@@ -356,7 +356,7 @@ Si le problème persiste :
 - **GitHub Issues** : https://github.com/pollen-robotics/reachy_mini/issues
 - **Email** : support@pollen-robotics.com
 
-### ⚠️ Note sur le Mode Simulation
+### Mode Simulation
 
 L'app essaie de lancer le daemon en **mode simulation** (MuJoCo) car :
 - Vous n'avez pas encore le robot physique

@@ -279,7 +279,7 @@ ls -la
   Microphone 4: ✅ Actif
 
 📷 Caméra grand angle: Active
-  👁️ Reconnaissance d'objets: En cours...
+  👁️ Reconnaissance d'objets: Disponible
   🎯 Objets détectés: fenêtre
 
 🎭 Test des émotions:
@@ -437,7 +437,7 @@ Vous pouvez maintenant commencer l'intégration des composants dans BBIA !
 **BBIA** - Brain-Based Interactive Agent
 *Guide de simulation complet* 🎮✨
 
-**Phase 1** : ✅ TERMINÉE
+**Dépôts** : ✅ Disponibles
 **Phase 2** : �� PRÊT À COMMENCER
 
 ## 🤖 Séquence de Réveil Réaliste BBIA

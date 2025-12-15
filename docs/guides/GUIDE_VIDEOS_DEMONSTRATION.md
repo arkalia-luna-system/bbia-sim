@@ -44,7 +44,7 @@
 #### 3. Emotional Response (Réponse Émotionnelle)
 - **Durée** : 40s
 - **Contenu** :
-  - Utilisateur dit "Tu es génial !"
+  - Utilisateur dit "Tu es bien !"
   - Robot passe à l'émotion "happy"
   - Animation correspondante
   - Réponse vocale positive

@@ -19,12 +19,12 @@
 ### Démarrage rapide
 
 [![🚀 Quick Start](https://img.shields.io/badge/🚀-Quick%20Start-green)](#-installation)
-[![🤖 Robot](https://img.shields.io/badge/🤖-Robot%20Intelligent-blue)](#-premier-programme-python)
+[![🤖 Robot](https://img.shields.io/badge/🤖-Robot-blue)](#-exemple-de-code-python)
 [![💬 Chat](https://img.shields.io/badge/💬-Chat-purple)](#-chat-avec-bbia)
 
 </div>
 
-### Architecture simple
+### Architecture
 
 ```mermaid
 graph LR
@@ -203,11 +203,11 @@ python src/bbia_sim/dashboard_advanced.py
 
 </div>
 
-### 3. 🤖 Premier Programme Python
+### 3. 🤖 Exemple de Code Python
 
 <div align="center">
 
-### 🐍 Votre premier code robot en 10 lignes !
+### Exemple de code Python
 
 [![🐍 Python](https://img.shields.io/badge/🐍-Python%20Code-green)](#-exemple-complet)
 [![🎯 Action](https://img.shields.io/badge/🎯-Action%20Immédiate-blue)](#-tester-le-code)
@@ -261,13 +261,13 @@ mjpython examples/demo_chat_bbia_3d.py
 > `mjpython` est installé automatiquement avec MuJoCo et permet d'afficher la fenêtre 3D.
 > Si `mjpython` n'est pas disponible, utilisez `python` (le viewer peut ne pas s'ouvrir en mode headless).
 
-### 5. 💬 Chat Intelligent avec BBIA
+### 5. 💬 Chat avec BBIA
 
 <div align="center">
 
-### 🤖 Discutez avec votre robot intelligent !
+### Chat avec BBIA
 
-[![💬 Chat](https://img.shields.io/badge/💬-Chat%20Intelligent-blue)](#-chat-simple-via-terminal)
+[![💬 Chat](https://img.shields.io/badge/💬-Chat-blue)](#-chat-avec-bbia)
 [![🧠 IA](https://img.shields.io/badge/🧠-Intelligence%20Artificielle-green)](#-chat-complet-avec-hugging-face)
 
 </div>

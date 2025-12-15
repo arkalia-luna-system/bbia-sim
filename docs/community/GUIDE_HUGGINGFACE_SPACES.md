@@ -318,7 +318,7 @@ Si vous avez des questions :
 3. 💬 Créez une issue avec le label `question`
 4. 🤝 Contactez les maintainers
 
-**Merci de partager vos applications BBIA-SIM !** 🚀
+**Partage d'applications BBIA-SIM**
 
 ---
 

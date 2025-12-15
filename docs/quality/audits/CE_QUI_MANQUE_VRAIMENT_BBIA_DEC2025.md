@@ -242,10 +242,10 @@ self.emotional_sync.sync_speak_with_emotion(
    - **Impact** : Tests 2-3x plus rapides
    - **Fichiers** : ✅ `__main__.py` (flag ajouté), ✅ `robot_factory.py` (support)
 
-8. ⚠️ **Mode débutant dashboard** (inspiration @FabienDanieau)
+8. ⚠️ **Mode simplifié dashboard** (inspiration @FabienDanieau)
    - **État actuel** : Interface complète mais complexe
-   - **À faire** : Mode "débutant" avec contrôles simplifiés
-   - **Technique** : Toggle mode débutant/expert
+   - **À faire** : Mode simplifié avec contrôles essentiels
+   - **Technique** : Toggle mode simplifié/avancé
    - **Impact** : Accessibilité pour nouveaux utilisateurs
    - **Priorité** : 🟡 Moyenne
    - **Temps estimé** : 4-6h

@@ -203,7 +203,7 @@ graph LR
 
 **Statut** : ✅ **TERMINÉ** (Oct / Nov. 2025) - Code prêt pour robot réel
 
-> **💡 Note** : Le code bascule automatiquement en mode simulation si le robot n'est pas disponible.
+Le code bascule automatiquement en mode simulation si le robot n'est pas disponible.
 
 #### 🔄 Architecture Robot Réel
 

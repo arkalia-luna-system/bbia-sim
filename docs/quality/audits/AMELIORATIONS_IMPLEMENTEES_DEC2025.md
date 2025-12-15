@@ -20,7 +20,7 @@
 3. **Découverte automatique robots** (infrastructure créée)
 4. **Support simultané sim/robot** (infrastructure créée)
 5. **Modèle simplifié tests** (flag `--fast` ajouté)
-6. **Mode débutant dashboard** (à faire)
+6. **Mode simplifié dashboard** (à faire)
 
 ### ✅ Complétées (suite)
 
@@ -106,7 +106,7 @@
 
 ---
 
-### 6. Mode Débutant Dashboard ⏳
+### 6. Mode Simplifié Dashboard ⏳
 
 **Statut** : À implémenter
 
@@ -172,7 +172,7 @@
 1. Finaliser découverte robots (implémentation complète Zenoh)
 2. Finaliser support simultané (routing API)
 3. ✅ Créer tests pour robot_registry et multi-backend (FAIT - 8 Décembre 2025)
-4. Implémenter mode débutant dashboard
+4. Implémenter mode simplifié dashboard
 5. ✅ Implémenter tests performance baselines (FAIT - 8 Décembre 2025)
 6. ✅ Mettre à jour documentation (FAIT - 8 Décembre 2025)
 

@@ -7,7 +7,7 @@
 
 ## Backend Unifié RobotAPI
 
-Le projet BBIA-Reachy-SIM utilise maintenant une **interface unifiée RobotAPI** qui permet de basculer facilement entre la simulation MuJoCo et le robot Reachy réel.
+Le projet BBIA-Reachy-SIM utilise une **interface unifiée RobotAPI** qui permet de basculer entre la simulation MuJoCo et le robot Reachy réel.
 
 ## 🎯 Architecture
 

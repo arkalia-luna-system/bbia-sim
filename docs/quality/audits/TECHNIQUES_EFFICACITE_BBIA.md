@@ -598,7 +598,7 @@ python examples/demo_emotion_ok.py --emotion happy --duration 10
 **Avant** (❌ Tout mélangé) :
 ```
 docs/
-  guide.md  # Débutant et expert mélangés
+  guide.md  # Premiers pas et expert mélangés
 ```
 
 **Après** (✅ Organisé) :

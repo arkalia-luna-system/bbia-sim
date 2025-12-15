@@ -46,7 +46,7 @@ python scripts/start_public_api.py --log-level debug
 
 ## 🎯 Mode Simulation (Sans Robot Physique)
 
-**✅ Le daemon fonctionne parfaitement en mode simulation sans robot physique !**
+**Le daemon fonctionne en mode simulation sans robot physique.**
 
 ### Ce qui se passe au démarrage :
 
@@ -130,7 +130,7 @@ open http://127.0.0.1:8000/
 
 ## 🎯 Conclusion
 
-**Le daemon BBIA-SIM fonctionne parfaitement en mode simulation sans robot physique !**
+**Le daemon BBIA-SIM fonctionne en mode simulation sans robot physique.**
 
 Toutes les fonctionnalités sont disponibles :
 

@@ -1,7 +1,6 @@
 # Implémentation du watchdog de monitoring temps réel
 
-**Dernière mise à jour : 15 Décembre 2025
-**Statut**: complété et validé
+**Dernière mise à jour** : 15 Décembre 2025
 
 ---
 
