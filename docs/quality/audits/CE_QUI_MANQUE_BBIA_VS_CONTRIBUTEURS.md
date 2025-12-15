@@ -203,23 +203,25 @@ Ce document se concentre sur le **travail technique concret** des contributeurs,
 
 ---
 
-#### 18. Tests de conformité SDK plus exhaustifs
-**État actuel** : 37 tests de conformité  
-**À faire** : Tests edge cases, limites, erreurs  
-**Technique** : Ajouter tests limites joints, erreurs réseau, timeouts  
-**Bénéfice** : Conformité SDK garantie à 100%  
+#### 18. ✅ Tests de conformité SDK plus exhaustifs - **TERMINÉ**
+**État actuel** : ✅ **TERMINÉ** (15 Déc 2025)  
+**Réalisé** : Tests edge cases exhaustifs créés (`test_conformity_edge_cases.py`)  
+**Technique** : Tests limites joints (min/max), erreurs réseau, valeurs NaN/Inf, commandes concurrentes  
+**Bénéfice** : Conformité SDK garantie à 100% avec edge cases  
 **Priorité** : 🟡 Moyenne  
-**Temps estimé** : 6-8h
+**Temps estimé** : 6-8h  
+**Statut** : ✅ **TERMINÉ** - 10 tests edge cases ajoutés, tests existants améliorés
 
 ---
 
-#### 19. Tests headless MuJoCo plus robustes
-**État actuel** : Tests headless parfois instables  
-**À faire** : Retry automatique, meilleure gestion erreurs  
-**Technique** : Fixtures pytest avec retry, timeout plus longs  
-**Bénéfice** : CI plus stable, moins de flaky tests  
+#### 19. ✅ Tests headless MuJoCo plus robustes - **TERMINÉ**
+**État actuel** : ✅ **TERMINÉ** (15 Déc 2025)  
+**Réalisé** : Tests robustesse headless créés (`test_headless_robustness.py`)  
+**Technique** : Tests récupération erreurs, timeouts adaptatifs, libération ressources, environnement CI  
+**Bénéfice** : CI plus stable, moins de flaky tests, gestion erreurs robuste  
 **Priorité** : 🟡 Moyenne  
-**Temps estimé** : 3-4h
+**Temps estimé** : 3-4h  
+**Statut** : ✅ **TERMINÉ** - 8 tests robustesse ajoutés, tests existants améliorés
 
 ---
 
@@ -300,8 +302,8 @@ Ce document se concentre sur le **travail technique concret** des contributeurs,
 5. Mode simplifié dashboard (4-6h)
 6. Intégration HF Spaces plus poussée (6-8h)
 7. Heartbeat WebSocket robuste (3-4h)
-8. Tests conformité SDK exhaustifs (6-8h)
-9. Tests headless MuJoCo robustes (3-4h)
+8. ✅ Tests conformité SDK exhaustifs (6-8h) - **TERMINÉ** (15 Déc)
+9. ✅ Tests headless MuJoCo robustes (3-4h) - **TERMINÉ** (15 Déc)
 10. Guides par niveau (4-6h)
 
 **Actions recommandées avant réception robot (3 jours)** :

@@ -2,8 +2,6 @@
 """Tests pour mode simplifié dashboard."""
 
 
-
-
 class TestSimplifiedMode:
     """Tests pour mode simplifié dashboard."""
 

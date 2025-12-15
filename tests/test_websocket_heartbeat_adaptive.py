@@ -98,7 +98,10 @@ class TestAdaptiveHeartbeat:
     async def test_heartbeat_sends_with_adaptive_interval(self):
         """Test envoi heartbeat avec intervalle adaptatif."""
         manager = BBIAAdvancedWebSocketManager()
-        manager.active_connections = [AsyncMock()]
+        # Mock connexion avec send_text qui ne lève pas d'exception
+        mock_connection = AsyncMock()
+        mock_connection.send_text = AsyncMock(return_value=None)
+        manager.active_connections = [mock_connection]
 
         # Simuler latence faible
         manager._update_latency(10.0)
@@ -106,11 +109,18 @@ class TestAdaptiveHeartbeat:
         # Vérifier que heartbeat utilise intervalle adaptatif
         initial_interval = manager._heartbeat_interval
 
+        # Initialiser _last_heartbeat pour que la condition soit vraie
+        import time
+
+        manager._last_heartbeat = 0.0
+
         await manager._send_heartbeat()
 
         # Vérifier que heartbeat a été envoyé
         assert manager._last_heartbeat > 0
         assert manager._heartbeat_interval == initial_interval
+        # Vérifier que send_text a été appelé
+        mock_connection.send_text.assert_called_once()
 
     def test_update_latency_recalculates_heartbeat(self):
         """Test que _update_latency recalcule heartbeat."""

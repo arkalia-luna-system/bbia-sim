@@ -144,7 +144,7 @@ Ce document a été mis à jour en décembre 2025 avec les dernières informatio
 **Comparaison BBIA** :
 - ✅ BBIA : 1,743 tests (supérieur)
 - ✅ CI/CD complet
-- ✅ Qualité code excellente
+- ✅ Qualité code élevée
 - ✅ Pre-commit configuré
 
 **GitHub** : [@RemiFabre](https://github.com/RemiFabre)

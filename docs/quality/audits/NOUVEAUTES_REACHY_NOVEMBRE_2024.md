@@ -10,7 +10,7 @@
 
 ## 📧 RÉSUMÉ DE L'EMAIL POLLEN ROBOTICS
 
-### 🎊 Excellente nouvelle !
+### 🎊 Nouvelle importante
 
 ![Reachy Mini Unboxing](../../../assets/images/reachy_mini_unboxing_official.gif)
 
@@ -24,10 +24,10 @@ L'équipe Pollen Robotics vient de confirmer que **Reachy-mini est en version fi
 
 ### 🧪 Résultats du Programme Bêta Communautaire
 
-Au cours des dernières semaines, environ **125 unités bêta** ont été expédiées à des testeurs précoces — et la réponse de la communauté a été fantastique.
+Au cours des dernières semaines, environ **125 unités bêta** ont été expédiées à des testeurs précoces — et la réponse de la communauté a été très positive.
 
 **Retours reçus :**
-- ✅ De superbes démos et une multitude d'applications
+- ✅ De nombreuses démos et une multitude d'applications
 - ✅ Des tonnes de commentaires qui ont aidé à peaufiner la version finale
 - ✅ Un immense merci à tous les participants — ils contribuent à façonner ce que deviendra Reachy-mini pour des milliers d'utilisateurs
 
