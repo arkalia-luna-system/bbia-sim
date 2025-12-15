@@ -261,7 +261,7 @@ robot = RobotFactory.create_backend(
 2. **Simplicité** :
    - Plug & play
    - Pas de configuration complexe
-   - Idéal pour débutants
+   - Interface simplifiée
 
 3. **Configuration** :
    - Setup réseau simplifié

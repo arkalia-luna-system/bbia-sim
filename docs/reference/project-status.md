@@ -27,15 +27,7 @@
 
 ## ⚡ Configuration Rapide
 
-> **🔧 Setup en 3 commandes**
-
-```bash
-# Python 3.11+ requis
-pyenv install 3.11.9 && pyenv local 3.11.9
-python -m pip install --upgrade pip
-pip install -e .
-
-```
+> **🔧 Setup** : Voir [`docs/getting-started/INSTALLATION.md`](../getting-started/INSTALLATION.md) pour les instructions complètes d'installation.
 
 <div align="center">
 

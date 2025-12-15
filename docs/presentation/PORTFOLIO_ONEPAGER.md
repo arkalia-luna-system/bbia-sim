@@ -237,14 +237,7 @@ python -m pytest tests/ -m "not e2e" -v
 
 > **Compatibilité Python et CI**
 >
-> - **Python** : 3.11+
-> - **CI** : `.github/workflows/ci.yml`
-> - **Setup rapide** :
-> ```bash
-> pyenv install 3.11.9 && pyenv local 3.11.9
-> python -m pip install --upgrade pip
-> pip install -e .
-> ```
+> **Installation** : Voir [`docs/getting-started/INSTALLATION.md`](../getting-started/INSTALLATION.md) pour les instructions complètes.
 
 - **Repository** : [github.com/arkalia-luna-system/bbia-sim](https://github.com/arkalia-luna-system/bbia-sim)
 - **Documentation** : Voir dossier `docs/`

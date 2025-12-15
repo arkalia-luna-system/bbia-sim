@@ -197,7 +197,7 @@ from bbia_sim.behaviors import TeachingBehavior
 
 behavior = TeachingBehavior(robot_api=robot_api)
 
-# Leçon de maths niveau débutant
+# Leçon de maths niveau essentiel
 behavior.execute({"subject": "maths", "level": "beginner"})
 
 # Leçon de sciences niveau avancé

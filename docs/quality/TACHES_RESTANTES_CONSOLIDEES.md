@@ -111,14 +111,14 @@
 
 ---
 
-#### 4. Mode débutant dashboard (Inspiration @FabienDanieau)
+#### 4. Mode simplifié dashboard (Inspiration @FabienDanieau)
 
 **Durée estimée** : 4-6h
 
 **État actuel** : Interface complète mais complexe
 
 **Actions** :
-- Mode "débutant" avec contrôles simplifiés (on/off, mouvements basiques)
+- Mode simplifié avec contrôles essentiels (on/off, mouvements basiques)
 - Toggle mode débutant/expert dans dashboard
 - Masquer fonctionnalités avancées en mode débutant
 

@@ -15,7 +15,7 @@
 2. 🔴 **Heartbeat WebSocket adaptatif** (3-4h) - **IMPACT ÉLEVÉ**
 3. 🟡 **Finaliser découverte automatique robots** (2-3h) - **IMPACT MOYEN**
 4. 🟡 **Lifespan context manager robuste** (3-4h) - **IMPACT MOYEN**
-5. 🟡 **Mode débutant dashboard** (4-6h) - **IMPACT MOYEN**
+5. 🟡 **Mode simplifié dashboard** (4-6h) - **IMPACT MOYEN**
 
 **Total temps estimé** : 14-20h pour les 5 améliorations les plus importantes
 
@@ -244,11 +244,11 @@ async def lifespan(app):
 #### Ce qui existe déjà
 - ✅ Dashboard complet avec tous les contrôles
 - ✅ Interface avancée pour experts
-- ⚠️ **Problème** : Interface complexe pour débutants
+- ⚠️ **Problème** : Interface complexe pour nouveaux utilisateurs
 
 #### Ce qui manque
-- ❌ Mode "débutant" avec contrôles simplifiés
-- ❌ Toggle mode débutant/expert
+- ❌ Mode simplifié avec contrôles essentiels
+- ❌ Toggle mode simplifié/avancé
 - ❌ Interface simplifiée (on/off, mouvements basiques)
 
 #### Ce que ça apporterait à BBIA
@@ -263,7 +263,7 @@ async def lifespan(app):
 
 **Après** (✅ Efficace) :
 ```html
-<!-- Mode débutant simplifié -->
+<!-- Mode simplifié -->
 <div class="dashboard" data-mode="beginner">
   <button onclick="robot.wake_up()">Réveiller</button>
   <button onclick="robot.sleep()">Endormir</button>
@@ -273,7 +273,7 @@ async def lifespan(app):
 
 **Bénéfices concrets** :
 - ✅ **Accessibilité** : Interface simple pour nouveaux utilisateurs
-- ✅ **Progression** : Mode débutant → expert naturel
+- ✅ **Progression** : Mode simplifié → avancé naturel
 - ✅ **Adoption** : Plus facile pour commencer avec BBIA
 - ✅ **UX** : Moins de confusion, focus sur l'essentiel
 
@@ -291,7 +291,7 @@ async def lifespan(app):
 | **Heartbeat adaptatif** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | 🔴 **HAUTE** |
 | **Découverte auto robots** | ⭐⭐⭐ | ⭐⭐⭐ | 🟡 **MOYENNE** |
 | **Lifespan robuste** | ⭐⭐ | ⭐⭐⭐⭐ | 🟡 **MOYENNE** |
-| **Mode débutant** | ⭐⭐⭐ | ⭐⭐ | 🟡 **MOYENNE** |
+| **Mode simplifié** | ⭐⭐⭐ | ⭐⭐ | 🟡 **MOYENNE** |
 
 ---
 
@@ -371,7 +371,7 @@ async def lifespan(app):
 
 3. **Finaliser découverte automatique** (2-3h)
 4. **Lifespan robuste** (3-4h)
-5. **Mode débutant dashboard** (4-6h)
+5. **Mode simplifié dashboard** (4-6h)
 
 ---
 
@@ -412,7 +412,7 @@ async def lifespan(app):
 2. 🔴 **Heartbeat WebSocket adaptatif** (3-4h) - ⭐⭐⭐⭐⭐ Impact
 3. 🟡 **Finaliser découverte automatique** (2-3h) - ⭐⭐⭐ Impact
 4. 🟡 **Lifespan robuste** (3-4h) - ⭐⭐⭐ Impact
-5. 🟡 **Mode débutant dashboard** (4-6h) - ⭐⭐⭐ Impact
+5. 🟡 **Mode simplifié dashboard** (4-6h) - ⭐⭐⭐ Impact
 
 ### Recommandation
 

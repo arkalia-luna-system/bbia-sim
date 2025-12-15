@@ -104,7 +104,7 @@
 **Ce que BBIA peut s'inspirer** :
 - ✅ BBIA a 4 dashboards (supérieur)
 - ✅ BBIA a API REST complète avec 50+ endpoints
-- 💡 **À améliorer** : Mode débutant avec contrôles simplifiés
+- 💡 **À améliorer** : Mode simplifié avec contrôles essentiels
 - 💡 **À améliorer** : Intégration HF Spaces plus poussée (installation apps)
 - 💡 **À améliorer** : Rate limiting plus granulaire par endpoint
 - 💡 **À améliorer** : Heartbeat WebSocket plus robuste avec reconnection auto
@@ -127,7 +127,7 @@
 
 #### @askurique - Documentation & Exemples
 **Travail technique** :
-- Guides d'utilisation par niveau (débutant, intermédiaire, avancé)
+- Guides d'utilisation par niveau (essentiel, intermédiaire, avancé)
 - Exemples exécutables (scripts Python complets)
 - Documentation API avec liens croisés
 - Exemples avec erreurs communes et solutions

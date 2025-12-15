@@ -426,7 +426,7 @@ Voir `examples/demo_chat_bbia_3d.py` ⭐ (RECOMMANDÉ) pour un exemple complet :
 mjpython examples/demo_chat_bbia_3d.py
 ```
 
-⚠️ **Note** : `demo_chat_bbia.py` est déprécié, utiliser `demo_chat_bbia_3d.py` à la place.
+**Important** : `demo_chat_bbia.py` est déprécié, utiliser `demo_chat_bbia_3d.py` à la place.
 
 ---
 

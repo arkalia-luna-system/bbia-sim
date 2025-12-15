@@ -6,7 +6,7 @@
 **Version BBIA** : 1.4.0  
 **Objectif** : Liste complète de ce qui manque dans BBIA par rapport au travail des contributeurs officiels
 
-> **Note** : Ce document se concentre sur le **travail technique concret** des contributeurs, pas sur les statistiques de commits.
+Ce document se concentre sur le **travail technique concret** des contributeurs, pas sur les statistiques de commits.
 
 ---
 

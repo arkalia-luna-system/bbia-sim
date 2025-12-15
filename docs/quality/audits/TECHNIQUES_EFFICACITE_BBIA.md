@@ -4,7 +4,7 @@
 **Objectif** : Documenter les techniques et astuces pour être efficace avec BBIA, optimiser le workflow et maximiser la productivité  
 **Audience** : Développeurs BBIA, contributeurs, utilisateurs avancés
 
-> **Note** : "Tricher" entre guillemets signifie utiliser des techniques intelligentes et des raccourcis légitimes pour être plus efficace, pas tricher de manière malhonnête.
+"Tricher" entre guillemets signifie utiliser des techniques intelligentes et des raccourcis légitimes pour être plus efficace, pas tricher de manière malhonnête.
 
 ---
 
