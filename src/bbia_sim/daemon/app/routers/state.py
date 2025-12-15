@@ -3,7 +3,7 @@
 import asyncio
 import logging
 import os
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
 from typing import Annotated, Any, cast
 
 from fastapi import APIRouter, Depends, WebSocket, WebSocketDisconnect
@@ -17,6 +17,7 @@ from bbia_sim.daemon.app.backend_adapter import (
 from bbia_sim.daemon.models import FullState, as_any_pose
 from bbia_sim.daemon.simulation_service import simulation_service
 from bbia_sim.robot_factory import RobotFactory
+from bbia_sim.robot_registry import RobotRegistry
 
 logger = logging.getLogger(__name__)
 
@@ -648,3 +649,28 @@ async def get_imu_endpoint() -> dict[str, Any]:
         Données de l'IMU (accélération, gyroscope, magnétomètre)
     """
     return get_imu()
+
+
+@router.get("/robots/list")
+async def list_robots() -> dict[str, Any]:
+    """NOUVEAU: Liste les robots découverts automatiquement.
+
+    Returns:
+        Liste des robots disponibles avec leurs informations
+    """
+    try:
+        registry = RobotRegistry()
+        robots = registry.discover_robots(timeout=2.0)
+        return {
+            "robots": robots,
+            "count": len(robots),
+            "timestamp": datetime.now(UTC).isoformat(),
+        }
+    except Exception as e:
+        logger.exception("Erreur lors de la découverte des robots: %s", e)
+        return {
+            "robots": [],
+            "count": 0,
+            "error": str(e),
+            "timestamp": datetime.now(UTC).isoformat(),
+        }

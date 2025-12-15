@@ -10,16 +10,7 @@
 
 > Liens utiles: `docs/reference/INDEX_THEMATIQUE.md` · `docs/reference/project-status.md`
 
-> Compatibilité Python et CI
->
-> - Python: 3.11+
-> - CI: `.github/workflows/ci.yml`
-> - Setup rapide:
-> ```bash
-> pyenv install 3.11.9 && pyenv local 3.11.9
-> python -m pip install --upgrade pip
-> pip install -e .
-> ```
+> **Compatibilité Python** : Python 3.11+ requis. Voir [`docs/getting-started/INSTALLATION.md`](../getting-started/INSTALLATION.md) pour les détails d'installation.
 
 ## 🎯 Votre Premier Robot BBIA en 5 Minutes
 

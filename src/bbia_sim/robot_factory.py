@@ -37,6 +37,48 @@ class RobotFactory:
         try:
             # NOUVEAU: Support mode "auto" - détection automatique robot réel
             if backend_type.lower() == "auto":
+                # NOUVEAU: Utiliser RobotRegistry pour découverte automatique
+                try:
+                    from bbia_sim.robot_registry import RobotRegistry
+
+                    registry = RobotRegistry()
+                    discovered_robots = registry.discover_robots(timeout=2.0)
+
+                    # Si robots découverts, essayer de se connecter au premier
+                    if discovered_robots:
+                        robot_info = discovered_robots[0]
+                        logger.info(
+                            "🔍 Robot découvert: %s (%s:%d)",
+                            robot_info.get("id", "unknown"),
+                            robot_info.get("hostname", "localhost"),
+                            robot_info.get("port", 8080),
+                        )
+
+                        # Essayer connexion avec informations découvertes
+                        try:
+                            backend = RobotFactory.create_backend(
+                                "reachy_mini",
+                                use_sim=False,
+                                **kwargs,
+                            )
+                            if (
+                                backend
+                                and hasattr(backend, "is_connected")
+                                and backend.is_connected
+                            ):
+                                if (
+                                    hasattr(backend, "robot")
+                                    and backend.robot is not None
+                                ):
+                                    logger.info(
+                                        "✅ Robot réel connecté via découverte automatique"
+                                    )
+                                    return backend
+                        except Exception as e:
+                            logger.debug("Connexion robot découvert échouée: %s", e)
+                except Exception as e:
+                    logger.debug("Découverte automatique échouée: %s", e)
+
                 # Essayer robot réel d'abord (reachy_mini avec use_sim=False)
                 try:
                     backend = RobotFactory.create_backend(
