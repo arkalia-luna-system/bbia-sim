@@ -399,4 +399,4 @@ rm -rf __pycache__/
 
 Configuration terminée. BBIA‑SIM est prêt pour la communauté.
 
-Bienvenue dans l’écosystème BBIA‑SIM.
+Écosystème BBIA‑SIM.

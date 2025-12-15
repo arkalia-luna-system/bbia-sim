@@ -201,7 +201,7 @@ python -m bbia_sim.bbia_voice_advanced
 ### Modèles Français Recommandés
 
 1. **`tts_models/fr/css10/vits`** ⭐ (Recommandé)
-   - Qualité : Excellente
+   - Qualité : Élevée
    - Taille : ~50MB
    - Support émotion : Partiel
    - Support pitch : Oui

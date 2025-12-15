@@ -374,7 +374,7 @@ echo "._*" >> .gitignore
 
 1. **Documentation complète**
    - 128 fichiers Markdown
-   - Guides débutant/avancé
+   - Guides premiers pas/avancé
    - Documentation API (OpenAPI/Swagger)
    - README détaillé
 

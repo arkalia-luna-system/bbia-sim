@@ -131,7 +131,7 @@ class MainActivity : AppCompatActivity() {
 - Interface ultra-simple
 - Boutons principaux uniquement
 - Pour utilisateurs non techniques
-- Idéal pour utilisateurs débutants
+- Idéal pour nouveaux utilisateurs
 
 ### App 3 : "BBIA Monitor" (Surveillance)
 - Mode lecture seule

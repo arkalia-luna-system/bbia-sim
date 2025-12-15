@@ -130,7 +130,7 @@ Le script `mjpython` dans l'app pointe vers un chemin de build (`/Users/runner/w
 
 ### Après Réception du Robot
 
-1. **Premier démarrage** :
+1. **Démarrage initial** :
    - Allumer robot
    - Configurer Wi-Fi
    - Noter adresse IP du robot
@@ -248,7 +248,7 @@ robot = RobotFactory.create_backend(
 
 4. **API Complète** :
    - REST + WebSocket
-   - Intégration facile
+   - Intégration disponible
    - Extensible
 
 ### ✅ Ce que l'App fait mieux

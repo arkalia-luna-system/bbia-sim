@@ -132,7 +132,7 @@
 - **Pinceau "Airbrush"** : Pour ombres douces
 - **Symétrie** : Pour antennes identiques
 
-**Astuce** : Activez **"Drawing Guide"** → **"Symmetry"** pour antennes parfaitement identiques
+**Astuce** : Activez **"Drawing Guide"** → **"Symmetry"** pour antennes identiques
 
 ---
 

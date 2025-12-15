@@ -1,6 +1,6 @@
 # 🚀 Démarrage Rapide BBIA-SIM
 
-Bienvenue dans BBIA-SIM ! Ce dossier contient tout ce dont vous avez besoin pour commencer.
+Ce dossier contient la documentation de démarrage pour BBIA-SIM.
 
 ## 📁 Fichiers
 

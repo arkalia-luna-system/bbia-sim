@@ -48,7 +48,7 @@ python scripts/voice_clone/generate_voice.py \
 
 # Enthousiaste
 python scripts/voice_clone/generate_voice.py \
-  --text "Salut ! C’est génial de te retrouver ! On commence ?" \
+  --text "Salut ! Content de te retrouver ! On commence ?" \
   --mode enthousiaste --out assets/voice/bbia_enthousiaste.wav
 
 ```

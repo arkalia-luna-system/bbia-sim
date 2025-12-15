@@ -2,7 +2,7 @@
 
 > **Scripts d'automatisation pour BBIA - Brain-Based Interactive Agent**
 
-**📚 [Documentation principale](../README.md)** | **📖 [Guide débutant](../docs/guides/GUIDE_DEBUTANT.md)** | **🔧 [Guide avancé](../docs/guides/GUIDE_AVANCE.md)**
+**📚 [Documentation principale](../README.md)** | **📖 [Guide premiers pas](../docs/guides/GUIDE_DEMARRAGE.md)** | **🔧 [Guide avancé](../docs/guides/GUIDE_AVANCE.md)**
 
 ## 🎯 Vue d'Ensemble des Scripts
 

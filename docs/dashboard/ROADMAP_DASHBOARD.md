@@ -301,7 +301,7 @@ BBIAiOS/
 **Option B : Flutter**
 
 **Pourquoi :**
-- ✅ Performance excellente
+- ✅ Performance élevée
 - ✅ UI native
 - ✅ Dart (nouveau langage)
 
