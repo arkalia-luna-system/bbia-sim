@@ -1,7 +1,47 @@
-# ✅ VÉRIFICATION FINALE - PRÊT POUR REACHY MINI
+# ✅ VÉRIFICATION FINALE - PRÊT POUR REACHY MINI WIRELESS
 **Date** : 15 Décembre 2025  
 **Livraison prévue** : Jeudi 18 Décembre 2025  
+**Version** : **Reachy Mini Wireless** (sans fil)  
 **Statut** : 🎉 **PRÊT !**
+
+---
+
+## 📡 SPÉCIFICITÉS VERSION WIRELESS
+
+### ✅ Avantages Version Wireless
+
+- ✅ **Pas de câble USB** : Connexion entièrement sans fil via Wi-Fi
+- ✅ **Batterie intégrée** : Autonomie complète, pas besoin d'être branché
+- ✅ **Raspberry Pi 5 intégré** : Traitement IA local directement dans le robot
+- ✅ **Mobilité totale** : Le robot peut se déplacer librement
+- ✅ **4 microphones intégrés** : Meilleure capture audio directionnelle
+- ✅ **Haut-parleur 5W intégré** : Audio clair sans accessoires externes
+
+### ⚠️ Différences Importantes vs Version Lite
+
+| Aspect | Wireless (Votre version) | Lite |
+|--------|---------------------------|------|
+| **Connexion** | Wi-Fi réseau local | Câble USB |
+| **Alimentation** | Batterie intégrée + USB-C | Câble USB uniquement |
+| **Processeur** | Raspberry Pi 5 intégré | Externe (votre ordinateur) |
+| **Configuration** | Configuration Wi-Fi requise | Plug & Play USB |
+| **Adresse IP** | Nécessaire (ex: `192.168.1.100`) | Non nécessaire |
+| **Ports réseau** | 8080, 8081 (par défaut) | Non applicables |
+
+### 🔧 Configuration Wi-Fi Requise
+
+**Important** : La version Wireless nécessite une configuration réseau :
+
+1. **Réseau Wi-Fi** : Le robot doit être connecté au même réseau que votre ordinateur
+2. **Adresse IP** : Le robot aura une adresse IP (à découvrir lors du premier démarrage)
+3. **Ports** : Ports 8080 et 8081 doivent être accessibles sur le réseau local
+4. **Firewall** : Vérifier que le firewall n'bloque pas les connexions locales
+
+**À faire lors de la réception** :
+- [ ] Configurer Wi-Fi du robot (suivre guide d'assemblage)
+- [ ] Noter l'adresse IP du robot
+- [ ] Tester connexion depuis votre ordinateur : `ping <IP_ROBOT>`
+- [ ] Vérifier accès API : `curl http://<IP_ROBOT>:8080/api/state/full`
 
 ---
 
@@ -177,11 +217,28 @@
 - [ ] **Documentation Pollen** : https://docs.pollen-robotics.com/
 - [ ] **Checklist BBIA** : `docs/hardware/CHECKLIST_VALIDATION_HARDWARE_DECEMBRE_2025.md`
 
-### 🔧 Configuration
+### 🔧 Configuration (SPÉCIFIQUE WIRELESS)
 
-- [ ] **Réseau Wi-Fi** : Préparer réseau pour robot
-- [ ] **Firewall** : Ouvrir ports si nécessaire (8080, 8081)
+- [ ] **Réseau Wi-Fi** : 
+  - ✅ Vérifier que votre réseau Wi-Fi est actif
+  - ✅ Noter nom réseau (SSID) et mot de passe
+  - ✅ Vérifier que le robot peut se connecter (2.4GHz ou 5GHz selon modèle)
+  
+- [ ] **Firewall** : 
+  - ✅ Ouvrir ports 8080 et 8081 sur réseau local
+  - ✅ Vérifier que votre ordinateur peut communiquer avec le robot
+  
+- [ ] **Adresse IP** :
+  - ⚠️ **À faire après réception** : Noter l'adresse IP du robot
+  - ⚠️ **Configuration BBIA** : Utiliser IP au lieu de `localhost`
+  
 - [ ] **Variables d'environnement** : Préparer config
+  ```bash
+  # Exemple pour version Wireless
+  # Note: Le SDK Reachy Mini détecte automatiquement le robot sur le réseau
+  # Il suffit de mettre localhost_only=False dans le code
+  # Pas besoin de variable d'environnement spécifique pour l'IP
+  ```
 
 ---
 
@@ -222,10 +279,12 @@
    - Vérifier chaque étape
    - Tester connexions
 
-3. **Premier démarrage**
-   - Allumer robot
+3. **Premier démarrage** (SPÉCIFIQUE WIRELESS)
+   - Allumer robot (batterie ou USB-C)
    - Vérifier LED d'alimentation
-   - Connecter Wi-Fi
+   - **Configurer Wi-Fi** (suivre guide d'assemblage Pollen)
+   - **Noter l'adresse IP** du robot (affichée sur écran ou via app mobile)
+   - Tester connexion : `ping <IP_ROBOT>`
 
 ### Jour 2-3 : Configuration & Tests
 
@@ -234,15 +293,47 @@
    pip install --upgrade "reachy-mini>=1.2.0"
    ```
 
-2. **Test connexion SDK**
+2. **Test connexion SDK** (WIRELESS)
    ```bash
-   python examples/reachy_mini/minimal_demo.py
+   # Utiliser l'adresse IP du robot au lieu de localhost
+   # Option 1 : Via variable d'environnement (si supporté)
+   export REACHY_MINI_IP="192.168.1.100"  # Remplacer par IP réelle
+   
+   # Option 2 : Directement dans le code Python
+   from reachy_mini import ReachyMini
+   robot = ReachyMini(
+       localhost_only=False,  # ⚠️ IMPORTANT : False pour version Wireless
+       use_sim=False
+   )
+   
+   # Option 3 : Via BBIA RobotFactory
+   from bbia_sim.robot_factory import RobotFactory
+   robot = RobotFactory.create_backend(
+       "reachy_mini",
+       localhost_only=False,  # ⚠️ False pour version Wireless
+       use_sim=False
+   )
    ```
 
-3. **Test BBIA**
+3. **Test BBIA** (WIRELESS - Configuration importante)
    ```bash
+   # ⚠️ IMPORTANT : Pour version Wireless, utiliser localhost_only=False
+   python -c "
+   from bbia_sim.robot_factory import RobotFactory
+   robot = RobotFactory.create_backend(
+       'reachy_mini',
+       localhost_only=False,  # ⚠️ False pour version Wireless
+       use_sim=False
+   )
+   if robot:
+       print('✅ Connexion BBIA au robot Wireless OK')
+   "
+   
+   # Ou via script
    python scripts/hardware_dry_run_reachy_mini.py --duration 10
    ```
+   
+   **Note importante** : Le SDK Reachy Mini détecte automatiquement le robot sur le réseau local quand `localhost_only=False`. Pas besoin de spécifier l'IP manuellement.
 
 ### Semaine 1 : Validation Complète
 
