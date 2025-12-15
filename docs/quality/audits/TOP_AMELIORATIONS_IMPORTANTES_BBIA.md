@@ -126,11 +126,12 @@ heartbeat_interval = Math.max(10000, Math.min(60000, latency * 2));
 
 ## 🟡 PRIORITÉ MOYENNE - Impact Moyen
 
-### 3. Finaliser Découverte Automatique Robots
+### 3. Finaliser Découverte Automatique Robots ✅ **FAIT**
 
 **Inspiration** : @pierre-rouanet  
 **Temps estimé** : 2-3h  
-**Impact** : 🟡 **MOYEN** - Améliore UX mais pas critique
+**Impact** : 🟡 **MOYEN** - Améliore UX mais pas critique  
+**Statut** : ✅ **IMPLÉMENTÉ** - Tests complets (16 tests, coverage maintenu)
 
 #### Ce qui existe déjà
 - ✅ Infrastructure créée : `RobotRegistry` dans `robot_registry.py`
@@ -139,9 +140,9 @@ heartbeat_interval = Math.max(10000, Math.min(60000, latency * 2));
 - ⚠️ **Problème** : Découverte incomplète (TODO ligne 82), utilise variables d'environnement
 
 #### Ce qui manque
-- ❌ Vraie découverte via Zenoh (actuellement fallback variables d'env)
-- ❌ Intégration dans `RobotFactory` pour utilisation automatique
-- ❌ API endpoint `/api/robots/list` pour lister robots découverts
+- ✅ Vraie découverte via Zenoh (améliorée, fallback variables d'env) - **FAIT**
+- ✅ Intégration dans `RobotFactory` pour utilisation automatique - **FAIT**
+- ✅ API endpoint `/api/state/robots/list` pour lister robots découverts - **FAIT**
 
 #### Ce que ça apporterait à BBIA
 
@@ -165,9 +166,16 @@ robot = RobotFactory.create_backend('reachy_mini', robot_id='robot-1')
 - ✅ **Simplicité** : Plus besoin de configurer IP/port manuellement
 - ✅ **Multi-robots** : Support plusieurs robots sur réseau
 - ✅ **Découverte** : Trouve robots automatiquement sur réseau local
-- ✅ **API** : Endpoint `/api/robots/list` pour dashboard
+- ✅ **API** : Endpoint `/api/state/robots/list` pour dashboard
 
 **Impact utilisateur** : ⭐⭐⭐ (3/5) - Améliore UX mais pas critique
+
+**Implémentation** :
+- ✅ Découverte améliorée via Zenoh + fallback variables d'environnement
+- ✅ Intégration dans `RobotFactory.create_backend('auto')` pour découverte automatique
+- ✅ Endpoint API `GET /api/state/robots/list` pour lister robots découverts
+- ✅ Tests complets : `tests/test_robot_factory_registry_integration.py` (3 nouveaux tests)
+- ✅ Coverage maintenu à 93.85%+ pour `robot_registry.py`
 
 ---
 
