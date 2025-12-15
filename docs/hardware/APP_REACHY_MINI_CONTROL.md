@@ -258,6 +258,74 @@ robot = RobotFactory.create_backend(
 
 ---
 
+## 🔧 Dépannage
+
+### ❌ Erreur : "Unable to spawn process: No such file or directory (os error 2)"
+
+**Symptômes** :
+```
+❌ Error: Unable to spawn process: No such file or directory (os error 2)
+⚠️  Warning: Python binary not properly signed in production!
+```
+
+**Causes possibles** :
+
+1. **Permissions macOS** : L'app n'a pas les permissions pour exécuter des binaires non signés
+2. **Binaire manquant** : Le wrapper `mjpython` ne trouve pas le binaire Python sous-jacent
+3. **Chemin incorrect** : L'app a été déplacée et les chemins relatifs ne fonctionnent plus
+
+**Solutions** :
+
+#### Solution 1 : Vérifier les permissions macOS
+
+1. **Ouvrir Préférences Système** → **Sécurité et confidentialité**
+2. **Autoriser l'app** : Si l'app est bloquée, cliquer sur "Ouvrir quand même"
+3. **Permissions réseau** : Vérifier que l'app a accès au réseau local
+
+#### Solution 2 : Réinstaller l'app
+
+1. **Supprimer l'app** de `/Applications/`
+2. **Copier depuis le volume** `/Volumes/Reachy Mini Control/`
+3. **Lancer depuis Applications** (pas depuis le volume)
+
+#### Solution 3 : Utiliser BBIA à la place (Recommandé)
+
+Si l'app ne fonctionne pas, **BBIA peut faire la même chose** :
+
+```bash
+# Lancer BBIA en mode simulation (comme l'app)
+python -m bbia_sim.daemon.app.main --sim
+
+# Ou utiliser le dashboard BBIA
+python -m bbia_sim.dashboard
+```
+
+**Avantages BBIA** :
+- ✅ Pas de problèmes de signature macOS
+- ✅ Plus de fonctionnalités (IA avancée)
+- ✅ Open source, pas de restrictions
+
+#### Solution 4 : Contacter le support Pollen
+
+Si le problème persiste :
+- **Discord** : https://discord.gg/pollen-robotics
+- **GitHub Issues** : https://github.com/pollen-robotics/reachy_mini/issues
+- **Email** : support@pollen-robotics.com
+
+### ⚠️ Note sur le Mode Simulation
+
+L'app essaie de lancer le daemon en **mode simulation** (MuJoCo) car :
+- Vous n'avez pas encore le robot physique
+- C'est normal et attendu
+
+**Une fois le robot reçu** :
+- L'app détectera automatiquement le robot sur le réseau
+- Le mode simulation ne sera plus nécessaire
+- L'erreur devrait disparaître
+
+---
+
 **Date création** : 15 Décembre 2025  
+**Dernière mise à jour** : 15 Décembre 2025 (ajout section dépannage)  
 **Statut** : ✅ **APP TÉLÉCHARGÉE - PRÊT POUR RÉCEPTION**
 
