@@ -277,7 +277,7 @@ Votre implémentation `ReachyMiniBackend` est conforme au SDK officiel, avec des
 - `robot.io.get_camera_stream()` - Stream vidéo temps réel (optionnel)
 - `robot.io.get_audio_stream()` - Stream audio temps réel (optionnel)
 
-**Note** : BBIA utilise actuellement `robot.media.camera.get_image()` et captures périodiques qui fonctionnent parfaitement. Les streams IO seraient une optimisation future (nécessiterait refactor significatif pour bénéfice marginal). **Non critique** pour utilisation robot réel.
+**Note** : BBIA utilise actuellement `robot.media.camera.get_image()` et captures périodiques qui fonctionnent correctement. Les streams IO seraient une optimisation future (nécessiterait refactor significatif pour bénéfice marginal). **Non critique** pour utilisation robot réel.
 
 ✅ **Interpolation Avancée:**
 
@@ -1018,7 +1018,7 @@ Une analyse exhaustive de TOUS les modules a été effectuée (voir `docs/ANALYS
 
 - ⚠️ Recording/Playback : Méthodes disponibles mais non utilisées dans comportements (opportunité d'optimisation)
 - ⚠️ async_play_move : Disponible mais non exploité (opportunité de performance - `bbia_behavior.py` utilise déjà `play_move`)
-- ⚠️ Modules IO streams (`get_camera_stream()`, `get_audio_stream()`) : Disponibles via SDK mais non utilisés dans BBIA (décision finale : non critique - code actuel `robot.media.camera.get_image()` fonctionne parfaitement)
+- ⚠️ Modules IO streams (`get_camera_stream()`, `get_audio_stream()`) : Disponibles via SDK mais non utilisés dans BBIA (décision finale : non critique - code actuel `robot.media.camera.get_image()` fonctionne correctement)
 
 **Documentation Référence :**
 

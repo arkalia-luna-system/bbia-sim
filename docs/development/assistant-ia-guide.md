@@ -24,7 +24,7 @@ Ce guide est destiné aux **assistants IA** (Claude, GPT, Cursor AI, etc.) pour 
 - **Version :** 1.4.0
 - **Documentation :** **131 fichiers MD** dans `docs/` (après nettoyage)
 - **Tests :** **1362 tests sélectionnés** (1418 collectés, 56 deselected)
-- **Coverage :** **68.86%** global (excellent)
+- **Coverage :** **68.86%** global
 - **Conformité SDK :** 100% validée
 
 ### 📊 Qualité documentation

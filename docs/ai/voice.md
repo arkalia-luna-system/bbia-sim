@@ -373,7 +373,7 @@ class BBIAVoiceAdvanced:
 #### A. Mistral 7B Instruct (Recommandé)
 
 - ✅ Léger (7B paramètres)
-- ✅ Français excellent
+- ✅ Français de qualité
 - ✅ Open-source
 - ✅ Support Apple Silicon (MPS)
 
@@ -436,7 +436,7 @@ class BBIAHuggingFace:
 #### B. Llama 3 8B (Alternative)
 
 - ✅ Open-source
-- ✅ Qualité excellente
+- ✅ Qualité élevée
 - ⚠️ Plus lourd que Mistral 7B
 
 #### C. API OpenAI (GPT-4o-mini) (Simple mais payant)

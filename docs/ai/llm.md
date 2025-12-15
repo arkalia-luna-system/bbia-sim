@@ -204,7 +204,7 @@ Avantages LLM :
 ### Modèles disponibles dans BBIAChat
 
 1. **Phi-2 2.7B** (recommandé - BBIAChat)
-   - Qualité : excellente
+   - Qualité : élevée
    - Français : très bon
    - Taille : ~5GB RAM (compatible RPi 5)
    - Support MPS/CUDA : oui
@@ -218,7 +218,7 @@ Avantages LLM :
    - Vitesse : <1 seconde/réponse
 
 3. **Mistral 7B Instruct** (optionnel - BBIAHuggingFace)
-   - Qualité : excellente
+   - Qualité : élevée
    - Français : très bon
    - Taille : ~14GB RAM
    - Support MPS : oui
@@ -327,7 +327,7 @@ else:
    - Génération : 1-3 secondes/réponse (CPU) ou <1s (MPS/CUDA)
 
 3. **Qualité :**
-   - Excellent français mais parfois génère en anglais
+   - Français de qualité mais parfois génère en anglais
    - Réponses parfois trop longues (limité à 150 tokens)
 
 4. **Fallback :**
