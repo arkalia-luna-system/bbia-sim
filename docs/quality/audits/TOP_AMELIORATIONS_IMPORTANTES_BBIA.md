@@ -235,11 +235,12 @@ async def lifespan(app):
 
 ---
 
-### 5. Mode Simplifié Dashboard
+### 5. Mode Simplifié Dashboard ✅ **FAIT**
 
 **Inspiration** : @FabienDanieau  
 **Temps estimé** : 4-6h  
-**Impact** : 🟡 **MOYEN** - Améliore accessibilité
+**Impact** : 🟡 **MOYEN** - Améliore accessibilité  
+**Statut** : ✅ **IMPLÉMENTÉ** - Tests complets (8 tests, 100% coverage)
 
 #### Ce qui existe déjà
 - ✅ Dashboard complet avec tous les contrôles
@@ -247,9 +248,9 @@ async def lifespan(app):
 - ⚠️ **Problème** : Interface complexe pour nouveaux utilisateurs
 
 #### Ce qui manque
-- ❌ Mode simplifié avec contrôles essentiels
-- ❌ Toggle mode simplifié/avancé
-- ❌ Interface simplifiée avec contrôles essentiels (on/off, mouvements basiques)
+- ✅ Mode simplifié avec contrôles essentiels - **FAIT**
+- ✅ Toggle mode simplifié/avancé - **FAIT**
+- ✅ Interface simplifiée (masque sections avancées) - **FAIT**
 
 #### Ce que ça apporterait à BBIA
 
