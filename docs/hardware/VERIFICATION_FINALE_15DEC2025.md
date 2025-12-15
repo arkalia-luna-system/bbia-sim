@@ -59,9 +59,7 @@
 
 ### ⚠️ À VÉRIFIER / À PRÉVOIR
 
-- [ ] **Carte SD** (64GB+ recommandée, classe 10+)
-  - **Vérifier** : Est-ce inclus dans le kit ?
-  - **Si non** : Acheter carte SD haute performance (SanDisk Extreme, Samsung EVO+)
+- [x] **Carte SD** (64GB+ recommandée, classe 10+) - ✅ **INCLUSE** (voir `CARTE_SD_REACHY_MINI.md` pour preuve formelle)
   
 - [ ] **Chargeur USB-C** (alimentation)
   - **Vérifier** : Est-ce inclus dans le kit ?

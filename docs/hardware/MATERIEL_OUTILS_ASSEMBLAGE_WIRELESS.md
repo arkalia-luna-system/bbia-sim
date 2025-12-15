@@ -36,7 +36,7 @@ D'après la documentation officielle Pollen Robotics, **le kit Reachy Mini Wirel
 
 | Matériel | Statut | Si Non Inclus | Où Acheter | Prix |
 |----------|--------|---------------|------------|------|
-| **Carte SD** (64GB+, classe 10+) | ⚠️ À vérifier | SanDisk Extreme / Samsung EVO+ | Amazon, Fnac, MediaMarkt | 15-25€ |
+| **Carte SD** (64GB+, classe 10+) | ✅ **INCLUSE** | Voir `CARTE_SD_REACHY_MINI.md` | - | - |
 | **Chargeur USB-C** (5V/3A min) | ⚠️ À vérifier | Chargeur compatible RPi 5 | Amazon, Fnac | 10-15€ |
 | **Support/stand** | ⚠️ Optionnel | Support robotique | Amazon | 10-20€ |
 

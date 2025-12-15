@@ -21,9 +21,7 @@
 ## 📦 1. MATÉRIEL (À VÉRIFIER/ACHETER)
 
 ### ⚠️ À VÉRIFIER si inclus dans le kit :
-- [ ] **Carte SD** (64GB+, classe 10+)
-  - **Si non inclus** : Acheter SanDisk Extreme ou Samsung EVO+
-  - **Où** : Amazon, Fnac, MediaMarkt (~15-25€)
+- [x] **Carte SD** (64GB+, classe 10+) - ✅ **INCLUSE** (voir `CARTE_SD_REACHY_MINI.md` pour preuve formelle)
   
 - [ ] **Chargeur USB-C** (5V/3A minimum)
   - **Si non inclus** : Acheter chargeur USB-C compatible Raspberry Pi 5

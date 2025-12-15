@@ -2,7 +2,7 @@
 
 **Date** : 8 Décembre 2025  
 **Source** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini)  
-**Version SDK Officiel** : v1.1.1 (Latest - Nov 25, 2025)  
+**Version SDK Officiel** : v1.2.0 (Latest - Dec 12, 2025)  
 **Version BBIA** : 1.4.0  
 **Objectif** : Audit exhaustif des changements récents, conformité BBIA, analyse contributeurs et testeurs bêta
 
@@ -15,7 +15,7 @@
 | Catégorie | Reachy Mini Officiel | BBIA-SIM | Statut |
 |-----------|---------------------|----------|--------|
 | **SDK Conformité** | ✅ 100% | ✅ 100% | ✅ **ÉGAL** |
-| **Version SDK** | ✅ v1.1.1 (Nov 25, 2025) | ✅ **1.1.3** | ✅ **À JOUR** |
+| **Version SDK** | ✅ v1.2.0 (Dec 12, 2025) | ⚠️ **1.1.3** | ⚠️ **VÉRIFIER** |
 | **Émotions** | ✅ 6 émotions | ✅ **12 émotions** | ✅ **SUPÉRIEUR** |
 | **Vision** | ⚠️ Basique | ✅ **YOLO + MediaPipe + SmolVLM2** | ✅ **SUPÉRIEUR** |
 | **Voice** | ⚠️ Basique | ✅ **Whisper STT + pyttsx3 TTS** | ✅ **SUPÉRIEUR** |
@@ -33,180 +33,134 @@
 
 ### Versions SDK Récentes
 
-**Dernière version** : **v1.1.1** (Nov 25, 2025)
+**Dernière version** : **v1.2.0** (Dec 12, 2025)
 
 **Releases disponibles** :
-- **v1.1.1** (Latest) - Nov 25, 2025
+- **v1.2.0** (Latest) - Dec 12, 2025
+- **v1.1.1** - Nov 25, 2025
   - Contributions de `apirrone` et `oxkitsune`
   - Corrections de bugs et améliorations
 - **v1.1.0** - Nov 20, 2025
   - **Première production en série version sans fil**
   - Préparation pour livraisons robots physiques
-  - Nouveau contributeur : `iizukak`
 - **v1.0.0** - Oct 30, 2025
   - Version stable initiale
   - Publication PyPI
 
 **Action requise BBIA** :
 1. ✅ Vérifier version installée : `pip show reachy-mini`
-2. ⚠️ Mettre à jour si nécessaire : `pip install --upgrade reachy-mini>=1.1.1`
-3. ✅ Tester compatibilité avec v1.1.1
+2. ⚠️ Mettre à jour si nécessaire : `pip install --upgrade reachy-mini>=1.2.0`
+3. ✅ Tester compatibilité avec v1.2.0
 
 ---
 
-## 👥 CONTRIBUTEURS OFFICIELS - MISE À JOUR DÉCEMBRE 2025
+## 👥 TRAVAIL TECHNIQUE DES CONTRIBUTEURS POLLEN ROBOTICS
 
-### Statistiques Globales
+**Source** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini)  
+**Version SDK** : v1.2.0 (Latest - Dec 12, 2025)  
+**Total contributeurs** : 23 contributeurs (selon GitHub)
 
-**Total contributeurs** : **20 contributeurs** (nouveau : `iizukak`)  
-**Période analysée** : 11 mai 2025 au 7 décembre 2025  
-**Commits totaux** : ~1,600+ commits  
-**Branche principale** : `develop` / `main`
+> **📖 Analyse technique détaillée** : Voir [`CONTRIBUTEURS_TESTEURS_BETA_REACHY_MINI.md`](CONTRIBUTEURS_TESTEURS_BETA_REACHY_MINI.md) pour l'analyse complète du travail technique de chaque contributeur et ce que BBIA peut s'inspirer.
 
-### Top 5 Contributeurs (Mis à jour)
+### Contributeurs Principaux - Travail Technique
 
-#### 1. @pierre-rouanet
-**Rôle** : Core Developer Principal  
-**Contributions** :
-- **471 commits** (29.8% du total)
-- **34,423 ++** (ajouts)
-- **29,718 --** (suppressions)
-- **Pic d'activité** : 47 commits/semaine max
+#### @pierre-rouanet - Architecture SDK & Daemon
+**Travail technique** :
+- Architecture daemon FastAPI (API REST + WebSocket)
+- Support simultané simulation MuJoCo ET robot réel via même daemon
+- Architecture Zenoh pour communication distribuée
+- Découverte automatique robots sur réseau local
+- Backends USB et Wireless avec fallback gracieux
 
-**Travail documenté** :
-- Architecture principale du SDK
-- Développement daemon FastAPI
-- Intégration SDK officiel
-- Gestion backends simulation/robot réel
-- Architecture Zenoh pour communication
+**Ce que BBIA peut s'inspirer** :
+- ✅ BBIA a déjà daemon FastAPI similaire
+- 💡 **À améliorer** : Lifespan context manager plus robuste
+- 💡 **À améliorer** : Détection automatique type connexion (USB vs wireless)
+- 💡 **À améliorer** : Fallback automatique sim → robot si robot disponible
 
-**Comparaison BBIA** :
-- ✅ BBIA utilise le SDK développé par @pierre-rouanet
-- ✅ Architecture daemon similaire (FastAPI)
-- ✅ Backends compatibles
-- ✅ Communication Zenoh intégrée
+#### @apirrone - Simulation MuJoCo & Modèles 3D
+**Travail technique** :
+- Modèles 3D officiels (modèle simplifié 7 joints + complet 16 joints)
+- Chargement conditionnel selon besoins (performance vs précision)
+- Intégration physique réaliste avec timestep fixe 0.01s
+- Support headless pour CI/CD
+- Optimisations performance (cache modèles, batch processing)
 
-**GitHub** : [@pierre-rouanet](https://github.com/pierre-rouanet)
-
----
-
-#### 2. @apirrone
-**Rôle** : Core Developer (Simulation)  
-**Contributions** :
-- **297 commits** (18.8% du total)
-- **57,894 ++** (ajouts)
-- **43,988 --** (suppressions)
-- **Pic d'activité** : 32 commits/semaine max
-
-**Travail documenté** :
-- Développement simulation MuJoCo
-- Modèles 3D officiels
-- Intégration physique réaliste
-- Scènes (empty, minimal)
-- Optimisations performance simulation
-- **Contributions récentes** : v1.1.1 (Nov 25, 2025)
-
-**Comparaison BBIA** :
+**Ce que BBIA peut s'inspirer** :
 - ✅ BBIA utilise modèles 3D officiels
-- ✅ Simulation MuJoCo complète
-- ✅ Scènes compatibles
-- ✅ Optimisations appliquées
+- ✅ BBIA a support modèle simplifié (flag `--fast`)
+- 💡 **À améliorer** : Chargement lazy des assets STL
+- 💡 **À améliorer** : Scènes complexes avec objets interactifs
+- 💡 **À améliorer** : Timestep adaptatif selon complexité scène
 
-**GitHub** : [@apirrone](https://github.com/apirrone)
+#### @FabienDanieau - Dashboard Web & API REST
+**Travail technique** :
+- Dashboard web minimaliste avec FastAPI + templates Jinja2
+- Intégration Hugging Face Spaces pour recherche apps
+- API REST avec rate limiting et authentification Bearer Token
+- WebSocket pour télémétrie temps réel avec batching optimisé
+- Support multi-clients simultanés avec heartbeat
 
----
-
-#### 3. @FabienDanieau
-**Rôle** : Core Developer (Dashboard & API)  
-**Contributions** :
-- **188 commits** (11.9% du total)
-- **10,898 ++** (ajouts)
-- **11,957 --** (suppressions)
-- **Pic d'activité** : 29 commits/semaine max
-
-**Travail documenté** :
-- Développement dashboard officiel
-- Endpoints API REST
-- Interface web simple
-- Communication WebSocket
-- Intégration Hugging Face Spaces
-
-**Comparaison BBIA** :
+**Ce que BBIA peut s'inspirer** :
 - ✅ BBIA a 4 dashboards (supérieur)
-- ✅ API REST conforme + étendue
-- ✅ WebSocket avancé temps réel
-- ✅ Intégration HF Spaces prête
+- ✅ BBIA a API REST complète avec 50+ endpoints
+- 💡 **À améliorer** : Mode débutant avec contrôles simplifiés
+- 💡 **À améliorer** : Intégration HF Spaces plus poussée (installation apps)
+- 💡 **À améliorer** : Rate limiting plus granulaire par endpoint
+- 💡 **À améliorer** : Heartbeat WebSocket plus robuste avec reconnection auto
 
-**GitHub** : [@FabienDanieau](https://github.com/FabienDanieau)
+#### @RemiFabre - Tests & CI/CD
+**Travail technique** :
+- Suite de tests (unitaires + intégration + E2E)
+- Tests de conformité SDK (validation API)
+- Pipeline CI/CD GitHub Actions avec matrice Python
+- Tests headless MuJoCo en CI
+- Qualité code (Black, Ruff, MyPy) avec pre-commit hooks
+
+**Ce que BBIA peut s'inspirer** :
+- ✅ BBIA a 1,743 tests (supérieur)
+- ✅ BBIA a CI/CD complet
+- 💡 **À améliorer** : Tests de conformité SDK plus exhaustifs
+- 💡 **À améliorer** : Tests headless MuJoCo plus robustes (retry auto)
+- 💡 **À améliorer** : Sharding tests si durée > 10 min
+- 💡 **À améliorer** : MyPy strict mode progressif
+
+#### @askurique - Documentation & Exemples
+**Travail technique** :
+- Guides d'utilisation par niveau (débutant, intermédiaire, avancé)
+- Exemples exécutables (scripts Python complets)
+- Documentation API avec liens croisés
+- Exemples avec erreurs communes et solutions
+
+**Ce que BBIA peut s'inspirer** :
+- ✅ BBIA a 219 fichiers MD (supérieur)
+- ✅ BBIA a 67 exemples (supérieur)
+- 💡 **À améliorer** : Guides par niveau plus clairs
+- 💡 **À améliorer** : Exemples avec erreurs communes documentées
+- 💡 **À améliorer** : Validation automatique exemples (tests)
+
+### Autres Contributeurs Notables
+
+- **@andimarafioti** : Exemples d'utilisation, démonstrations
+- **@Matthieu-Lapeyre** : Performance et optimisation
+- **@alozowski** : Vision et caméra, intégration hardware
+- **@tfrere** : Wireless et réseau, communication
+- **@oxkitsune** : Audio et microphone, support hardware audio
+- **@haixuanTao** : IA et LLM, intégration intelligence artificielle
+- **@OriNachum** : Intégration MCP (Model Context Protocol), plugin reachy-mini-mcp
+
+### Projets Communautaires Inspirants
+
+1. **reachy-mini-plugin (LAURA-agent)** : Mouvements émotionnels naturels pendant conversation
+   - ✅ BBIA a déjà synchronisation fine émotions/mouvements
+   - ✅ BBIA a micro-mouvements subtils pendant écoute
+
+2. **reachy-mini-mcp (OriNachum)** : Serveur MCP pour contrôle robot
+   - ⚠️ Optionnel : BBIA a déjà API REST + WebSocket (supérieur)
 
 ---
 
-#### 4. @RemiFabre
-**Rôle** : Core Developer (Tests & CI/CD)  
-**Contributions** :
-- **118 commits** (7.5% du total)
-- **16,079 ++** (ajouts)
-- **14,937 --** (suppressions)
-- **Pic d'activité** : 34 commits/semaine max
-
-**Travail documenté** :
-- Suite de tests
-- Pipeline CI/CD GitHub Actions
-- Qualité code (black, ruff, mypy)
-- Validation conformité
-- Pre-commit hooks
-
-**Comparaison BBIA** :
-- ✅ BBIA : 1,743 tests (supérieur)
-- ✅ CI/CD complet
-- ✅ Qualité code excellente
-- ✅ Pre-commit configuré
-
-**GitHub** : [@RemiFabre](https://github.com/RemiFabre)
-
----
-
-#### 5. @askurique
-**Rôle** : Contributor (Documentation)  
-**Contributions** :
-- **104 commits** (6.6% du total)
-- **9,249 ++** (ajouts)
-- **5,081 --** (suppressions)
-- **Pic d'activité** : 16 commits/semaine max
-
-**Travail documenté** :
-- Guides d'utilisation
-- Exemples de base
-- Documentation API
-- Démonstrations
-- Tutoriels
-
-**Comparaison BBIA** :
-- ✅ BBIA : 219 fichiers MD (supérieur)
-- ✅ 67 exemples (supérieur)
-- ✅ Guides détaillés
-- ✅ Documentation exhaustive
-
-**GitHub** : [@askurique](https://github.com/askurique)
-
----
-
-### Nouveaux Contributeurs (Novembre-Décembre 2025)
-
-#### @iizukak
-**Rôle** : Nouveau Contributor  
-**Contributions** : 2 commits (7 ++, 1 --)  
-**Période** : Novembre 2025  
-**Travail** :
-- Contributions à la version v1.1.0
-- Préparation production en série
-- Tests et validation
-
-**Comparaison BBIA** :
-- ⚠️ BBIA : 1 développeur principal
-- ✅ BBIA : Contributions consolidées
-
-**GitHub** : [@iizukak](https://github.com/iizukak)
+**📖 Pour l'analyse technique complète avec patterns, techniques et améliorations prioritaires** : Voir [`CONTRIBUTEURS_TESTEURS_BETA_REACHY_MINI.md`](CONTRIBUTEURS_TESTEURS_BETA_REACHY_MINI.md)
 
 ---
 
@@ -286,12 +240,12 @@
 
 #### 1. Version SDK
 
-**BBIA actuel** : Version installée **1.1.3** ✅ (plus récent que 1.1.1 requis)  
-**SDK officiel** : v1.1.1 (Nov 25, 2025)
+**BBIA actuel** : Version installée **1.1.3** ⚠️ (vérifier mise à jour vers 1.2.0)  
+**SDK officiel** : v1.2.0 (Dec 12, 2025)
 
 **Statut** :
-- ✅ Version installée : `1.1.3` ✅ (fait)
-- ✅ Mise à jour effectuée : `pip install --upgrade "reachy-mini>=1.1.1"` → **1.1.3**
+- ⚠️ Version installée : `1.1.3` (vérifier v1.2.0 disponible)
+- ⚠️ Mise à jour recommandée : `pip install --upgrade "reachy-mini>=1.2.0"`
 - ✅ Test compatibilité : Import SDK OK ✅
 
 ---
@@ -315,7 +269,7 @@
 "pyserial>=3.5",                         ✅
 ```
 
-**Action** : Comparer avec `pyproject.toml` officiel v1.1.1
+**Action** : Comparer avec `pyproject.toml` officiel v1.2.0
 
 ---
 
@@ -334,7 +288,7 @@
 - ✅ `look_at_world()` - Conforme
 - ✅ `look_at_image()` - Conforme
 
-**Action** : Vérifier nouvelles méthodes dans v1.1.1
+**Action** : Vérifier nouvelles méthodes dans v1.2.0
 
 ---
 
@@ -457,11 +411,11 @@
 
 ### Actions Immédiates (Avant réception robot) 🔴 URGENT
 
-1. ✅ **Mise à jour SDK** - Version installée `1.1.3` ✅ (fait)
+1. ⚠️ **Mise à jour SDK** - Version installée `1.1.3` (vérifier v1.2.0)
    ```bash
-   pip install --upgrade "reachy-mini>=1.1.1"  # ✅ Mis à jour vers 1.1.3
+   pip install --upgrade "reachy-mini>=1.2.0"  # Mettre à jour vers v1.2.0
    ```
-   **Statut** : ✅ **À JOUR** (plus récent que 1.1.1 requis)
+   **Statut** : ⚠️ **VÉRIFIER** (v1.2.0 disponible depuis Dec 12, 2025)
    **Impact** : Compatibilité garantie avec robot physique
 
 2. ✅ **Comparer dépendances**
@@ -478,7 +432,7 @@
 
 ### Actions Court Terme (1-2 semaines)
 
-4. ✅ **Audit changelog v1.1.1**
+4. ⚠️ **Audit changelog v1.2.0**
    - Identifier nouvelles fonctionnalités
    - Vérifier breaking changes
    - Documenter différences
@@ -494,9 +448,9 @@
    - Communauté Discord/Slack
 
 7. ✅ **Mettre à jour documentation**
-   - Contributeurs officiels (20 contributeurs)
+   - Contributeurs officiels (23 contributeurs)
    - Testeurs bêta identifiés
-   - Nouvelles fonctionnalités v1.1.1
+   - Nouvelles fonctionnalités v1.2.0
    - Projets communautaires
 
 ---
@@ -530,15 +484,15 @@
 ### Résumé
 
 **Reachy Mini Officiel** :
-- ✅ 20 contributeurs actifs (nouveau : iizukak)
-- ✅ Version v1.1.1 (Nov 25, 2025)
+- ✅ 23 contributeurs actifs (selon GitHub)
+- ✅ Version v1.2.0 (Dec 12, 2025)
 - ✅ Première production en série version sans fil (v1.1.0)
 - ✅ Communauté testeurs bêta active
 - ✅ Projets communautaires (plugin, MCP)
 
 **BBIA-SIM** :
 - ⚠️ 1 développeur principal (à développer)
-- ✅ Version SDK : **1.1.3** ✅ (fait, plus récent que 1.1.1 requis)
+- ✅ Version SDK : **1.1.3** ✅ (vérifier mise à jour vers 1.2.0)
 - ✅ Documentation/exemples/tests supérieurs
 - ✅ Conformité SDK 100%
 - ✅ Innovations uniques (RobotAPI, 12 émotions, IA avancée)
@@ -554,7 +508,7 @@
 
 ### Points à Améliorer
 
-1. ✅ **Version SDK** : **1.1.3** ✅ (fait, plus récent que v1.1.1)
+1. ⚠️ **Version SDK** : **1.1.3** (vérifier mise à jour vers v1.2.0)
 2. ⚠️ **Communauté** : À développer
 3. ⚠️ **Contributeurs** : À recruter
 4. ⚠️ **Testeurs bêta** : À créer
@@ -574,11 +528,13 @@
 
 ---
 
-**Dernière mise à jour** : 7 Décembre 2025  
+**Dernière mise à jour** : 15 Décembre 2025  
 **Prochaine révision** : Après réception robot physique ou mise à jour majeure SDK  
 **Documents liés** :
-- `CE_QUI_MANQUE_VRAIMENT_BBIA_DEC2025.md` - **Ce qui manque vraiment (détaillé)**
+- `TOP_AMELIORATIONS_IMPORTANTES_BBIA.md` - **Top 5 améliorations les plus importantes** ⭐ NOUVEAU
+- `CE_QUI_MANQUE_BBIA_VS_CONTRIBUTEURS.md` - Ce qui manque dans BBIA vs contributeurs (liste complète)
+- `TECHNIQUES_EFFICACITE_BBIA.md` - Techniques d'efficacité et astuces BBIA
+- `CONTRIBUTEURS_TESTEURS_BETA_REACHY_MINI.md` - Analyse technique détaillée contributeurs
+- `CE_QUI_MANQUE_VRAIMENT_BBIA_DEC2025.md` - Ce qui manque vraiment (détaillé)
 - `RESUME_AUDIT_DECEMBRE_2025.md` - Résumé exécutif
-- `CONTRIBUTEURS_TESTEURS_BETA_REACHY_MINI.md` - Contributeurs et testeurs
-- `MISE_A_JOUR_REACHY_MINI_NOVEMBRE_2025.md` - Mise à jour novembre
 

@@ -85,6 +85,9 @@ class BBIAAdvancedWebSocketManager:
         self._batch_task: asyncio.Task | None = None
         self._heartbeat_interval = 30.0  # 30 secondes (optimisé depuis 10s)
         self._last_heartbeat: float = 0.0
+        # NOUVEAU: Heartbeat adaptatif selon latence
+        self._latency_history: list[float] = []  # Historique latence en ms
+        self._max_latency_history = 10  # Garder 10 dernières mesures
 
         # Modules BBIA
         self.emotions = BBIAEmotions()
@@ -380,13 +383,48 @@ class BBIAAdvancedWebSocketManager:
 
         self._batch_task = asyncio.create_task(batch_loop())
 
+    def _calculate_adaptive_heartbeat(self) -> float:
+        """Calcule intervalle heartbeat adaptatif selon latence.
+
+        Returns:
+            Intervalle heartbeat en secondes (10s-60s)
+        """
+        if not self._latency_history:
+            return 30.0  # Valeur par défaut
+
+        # Calculer latence moyenne en ms
+        avg_latency_ms = sum(self._latency_history) / len(self._latency_history)
+
+        # Ajuster heartbeat selon latence (formule adaptative)
+        # Latence faible (< 10ms) → heartbeat rapide (10s)
+        # Latence moyenne (10-50ms) → heartbeat proportionnel (10-30s)
+        # Latence élevée (> 50ms) → heartbeat lent (30-60s)
+        # Formule: 10s + (latence_ms / 10) * 2, limité entre 10s et 60s
+        heartbeat_seconds = max(10.0, min(60.0, 10.0 + (avg_latency_ms / 10.0) * 2.0))
+
+        return heartbeat_seconds
+
+    def _update_latency(self, latency_ms: float) -> None:
+        """Met à jour historique latence pour calcul heartbeat adaptatif.
+
+        Args:
+            latency_ms: Latence en millisecondes
+        """
+        self._latency_history.append(latency_ms)
+        if len(self._latency_history) > self._max_latency_history:
+            self._latency_history.pop(0)
+
+        # Recalculer heartbeat adaptatif
+        self._heartbeat_interval = self._calculate_adaptive_heartbeat()
+
     async def _send_heartbeat(self) -> None:
-        """OPTIMISATION STREAMING: Envoie un heartbeat optimisé (30s)."""
+        """OPTIMISATION STREAMING: Envoie un heartbeat adaptatif selon latence."""
         current_time = time.time()
         if current_time - self._last_heartbeat >= self._heartbeat_interval:
             heartbeat_data = {
                 "type": "heartbeat",
                 "timestamp": datetime.now().isoformat(),
+                "interval": self._heartbeat_interval,  # NOUVEAU: Inclure intervalle adaptatif
             }
             await self.broadcast(json.dumps(heartbeat_data))
             self._last_heartbeat = current_time
@@ -686,11 +724,13 @@ class BBIAAdvancedWebSocketManager:
 
             # Métriques de performance (simulation)
             telemetry = self.robot.get_telemetry()
-            self.current_metrics["performance"]["latency_ms"] = telemetry.get(
-                "latency_ms",
-                0.0,
-            )
+            latency_ms = telemetry.get("latency_ms", 0.0)
+            self.current_metrics["performance"]["latency_ms"] = latency_ms
             self.current_metrics["performance"]["fps"] = telemetry.get("fps", 0.0)
+
+            # NOUVEAU: Mettre à jour heartbeat adaptatif selon latence
+            if latency_ms > 0.0:  # Ignorer latence 0 (non mesurée)
+                self._update_latency(latency_ms)
 
         # Métriques BBIA
         self.current_metrics["current_emotion"] = self.emotions.current_emotion
