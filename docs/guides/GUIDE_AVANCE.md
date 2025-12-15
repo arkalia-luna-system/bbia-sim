@@ -47,7 +47,7 @@
     - [Tests avancés](#tests-avancés)
     - [Optimisations de performance](#optimisations-de-performance)
   - [🔄 Migration Simulation → Robot Réel](#-migration-simulation--robot-réel)
-    - [🚀 Passage transparent du développement à la production](#-passage-transparent-du-développement-à-la-production)
+    - [Migration vers robot réel](#migration-vers-robot-réel)
   - [🚀 API Avancée](#-api-avancée)
     - [✅ Conformité SDK Officiel](#-conformité-sdk-officiel)
     - [🎯 100% compatible avec le SDK Pollen Robotics](#-100-compatible-avec-le-sdk-pollen-robotics)
@@ -86,7 +86,7 @@ robot_real.connect()
 robot_sim.set_emotion('happy', 0.8)
 robot_real.set_emotion('happy', 0.8)
 
-# Basculer facilement
+# Basculer entre backends
 backend = 'mujoco' if os.getenv('DEV') else 'reachy_mini'
 robot = RobotFactory.create_backend(backend)
 
@@ -126,7 +126,7 @@ flowchart TB
 - Développement sans matériel
 - Tests automatisés
 - Debugging facilité
-- Migration transparente vers robot réel
+- Migration vers robot réel
 
 ### 🧠 Modules BBIA Avancés
 
@@ -259,7 +259,7 @@ bbia_sim.sim.enable_caching()
 
 <div align="center">
 
-### 🚀 Passage transparent du développement à la production
+### Migration vers robot réel
 
 [![📖 Guide](https://img.shields.io/badge/📖-Guide%20Complet-blue)](../development/migration.md)
 [![✅ Validé](https://img.shields.io/badge/✅-100%25%20Conforme-green)](../quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md)

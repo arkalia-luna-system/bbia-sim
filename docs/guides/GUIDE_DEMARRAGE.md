@@ -80,7 +80,7 @@ flowchart TD
 
 <div align="center">
 
-### 🔧 Trois méthodes simples pour démarrer
+### Méthodes d'installation
 
 [![🐳 Docker](https://img.shields.io/badge/🐳-Docker-blue)](#option-a--docker-compose-recommandé-pour-environnement-isolé-)
 [![⚡ Automatique](https://img.shields.io/badge/⚡-Automatique-green)](#option-b--script-all-in-one-)
