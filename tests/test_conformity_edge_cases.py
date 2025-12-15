@@ -131,7 +131,7 @@ class TestConformityEdgeCases:
         # Test commande invalide sur joint interdit
         forbidden_joints = self.backend.forbidden_joints
         if forbidden_joints:
-            test_joint = forbidden_joints[0]
+            test_joint = next(iter(forbidden_joints))
             result = self.backend.set_joint_pos(test_joint, 0.1)
             assert result is False, f"Joint interdit {test_joint} doit être rejeté"
             print(f"✅ Joint interdit {test_joint}: rejeté correctement")

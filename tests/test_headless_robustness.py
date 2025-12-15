@@ -264,20 +264,22 @@ class TestHeadlessRobustness:
                 simulator = MuJoCoSimulator(temp_model)
 
                 # Test plusieurs démarrages/arrêts
-                def make_mock_monotonic():
-                    call_count = [0]
-
-                    def mock_monotonic():
-                        call_count[0] += 1
-                        if call_count[0] == 1:
-                            return 0.0
-                        else:
-                            return 0.02
-
-                    return mock_monotonic
-
                 for i in range(3):
+                    # Recréer le simulateur pour chaque cycle (évite problèmes de réutilisation)
+                    simulator_cycle = MuJoCoSimulator(temp_model)
                     step_count = 0
+
+                    def make_mock_monotonic():
+                        call_count = [0]
+
+                        def mock_monotonic():
+                            call_count[0] += 1
+                            if call_count[0] == 1:
+                                return 0.0
+                            else:
+                                return 0.02
+
+                        return mock_monotonic
 
                     def mock_mj_step(model, data):
                         nonlocal step_count
@@ -293,8 +295,9 @@ class TestHeadlessRobustness:
                             "bbia_sim.sim.simulator.time.monotonic",
                             side_effect=mock_monotonic_fn,
                         ):
-                            simulator.launch_simulation(headless=True, duration=0.01)
+                            simulator_cycle.launch_simulation(headless=True, duration=0.01)
 
+                    simulator_cycle.close()
                     print(f"✅ Cycle {i+1}: OK")
 
                 print("✅ Démarrage/arrêt multiples: OK")

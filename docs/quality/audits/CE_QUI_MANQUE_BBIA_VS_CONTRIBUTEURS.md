@@ -383,8 +383,8 @@ Ce document se concentre sur le **travail technique concret** des contributeurs,
 | Mode simplifié dashboard | @FabienDanieau | 🟡 Moyenne | 4-6h | ✅ **TERMINÉ** (15 Déc) |
 | HF Spaces poussé | @FabienDanieau | 🟡 Moyenne | 6-8h | ⚠️ À faire |
 | Heartbeat WebSocket | @FabienDanieau | 🟡 Moyenne | 3-4h | ✅ **TERMINÉ** (15 Déc) |
-| Tests conformité exhaustifs | @RemiFabre | 🟡 Moyenne | 6-8h | ⚠️ À faire |
-| Tests headless robustes | @RemiFabre | 🟡 Moyenne | 3-4h | ⚠️ À faire |
+| Tests conformité exhaustifs | @RemiFabre | 🟡 Moyenne | 6-8h | ✅ **TERMINÉ** (15 Déc) |
+| Tests headless robustes | @RemiFabre | 🟡 Moyenne | 3-4h | ✅ **TERMINÉ** (15 Déc) |
 | Guides par niveau | @askurique | 🟡 Moyenne | 4-6h | ⚠️ À faire |
 | Chargement lazy STL | @apirrone | 🟢 Basse | 3-4h | ⚠️ À faire |
 | Scènes complexes | @apirrone | 🟢 Basse | 4-6h | ⚠️ À faire |
