@@ -862,3 +862,263 @@ git push origin develop
 
 **Dernière mise à jour** : 15 Décembre 2025  
 **Référence** : [`TOP_AMELIORATIONS_IMPORTANTES_BBIA.md`](TOP_AMELIORATIONS_IMPORTANTES_BBIA.md)
+
+---
+
+## 🎯 PLAN D'ACTION - AMÉLIORATIONS RESTANTES (22 améliorations)
+
+**Statut Top 5** : ✅ **100% TERMINÉ** (15 Déc 2025)
+
+### 📊 Classement par Impact/Performance
+
+#### 🔴 PRIORITÉ HAUTE - Impact Performance/UX (5 améliorations)
+
+1. **Tests conformité SDK exhaustifs** (6-8h) - ⭐⭐⭐⭐⭐ Impact
+   - **Pourquoi** : Garantit compatibilité SDK officiel, détecte régressions
+   - **Impact** : 🔴 **CRITIQUE** - Qualité code, conformité production
+   - **Tests existants** : ✅ `test_reachy_mini_full_conformity_official.py` (37 tests), `test_reachy_mini_complete_conformity.py` (16 tests)
+   - **À faire** : Améliorer coverage edge cases, tests limites
+
+2. **Tests headless MuJoCo robustes** (3-4h) - ⭐⭐⭐⭐ Impact
+   - **Pourquoi** : Tests CI fiables, validation automatique
+   - **Impact** : 🔴 **ÉLEVÉ** - Robustesse CI, moins de flaky tests
+   - **Tests existants** : ✅ `test_vertical_slices.py` (headless), `test_simulator.py` (headless)
+   - **À faire** : Améliorer gestion erreurs, timeouts adaptatifs
+
+3. **Support simultané sim/robot réel** (6-8h) - ⭐⭐⭐⭐ Impact
+   - **Pourquoi** : Tests sim pendant utilisation robot réel
+   - **Impact** : 🔴 **ÉLEVÉ** - Productivité développement
+   - **Infrastructure** : ✅ `RobotFactory.create_multi_backend()` existe
+   - **À faire** : Routing API selon commande, tests intégration
+
+4. **Intégration HF Spaces plus poussée** (6-8h) - ⭐⭐⭐ Impact
+   - **Pourquoi** : Installation apps directement depuis dashboard
+   - **Impact** : 🟡 **MOYEN-ÉLEVÉ** - UX améliorée, écosystème
+   - **Infrastructure** : ✅ Recherche apps existe
+   - **À faire** : Installation automatique, gestion dépendances
+
+5. **Cache modèles agressif** (2-3h) - ⭐⭐⭐ Impact Performance
+   - **Pourquoi** : Réduction RAM, démarrage plus rapide
+   - **Impact** : 🟡 **MOYEN-ÉLEVÉ** - Performance Mac Mini
+   - **À faire** : Cache LRU pour modèles MuJoCo, assets STL
+
+#### 🟡 PRIORITÉ MOYENNE - Impact UX/Robustesse (5 améliorations)
+
+6. **Guides par niveau** (4-6h) - ⭐⭐⭐ Impact
+   - **Pourquoi** : Accessibilité nouveaux utilisateurs
+   - **Impact** : 🟡 **MOYEN** - Adoption, documentation
+   - **À faire** : Organiser guides (premiers pas → intermédiaire → expert)
+
+7. **Batch processing mouvements** (4-6h) - ⭐⭐⭐ Impact Performance
+   - **Pourquoi** : Mouvements plus fluides, moins de latence
+   - **Impact** : 🟡 **MOYEN** - Performance, UX
+   - **À faire** : File d'attente multicouche, traitement batch
+
+8. **Chargement lazy assets STL** (3-4h) - ⭐⭐ Impact Performance
+   - **Pourquoi** : Démarrage plus rapide, moins de RAM
+   - **Impact** : 🟡 **MOYEN** - Performance Mac Mini
+   - **À faire** : Chargement à la demande, cache
+
+9. **Timestep adaptatif** (3-4h) - ⭐⭐ Impact Performance
+   - **Pourquoi** : Performance optimale selon complexité scène
+   - **Impact** : 🟡 **MOYEN** - Performance simulation
+   - **À faire** : Ajustement dynamique timestep (0.005s-0.02s)
+
+10. **Scènes complexes avec objets** (4-6h) - ⭐⭐ Impact
+    - **Pourquoi** : Tests manipulation objets, interactions
+    - **Impact** : 🟡 **MOYEN** - Fonctionnalités avancées
+    - **À faire** : Créer scènes XML avec objets MuJoCo
+
+#### 🟢 PRIORITÉ BASSE - Améliorations Futures (12 améliorations)
+
+11. **Rate limiting granulaire** (2-3h) - ⭐⭐ Impact
+12. **OpenAPI détaillée** (3-4h) - ⭐⭐ Impact
+13. **Sharding tests** (2-3h) - ⭐ Impact Performance
+14. **Pre-commit hooks complets** (2-3h) - ⭐ Impact Qualité
+15. **Exemples erreurs communes** (3-4h) - ⭐ Impact Documentation
+16. **Exemples exécutables validés** (4-6h) - ⭐ Impact Documentation
+17. **MyPy strict mode** (8-12h) - ⭐ Impact Qualité
+18. **Multi-robots simultanés** (8-12h) - ⭐ Impact Scalabilité
+19. **Et 4 autres...**
+
+---
+
+### 🎯 PLAN D'ATTAQUE RECOMMANDÉ
+
+#### Phase 1 : Performance & Robustesse (Priorité #1-2)
+**Temps** : 9-12h  
+**Impact** : 🔴 **CRITIQUE**
+
+1. **Tests conformité SDK exhaustifs** (6-8h)
+   - Améliorer `test_reachy_mini_full_conformity_official.py`
+   - Ajouter tests edge cases, limites
+   - Tests : ✅ Existent, à améliorer
+
+2. **Tests headless MuJoCo robustes** (3-4h)
+   - Améliorer gestion erreurs, timeouts
+   - Tests : ✅ Existent, à améliorer
+
+#### Phase 2 : Productivité Développement (Priorité #3)
+**Temps** : 6-8h  
+**Impact** : 🔴 **ÉLEVÉ**
+
+3. **Support simultané sim/robot réel** (6-8h)
+   - Finaliser routing API selon commande
+   - Tests : ❌ À créer `tests/test_multi_backend_routing.py`
+   - Infrastructure : ✅ `create_multi_backend()` existe
+
+#### Phase 3 : UX & Écosystème (Priorité #4-5)
+**Temps** : 8-11h  
+**Impact** : 🟡 **MOYEN-ÉLEVÉ**
+
+4. **Intégration HF Spaces plus poussée** (6-8h)
+   - Installation automatique apps
+   - Tests : ❌ À créer `tests/test_hf_spaces_installation.py`
+
+5. **Cache modèles agressif** (2-3h)
+   - Cache LRU pour modèles MuJoCo
+   - Tests : ❌ À créer `tests/test_cache_models.py`
+
+---
+
+### 📋 DÉTAILS PAR AMÉLIORATION
+
+#### 1. Tests Conformité SDK Exhaustifs
+
+**Fichiers concernés** :
+- ✅ `tests/test_reachy_mini_full_conformity_official.py` (37 tests existants)
+- ✅ `tests/test_reachy_mini_complete_conformity.py` (16 tests existants)
+
+**À améliorer** :
+- Ajouter tests edge cases (valeurs limites, erreurs)
+- Tests limites joints (min/max)
+- Tests performance (latence, throughput)
+- Tests erreurs réseau/timeout
+
+**Tests à créer** :
+- `tests/test_conformity_edge_cases.py` (nouveau)
+- Améliorer tests existants
+
+**Validation** :
+```bash
+pytest tests/test_reachy_mini_full_conformity_official.py -v
+pytest tests/test_reachy_mini_complete_conformity.py -v
+pytest tests/test_conformity_edge_cases.py -v
+```
+
+---
+
+#### 2. Tests Headless MuJoCo Robustes
+
+**Fichiers concernés** :
+- ✅ `tests/test_vertical_slices.py` (tests headless existants)
+- ✅ `tests/test_simulator.py` (test headless existant)
+
+**À améliorer** :
+- Gestion erreurs plus robuste
+- Timeouts adaptatifs selon complexité
+- Tests récupération après erreur
+
+**Tests à créer** :
+- `tests/test_headless_robustness.py` (nouveau)
+- Améliorer tests existants
+
+**Validation** :
+```bash
+pytest tests/test_vertical_slices.py tests/test_simulator.py tests/test_headless_robustness.py -v
+```
+
+---
+
+#### 3. Support Simultané Sim/Robot Réel
+
+**Fichiers concernés** :
+- ✅ `src/bbia_sim/robot_factory.py` (ligne 217 : `create_multi_backend()` existe)
+- ⚠️ `src/bbia_sim/daemon/app/main.py` (routing API à ajouter)
+
+**À faire** :
+- Ajouter routing API selon commande (paramètre `backend` dans requête)
+- Gestion multi-backends dans `BackendAdapter`
+- Tests intégration
+
+**Tests à créer** :
+- `tests/test_multi_backend_routing.py` (nouveau)
+- Tests : ❌ À créer
+
+**Validation** :
+```bash
+pytest tests/test_multi_backend_routing.py -v
+```
+
+---
+
+#### 4. Intégration HF Spaces Plus Poussée
+
+**Fichiers concernés** :
+- ✅ `src/bbia_sim/daemon/app/routers/apps.py` (recherche apps existe)
+- ⚠️ Installation automatique à ajouter
+
+**À faire** :
+- Installation apps depuis dashboard
+- Gestion dépendances
+- Tests installation
+
+**Tests à créer** :
+- `tests/test_hf_spaces_installation.py` (nouveau)
+- Tests : ❌ À créer
+
+**Validation** :
+```bash
+pytest tests/test_hf_spaces_installation.py -v
+```
+
+---
+
+#### 5. Cache Modèles Agressif
+
+**Fichiers concernés** :
+- ⚠️ `src/bbia_sim/robot_factory.py` (cache à ajouter)
+- ⚠️ `src/bbia_sim/sim/simulator.py` (cache modèles MuJoCo)
+
+**À faire** :
+- Cache LRU pour modèles MuJoCo fréquemment utilisés
+- Cache assets STL
+- Tests cache
+
+**Tests à créer** :
+- `tests/test_cache_models.py` (nouveau)
+- Tests : ❌ À créer
+
+**Validation** :
+```bash
+pytest tests/test_cache_models.py -v
+```
+
+---
+
+### 📊 RÉSUMÉ TEMPS ESTIMÉ - AMÉLIORATIONS RESTANTES
+
+| Phase | Amélioration | Code | Tests | Total | Impact |
+|-------|--------------|------|-------|-------|--------|
+| **Phase 1** | Tests conformité exhaustifs | 4h | 2-4h | **6-8h** | 🔴 CRITIQUE |
+| **Phase 1** | Tests headless robustes | 2h | 1-2h | **3-4h** | 🔴 ÉLEVÉ |
+| **Phase 2** | Support simultané sim/robot | 4h | 2-4h | **6-8h** | 🔴 ÉLEVÉ |
+| **Phase 3** | HF Spaces poussé | 4h | 2-4h | **6-8h** | 🟡 MOYEN |
+| **Phase 3** | Cache modèles agressif | 1h | 1-2h | **2-3h** | 🟡 MOYEN |
+| **TOTAL Phase 1-3** | **5 améliorations** | **15h** | **8-16h** | **23-31h** | |
+
+**Autres améliorations** (priorité basse) : ~40-60h restantes
+
+---
+
+### ✅ CHECKLIST VALIDATION
+
+**Pour chaque amélioration** :
+- [ ] Code implémenté
+- [ ] Tests créés/améliorés
+- [ ] Tous les tests passent
+- [ ] Pas d'erreurs linting (black, ruff, mypy, bandit)
+- [ ] Coverage 100% du code ajouté
+- [ ] Pas de régression (tests existants passent)
+- [ ] Documentation mise à jour (TOUS les MD concernés)
+- [ ] Push sur develop quand tout OK

@@ -374,13 +374,13 @@ Ce document se concentre sur le **travail technique concret** des contributeurs,
 
 | Amélioration | Contributeur | Priorité | Temps | Statut |
 |--------------|--------------|----------|-------|--------|
-| Découverte auto robots | @pierre-rouanet | 🟡 Moyenne | 4-6h | ⏳ Infrastructure créée |
+| Découverte auto robots | @pierre-rouanet | 🟡 Moyenne | 4-6h | ✅ **TERMINÉ** (15 Déc) |
 | Support simultané sim/robot | @pierre-rouanet | 🟡 Moyenne | 6-8h | ⏳ Infrastructure créée |
-| Fallback auto sim→robot | @pierre-rouanet | 🟡 Moyenne | 2-3h | ⚠️ À faire |
-| Lifespan robuste | @pierre-rouanet | 🟡 Moyenne | 3-4h | ⚠️ À faire |
-| Mode simplifié dashboard | @FabienDanieau | 🟡 Moyenne | 4-6h | ⚠️ À faire |
+| Fallback auto sim→robot | @pierre-rouanet | 🟡 Moyenne | 2-3h | ✅ **TERMINÉ** (15 Déc) |
+| Lifespan robuste | @pierre-rouanet | 🟡 Moyenne | 3-4h | ✅ **TERMINÉ** (15 Déc) |
+| Mode simplifié dashboard | @FabienDanieau | 🟡 Moyenne | 4-6h | ✅ **TERMINÉ** (15 Déc) |
 | HF Spaces poussé | @FabienDanieau | 🟡 Moyenne | 6-8h | ⚠️ À faire |
-| Heartbeat WebSocket | @FabienDanieau | 🟡 Moyenne | 3-4h | ⚠️ À faire |
+| Heartbeat WebSocket | @FabienDanieau | 🟡 Moyenne | 3-4h | ✅ **TERMINÉ** (15 Déc) |
 | Tests conformité exhaustifs | @RemiFabre | 🟡 Moyenne | 6-8h | ⚠️ À faire |
 | Tests headless robustes | @RemiFabre | 🟡 Moyenne | 3-4h | ⚠️ À faire |
 | Guides par niveau | @askurique | 🟡 Moyenne | 4-6h | ⚠️ À faire |
