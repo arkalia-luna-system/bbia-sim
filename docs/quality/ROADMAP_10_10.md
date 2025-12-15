@@ -22,7 +22,7 @@
 | **Sécurité** | 9.0/10 | 10/10 | -1.0 | 🔴 **HAUTE** |
 | **CI/CD** | 9.0/10 | 10/10 | -1.0 | 🔴 **HAUTE** |
 | **Innovation** | 9.5/10 | 10/10 | -0.5 | 🟡 Moyenne |
-| **Exploitation Capacités** | 10/10 | 10/10 | ✅ **PARFAIT** |
+| **Exploitation Capacités** | 10/10 | 10/10 | ✅ **OPTIMAL** |
 | **Maintenabilité** | 9.0/10 | 10/10 | -1.0 | 🔴 **HAUTE** |
 
 **Total écart** : -8.0 points à combler
@@ -346,7 +346,7 @@ Pour atteindre **10/10**, il faut :
 2. **Investir 38-55h** de travail ciblé
 3. **Suivre le plan d'action priorisé** (3 phases)
 
-**Le projet est déjà excellent (9.2/10)**. Les améliorations restantes sont des optimisations avancées qui nécessitent un investissement en temps, mais qui transformeront le projet en référence absolue.
+**Le projet est déjà de qualité élevée (9.2/10)**. Les améliorations restantes sont des optimisations avancées qui nécessitent un investissement en temps, mais qui transformeront le projet en référence absolue.
 
 ---
 

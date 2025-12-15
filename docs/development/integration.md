@@ -1202,7 +1202,7 @@ class BBIAWebSocket {
 
 ---
 
-Vous avez intégré BBIA-SIM dans votre projet. Bienvenue dans l'écosystème BBIA-SIM.
+Vous avez intégré BBIA-SIM dans votre projet. Écosystème BBIA-SIM prêt à l'emploi.
 
 ---
 

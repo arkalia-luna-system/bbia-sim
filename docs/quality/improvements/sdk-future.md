@@ -106,7 +106,7 @@ robot.io.set_leds()            # Contrôle LEDs (si disponibles)
 
 - [ ] ⚠️ Activer `robot.io.get_camera_stream()` dans `BBIAVision` (nécessiterait refactor significatif)
 - [ ] ⚠️ Activer `robot.io.get_audio_stream()` dans `bbia_audio` (nécessiterait refactor significatif)
-- **Note** : Code actuel (`robot.media.camera.get_image()` + captures périodiques) fonctionne parfaitement. Streams seraient optimisation future pour bénéfice marginal.
+- **Note** : Code actuel (`robot.media.camera.get_image()` + captures périodiques) fonctionne correctement. Streams seraient optimisation future pour bénéfice marginal.
 
 **Conclusion** : Les streams IO sont une **optimisation optionnelle**, pas un besoin critique. **Mieux vaut attendre d'avoir le robot pour tester et décider si c'est vraiment nécessaire.**
 

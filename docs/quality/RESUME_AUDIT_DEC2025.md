@@ -230,29 +230,29 @@
 
 | Exemple | Capacités utilisées | Couverture | Statut |
 |---------|-------------------|------------|--------|
-| **demo_all_capabilities.py** | ✅ Toutes les capacités principales | ✅ **100%** | ✅ **EXCELLENT** |
-| **demo_mujoco_amelioree.py** | ✅ Simulation MuJoCo complète | ✅ **100%** | ✅ **EXCELLENT** |
-| **demo_mujoco_continue.py** | ✅ Simulation continue | ✅ **100%** | ✅ **EXCELLENT** |
-| **demo_chat_bbia_3d.py** | ✅ Chat + 3D + outils LLM | ✅ **100%** | ✅ **EXCELLENT** |
-| **demo_emotion_ok.py** | ✅ Émotions BBIA | ✅ **100%** | ✅ **EXCELLENT** |
-| **demo_vision_ok.py** | ✅ Vision YOLO + MediaPipe | ✅ **100%** | ✅ **EXCELLENT** |
-| **demo_voice_ok.py** | ✅ Voix Whisper STT + TTS | ✅ **100%** | ✅ **EXCELLENT** |
-| **demo_behavior_ok.py** | ✅ Comportements de base | ✅ **100%** | ✅ **EXCELLENT** |
-| **demo_tools_llm.py** | ✅ Outils LLM (function calling) | ✅ **100%** | ✅ **EXCELLENT** |
-| **demo_idle_animations.py** | ✅ Animations idle | ✅ **100%** | ✅ **EXCELLENT** |
-| **behave_follow_face.py** | ✅ Suivi visage | ✅ **100%** | ✅ **EXCELLENT** |
-| **hello_sim.py** | ✅ Conformité SDK | ✅ **100%** | ✅ **EXCELLENT** |
-| **goto_pose.py** | ✅ API REST | ✅ **100%** | ✅ **EXCELLENT** |
-| **subscribe_telemetry.py** | ✅ WebSocket | ✅ **100%** | ✅ **EXCELLENT** |
-| **reachy_mini/minimal_demo.py** | ✅ SDK officiel | ✅ **100%** | ✅ **EXCELLENT** |
-| **reachy_mini/sequence.py** | ✅ Séquences mouvements | ✅ **100%** | ✅ **EXCELLENT** |
-| **reachy_mini/look_at_image.py** | ✅ Vision interactive | ✅ **100%** | ✅ **EXCELLENT** |
-| **reachy_mini/goto_interpolation_playground.py** | ✅ Interpolation | ✅ **100%** | ✅ **EXCELLENT** |
-| **reachy_mini/recorded_moves_example.py** | ✅ Mouvements enregistrés | ✅ **100%** | ✅ **EXCELLENT** |
-| **viewer_robot.py** | ✅ Visualisation robot | ✅ **100%** | ✅ **EXCELLENT** |
-| **view_scene_piece.py** | ✅ Visualisation scène | ✅ **100%** | ✅ **EXCELLENT** |
+| **demo_all_capabilities.py** | ✅ Toutes les capacités principales | ✅ **100%** | ✅ **COMPLET** |
+| **demo_mujoco_amelioree.py** | ✅ Simulation MuJoCo complète | ✅ **100%** | ✅ **COMPLET** |
+| **demo_mujoco_continue.py** | ✅ Simulation continue | ✅ **100%** | ✅ **COMPLET** |
+| **demo_chat_bbia_3d.py** | ✅ Chat + 3D + outils LLM | ✅ **100%** | ✅ **COMPLET** |
+| **demo_emotion_ok.py** | ✅ Émotions BBIA | ✅ **100%** | ✅ **COMPLET** |
+| **demo_vision_ok.py** | ✅ Vision YOLO + MediaPipe | ✅ **100%** | ✅ **COMPLET** |
+| **demo_voice_ok.py** | ✅ Voix Whisper STT + TTS | ✅ **100%** | ✅ **COMPLET** |
+| **demo_behavior_ok.py** | ✅ Comportements de base | ✅ **100%** | ✅ **COMPLET** |
+| **demo_tools_llm.py** | ✅ Outils LLM (function calling) | ✅ **100%** | ✅ **COMPLET** |
+| **demo_idle_animations.py** | ✅ Animations idle | ✅ **100%** | ✅ **COMPLET** |
+| **behave_follow_face.py** | ✅ Suivi visage | ✅ **100%** | ✅ **COMPLET** |
+| **hello_sim.py** | ✅ Conformité SDK | ✅ **100%** | ✅ **COMPLET** |
+| **goto_pose.py** | ✅ API REST | ✅ **100%** | ✅ **COMPLET** |
+| **subscribe_telemetry.py** | ✅ WebSocket | ✅ **100%** | ✅ **COMPLET** |
+| **reachy_mini/minimal_demo.py** | ✅ SDK officiel | ✅ **100%** | ✅ **COMPLET** |
+| **reachy_mini/sequence.py** | ✅ Séquences mouvements | ✅ **100%** | ✅ **COMPLET** |
+| **reachy_mini/look_at_image.py** | ✅ Vision interactive | ✅ **100%** | ✅ **COMPLET** |
+| **reachy_mini/goto_interpolation_playground.py** | ✅ Interpolation | ✅ **100%** | ✅ **COMPLET** |
+| **reachy_mini/recorded_moves_example.py** | ✅ Mouvements enregistrés | ✅ **100%** | ✅ **COMPLET** |
+| **viewer_robot.py** | ✅ Visualisation robot | ✅ **100%** | ✅ **COMPLET** |
+| **view_scene_piece.py** | ✅ Visualisation scène | ✅ **100%** | ✅ **COMPLET** |
 
-**Score exemples** : **100%** ✅ **EXCELLENT**
+**Score exemples** : **100%** ✅ **COMPLET**
 
 **✅ POINT FORT** : Les exemples principaux exploitent très bien les capacités du projet
 
@@ -391,7 +391,7 @@
 - ✅ Comportements avancés : **100%** d'exploitation (15/15 comportements avec démos dédiées)
 - ✅ API Endpoints : **100%** d'exploitation (11/11 endpoints avec démos dédiées)
 - ✅ Exemples principaux : **100%** d'exploitation (44 exemples totaux)
-- ✅ Tests complets : **88.2%** de couverture (excellent)
+- ✅ Tests complets : **88.2%** de couverture
 
 **Actions Réalisées** :
 1. ✅ **5 nouvelles démos créées** (22 Nov. 2025) :

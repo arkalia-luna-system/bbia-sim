@@ -432,7 +432,7 @@ Les patterns try/except étaient répétés ~383 fois dans le code. La factorisa
 - Certaines classes/méthodes peuvent être des utilitaires internes non testés directement
 - Certaines capacités peuvent être utilisées via l'API mais pas dans les tests unitaires
 
-**Note** : Un pourcentage de 88.2% est excellent pour un projet de cette envergure. Les capacités non utilisées sont principalement :
+**Note** : Un pourcentage de 88.2% est élevé pour un projet de cette envergure. Les capacités non utilisées sont principalement :
 
 - Des utilitaires internes
 - Des fonctionnalités avancées réservées à des cas d'usage spécifiques
