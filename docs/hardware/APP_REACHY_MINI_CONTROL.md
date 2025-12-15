@@ -184,12 +184,21 @@ from bbia_sim.robot_factory import RobotFactory
 
 robot = RobotFactory.create_backend(
     "reachy_mini",
-    localhost_only=False,  # Pour version Wireless
-    use_sim=False
+    localhost_only=False,  # Pour version Wireless (défaut: True pour sécurité)
+    use_sim=False  # Robot physique (défaut: True pour simulation)
 )
 
 # BBIA peut maintenant utiliser toutes ses fonctionnalités IA
 ```
+
+**Note importante** :
+- Par défaut, `RobotFactory.create_backend('reachy_mini')` utilise :
+  - `localhost_only=True` (sécurité, connexion locale uniquement)
+  - `use_sim=True` (mode simulation pour éviter timeout si pas de robot)
+- Pour version Wireless, il faut explicitement :
+  - `localhost_only=False` (permettre connexion réseau)
+  - `use_sim=False` (chercher robot physique)
+- **Important** : Vérifier firewall et réseau avant d'utiliser `localhost_only=False`
 
 ---
 

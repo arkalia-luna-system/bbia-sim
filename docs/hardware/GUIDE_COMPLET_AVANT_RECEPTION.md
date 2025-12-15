@@ -70,6 +70,9 @@
 - [ ] Wi-Fi actif, SSID/mot de passe notés
 - [ ] Ports 8080 et 8081 ouverts (firewall)
 - [ ] Configuration BBIA : `localhost_only=False` (crucial pour Wireless)
+  - **Note** : Par défaut, `RobotFactory.create_backend('reachy_mini')` utilise `localhost_only=True` (sécurité)
+  - Pour version Wireless, il faut explicitement passer `localhost_only=False` pour permettre connexion réseau
+  - **Important** : Vérifier firewall et réseau avant d'utiliser `localhost_only=False`
 
 ---
 
@@ -145,6 +148,11 @@
   from bbia_sim.robot_factory import RobotFactory
   robot = RobotFactory.create_backend('reachy_mini', localhost_only=False, use_sim=False)
   ```
+  
+  **Note importante** :
+  - Par défaut, `RobotFactory.create_backend('reachy_mini')` utilise `use_sim=True` (mode simulation)
+  - Pour un robot physique, il faut **explicitement** passer `use_sim=False`
+  - Pour version Wireless, il faut aussi `localhost_only=False` (par défaut `True` pour sécurité)
 
 ---
 

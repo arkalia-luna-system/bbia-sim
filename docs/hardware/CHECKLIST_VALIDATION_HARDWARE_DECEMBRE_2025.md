@@ -1,8 +1,7 @@
-# ✅ Checklist Validation Hardware - 8 Décembre 2025
+# Checklist Validation Hardware
 
-**Objectif :** Valider BBIA-SIM sur robot Reachy Mini physique  
-**Date cible :** 8 Décembre 2025  
-**Durée estimée :** 2-3 semaines à plein temps
+**Objectif** : Valider BBIA-SIM sur robot Reachy Mini physique  
+**Durée estimée** : 2-3 semaines
 
 ---
 
@@ -26,14 +25,13 @@
 - [ ] **SDK Reachy Mini installé**
 
   ```bash
-  pip install reachy-mini-motor-controller
-  # ou selon version SDK officielle
+  pip install reachy-mini
   ```
 
 - [ ] **Vérification connexion SDK**
 
   ```bash
-  python -c "from reachy_mini_motor_controller import ReachyMini; import logging; robot = ReachyMini(); logging.info(robot.is_connected)"
+  python -c "from reachy_mini import ReachyMini; robot = ReachyMini(); print('SDK OK')"
   ```
 
 - [ ] **Test basique SDK**
@@ -399,6 +397,5 @@
 
 ---
 
-**Date création :** Oct / Nov. 2025  
-**Date validation cible :** Fin Oct / Nov. 2025  
+**Dernière mise à jour** : 15 Décembre 2025  
 **Status :** ⏳ En attente réception robot
