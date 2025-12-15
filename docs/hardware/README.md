@@ -22,6 +22,13 @@
 - **[Tests Préparation Avant Robot](TESTS_PREPARATION_AVANT_ROBOT.md)** - Préparation tests
 - **[Checklist Validation Hardware](CHECKLIST_VALIDATION_HARDWARE_DECEMBRE_2025.md)** - Checklist validation
 
+### 📦 Réception et Assemblage
+
+- **[Guide Complet Avant Réception](GUIDE_COMPLET_AVANT_RECEPTION.md)** - Guide complet avant réception (matériel, logiciel, configuration)
+- **[Carte SD Reachy Mini](CARTE_SD_REACHY_MINI.md)** - Informations carte SD (incluse dans le kit)
+- **[App Reachy Mini Control](APP_REACHY_MINI_CONTROL.md)** - Documentation app officielle
+- **[Apps Hugging Face Spaces](APPS_HUGGINGFACE_POLLEN.md)** - Apps Pollen vs BBIA
+
 ### 📡 Veille Technologique
 
 - **[Veille Reachy Mini](veille-reachy-mini.md)** - Veille technologique
@@ -35,4 +42,4 @@
 
 ---
 
-**Dernière mise à jour** : 8 Décembre 2025
+**Dernière mise à jour** : 15 Décembre 2025
