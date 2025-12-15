@@ -90,7 +90,7 @@ Mise à niveau centrée sur la robustesse (watchdog, arrêt d’urgence), le ren
 ### Documentation
 
 - README: badges de tests (**1362 tests sélectionnés** en CI), couverture **68.86%** validée en CI, Quick Start API publique, variables d'environnement utiles.
-- Guides: Débutant et Tests simplifiés; Portfolio One-Pager mis à jour (métriques non figées, v1.3.1).
+- Guides: Essentiel et Tests simplifiés; Portfolio One-Pager mis à jour (métriques non figées, v1.3.1).
 - Index et statuts: versions/chemins cohérents.
 
 ### Qualité et CI

@@ -8,16 +8,16 @@
 **Version** : 1.4.0 • **Dernière mise à jour : 15 Décembre 2025
 **Prêt pour arrivée robot** 🤖
 
-**🎉 Mise à jour 8 Décembre 2025** : **100% d'exploitation des capacités** ✅
-- ✅ 44 exemples disponibles (39 existants + 5 nouveaux créés 22 Nov. 2025)
-- ✅ Tous les comportements, endpoints et modules ont des exemples dédiés
+**Mise à jour 8 Décembre 2025** : 100% d'exploitation des capacités
+- 44 exemples disponibles (39 existants + 5 nouveaux créés 22 Nov. 2025)
+- Tous les comportements, endpoints et modules ont des exemples dédiés
 
-**🎉 Mise à jour 8 Décembre 2025** : **Améliorations Phase 1 Quick Wins terminées** ✅
-- ✅ Python 3.12 dans CI (matrice lint)
-- ✅ Pre-commit hooks améliorés (gitleaks, check-json, check-toml)
-- ✅ Scan secrets automatisé (gitleaks dans CI)
-- ✅ Métriques Prometheus complétées (watchdog, robot_connected, latence p50/p95/p99)
-- ✅ ffmpeg ajouté dans dépendances CI
+**Mise à jour 8 Décembre 2025** : Améliorations Phase 1 Quick Wins terminées
+- Python 3.12 dans CI (matrice lint)
+- Pre-commit hooks améliorés (gitleaks, check-json, check-toml)
+- Scan secrets automatisé (gitleaks dans CI)
+- Métriques Prometheus complétées (watchdog, robot_connected, latence p50/p95/p99)
+- ffmpeg ajouté dans dépendances CI
 
 [📚 Navigation rapide](INDEX_THEMATIQUE.md) • [🏠 README](../README.md)
 
@@ -470,7 +470,7 @@ Le SDK Reachy Mini expose une API médias via `MediaManager`:
 
 **Recommandations performance :**
 
-- [x] ✅ **Actuel** : Captures périodiques fonctionnent parfaitement
+- [x] **Actuel** : Captures périodiques fonctionnelles
 - [ ] ⚠️ Streaming audio temps réel via `robot.io.get_audio_stream()` (optionnel, refactor nécessaire pour bénéfice marginal) - **Recommandation** : Ne pas implémenter maintenant, attendre réception robot pour tester et décider si nécessaire
 - [ ] Cache validation sample rate (éviter re-lire fichier)
 - [ ] Batch détection son (fichiers multiples)
@@ -776,7 +776,7 @@ Le SDK Reachy Mini expose une API médias via `MediaManager`:
 
 **Recommandations performance :**
 
-- [x] ✅ **Actuel** : Synthèse vocale via `robot.media.speaker` fonctionne parfaitement
+- [x] **Actuel** : Synthèse vocale via `robot.media.speaker` fonctionnelle
 - [ ] ⚠️ Streaming audio temps réel via `robot.io.get_audio_stream()` (optionnel, refactor nécessaire) - **Recommandation** : Ne pas implémenter maintenant, attendre réception robot pour tester et décider si nécessaire
 - [ ] Pool threads pour conversions numpy/bytes multiples
 - [ ] Cache réponses TTS fréquentes (LRU)

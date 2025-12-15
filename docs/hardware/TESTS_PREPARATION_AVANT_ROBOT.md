@@ -3,7 +3,7 @@
 **Objectif** : Tester l'environnement local avant l'arrivée du robot Reachy Mini  
 **Durée estimée** : 30-60 minutes
 
-> **Note** : Ces tests peuvent être effectués sans robot physique pour valider que tout est prêt.
+Ces tests peuvent être effectués sans robot physique pour valider que tout est prêt.
 
 ---
 

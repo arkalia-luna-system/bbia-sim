@@ -1,7 +1,7 @@
 # 🚀 Guide de Démarrage du Daemon BBIA-SIM
 
 **Dernière mise à jour** : 15 Décembre 2025
-**Note importante:** ✅ Fonctionne en mode simulation (MuJoCo) **sans robot physique**
+**Important** : Fonctionne en mode simulation (MuJoCo) sans robot physique
 
 ---
 

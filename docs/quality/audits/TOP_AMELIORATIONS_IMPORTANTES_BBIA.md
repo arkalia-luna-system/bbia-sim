@@ -4,7 +4,7 @@
 **Source** : Inspiration contributeurs [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini)  
 **Objectif** : Liste des améliorations les plus importantes et leur impact réel pour BBIA
 
-> **Note** : Ce document se concentre sur les améliorations qui apportent le **plus de valeur** à BBIA, en évitant les doublons avec ce qui existe déjà.
+Ce document se concentre sur les améliorations qui apportent le **plus de valeur** à BBIA, en évitant les doublons avec ce qui existe déjà.
 
 ---
 
@@ -321,7 +321,7 @@ async def lifespan(app):
    - **Impact** : ⭐⭐⭐ Améliore robustesse
    - **Fichiers** : `src/bbia_sim/daemon/app/main.py`
 
-5. 🟡 **Mode débutant dashboard** (4-6h)
+5. 🟡 **Mode simplifié dashboard** (4-6h)
    - **Pourquoi** : Interface plus accessible
    - **Impact** : ⭐⭐⭐ Améliore accessibilité
    - **Fichiers** : `src/bbia_sim/dashboard_advanced.py`

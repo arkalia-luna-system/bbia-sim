@@ -4,7 +4,7 @@
 **Objectif** : Plan d'action détaillé pour les améliorations les plus importantes avec tests associés  
 **Référence** : [`TOP_AMELIORATIONS_IMPORTANTES_BBIA.md`](TOP_AMELIORATIONS_IMPORTANTES_BBIA.md)
 
-> **Note** : Ce plan réutilise les documents existants et évite les doublons.
+Ce plan réutilise les documents existants et évite les doublons.
 
 ---
 
