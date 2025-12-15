@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """Tests pour heartbeat WebSocket adaptatif."""
 
-import time
-from unittest.mock import AsyncMock, MagicMock
+from unittest.mock import AsyncMock
 
 import pytest
 
@@ -125,4 +124,3 @@ class TestAdaptiveHeartbeat:
 
         # Heartbeat devrait être recalculé
         assert manager._heartbeat_interval != initial_heartbeat
-

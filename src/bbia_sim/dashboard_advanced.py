@@ -426,7 +426,20 @@ class BBIAAdvancedWebSocketManager:
                 "timestamp": datetime.now().isoformat(),
                 "interval": self._heartbeat_interval,  # NOUVEAU: Inclure intervalle adaptatif
             }
-            await self.broadcast(json.dumps(heartbeat_data))
+            # Envoyer directement aux connexions pour éviter récursion avec broadcast()
+            message = json.dumps(heartbeat_data)
+            disconnected: deque[WebSocket] = deque(maxlen=50)
+            for connection in self.active_connections:
+                try:
+                    await connection.send_text(message)
+                    self._connection_last_activity[connection] = current_time
+                except (ConnectionError, RuntimeError, WebSocketDisconnect):
+                    disconnected.append(connection)
+
+            # Nettoyer les connexions fermées
+            for connection in disconnected:
+                await self.disconnect(connection)
+
             self._last_heartbeat = current_time
 
     async def broadcast(self, message: str, use_batch: bool = False) -> None:

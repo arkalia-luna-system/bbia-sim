@@ -73,11 +73,12 @@ robot = RobotFactory.create_backend('auto')  # Détecte robot, fallback sim si a
 
 ---
 
-### 2. Heartbeat WebSocket Adaptatif
+### 2. Heartbeat WebSocket Adaptatif ✅ **FAIT**
 
 **Inspiration** : @FabienDanieau  
 **Temps estimé** : 3-4h  
-**Impact** : 🔴 **TRÈS ÉLEVÉ** - Connexions beaucoup plus stables
+**Impact** : 🔴 **TRÈS ÉLEVÉ** - Connexions beaucoup plus stables  
+**Statut** : ✅ **IMPLÉMENTÉ** - Tests complets (8 tests, 100% coverage)
 
 #### Ce qui existe déjà
 - ✅ Reconnection automatique dans dashboard (lignes 2004-2056)
@@ -85,9 +86,9 @@ robot = RobotFactory.create_backend('auto')  # Détecte robot, fallback sim si a
 - ⚠️ **Problème** : Heartbeat fixe, pas adaptatif selon latence
 
 #### Ce qui manque
-- ❌ Heartbeat adaptatif selon latence réseau
-- ❌ Ajustement automatique intervalle heartbeat (10s-60s selon latence)
-- ❌ Détection déconnexions plus rapide (actuellement 30s fixe)
+- ✅ Heartbeat adaptatif selon latence réseau - **FAIT**
+- ✅ Ajustement automatique intervalle heartbeat (10s-60s selon latence) - **FAIT**
+- ✅ Détection déconnexions plus rapide (actuellement 30s fixe) - **FAIT**
 
 #### Ce que ça apporterait à BBIA
 
@@ -112,6 +113,14 @@ heartbeat_interval = Math.max(10000, Math.min(60000, latency * 2));
 - ✅ **Expérience** : Dashboard plus réactif, moins de déconnexions
 
 **Impact utilisateur** : ⭐⭐⭐⭐⭐ (5/5) - Connexions beaucoup plus stables
+
+**Implémentation** :
+- ✅ Historique latence avec limite (10 dernières mesures)
+- ✅ Calcul heartbeat adaptatif : `10s + (latence_ms / 10) * 2`, limité 10s-60s
+- ✅ Mise à jour automatique lors collecte métriques
+- ✅ Heartbeat inclut intervalle adaptatif dans message
+- ✅ Tests complets : `tests/test_websocket_heartbeat_adaptive.py` (8 tests)
+- ✅ Coverage 100% du code ajouté
 
 ---
 
