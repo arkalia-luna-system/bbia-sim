@@ -235,7 +235,7 @@ async def lifespan(app):
 
 ---
 
-### 5. Mode Débutant Dashboard
+### 5. Mode Simplifié Dashboard
 
 **Inspiration** : @FabienDanieau  
 **Temps estimé** : 4-6h  
@@ -249,7 +249,7 @@ async def lifespan(app):
 #### Ce qui manque
 - ❌ Mode simplifié avec contrôles essentiels
 - ❌ Toggle mode simplifié/avancé
-- ❌ Interface simplifiée (on/off, mouvements basiques)
+- ❌ Interface simplifiée avec contrôles essentiels (on/off, mouvements basiques)
 
 #### Ce que ça apporterait à BBIA
 
@@ -272,7 +272,7 @@ async def lifespan(app):
 ```
 
 **Bénéfices concrets** :
-- ✅ **Accessibilité** : Interface simple pour nouveaux utilisateurs
+- ✅ **Accessibilité** : Interface simplifiée pour nouveaux utilisateurs
 - ✅ **Progression** : Mode simplifié → avancé naturel
 - ✅ **Adoption** : Plus facile pour commencer avec BBIA
 - ✅ **UX** : Moins de confusion, focus sur l'essentiel
@@ -397,7 +397,7 @@ async def lifespan(app):
 - **Pourquoi** : Démarrage plus fiable, retry automatique
 - **Valeur** : Production-ready, moins d'échecs
 
-### 5. Mode Débutant Dashboard
+### 5. Mode Simplifié Dashboard
 - **Impact** : ⭐⭐⭐ Améliore accessibilité
 - **Pourquoi** : Interface simple pour nouveaux utilisateurs
 - **Valeur** : Adoption plus facile, progression naturelle

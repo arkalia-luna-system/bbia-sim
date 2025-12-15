@@ -119,8 +119,8 @@
 
 **Actions** :
 - Mode simplifié avec contrôles essentiels (on/off, mouvements basiques)
-- Toggle mode débutant/expert dans dashboard
-- Masquer fonctionnalités avancées en mode débutant
+- Toggle mode simplifié/avancé dans dashboard
+- Masquer fonctionnalités avancées en mode simplifié
 
 **Impact** : Accessibilité pour nouveaux utilisateurs
 
@@ -215,7 +215,7 @@
 **Durée estimée** : 4-6h
 
 **Actions** :
-- Organiser guides par niveau (débutant → intermédiaire → expert)
+- Organiser guides par niveau (premiers pas → intermédiaire → expert)
 - Structure `docs/beginner/`, `docs/intermediate/`, `docs/advanced/`
 
 **Impact** : Navigation plus claire, progression naturelle

@@ -141,10 +141,10 @@ Ce document se concentre sur le **travail technique concret** des contributeurs,
 
 ### Inspiration @FabienDanieau
 
-#### 12. Mode débutant avec contrôles basiques
+#### 12. Mode simplifié avec contrôles essentiels
 **État actuel** : Interface complète mais complexe  
-**À faire** : Mode "débutant" avec contrôles simplifiés (on/off, mouvements basiques)  
-**Technique** : Toggle mode débutant/expert dans dashboard  
+**À faire** : Mode simplifié avec contrôles essentiels (on/off, mouvements basiques)  
+**Technique** : Toggle mode simplifié/avancé dans dashboard  
 **Bénéfice** : Accessibilité pour nouveaux utilisateurs  
 **Priorité** : 🟡 Moyenne  
 **Temps estimé** : 4-6h
@@ -256,8 +256,8 @@ Ce document se concentre sur le **travail technique concret** des contributeurs,
 ### Inspiration @askurique
 
 #### 23. Guides par niveau
-**État actuel** : Documentation tout mélangé (débutant/expert)  
-**À faire** : Organiser guides par niveau (débutant → intermédiaire → expert)  
+**État actuel** : Documentation tout mélangé (premiers pas/expert)  
+**À faire** : Organiser guides par niveau (premiers pas → intermédiaire → expert)  
 **Technique** : Structure `docs/beginner/`, `docs/intermediate/`, `docs/advanced/`  
 **Bénéfice** : Navigation plus claire, progression naturelle  
 **Priorité** : 🟡 Moyenne  
@@ -295,7 +295,7 @@ Ce document se concentre sur le **travail technique concret** des contributeurs,
 2. ⏳ Support simultané sim/robot réel (6-8h) - Infrastructure créée
 3. Fallback automatique sim → robot (2-3h)
 4. Lifespan context manager robuste (3-4h)
-5. Mode débutant dashboard (4-6h)
+5. Mode simplifié dashboard (4-6h)
 6. Intégration HF Spaces plus poussée (6-8h)
 7. Heartbeat WebSocket robuste (3-4h)
 8. Tests conformité SDK exhaustifs (6-8h)
@@ -363,7 +363,7 @@ Ce document se concentre sur le **travail technique concret** des contributeurs,
 
 4. **Découverte automatique robots** (4-6h)
 5. **Support simultané sim/robot réel** (6-8h)
-6. **Mode débutant dashboard** (4-6h)
+6. **Mode simplifié dashboard** (4-6h)
 7. **Tests conformité SDK exhaustifs** (6-8h)
 
 ---
@@ -376,7 +376,7 @@ Ce document se concentre sur le **travail technique concret** des contributeurs,
 | Support simultané sim/robot | @pierre-rouanet | 🟡 Moyenne | 6-8h | ⏳ Infrastructure créée |
 | Fallback auto sim→robot | @pierre-rouanet | 🟡 Moyenne | 2-3h | ⚠️ À faire |
 | Lifespan robuste | @pierre-rouanet | 🟡 Moyenne | 3-4h | ⚠️ À faire |
-| Mode débutant dashboard | @FabienDanieau | 🟡 Moyenne | 4-6h | ⚠️ À faire |
+| Mode simplifié dashboard | @FabienDanieau | 🟡 Moyenne | 4-6h | ⚠️ À faire |
 | HF Spaces poussé | @FabienDanieau | 🟡 Moyenne | 6-8h | ⚠️ À faire |
 | Heartbeat WebSocket | @FabienDanieau | 🟡 Moyenne | 3-4h | ⚠️ À faire |
 | Tests conformité exhaustifs | @RemiFabre | 🟡 Moyenne | 6-8h | ⚠️ À faire |
@@ -430,7 +430,7 @@ Ce document se concentre sur le **travail technique concret** des contributeurs,
 3. ⚠️ Heartbeat WebSocket robuste (3-4h) - **RECOMMANDÉ**
 
 **Après réception robot** :
-- Prioriser améliorations UX (mode débutant, découverte auto)
+- Prioriser améliorations UX (mode simplifié, découverte auto)
 - Améliorer robustesse (tests, heartbeat, lifespan)
 
 ---

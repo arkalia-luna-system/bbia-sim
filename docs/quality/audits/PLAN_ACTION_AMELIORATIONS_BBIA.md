@@ -16,7 +16,7 @@ Ce plan réutilise les documents existants et évite les doublons.
 2. 🔴 Heartbeat WebSocket adaptatif (3-4h)
 3. 🟡 Finaliser découverte automatique robots (2-3h)
 4. 🟡 Lifespan context manager robuste (3-4h)
-5. 🟡 Mode débutant dashboard (4-6h)
+5. 🟡 Mode simplifié dashboard (4-6h)
 
 **Total** : 14-20h avec tests complets
 
@@ -708,14 +708,14 @@ pytest tests/test_lifespan_robust.py --cov=src/bbia_sim/daemon/app/main --cov-re
 
 ---
 
-## 🟡 AMÉLIORATION 5 : Mode Débutant Dashboard
+## 🟡 AMÉLIORATION 5 : Mode Simplifié Dashboard
 
 ### Audit de l'Existant - Dashboard
 
 **Fichiers concernés** :
 
 - ✅ `src/bbia_sim/dashboard_advanced.py` - Dashboard complet
-- ⚠️ **Problème** : Interface complexe pour débutants
+- ⚠️ **Problème** : Interface complexe pour nouveaux utilisateurs
 
 **Ce qui existe** :
 
@@ -724,21 +724,21 @@ pytest tests/test_lifespan_robust.py --cov=src/bbia_sim/daemon/app/main --cov-re
 
 **Ce qui manque** :
 
-- ❌ Mode "débutant" avec contrôles simplifiés
-- ❌ Toggle mode débutant/expert
-- ❌ Tests pour mode débutant
+- ❌ Mode simplifié avec contrôles essentiels
+- ❌ Toggle mode simplifié/avancé
+- ❌ Tests pour mode simplifié
 
 ### Plan d'Action Détaillé - Dashboard
 
-#### Étape 1 : Ajouter mode débutant (2h)
+#### Étape 1 : Ajouter mode simplifié (2h)
 
 **Fichier** : `src/bbia_sim/dashboard_advanced.py`
 
 **Modifications** :
 
 - Ajouter paramètre `mode='expert'` dans `BBIAAdvancedWebSocketManager`
-- Créer template HTML simplifié pour mode débutant
-- Toggle mode débutant/expert
+- Créer template HTML simplifié pour mode simplifié
+- Toggle mode simplifié/avancé
 
 #### Étape 2 : Tests (2h)
 
@@ -746,9 +746,9 @@ pytest tests/test_lifespan_robust.py --cov=src/bbia_sim/daemon/app/main --cov-re
 
 **Tests à créer** :
 
-- `test_beginner_mode_shows_simple_controls()` - Mode débutant affiche contrôles simples
-- `test_toggle_beginner_expert_mode()` - Toggle mode fonctionne
-- `test_beginner_mode_hides_advanced_features()` - Mode débutant cache fonctionnalités avancées
+- `test_simplified_mode_shows_simple_controls()` - Mode simplifié affiche contrôles essentiels
+- `test_toggle_simplified_advanced_mode()` - Toggle mode fonctionne
+- `test_simplified_mode_hides_advanced_features()` - Mode simplifié cache fonctionnalités avancées
 
 **Critères** :
 
@@ -829,12 +829,12 @@ git add tests/test_dashboard_beginner_mode.py
 git add docs/quality/audits/PLAN_ACTION_AMELIORATIONS_BBIA.md
 
 # Commit
-git commit -m "feat: Améliorations importantes BBIA (fallback auto, heartbeat adaptatif, lifespan robuste, mode débutant)
+git commit -m "feat: Améliorations importantes BBIA (fallback auto, heartbeat adaptatif, lifespan robuste, mode simplifié)
 
 - Fallback automatique sim → robot dans RobotFactory
 - Heartbeat WebSocket adaptatif selon latence
 - Lifespan context manager avec retry automatique
-- Mode débutant dashboard avec contrôles simplifiés
+- Mode simplifié dashboard avec contrôles essentiels
 - Tests complets pour toutes les améliorations
 
 Référence: TOP_AMELIORATIONS_IMPORTANTES_BBIA.md"
@@ -853,7 +853,7 @@ git push origin develop
 | Heartbeat adaptatif | 2.5h | 1h | **3.5h** |
 | Découverte auto robots | 2h | 1h | **3h** |
 | Lifespan robuste | 1.5h | 1.5h | **3h** |
-| Mode débutant | 2h | 2h | **4h** |
+| Mode simplifié | 2h | 2h | **4h** |
 | **TOTAL** | **9h** | **6.5h** | **15.5h** |
 
 **Avec validation et documentation** : ~18-20h total

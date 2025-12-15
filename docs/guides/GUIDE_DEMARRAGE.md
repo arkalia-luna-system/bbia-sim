@@ -12,7 +12,7 @@
 
 > **Compatibilité Python** : Python 3.11+ requis. Voir [`docs/getting-started/INSTALLATION.md`](../getting-started/INSTALLATION.md) pour les détails d'installation.
 
-## 🎯 Votre Premier Robot BBIA en 5 Minutes
+## 🎯 Démarrage Rapide
 
 <div align="center">
 
@@ -20,7 +20,7 @@
 
 [![🚀 Quick Start](https://img.shields.io/badge/🚀-Quick%20Start-green)](#-installation)
 [![🤖 Robot](https://img.shields.io/badge/🤖-Robot%20Intelligent-blue)](#-premier-programme-python)
-[![💬 Chat](https://img.shields.io/badge/💬-Chat%20Intelligent-purple)](#-chat-intelligent-avec-bbia)
+[![💬 Chat](https://img.shields.io/badge/💬-Chat-purple)](#-chat-avec-bbia)
 
 </div>
 
@@ -172,14 +172,14 @@ pip install -e .[dev]
 
 <div align="center">
 
-### 🌐 Interface Web Complète en Un Clic
+### Dashboard Web
 
 [![🌐 Dashboard](https://img.shields.io/badge/🌐-Dashboard%20Web-blue)](#-lancer-le-dashboard-fastapi--websocket)
 [![📸 Visual](https://img.shields.io/badge/📸-Visual%20Interface-orange)](#-captures-décran-disponibles)
 
 </div>
 
-> **🚀 Interface web complète en un clic**
+> **Dashboard Web**
 
 ```bash
 # Lancer le dashboard (FastAPI + WebSocket)
