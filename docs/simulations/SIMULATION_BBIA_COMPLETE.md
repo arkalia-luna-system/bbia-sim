@@ -412,7 +412,7 @@ ls -la
 
 ## Résumé
 
-### Phase 1 terminée
+### Dépôts disponibles
 
 - Tous les dépôts GitHub installés
 - `pollen-vision` testé et fonctionnel
