@@ -24,14 +24,14 @@ Ce document se concentre sur le **travail technique concret** des contributeurs,
 
 ### Inspiration @pierre-rouanet
 
-#### 1. ⏳ Découverte automatique robots
-**État actuel** : Configuration manuelle (`BBIA_HOSTNAME`, `BBIA_PORT`)  
-**À faire** : Détection automatique robots sur réseau local via Zenoh  
-**Technique** : Utiliser `zenoh.discover()` pour lister robots disponibles  
+#### 1. ✅ Découverte automatique robots
+**État actuel** : ✅ **TERMINÉ** (15 Déc 2025)  
+**Réalisé** : Détection automatique robots sur réseau local via Zenoh + fallback variables d'environnement  
+**Technique** : `RobotRegistry.discover_robots()` avec intégration dans `RobotFactory.create_backend('auto')`  
 **Bénéfice** : Plus besoin de configurer manuellement, découverte automatique  
 **Priorité** : 🟡 Moyenne  
 **Temps estimé** : 4-6h  
-**Statut** : Infrastructure créée, découverte complète à finaliser
+**Statut** : ✅ **TERMINÉ** - Endpoint API `/api/state/robots/list` créé, tests complets (16 tests)
 
 ---
 
@@ -46,23 +46,25 @@ Ce document se concentre sur le **travail technique concret** des contributeurs,
 
 ---
 
-#### 3. Fallback automatique sim → robot
-**État actuel** : Choix manuel du backend  
-**À faire** : Détection automatique robot, fallback vers sim si absent  
-**Technique** : Try robot réel, catch → sim automatiquement  
+#### 3. ✅ Fallback automatique sim → robot
+**État actuel** : ✅ **TERMINÉ** (15 Déc 2025)  
+**Réalisé** : Détection automatique robot, fallback vers sim si absent  
+**Technique** : `RobotFactory.create_backend('auto')` avec try robot réel, catch → sim automatiquement  
 **Bénéfice** : Expérience utilisateur améliorée (pas de config)  
 **Priorité** : 🟡 Moyenne  
-**Temps estimé** : 2-3h
+**Temps estimé** : 2-3h  
+**Statut** : ✅ **TERMINÉ** - Tests complets (7 tests, coverage 100%)
 
 ---
 
-#### 4. Lifespan context manager plus robuste
-**État actuel** : Lifespan basique  
-**À faire** : Gestion erreurs startup plus robuste  
-**Technique** : Lifespan context manager avec retry et fallback  
+#### 4. ✅ Lifespan context manager plus robuste
+**État actuel** : ✅ **TERMINÉ** (15 Déc 2025)  
+**Réalisé** : Gestion erreurs startup plus robuste avec retry et fallback  
+**Technique** : Lifespan context manager avec retry automatique (3 tentatives) et fallback gracieux  
 **Bénéfice** : Démarrage plus fiable, récupération automatique erreurs  
 **Priorité** : 🟡 Moyenne  
-**Temps estimé** : 3-4h
+**Temps estimé** : 3-4h  
+**Statut** : ✅ **TERMINÉ** - Tests complets (6 tests, coverage 100%)
 
 ---
 

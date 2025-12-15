@@ -29,7 +29,7 @@ Ce document analyse le **travail technique concret** de chaque contributeur, leu
 
 **Ce que BBIA peut s'inspirer** :
 - ✅ **Déjà fait** : BBIA a daemon FastAPI similaire (`src/bbia_sim/daemon/app/main.py`)
-- 💡 **À améliorer** : Lifespan context manager plus robuste (gestion erreurs startup)
+- ✅ **TERMINÉ** (15 Déc 2025) : Lifespan context manager plus robuste (retry automatique, fallback gracieux)
 - ⏳ **INFRASTRUCTURE CRÉÉE** (8 Déc 2025) : Support simultané sim/robot réel (infrastructure créée, routing à finaliser)
 
 #### Architecture Zenoh pour Communication
@@ -40,7 +40,7 @@ Ce document analyse le **travail technique concret** de chaque contributeur, leu
 
 **Ce que BBIA peut s'inspirer** :
 - ✅ **Déjà fait** : BBIA a bridge Zenoh (`src/bbia_sim/daemon/bridge.py`)
-- ⏳ **INFRASTRUCTURE CRÉÉE** (8 Déc 2025) : Découverte automatique robots (infrastructure créée, découverte complète à finaliser)
+- ✅ **TERMINÉ** (15 Déc 2025) : Découverte automatique robots (implémentée avec intégration RobotFactory et endpoint API)
 - 💡 **À améliorer** : Support multi-robots simultanés via Zenoh
 
 #### Backends USB et Wireless
@@ -52,7 +52,7 @@ Ce document analyse le **travail technique concret** de chaque contributeur, leu
 **Ce que BBIA peut s'inspirer** :
 - ✅ **Déjà fait** : BBIA a RobotAPI unifié avec backends séparés
 - 💡 **À améliorer** : Détection automatique type connexion (actuellement choix manuel)
-- 💡 **À améliorer** : Fallback automatique sim → robot si robot disponible
+- ✅ **TERMINÉ** (15 Déc 2025) : Fallback automatique sim → robot si robot disponible (mode 'auto' dans RobotFactory)
 
 ---
 
@@ -247,13 +247,14 @@ Ce document analyse le **travail technique concret** de chaque contributeur, leu
 
 #### 🏗️ Architecture & Infrastructure
 
-1. **Découverte automatique robots** (inspiration @pierre-rouanet)
-   - **État actuel** : Configuration manuelle (`BBIA_HOSTNAME`, `BBIA_PORT`)
-   - **À faire** : Détection automatique robots sur réseau local via Zenoh
-   - **Technique** : Utiliser `zenoh.discover()` pour lister robots disponibles
+1. ✅ **Découverte automatique robots** (inspiration @pierre-rouanet) - **TERMINÉ** (15 Déc 2025)
+   - **État actuel** : ✅ Découverte automatique implémentée
+   - **Réalisé** : Détection automatique robots sur réseau local via Zenoh + fallback variables d'environnement
+   - **Technique** : `RobotRegistry.discover_robots()` avec intégration dans `RobotFactory.create_backend('auto')` et endpoint API `/api/state/robots/list`
    - **Bénéfice** : Plus besoin de configurer manuellement, découverte automatique
    - **Priorité** : 🟡 Moyenne
    - **Temps estimé** : 4-6h
+   - **Tests** : 16 tests, coverage 91.43%
 
 2. **Support simultané sim/robot réel** (inspiration @pierre-rouanet)
    - **État actuel** : BBIA choisit un backend (sim OU robot)
@@ -263,13 +264,14 @@ Ce document analyse le **travail technique concret** de chaque contributeur, leu
    - **Priorité** : 🟡 Moyenne
    - **Temps estimé** : 6-8h
 
-3. **Fallback automatique sim → robot** (inspiration @pierre-rouanet)
-   - **État actuel** : Choix manuel du backend
-   - **À faire** : Détection automatique robot, fallback vers sim si absent
-   - **Technique** : Try robot réel, catch → sim automatiquement
+3. ✅ **Fallback automatique sim → robot** (inspiration @pierre-rouanet) - **TERMINÉ** (15 Déc 2025)
+   - **État actuel** : ✅ Mode 'auto' implémenté dans RobotFactory
+   - **Réalisé** : Détection automatique robot, fallback vers sim si absent
+   - **Technique** : `RobotFactory.create_backend('auto')` avec try robot réel, catch → sim automatiquement
    - **Bénéfice** : Expérience utilisateur améliorée (pas de config)
    - **Priorité** : 🟡 Moyenne
    - **Temps estimé** : 2-3h
+   - **Tests** : 7 tests, coverage 100%
 
 #### 🎮 Simulation MuJoCo
 
@@ -306,13 +308,14 @@ Ce document analyse le **travail technique concret** de chaque contributeur, leu
 
 #### 🌐 Dashboard & API
 
-8. **Mode simplifié avec contrôles essentiels** (inspiration @FabienDanieau)
-   - **État actuel** : Interface complète mais complexe
-   - **À faire** : Mode simplifié avec contrôles essentiels (on/off, mouvements basiques)
-   - **Technique** : Toggle mode simplifié/avancé dans dashboard
+8. ✅ **Mode simplifié avec contrôles essentiels** (inspiration @FabienDanieau) - **TERMINÉ** (15 Déc 2025)
+   - **État actuel** : ✅ Mode simplifié implémenté avec toggle
+   - **Réalisé** : Mode simplifié avec masquage sections avancées (télémétrie, apps, appstore, move_player)
+   - **Technique** : Toggle mode simplifié/avancé dans dashboard avec persistance localStorage
    - **Bénéfice** : Accessibilité pour nouveaux utilisateurs
    - **Priorité** : 🟡 Moyenne
    - **Temps estimé** : 4-6h
+   - **Tests** : 8 tests, coverage 100%
 
 9. **Intégration Hugging Face Spaces plus poussée** (inspiration @FabienDanieau)
    - **État actuel** : Intégration basique (recherche apps)
@@ -340,7 +343,7 @@ Ce document analyse le **travail technique concret** de chaque contributeur, leu
 
 12. **Heartbeat WebSocket plus robuste** (inspiration @FabienDanieau)
     - **État actuel** : Heartbeat basique (30s)
-    - **À faire** : Heartbeat adaptatif + reconnection automatique
+    - ✅ **TERMINÉ** (15 Déc 2025) : Heartbeat adaptatif selon latence réseau (10s-60s selon latence)
     - **Technique** : Heartbeat selon latence, auto-reconnect côté client
     - **Bénéfice** : Connexions plus stables, récupération automatique
     - **Priorité** : 🟡 Moyenne
@@ -460,13 +463,14 @@ Ce document analyse le **travail technique concret** de chaque contributeur, leu
 
 ### 🟡 Priorité Moyenne (Impact Utilisateur)
 
-1. ⏳ **Découverte automatique robots** (4-6h) - Infrastructure créée
+1. ✅ **Découverte automatique robots** (4-6h) - **TERMINÉ** (15 Déc 2025)
 2. ⏳ **Support simultané sim/robot réel** (6-8h) - Infrastructure créée
-3. **Fallback automatique sim → robot** (2-3h)
-4. ✅ **Modèle simplifié pour tests** (2-3h) - **FAIT**
-5. **Mode simplifié dashboard** (4-6h)
+3. ✅ **Fallback automatique sim → robot** (2-3h) - **TERMINÉ** (15 Déc 2025)
+4. ✅ **Modèle simplifié pour tests** (2-3h) - **FAIT** (8 Déc 2025)
+5. ✅ **Mode simplifié dashboard** (4-6h) - **TERMINÉ** (15 Déc 2025)
 6. **Intégration HF Spaces plus poussée** (6-8h)
-7. **Heartbeat WebSocket robuste** (3-4h)
+7. ✅ **Heartbeat WebSocket adaptatif** (3-4h) - **TERMINÉ** (15 Déc 2025)
+8. ✅ **Lifespan context manager robuste** (3-4h) - **TERMINÉ** (15 Déc 2025)
 8. ✅ **Tests performance avec baselines** (4-6h) - **FAIT** (8 Déc 2025)
 9. **Tests conformité SDK exhaustifs** (6-8h)
 10. **Tests headless MuJoCo robustes** (3-4h)

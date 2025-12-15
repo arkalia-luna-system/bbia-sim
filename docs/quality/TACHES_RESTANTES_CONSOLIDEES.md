@@ -51,23 +51,24 @@
 
 ### 🟡 Priorité Moyenne - Inspiration Contributeurs
 
-#### 1. Découverte automatique robots (Inspiration @pierre-rouanet)
+#### 1. ✅ Découverte automatique robots (Inspiration @pierre-rouanet)
 
-**Durée estimée** : 4-6h
+**Durée estimée** : 4-6h  
+**Statut** : ✅ **TERMINÉ** (15 Décembre 2025)
 
-**État actuel** : Configuration manuelle (`BBIA_HOSTNAME`, `BBIA_PORT`)
+**État actuel** : ✅ Découverte automatique implémentée
 
-**Actions** :
-- Détection automatique robots sur réseau local via Zenoh
-- Utiliser `zenoh.discover()` pour lister robots disponibles
-- API `/robots/list` pour lister robots détectés
+**Actions réalisées** :
+- ✅ Détection automatique robots sur réseau local via Zenoh + fallback variables d'environnement
+- ✅ Intégration dans `RobotFactory.create_backend('auto')` pour découverte automatique
+- ✅ Endpoint API `GET /api/state/robots/list` pour lister robots détectés
 
 **Impact** : Plus besoin de configurer manuellement, découverte automatique
 
 **Fichiers concernés** :
-- `src/bbia_sim/daemon/bridge.py` (améliorer découverte Zenoh)
-- ✅ `src/bbia_sim/robot_registry.py` (créé, coverage 93.85% - 13 tests)
-- `src/bbia_sim/daemon/app/routers/robots.py` (créer endpoint list)
+- ✅ `src/bbia_sim/robot_registry.py` (amélioré, coverage 91.43% - 16 tests)
+- ✅ `src/bbia_sim/robot_factory.py` (intégration mode 'auto')
+- ✅ `src/bbia_sim/daemon/app/routers/state.py` (endpoint `/api/state/robots/list`)
 
 ---
 
@@ -111,21 +112,26 @@
 
 ---
 
-#### 4. Mode simplifié dashboard (Inspiration @FabienDanieau)
+#### 4. ✅ Mode simplifié dashboard (Inspiration @FabienDanieau)
 
-**Durée estimée** : 4-6h
+**Durée estimée** : 4-6h  
+**Statut** : ✅ **TERMINÉ** (15 Décembre 2025)
 
-**État actuel** : Interface complète mais complexe
+**État actuel** : ✅ Mode simplifié implémenté avec toggle
 
-**Actions** :
-- Mode simplifié avec contrôles essentiels (on/off, mouvements basiques)
-- Toggle mode simplifié/avancé dans dashboard
-- Masquer fonctionnalités avancées en mode simplifié
+**Actions réalisées** :
+- ✅ Mode simplifié avec masquage sections avancées (télémétrie, apps, appstore, move_player)
+- ✅ Toggle mode simplifié/avancé dans dashboard
+- ✅ Persistance préférence dans localStorage
+- ✅ Émission événement `simplifiedmodechange` pour autres composants
 
 **Impact** : Accessibilité pour nouveaux utilisateurs
 
 **Fichiers concernés** :
-- `src/bbia_sim/daemon/app/dashboard/templates/base.html` (toggle mode)
+- ✅ `src/bbia_sim/daemon/app/dashboard/templates/sections/simplified_mode.html` (créé)
+- ✅ `src/bbia_sim/daemon/app/dashboard/templates/index.html` (intégré)
+- ✅ `src/bbia_sim/daemon/app/dashboard/templates/sections/*.html` (attributs `advanced-feature` ajoutés)
+- ✅ `tests/test_dashboard_simplified_mode.py` (8 tests, coverage 100%)
 - `src/bbia_sim/daemon/app/dashboard/static/js/beginner_mode.js` (créer)
 
 ---

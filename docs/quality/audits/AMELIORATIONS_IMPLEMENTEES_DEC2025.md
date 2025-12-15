@@ -7,20 +7,17 @@
 
 ## Résumé Exécutif
 
-**Statut** : 3/7 améliorations complétées, 4 en cours
+**Statut** : 7/7 améliorations complétées ✅
 
 ### ✅ Complétées
 
 1. **Timing adaptatif parole** ✅
 2. **Micro-mouvements subtils** ✅
 3. **Tests performance baselines** ✅
-
-### ⏳ En Cours
-
-3. **Découverte automatique robots** (infrastructure créée)
-4. **Support simultané sim/robot** (infrastructure créée)
-5. **Modèle simplifié tests** (flag `--fast` ajouté)
-6. **Mode simplifié dashboard** (à faire)
+4. **Découverte automatique robots** ✅ (15 Déc 2025)
+5. **Fallback automatique sim → robot** ✅ (15 Déc 2025)
+6. **Lifespan context manager robuste** ✅ (15 Déc 2025)
+7. **Mode simplifié dashboard** ✅ (15 Déc 2025)
 
 ### ✅ Complétées (suite)
 
@@ -60,19 +57,22 @@
 
 ---
 
-### 3. Découverte Automatique Robots ⏳
+### 3. Découverte Automatique Robots ✅
 
 **Fichier** : `src/bbia_sim/robot_registry.py` (créé)
 
 **Fonctionnalités ajoutées** :
 - `RobotRegistry` : Classe pour découverte robots
-- `discover_robots()` : Découverte via Zenoh (infrastructure)
+- `discover_robots()` : Découverte via Zenoh + fallback variables d'environnement
 - `list_robots()` : Liste robots disponibles
+- Intégration dans `RobotFactory.create_backend('auto')` pour découverte automatique
+- Endpoint API `GET /api/state/robots/list` pour lister robots découverts
 
-**Statut** : Infrastructure créée, découverte complète à finaliser
+**Statut** : ✅ **TERMINÉ** (15 Décembre 2025)
 
-**Tests** : ✅ Créés (13 tests, coverage 93.85%)
+**Tests** : ✅ Créés (16 tests, coverage 91.43%)
 - `tests/test_robot_registry.py` : Tests pour initialisation, découverte robots (avec/sans Zenoh, variables d'environnement, exceptions), fermeture session, list_robots
+- `tests/test_robot_factory_registry_integration.py` : Tests intégration RobotFactory avec RobotRegistry (3 tests)
 
 ---
 
@@ -106,13 +106,23 @@
 
 ---
 
-### 6. Mode Simplifié Dashboard ⏳
+### 6. Mode Simplifié Dashboard ✅
 
-**Statut** : À implémenter
+**Statut** : ✅ **TERMINÉ** (15 Décembre 2025)
+
+**Fonctionnalités ajoutées** :
+- Section toggle mode simplifié dans dashboard (`sections/simplified_mode.html`)
+- Masquage automatique sections avancées (télémétrie, apps, appstore, move_player)
+- Persistance préférence dans localStorage
+- Émission événement `simplifiedmodechange` pour autres composants
 
 **Fichiers concernés** :
-- `src/bbia_sim/daemon/app/dashboard/templates/base.html`
-- `src/bbia_sim/daemon/app/dashboard/static/js/beginner_mode.js` (à créer)
+- ✅ `src/bbia_sim/daemon/app/dashboard/templates/sections/simplified_mode.html` (créé)
+- ✅ `src/bbia_sim/daemon/app/dashboard/templates/index.html` (intégré)
+- ✅ `src/bbia_sim/daemon/app/dashboard/templates/sections/*.html` (attributs `advanced-feature` ajoutés)
+
+**Tests** : ✅ Créés (8 tests, coverage 100%)
+- `tests/test_dashboard_simplified_mode.py` : Tests pour toggle, masquage sections, persistance, événements
 
 ---
 
@@ -167,16 +177,47 @@
 
 ---
 
-## Prochaines Étapes
+## Améliorations Décembre 2025 - Complétées
 
-1. Finaliser découverte robots (implémentation complète Zenoh)
-2. Finaliser support simultané (routing API)
-3. ✅ Créer tests pour robot_registry et multi-backend (FAIT - 8 Décembre 2025)
-4. Implémenter mode simplifié dashboard
-5. ✅ Implémenter tests performance baselines (FAIT - 8 Décembre 2025)
-6. ✅ Mettre à jour documentation (FAIT - 8 Décembre 2025)
+### Fallback Automatique Sim → Robot ✅
+
+**Fichier** : `src/bbia_sim/robot_factory.py`
+
+**Fonctionnalités ajoutées** :
+- Support backend `'auto'` avec détection automatique robot réel
+- Fallback transparent vers MuJoCo si robot non disponible
+- Intégration avec `RobotRegistry` pour découverte automatique
+
+**Tests** : ✅ Créés (7 tests, coverage 100%)
+- `tests/test_robot_factory_auto_fallback.py` : Tests pour détection, fallback, erreurs, kwargs
+
+### Heartbeat WebSocket Adaptatif ✅
+
+**Fichier** : `src/bbia_sim/dashboard_advanced.py`
+
+**Fonctionnalités ajoutées** :
+- Historique latence avec limite (10 dernières mesures)
+- Calcul heartbeat adaptatif : `10s + (latence_ms / 10) * 2`, limité 10s-60s
+- Mise à jour automatique lors collecte métriques
+- Heartbeat inclut intervalle adaptatif dans message
+
+**Tests** : ✅ Créés (8 tests, coverage 100%)
+- `tests/test_websocket_heartbeat_adaptive.py` : Tests pour adaptation latence, envoi, événements
+
+### Lifespan Context Manager Robust ✅
+
+**Fichier** : `src/bbia_sim/daemon/app/main.py`
+
+**Fonctionnalités ajoutées** :
+- Retry automatique (3 tentatives, délai 1s entre chaque)
+- Gestion exceptions lors startup avec retry
+- Fallback gracieux : app démarre même si simulation échoue
+- Health check avant de marquer "ready"
+
+**Tests** : ✅ Créés (6 tests, coverage 100%)
+- `tests/test_lifespan_robust.py` : Tests pour retry, fallback, health check
 
 ---
 
-**Dernière mise à jour** : 8 Décembre 2025
+**Dernière mise à jour** : 15 Décembre 2025
 
