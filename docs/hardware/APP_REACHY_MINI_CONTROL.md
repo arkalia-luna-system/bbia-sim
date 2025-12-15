@@ -360,7 +360,5 @@ L'app essaie de lancer le daemon en **mode simulation** (MuJoCo) car :
 
 ---
 
-**Date création** : 15 Décembre 2025  
-**Dernière mise à jour** : 15 Décembre 2025 (ajout section dépannage)  
-**Statut** : ✅ **APP TÉLÉCHARGÉE - PRÊT POUR RÉCEPTION**
+**Dernière mise à jour** : 15 Décembre 2025
 

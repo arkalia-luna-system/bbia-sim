@@ -85,7 +85,5 @@ Si vous voulez une carte de rechange ou une carte plus grande (128GB), vous pouv
 
 ---
 
-**Date création** : 15 Décembre 2025  
-**Dernière mise à jour** : 15 Décembre 2025  
-**Statut** : ✅ **CARTE SD INCLUSE - PREUVE FORMELLE**
+**Dernière mise à jour** : 15 Décembre 2025
 
