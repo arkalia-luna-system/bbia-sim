@@ -139,11 +139,28 @@ D'après [GitHub officiel](https://github.com/pollen-robotics/reachy_mini) :
 - ✅ **Documentation** : 219 fichiers MD (vs documentation standard)
 
 #### ⚠️ Ce qui existe chez Pollen mais pas dans BBIA :
-- ⚠️ **Apps Hugging Face Spaces** : 15+ behaviors sur HF Hub
-  - **Statut BBIA** : Infrastructure présente mais pas de chargement dynamique
-  - **Recommandation** : ⚠️ **NE PAS IMPLÉMENTER MAINTENANT**
-  - **Raison** : BBIA a déjà ses propres apps (bbia_vision, bbia_chat, bbia_emotions)
-  - **Action** : Tester avec robot réel, puis décider si nécessaire
+
+##### 1. **Apps Hugging Face Spaces** (Page officielle : https://pollen-robotics-reachy-mini-landing-page.hf.space/#/apps)
+- ⚠️ **Statut Pollen** : Page dédiée avec app store intégré
+- ⚠️ **Statut BBIA** : Infrastructure présente mais pas de chargement dynamique depuis HF Hub
+- ✅ **Ce que BBIA a** :
+  - Router `/development/api/apps/*` (11 endpoints)
+  - Infrastructure apps complète (`AppInfo`, `AppStatus`, gestion jobs)
+  - 3 apps locales : `bbia_vision`, `bbia_chat`, `bbia_emotions`
+  - Code pour lister apps HF Spaces (lignes 161-195 dans `apps.py`)
+- ❌ **Ce qui manque** :
+  - Chargement dynamique depuis HF Hub API
+  - Installation automatique depuis HF Spaces
+  - Interface app store comme Pollen
+- **Recommandation** : ⚠️ **NE PAS IMPLÉMENTER MAINTENANT**
+- **Raison** : 
+  - BBIA a déjà ses propres apps fonctionnelles
+  - Pas de robot réel pour tester
+  - Complexité ajoutée sans bénéfice immédiat
+- **Action après réception** :
+  1. Tester apps BBIA existantes sur robot réel
+  2. Si besoin, implémenter chargement dynamique HF Hub
+  3. Créer interface app store similaire à Pollen
 
 - ⚠️ **OpenAI Realtime API** : Streaming audio temps réel
   - **Statut BBIA** : Whisper streaming présent (offline)
