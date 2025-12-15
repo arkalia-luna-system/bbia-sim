@@ -7,6 +7,41 @@
 **Emplacement** : `/Volumes/Reachy Mini Control/Reachy Mini Control.app`  
 **Système requis** : macOS 10.15+ (Catalina ou supérieur)
 
+## 📥 Téléchargement - Quelle Version ?
+
+### ✅ Versions Disponibles
+
+| Plateforme | Architecture | Fichier | Statut |
+|------------|--------------|---------|--------|
+| **macOS** | Apple Silicon (M1/M2/M3) | `.dmg` | ✅ Disponible |
+| **macOS** | Intel (x86_64) | `.dmg` | ✅ Disponible |
+| **Windows** | 64 bits | `.msi` | ⚠️ À venir |
+| **Linux** | Debian/Ubuntu | `.deb` | ⚠️ À venir |
+
+### 🔍 Comment Savoir Quelle Version Télécharger ?
+
+**Pour macOS** :
+
+1. **Vérifier votre architecture** :
+   ```bash
+   uname -m
+   ```
+   - `arm64` → **Apple Silicon** (M1/M2/M3) → Télécharger "macOS Apple Silicon"
+   - `x86_64` → **Intel** → Télécharger "macOS Intel"
+
+2. **Ou vérifier dans "À propos de ce Mac"** :
+   - **Apple Silicon** : "Chip Apple" (M1, M2, M3, etc.)
+   - **Intel** : "Processeur Intel Core"
+
+### ⚠️ Problème Actuel
+
+Le script `mjpython` dans l'app pointe vers un chemin de build (`/Users/runner/work/...`) qui n'existe pas sur votre machine. Cela indique que :
+
+- ✅ Vous avez probablement la **bonne version** (Apple Silicon ou Intel selon votre Mac)
+- ❌ Mais l'app a un **problème de packaging** (chemins hardcodés)
+
+**Solution** : Utiliser BBIA à la place (recommandé) ou attendre une mise à jour de l'app.
+
 ---
 
 ## 🎯 Qu'est-ce que Reachy Mini Control ?
