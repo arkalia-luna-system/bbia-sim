@@ -118,7 +118,8 @@ class TestRobotFactory:
         assert "mujoco" in backends
         assert "reachy" in backends
         assert "reachy_mini" in backends
-        assert len(backends) == 3
+        assert "auto" in backends
+        assert len(backends) == 4
 
     def test_get_backend_info_mujoco(self) -> None:
         """Test informations backend MuJoCo."""

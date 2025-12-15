@@ -25,7 +25,8 @@ class RobotFactory:
         """Crée un backend RobotAPI.
 
         Args:
-            backend_type: Type de backend ("mujoco", "reachy", ou "reachy_mini")
+            backend_type: Type de backend ("mujoco", "reachy", "reachy_mini", ou "auto")
+                - "auto": Détecte automatiquement robot, fallback vers sim si absent
             **kwargs: Arguments spécifiques au backend
                 - fast: Si True, utilise modèle simplifié (7 joints) pour tests rapides
 
@@ -34,6 +35,34 @@ class RobotFactory:
 
         """
         try:
+            # NOUVEAU: Support mode "auto" - détection automatique robot réel
+            if backend_type.lower() == "auto":
+                # Essayer robot réel d'abord (reachy_mini avec use_sim=False)
+                try:
+                    backend = RobotFactory.create_backend(
+                        "reachy_mini",
+                        use_sim=False,
+                        **kwargs,
+                    )
+                    # Vérifier que le backend est connecté à un robot réel
+                    if (
+                        backend
+                        and hasattr(backend, "is_connected")
+                        and backend.is_connected
+                    ):
+                        # Vérifier que ce n'est pas juste le mode simulation
+                        if hasattr(backend, "robot") and backend.robot is not None:
+                            logger.info("✅ Robot réel détecté et connecté")
+                            return backend
+                        # Si robot est None mais is_connected=True, c'est mode sim
+                        logger.debug("Robot en mode simulation, fallback vers MuJoCo")
+                except Exception as e:
+                    logger.debug("Robot réel non disponible: %s", e)
+
+                # Fallback vers simulation MuJoCo
+                logger.info("⚠️ Robot réel non disponible, utilisation simulation")
+                return RobotFactory.create_backend("mujoco", **kwargs)
+
             if backend_type.lower() == "mujoco":
                 # Support mode rapide (modèle simplifié)
                 if kwargs.get("fast", False):
@@ -77,7 +106,7 @@ class RobotFactory:
     @staticmethod
     def get_available_backends() -> list[str]:
         """Retourne la liste des backends disponibles."""
-        return ["mujoco", "reachy", "reachy_mini"]
+        return ["mujoco", "reachy", "reachy_mini", "auto"]
 
     @staticmethod
     def get_backend_info(backend_type: str) -> dict[str, Any]:
@@ -103,6 +132,13 @@ class RobotFactory:
                 "supports_viewer": False,
                 "supports_headless": True,
                 "real_robot": True,
+            },
+            "auto": {
+                "name": "Auto-Détection",
+                "description": "Détecte automatiquement robot réel, fallback vers simulation",
+                "supports_viewer": True,
+                "supports_headless": True,
+                "real_robot": False,  # Peut être robot réel ou sim
             },
         }
 
