@@ -1,6 +1,6 @@
 # 🔍 CE QUI MANQUE VRAIMENT DANS BBIA - DÉCEMBRE 2025
 
-**Date** : 8 Décembre 2025  
+**Dernière mise à jour : 15 Décembre 2025  
 **Version BBIA** : 1.4.0  
 **Version SDK Installée** : 1.1.3 ✅ **À JOUR**  
 **Version SDK Requise** : 1.1.1+ (Nov 25, 2025)

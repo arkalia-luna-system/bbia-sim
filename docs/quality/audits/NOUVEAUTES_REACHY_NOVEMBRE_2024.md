@@ -1,7 +1,7 @@
 # 🎉 NOUVEAUTÉS REACHY MINI - NOVEMBRE 2024
 
 **Date de l'email :** Novembre 2024  
-**Date de vérification BBIA :** 8 Décembre 2025  
+**Dernière mise à jour : 15 Décembre 2025  
 **Version BBIA :** 1.3.2  
 **Statut :** ✅ **PRÊT POUR RÉCEPTION ROBOT**  
 **Dernière mise à jour :** 8 Décembre 2025 (Email Pollen Robotics - Point novembre)

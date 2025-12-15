@@ -1,6 +1,6 @@
 # 📊 COMPARAISON OFFICIELLE - Documentation et Application Conversation
 
-**Date :** 8 Décembre 2025  
+**Dernière mise à jour : 15 Décembre 2025  
 **Source :** Documentation officielle `pollen-robotics/reachy_mini`  
 **Version BBIA :** 1.3.2  
 **Objectif :** Comparer BBIA-SIM avec la documentation officielle et l'application conversation officielle

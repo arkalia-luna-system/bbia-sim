@@ -1,6 +1,6 @@
 # Plan d'Action Consolidé - Optimisation Documentation BBIA-SIM
 
-**Date** : 8 Décembre 2025  
+**Dernière mise à jour : 15 Décembre 2025  
 **Objectif** : Plan d'action priorisé pour optimiser la documentation BBIA-SIM  
 **Audits réalisés** : `/docs/ai/`, `/docs/quality/`, `/docs/development/`
 

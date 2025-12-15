@@ -1,6 +1,6 @@
 # Audit Consolidé BBIA-SIM - Décembre 2025
 
-**Date** : 8 Décembre 2025  
+**Dernière mise à jour : 15 Décembre 2025  
 **Version BBIA** : 1.4.0  
 **Version SDK** : 1.1.3 ✅
 

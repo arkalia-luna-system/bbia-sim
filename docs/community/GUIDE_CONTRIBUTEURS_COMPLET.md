@@ -1,6 +1,6 @@
 # 🤝 Guide Contributeurs Complet - BBIA-SIM
 
-**Date** : 8 Décembre 2025  
+**Dernière mise à jour : 15 Décembre 2025  
 **Version** : 1.4.0  
 **Objectif** : Guide complet pour contribuer à BBIA-SIM
 

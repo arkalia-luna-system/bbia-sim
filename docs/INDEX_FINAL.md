@@ -15,7 +15,7 @@
 | **Dashboard** | `python src/bbia_sim/dashboard_advanced.py` | Instant | [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) |
 | **Premier robot** | Voir guide | 5 min | [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) ⭐ |
 
-**Configuration :** Python 3.11+ requis • **Version** : v1.4.0 • **Date** : 8 Décembre 2025
+**Configuration :** Python 3.11+ requis • **Version** : v1.4.0 • **Dernière mise à jour : 15 Décembre 2025
 
 **Mise à jour 8 Décembre 2025** :
 - 44 exemples disponibles

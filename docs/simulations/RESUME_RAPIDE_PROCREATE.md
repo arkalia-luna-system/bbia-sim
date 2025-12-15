@@ -1,6 +1,6 @@
 # ⚡ Résumé Rapide - Procreate pour Scène MuJoCo
 
-**Date** : 8 Décembre 2025
+**Dernière mise à jour : 15 Décembre 2025
 
 > **Guide ultra-rapide** : Les essentiels en 2 minutes
 

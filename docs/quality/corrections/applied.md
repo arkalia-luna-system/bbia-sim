@@ -1,6 +1,6 @@
 # ✅ CORRECTIONS APPLIQUÉES - Audit BBIA → Reachy Integration
 
-**Date** : 8 Décembre 2025  
+**Dernière mise à jour : 15 Décembre 2025  
 **Référentiel** : pollen-robotics/reachy_mini@84c40c3
 
 > **Référence état global** : Voir `docs/reference/project-status.md` → "État par axe" pour l'état consolidé post‑corrections et axes restants.

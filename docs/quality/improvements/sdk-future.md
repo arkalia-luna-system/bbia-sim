@@ -4,7 +4,7 @@
 >
 > Voir `docs/reference/project-status.md` → "État par axe" pour prioriser les améliorations (API/SDK, perf, sécurité, CI/CD).
 
-**Date :** 8 Décembre 2025
+**Dernière mise à jour : 15 Décembre 2025
 **Référence SDK :** <https://github.com/pollen-robotics/reachy_mini>
 
 ---

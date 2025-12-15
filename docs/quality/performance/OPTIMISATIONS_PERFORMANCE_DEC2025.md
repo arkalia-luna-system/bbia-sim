@@ -1,6 +1,6 @@
 # ⚡ Optimisations Performance - 8 Décembre 2025
 
-**Date** : 8 Décembre 2025
+**Dernière mise à jour : 15 Décembre 2025
 **Dernière mise à jour** : 8 Décembre 2025
 **Objectif** : Optimisations performance supplémentaires pour Mac
 
@@ -284,7 +284,7 @@ Tous les tests passent :
 
 ---
 
-**Date** : 8 Décembre 2025
+**Dernière mise à jour : 15 Décembre 2025
 **Dernière mise à jour** : 8 Décembre 2025
 **Statut** : ✅ Optimisations Phase 1 (Vision/Audio) appliquées et testées
 

@@ -1,6 +1,6 @@
 # ✅ CHECKLIST COMPLÈTE - RELEASE STABLE
 
-**Date création** : 8 Décembre 2025  
+**Dernière mise à jour : 15 Décembre 2025  
 **Objectif** : Vérification complète avant merge sur `main` et release stable  
 **Version cible** : v1.4.0
 
@@ -197,7 +197,7 @@
 
 ---
 
-**Date dernière mise à jour** : 8 Décembre 2025  
+**Dernière mise à jour : 15 Décembre 2025  
 **Statut** : ✅ Checklist complète créée et améliorations optionnelles terminées
 
 ### 📝 Améliorations Optionnelles Terminées (22 Nov. 2025)

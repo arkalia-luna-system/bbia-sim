@@ -1,6 +1,6 @@
 # 🎤 Migration vers Coqui TTS - Guide Complet
 
-**Date** : 8 Décembre 2025  
+**Dernière mise à jour : 15 Décembre 2025  
 **Version** : 1.0  
 **Objectif** : Remplacer pyttsx3 par Coqui TTS pour résoudre blocages macOS
 

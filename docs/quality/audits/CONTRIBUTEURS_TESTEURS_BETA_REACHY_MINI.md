@@ -1,6 +1,6 @@
 # 👥 TRAVAIL TECHNIQUE DES CONTRIBUTEURS - Inspiration pour BBIA
 
-**Date** : 8 Décembre 2025 (Mise à jour)  
+**Dernière mise à jour : 15 Décembre 2025 (Mise à jour)  
 **Source** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini)  
 **Version SDK** : v1.1.1 (Latest - Nov 25, 2025)  
 **Objectif** : Analyser le travail technique de chaque contributeur et identifier ce dont BBIA peut s'inspirer

@@ -1,6 +1,6 @@
 # ⚡ Optimisation Tests RAM V3 - 8 Décembre 2025
 
-**Date** : 8 Décembre 2025
+**Dernière mise à jour : 15 Décembre 2025
 **Objectif** : Réduire encore plus la consommation RAM en optimisant boucles, sleeps et instanciations
 
 ---

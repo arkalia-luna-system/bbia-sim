@@ -1,6 +1,6 @@
 # 🧪 Guide des Tests et de la Couverture - BBIA Reachy Mini
 
-**Date** : 8 Décembre 2025  
+**Dernière mise à jour : 15 Décembre 2025  
 **Version** : 1.4.0
 
 > **Référence état global** : Voir [`docs/reference/project-status.md`](../reference/project-status.md) → "État par axe" (Qualité/Performance/CI) pour l'état actuel et les axes futurs.

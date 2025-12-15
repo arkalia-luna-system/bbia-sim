@@ -1,6 +1,6 @@
 # 🔄 MISE À JOUR REACHY MINI - NOVEMBRE 2025
 
-**Date** : 8 Décembre 2025 (Mise à jour)  
+**Dernière mise à jour : 15 Décembre 2025 (Mise à jour)  
 **Source** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini)  
 **Version SDK Officiel** : v1.1.1 (Latest - Nov 25, 2025)  
 **Version BBIA** : 1.4.0  

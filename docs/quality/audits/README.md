@@ -1,6 +1,6 @@
 # Audits, Analyses et Rapports
 
-**Date** : 8 Décembre 2025  
+**Dernière mise à jour : 15 Décembre 2025  
 **Objectif** : Audits techniques, analyses et rapports d'évaluation du projet
 
 **Note** : Voir `../INDEX_AUDITS.md` pour l'index actuel des audits.

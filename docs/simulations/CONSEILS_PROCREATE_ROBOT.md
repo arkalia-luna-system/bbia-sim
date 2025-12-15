@@ -1,6 +1,6 @@
 # 🤖 Conseils Procreate - Image du Robot dans la Scène
 
-**Date** : 8 Décembre 2025
+**Dernière mise à jour : 15 Décembre 2025
 
 > **Guide spécifique** : Comment intégrer visuellement le robot Reachy Mini dans vos textures
 

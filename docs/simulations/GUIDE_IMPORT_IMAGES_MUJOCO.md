@@ -1,6 +1,6 @@
 # 🎨 Guide - Importer Images dans MuJoCo
 
-**Date** : 8 Décembre 2025
+**Dernière mise à jour : 15 Décembre 2025
 
 > **Question** : Peut-on importer des images créées (ex: pièce avec audit) dans MuJoCo pour les scènes 3D ?
 > **Réponse** : ✅ **OUI, C'EST POSSIBLE ET RELATIVEMENT SIMPLE !**

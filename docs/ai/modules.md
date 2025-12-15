@@ -1,6 +1,6 @@
 # Audit IA : Modules Pré-entraînés dans BBIA
 
-**Date** : 8 Décembre 2025  
+**Dernière mise à jour : 15 Décembre 2025  
 **Dernière mise à jour :** 8 Décembre 2025  
 **Objectif** : Vérifier quels modèles IA pré-entraînés sont utilisés, où ils sont utilisés, et identifier ce qui manque.
 

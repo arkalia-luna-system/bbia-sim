@@ -31,10 +31,7 @@
 
 ## 🎯 Vue d'ensemble
 
-**Reachy Mini Wireless** - Votre robot compagnon IA pour BBIA
-**Prix** : 449$ (~500€)
-**Livraison** : Fin 2025 - Début 2025
-**Statut** : Commandé
+**Reachy Mini Wireless** - Robot compagnon IA pour BBIA
 
 ---
 
@@ -575,5 +572,5 @@ Le **Reachy Mini Wireless** fournit une base solide pour BBIA :
 ---
 
 **Version** : 1.0
-**Date** : 8 Décembre 2025
+**Dernière mise à jour : 15 Décembre 2025
 **Statut** : Guide Reachy Mini Wireless

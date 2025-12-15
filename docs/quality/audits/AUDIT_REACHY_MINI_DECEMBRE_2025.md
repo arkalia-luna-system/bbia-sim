@@ -1,6 +1,6 @@
 # 🔍 AUDIT COMPLET REACHY MINI - DÉCEMBRE 2025
 
-**Date** : 8 Décembre 2025  
+**Dernière mise à jour** : 15 Décembre 2025  
 **Source** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini)  
 **Version SDK Officiel** : v1.2.0 (Latest - Dec 12, 2025)  
 **Version BBIA** : 1.4.0  

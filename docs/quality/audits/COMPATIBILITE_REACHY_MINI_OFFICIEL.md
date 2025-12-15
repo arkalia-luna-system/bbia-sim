@@ -1,6 +1,6 @@
 # 🔍 CONFORMITÉ COMPLÈTE - REACHY MINI OFFICIEL vs BBIA-SIM
 
-**Date :** 8 Décembre 2025  
+**Dernière mise à jour : 15 Décembre 2025  
 **Version BBIA :** 1.3.2  
 **SDK Officiel :** `pollen-robotics/reachy_mini` (GitHub)  
 **Repo officiel :** https://github.com/pollen-robotics/reachy_mini

@@ -1,6 +1,6 @@
 # ❓ FAQ Troubleshooting - Guide Complet
 
-**Date** : 8 Décembre 2025  
+**Dernière mise à jour : 15 Décembre 2025  
 **Compatibilité Python** : 3.11+
 
 > **Voir aussi** : [`docs/reference/INDEX_THEMATIQUE.md`](../reference/INDEX_THEMATIQUE.md) et [`docs/reference/project-status.md`](../reference/project-status.md) (État par axe)

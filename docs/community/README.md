@@ -1,6 +1,6 @@
 # 👥 Communauté - Documentation BBIA-SIM
 
-**Date** : 8 Décembre 2025  
+**Dernière mise à jour : 15 Décembre 2025  
 **Objectif** : Guides et ressources pour la communauté BBIA-SIM.
 
 ---

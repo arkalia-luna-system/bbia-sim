@@ -1,6 +1,6 @@
 # 🔍 CE QUI MANQUE DANS BBIA - Analyse Exhaustive
 
-**Date** : 8 Décembre 2025  
+**Dernière mise à jour : 15 Décembre 2025  
 **Version BBIA** : 1.4.0  
 **Source** : Comparaison avec [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini)  
 **Objectif** : Liste exhaustive de tout ce qui manque dans BBIA par rapport au projet officiel

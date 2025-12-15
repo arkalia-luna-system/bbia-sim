@@ -1,6 +1,6 @@
 # 📋 CHECKLIST FINALE - COMPARAISON EXHAUSTIVE vs REPO OFFICIEL
 
-**Date**: 8 Décembre 2025 (Mise à jour audit exhaustif)
+**Dernière mise à jour : 15 Décembre 2025 (Mise à jour audit exhaustif)
 **Branche**: future
 **Repo Officiel**: pollen-robotics/reachy_mini (develop)
 **Version BBIA**: 1.3.2
@@ -438,7 +438,7 @@ bandit -r src/bbia_sim/daemon/app/routers/move.py
 
 ---
 
-**Date de génération**: 8 Décembre 2025
+**Dernière mise à jour : 15 Décembre 2025
 **Script utilisé**: `scripts/compare_with_official_exhaustive.py`
 **Rapports**: `logs/comparison_official_results.json`, `logs/comparison_official_report.md`
 **Prompt d'audit exhaustif**: `docs/guides/PROMPT_AUDIT_EXHAUSTIF_REACHY_MINI.md` (pour audits futurs automatisés)

@@ -4,7 +4,7 @@
 >
 > Voir `docs/reference/project-status.md` → "Performance" pour l’état actuel (tests latence/jitter) et les baselines/axes futurs.
 
-**Date :** 8 Décembre 2025
+**Dernière mise à jour : 15 Décembre 2025
 **Objectif :** Identifier les goulots d'étranglement et responsables des lenteurs
 
 ---

@@ -1,6 +1,6 @@
 # 🎮 Guide Unity + BBIA - Reachy Mini Wireless
 
-**Date** : 8 Décembre 2025
+**Dernière mise à jour : 15 Décembre 2025
 
 ## Configuration vérifiée
 

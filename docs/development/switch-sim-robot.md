@@ -1,6 +1,6 @@
 # 🔄 Switch Sim → Robot
 
-**Date** : 8 Décembre 2025  
+**Dernière mise à jour : 15 Décembre 2025  
 **Version** : 1.0
 
 > **Compatibilité Python et CI** :

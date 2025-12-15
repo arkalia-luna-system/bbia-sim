@@ -5,7 +5,7 @@
 **💡 Réponses rapides aux questions les plus courantes**  
 *Trouvez rapidement la solution à votre problème*
 
-**Version** : 1.4.0 • **Date** : 8 Décembre 2025
+**Version** : 1.4.0 • **Dernière mise à jour : 15 Décembre 2025
 
 [![📚 Documentation](https://img.shields.io/badge/📚-Documentation-blue)](../README.md) • [![🐛 Issue](https://img.shields.io/badge/🐛-Signaler%20un%20problème-red)](https://github.com/arkalia-luna-system/bbia-sim/issues)
 
@@ -422,7 +422,12 @@ export BBIA_DISABLE_SIMULATION=1
 ## 🔗 Guides Complémentaires
 
 > **💡 Besoin d'aide plus technique ?**  
-> Consultez le [Guide Troubleshooting Technique](../development/troubleshooting.md) pour les problèmes avancés (IA, modules, CI, etc.)
+> Consultez le [Guide Troubleshooting Technique](../development/troubleshooting.md) pour les problèmes avancés (IA, modules, CI, WebSocket, etc.)
+
+### Navigation Troubleshooting
+
+- **Ce guide** (`getting-started/troubleshooting.md`) : FAQ principale - Installation, MuJoCo, audio basique, erreurs communes
+- **Guide technique** (`development/troubleshooting.md`) : Problèmes avancés - Modules IA, tests CI, WebSocket, performance
 
 ---
 
