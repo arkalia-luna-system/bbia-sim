@@ -2,7 +2,7 @@
 
 <div align="center">
 
-**Date** : 8 Décembre 2025
+**Dernière mise à jour** : 15 Décembre 2025
 [![Version](https://img.shields.io/badge/version-1.4.0-blue.svg)](https://github.com/arkalia-luna-system/bbia-sim)
 [![Temps](https://img.shields.io/badge/temps-5%20min-orange.svg)](#votre-premier-robot-bbia-en-5-minutes)
 
@@ -84,6 +84,8 @@ flowchart TD
 ```
 
 ### 1. 📦 Installation
+
+> **📚 Guide complet** : Pour les détails d'installation, consultez [`docs/getting-started/INSTALLATION.md`](../getting-started/INSTALLATION.md) (source de vérité unique)
 
 <div align="center">
 
@@ -238,6 +240,8 @@ robot.run_behavior('wake_up', duration=3.0)
 robot.disconnect()
 
 ```
+
+> **💡 Astuce** : Utilisez `RobotFactory.create_backend('auto')` pour détection automatique d'un robot réel, avec fallback vers simulation si absent.
 
 ### 4. 🎮 Tester en Simulation 3D
 

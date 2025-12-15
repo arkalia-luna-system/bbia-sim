@@ -2,7 +2,7 @@
 
 <div align="center">
 
-**Date** : 8 Décembre 2025
+**Dernière mise à jour** : 15 Décembre 2025
 [![Version](https://img.shields.io/badge/version-1.4.0-blue.svg)](https://github.com/arkalia-luna-system/bbia-sim)
 [![Niveau](https://img.shields.io/badge/niveau-Avancé-orange.svg)](docs/guides/)
 [![Temps](https://img.shields.io/badge/temps-15%20min-purple.svg)](#architecture-détaillée)
@@ -98,6 +98,9 @@ robot_real.set_emotion('happy', 0.8)
 # Basculer facilement
 backend = 'mujoco' if os.getenv('DEV') else 'reachy_mini'
 robot = RobotFactory.create_backend(backend)
+
+# Mode "auto" : Détection automatique robot réel, fallback vers simulation
+robot = RobotFactory.create_backend('auto')  # Détecte robot si disponible, sinon simulation
 
 ```
 

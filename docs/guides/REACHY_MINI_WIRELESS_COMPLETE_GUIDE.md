@@ -1,7 +1,6 @@
 # 🤖 Guide Complet Reachy Mini Wireless - Préparation BBIA
 
-**Date** : 8 Décembre 2025
-**Version** : 1.4.0
+**Dernière mise à jour** : 15 Décembre 2025
 
 > **Compatibilité Python et CI**
 >

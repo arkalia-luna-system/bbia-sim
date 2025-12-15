@@ -1,7 +1,6 @@
 # 📹 Roadmap Démo Vidéo - BBIA-SIM
 
-**Date de création** : 8 Décembre 2025
-**Date de mise à jour** : 8 Décembre 2025
+**Dernière mise à jour** : 15 Décembre 2025
 **Statut** : ✅ **Vidéos disponibles** - 3 vidéos de démonstration créées
 
 > **Note** : Des vidéos de démonstration sont maintenant disponibles dans `assets/videos/`. Voir [`assets/MEDIAS_INVENTAIRE.md`](../../assets/MEDIAS_INVENTAIRE.md) pour la liste complète.
