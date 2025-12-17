@@ -442,7 +442,7 @@ Vous pouvez maintenant commencer l'intégration des composants dans BBIA !
 
 ## 🤖 Séquence de Réveil Réaliste BBIA
 
-La simulation BBIA intègre désormais une séquence de réveil immersive, fidèle au robot Reachy Mini Wireless :
+La simulation BBIA intègre désormais une séquence de réveil immersive, pour le robot Reachy Mini Wireless :
 
 - Lumière progressive, halo bleu, respiration simulée
 - Son de démarrage, mouvements de tête et bras, expression, parole
