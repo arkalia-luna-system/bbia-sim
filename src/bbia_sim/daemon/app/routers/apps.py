@@ -438,6 +438,64 @@ async def _run_installation_job(
         _cleanup_old_jobs()
 
 
+async def _run_uninstallation_job(
+    job_id: str,
+    app_name: str,
+) -> None:
+    """Exécute un job de désinstallation en arrière-plan.
+
+    Args:
+        job_id: ID du job
+        app_name: Nom de l'app
+    """
+    job = _installation_jobs.get(job_id)
+    if not job:
+        return
+
+    try:
+        job["logs"].append(f"🗑️ Démarrage désinstallation {app_name}...")
+        job["progress"] = 10
+
+        # Vérifier si installée depuis HF Spaces
+        if _hf_app_installer.is_installed(app_name):
+            # Désinstaller l'app
+            await _hf_app_installer.uninstall_app(app_name)
+            job["logs"].append("✅ Désinstallation terminée")
+        else:
+            job["logs"].append("ℹ️ App non trouvée dans le système de fichiers")
+
+        job["progress"] = 50
+
+        # Retirer de la liste
+        _bbia_apps_manager["installed_apps"] = [
+            app for app in _bbia_apps_manager["installed_apps"] if app["name"] != app_name
+        ]
+
+        job["progress"] = 75
+
+        # Arrêter si c'était l'app courante
+        if _bbia_apps_manager["current_app"] == app_name:
+            _bbia_apps_manager["current_app"] = None
+
+        job["progress"] = 100
+        job["status"] = "completed"
+        job["logs"].append(f"✅ App {app_name} supprimée avec succès")
+
+        logger.info("✅ Job désinstallation %s terminé avec succès", job_id)
+
+        # OPTIMISATION RAM: Nettoyer les vieux jobs après chaque job terminé
+        _cleanup_old_jobs()
+
+    except Exception as e:
+        logger.exception("❌ Erreur job désinstallation %s: %s", job_id, e)
+        job["status"] = "failed"
+        job["logs"].append(f"❌ Erreur: {str(e)}")
+        job["error"] = str(e)
+
+        # OPTIMISATION RAM: Nettoyer les vieux jobs même en cas d'erreur
+        _cleanup_old_jobs()
+
+
 @router.post("/remove/{app_name}")
 async def remove_app(app_name: str) -> dict[str, str]:
     """Supprime une application installée.
@@ -446,34 +504,39 @@ async def remove_app(app_name: str) -> dict[str, str]:
         app_name: Nom de l'application à supprimer
 
     Returns:
-        Statut de la suppression
+        ID du job en arrière-plan
 
     Raises:
-        HTTPException: Si l'app n'est pas installée ou erreur de suppression
+        HTTPException: Si l'app n'est pas installée
     """
     logger.info("Suppression de l'application: %s", app_name)
 
-    # Vérifier si installée depuis HF Spaces
-    if _hf_app_installer.is_installed(app_name):
-        try:
-            await _hf_app_installer.uninstall_app(app_name)
-        except Exception as e:
-            logger.exception("Erreur désinstallation app %s: %s", app_name, e)
+    # Vérifier si l'app est installée
+    if not _hf_app_installer.is_installed(app_name):
+        # Vérifier aussi dans la liste des apps installées
+        if app_name not in [
+            app["name"] for app in _bbia_apps_manager["installed_apps"]
+        ]:
             raise HTTPException(
-                status_code=500,
-                detail=f"Erreur désinstallation: {e}",
-            ) from e
+                status_code=404,
+                detail=f"Application {app_name} non trouvée",
+            )
 
-    # Retirer de la liste
-    _bbia_apps_manager["installed_apps"] = [
-        app for app in _bbia_apps_manager["installed_apps"] if app["name"] != app_name
-    ]
+    # Générer un job ID unique
+    job_id = str(uuid4())
 
-    # Arrêter si c'était l'app courante
-    if _bbia_apps_manager["current_app"] == app_name:
-        _bbia_apps_manager["current_app"] = None
+    # Créer job de désinstallation
+    _installation_jobs[job_id] = {
+        "status": "running",
+        "app_name": app_name,
+        "logs": [],
+        "progress": 0,
+    }
 
-    return {"status": "removed", "app_name": app_name}
+    # Lancer désinstallation en arrière-plan
+    asyncio.create_task(_run_uninstallation_job(job_id, app_name))
+
+    return {"job_id": job_id}
 
 
 @router.get("/job-status/{job_id}")
