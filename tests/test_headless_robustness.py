@@ -295,7 +295,9 @@ class TestHeadlessRobustness:
                             "bbia_sim.sim.simulator.time.monotonic",
                             side_effect=mock_monotonic_fn,
                         ):
-                            simulator_cycle.launch_simulation(headless=True, duration=0.01)
+                            simulator_cycle.launch_simulation(
+                                headless=True, duration=0.01
+                            )
 
                     simulator_cycle.close()
                     print(f"✅ Cycle {i+1}: OK")

@@ -326,7 +326,7 @@ export BBIA_LLM_BACKEND=llama.cpp    # ou qwen
 
 ## ❓ Questions fréquentes
 
-### Q : Je n'ai pas de robot Reachy Mini, ça marche ?
+### Q : Je n'ai pas de robot Reachy Mini, est-ce que cela fonctionne ?
 
 R : Oui, le mode simulation est inclus. Vous pouvez développer maintenant et tester sur robot plus tard.
 
