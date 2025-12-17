@@ -131,13 +131,14 @@ Ce document se concentre sur le **travail technique concret** des contributeurs,
 
 ---
 
-#### 11. Batch processing mouvements multiples
-**État actuel** : Mouvements séquentiels  
-**À faire** : Batch processing pour mouvements simultanés  
-**Technique** : Grouper mouvements, exécuter en batch  
-**Bénéfice** : Performance améliorée (moins d'appels SDK)  
-**Priorité** : 🟢 Basse  
-**Temps estimé** : 4-6h
+#### 11. Batch processing mouvements multiples ✅ **TERMINÉ**
+**État actuel** : ✅ Batch processing implémenté avec queue et timeout  
+**Réalisé** : `movement_batch_processor.py` avec queue, endpoint `/api/move/batch`  
+**Technique** : Grouper mouvements (max 10), exécuter en batch avec timeout 100ms  
+**Bénéfice** : Performance améliorée (moins d'appels SDK), meilleure latence  
+**Priorité** : 🟡 Moyenne  
+**Temps estimé** : 4-6h  
+**Statut** : ✅ **TERMINÉ** (15 Déc 2025) - Tests complets (9 tests, coverage 70.59%)
 
 ---
 

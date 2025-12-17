@@ -34,7 +34,13 @@ from bbia_sim.daemon.app.backend_adapter import (
     get_backend_adapter,
     ws_get_backend_adapter,
 )
-from bbia_sim.daemon.models import AnyPose, FullBodyTarget, MoveUUID
+from bbia_sim.daemon.models import (
+    AnyPose,
+    BatchMovementRequest,
+    FullBodyTarget,
+    MoveUUID,
+)
+from bbia_sim.movement_batch_processor import get_batch_processor
 
 logger = logging.getLogger(__name__)
 
@@ -42,7 +48,9 @@ router = APIRouter(prefix="/move")
 
 # État global pour les tâches de mouvement
 move_tasks: dict[UUID, asyncio.Task[None]] = {}
+# OPTIMISATION RAM: Limiter nombre de listeners WebSocket (max 20)
 move_listeners: list[WebSocket] = []
+_MAX_MOVE_LISTENERS = 20
 
 
 class InterpolationMode(str, Enum):
@@ -126,10 +134,11 @@ def create_move_task(coro: Coroutine[Any, Any, None]) -> MoveUUID:
                         "details": details,
                     },
                 )
-            except (RuntimeError, WebSocketDisconnect):
+            except (RuntimeError, WebSocketDisconnect, Exception):
+                # OPTIMISATION RAM: Capturer toutes les exceptions pour nettoyage robuste
                 disconnected.append(ws)
 
-        # Nettoyer les connexions fermées
+        # OPTIMISATION RAM: Nettoyer les connexions fermées
         for ws in disconnected:
             if ws in move_listeners:
                 move_listeners.remove(ws)
@@ -322,13 +331,27 @@ async def stop_move(uuid: MoveUUID) -> dict[str, str]:
 @router.websocket("/ws/updates")
 async def ws_move_updates(websocket: WebSocket) -> None:
     """WebSocket pour streamer les mises à jour de mouvements."""
+    # OPTIMISATION RAM: Limiter nombre de connexions simultanées
+    if len(move_listeners) >= _MAX_MOVE_LISTENERS:
+        logger.warning(
+            "Limite de listeners atteinte (%d), rejet de nouvelle connexion",
+            _MAX_MOVE_LISTENERS,
+        )
+        await websocket.close(code=1008, reason="Too many connections")
+        return
+
     await websocket.accept()
     try:
         move_listeners.append(websocket)
         while True:
             _ = await websocket.receive_text()
-    except WebSocketDisconnect:
-        move_listeners.remove(websocket)
+    except (WebSocketDisconnect, Exception):
+        # OPTIMISATION RAM: Nettoyer dans finally pour garantir suppression
+        pass
+    finally:
+        # OPTIMISATION RAM: Nettoyage garanti même en cas d'exception
+        if websocket in move_listeners:
+            move_listeners.remove(websocket)
 
 
 @router.post("/set_target")
@@ -368,3 +391,75 @@ async def ws_set_target(websocket: WebSocket) -> None:
                 )
     except WebSocketDisconnect:
         pass
+
+
+@router.post("/batch")
+async def batch_movements(
+    batch_req: BatchMovementRequest,
+    backend: Annotated[BackendAdapter, Depends(get_backend_adapter_for_move)],
+) -> dict[str, Any]:
+    """Exécute plusieurs mouvements en batch (optimisation performance).
+
+    Args:
+        batch_req: Requête contenant la liste de mouvements
+        backend: Backend adapter pour exécuter les mouvements
+
+    Returns:
+        Dictionnaire avec statut et UUIDs des mouvements créés
+    """
+    batch_processor = get_batch_processor()
+    movement_uuids: list[str] = []
+
+    for movement_data in batch_req.movements:
+        # Capturer les variables dans la closure pour éviter warnings
+        move_type = movement_data.get("type", "goto")
+        m_data = movement_data.copy()  # Copie pour éviter référence mutée
+
+        async def create_movement_func(
+            m_type: str = move_type, m_d: dict[str, Any] = m_data
+        ) -> None:
+            """Crée une fonction async pour exécuter le mouvement."""
+            if m_type == "goto":
+                head_pose_data = m_d.get("head_pose")
+                antennas_data = m_d.get("antennas")
+                duration = m_d.get("duration", 1.0)
+
+                head_pose = AnyPose(**head_pose_data) if head_pose_data else None
+                antennas = tuple(antennas_data) if antennas_data else None
+
+                await backend.goto_target(
+                    head=head_pose.to_pose_array() if head_pose else None,
+                    antennas=np.array(antennas) if antennas else None,
+                    duration=duration,
+                )
+            elif m_type == "wake_up":
+                await backend.wake_up()
+            elif m_type == "goto_sleep":
+                await backend.goto_sleep()
+            elif m_type == "set_target":
+                target_data = m_d.get("target", {})
+                target = FullBodyTarget(**target_data)
+                backend.set_target(
+                    head=(
+                        target.target_head_pose.to_pose_array()
+                        if target.target_head_pose
+                        else None
+                    ),
+                    antennas=(
+                        np.array(target.target_antennas)
+                        if target.target_antennas
+                        else None
+                    ),
+                )
+            else:
+                logger.warning("Type de mouvement inconnu: %s", m_type)
+
+        result = await batch_processor.add_movement(create_movement_func)
+        movement_uuids.append(result["movement_id"])
+
+    return {
+        "status": "queued",
+        "movement_count": len(movement_uuids),
+        "movement_ids": movement_uuids,
+        "batch_size": batch_processor.get_queue_size(),
+    }
