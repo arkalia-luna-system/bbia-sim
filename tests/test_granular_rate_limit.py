@@ -69,7 +69,7 @@ class TestGranularRateLimit:
         assert move_limit == 30
 
         # Faire 30 requêtes (devrait passer)
-        for i in range(move_limit):
+        for _ in range(move_limit):
             response = client.get("/api/move/test")
             assert response.status_code == 200
 
@@ -85,8 +85,6 @@ class TestGranularRateLimit:
         """Test que différents endpoints ont des limites différentes."""
         # /api/move: 30 req/min
         move_limit = ENDPOINT_RATE_LIMITS["/api/move"]["requests_per_minute"]
-        # /api/ecosystem: 200 req/min
-        ecosystem_limit = ENDPOINT_RATE_LIMITS["/api/ecosystem"]["requests_per_minute"]
 
         # Atteindre la limite de /api/move
         for _ in range(move_limit):
@@ -142,7 +140,7 @@ class TestGranularRateLimit:
         default_limit = 100  # Défini dans le fixture
 
         # Faire 100 requêtes (devrait passer)
-        for i in range(default_limit):
+        for _ in range(default_limit):
             response = client.get("/api/unknown/test")
             assert response.status_code == 200
 
