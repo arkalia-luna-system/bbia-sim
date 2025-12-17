@@ -907,7 +907,7 @@ Une analyse exhaustive complémentaire a été effectuée (8 Décembre 2025) com
 **Nouveaux modèles** : `XYZRPYPose`, `Matrix4x4Pose`, `AnyPose`, `FullBodyTarget`, `MoveUUID`, `GotoModelRequest` ✅
 **Nouveaux tests** : `tests/test_api_move_conformity.py`, `tests/test_api_state_improved.py` ✅
 
-**🟢 OPTIONNELLES** (2 fonctionnalités avancées) :
+**🟢 OPTIONNELLES** (2 fonctionnalités) :
 
 - Support RecordedMoves HuggingFace (datasets)
 - Tests de conformité supplémentaires

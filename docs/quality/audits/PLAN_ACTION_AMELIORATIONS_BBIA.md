@@ -748,7 +748,7 @@ pytest tests/test_lifespan_robust.py --cov=src/bbia_sim/daemon/app/main --cov-re
 
 - `test_simplified_mode_shows_simple_controls()` - Mode simplifié affiche contrôles essentiels
 - `test_toggle_simplified_advanced_mode()` - Toggle mode fonctionne
-- `test_simplified_mode_hides_advanced_features()` - Mode simplifié cache fonctionnalités avancées
+- `test_simplified_mode_hides_advanced_features()` - Mode simplifié cache fonctionnalités
 
 **Critères** :
 
@@ -926,7 +926,7 @@ git push origin develop
 
 10. **Scènes complexes avec objets** (4-6h) - ⭐⭐ Impact
     - **Pourquoi** : Tests manipulation objets, interactions
-    - **Impact** : 🟡 **MOYEN** - Fonctionnalités avancées
+    - **Impact** : 🟡 **MOYEN** - Fonctionnalités
     - **À faire** : Créer scènes XML avec objets MuJoCo
 
 #### 🟢 PRIORITÉ BASSE - Améliorations Futures (12 améliorations)
