@@ -1,12 +1,22 @@
 """Router pour la gestion des applications HuggingFace."""
 
+import asyncio
 import logging
 import time
 from typing import Any
+from uuid import uuid4
 
 from fastapi import APIRouter, HTTPException, WebSocket
 
+from bbia_sim.daemon.app.hf_app_installer import HFAppInstaller
+
 logger = logging.getLogger(__name__)
+
+# Installer global
+_hf_app_installer = HFAppInstaller()
+
+# Jobs d'installation en cours
+_installation_jobs: dict[str, dict[str, Any]] = {}
 
 router = APIRouter(prefix="/apps")
 
@@ -152,6 +162,27 @@ async def list_all_available_apps() -> list[dict[str, Any]]:
     # Ajouter les apps testeurs bêta
     apps.extend(_BETA_TESTER_APPS)
 
+    # Ajouter les apps installées depuis HF Spaces
+    installed_hf_apps = _hf_app_installer.list_installed_apps()
+    for installed_app in installed_hf_apps:
+        # Marquer comme installée si pas déjà dans la liste
+        existing = next(
+            (app for app in apps if app.get("name") == installed_app["name"]),
+            None,
+        )
+        if existing:
+            existing["installed"] = True
+            existing["app_path"] = installed_app.get("app_path")
+        else:
+            apps.append(
+                {
+                    "name": installed_app["name"],
+                    "source_kind": "hf_space",
+                    "installed": True,
+                    "app_path": installed_app.get("app_path"),
+                },
+            )
+
     # Essayer de découvrir des apps depuis HF Hub
     try:
         from huggingface_hub import HfApi
@@ -167,6 +198,8 @@ async def list_all_available_apps() -> list[dict[str, Any]]:
         existing_names = {app.get("name") for app in apps}
         for space in hf_spaces:
             if space.id and space.id not in existing_names:
+                # Vérifier si déjà installée
+                is_installed = _hf_app_installer.is_installed(space.id.split("/")[-1])
                 apps.append(
                     {
                         "name": space.id,
@@ -178,6 +211,7 @@ async def list_all_available_apps() -> list[dict[str, Any]]:
                         "author": "community",
                         "category": "community",
                         "hf_space": space.id,
+                        "installed": is_installed,
                     },
                 )
                 existing_names.add(space.id)
@@ -243,49 +277,147 @@ async def list_community_apps() -> list[dict[str, Any]]:
 
 @router.post("/install")
 async def install_app(app_info: dict[str, Any]) -> dict[str, str]:
-    """Installe une nouvelle application (simulation - background job).
+    """Installe une nouvelle application depuis Hugging Face Spaces.
 
     Args:
         app_info: Informations sur l'application à installer
+                  - name: Nom de l'app
+                  - hf_space: ID du Space HF (format: "username/space-name")
+                  - source_kind: Type de source (hf_space, local, etc.)
 
     Returns:
         ID du job en arrière-plan
 
+    Raises:
+        HTTPException: Si l'installation échoue immédiatement (avant job)
     """
     app_name = app_info.get("name", "unknown")
-    logger.info("Installation de l'application: %s", app_name)
+    hf_space_id = app_info.get("hf_space") or app_info.get("name")
+    source_kind = app_info.get("source_kind", "hf_space")
 
-    # Simulation d'un job ID
-    job_id = f"install_{app_name}_{hash(app_name) % 10000}"
+    logger.info("Installation de l'application: %s (source: %s)", app_name, source_kind)
 
-    # Ajouter à la liste des apps installées
-    if app_name not in [app["name"] for app in _bbia_apps_manager["installed_apps"]]:
-        _bbia_apps_manager["installed_apps"].append(
-            {
-                "name": app_name,
-                "source_kind": app_info.get("source_kind", "huggingface"),
-                "installed": True,
-            },
+    # Générer un job ID unique
+    job_id = str(uuid4())
+
+    # Pour les apps locales, installation immédiate (pas de job)
+    if source_kind == "local":
+        if app_name not in [
+            app["name"] for app in _bbia_apps_manager["installed_apps"]
+        ]:
+            _bbia_apps_manager["installed_apps"].append(
+                {
+                    "name": app_name,
+                    "source_kind": source_kind,
+                    "installed": True,
+                },
+            )
+        return {"job_id": job_id, "status": "completed"}
+
+    # Pour les apps HF Spaces, installation asynchrone
+    if source_kind == "hf_space" and hf_space_id:
+        # Vérifier si déjà installé
+        if _hf_app_installer.is_installed(app_name):
+            logger.info("App %s déjà installée", app_name)
+            return {"job_id": job_id, "status": "already_installed"}
+
+        # Créer job d'installation
+        _installation_jobs[job_id] = {
+            "status": "running",
+            "app_name": app_name,
+            "hf_space_id": hf_space_id,
+            "logs": [],
+            "progress": 0,
+        }
+
+        # Lancer installation en arrière-plan
+        asyncio.create_task(_run_installation_job(job_id, hf_space_id, app_name))
+
+        return {"job_id": job_id}
+
+    raise HTTPException(
+        status_code=400,
+        detail=f"Impossible d'installer: hf_space manquant pour {app_name}",
+    )
+
+
+async def _run_installation_job(
+    job_id: str,
+    hf_space_id: str,
+    app_name: str,
+) -> None:
+    """Exécute un job d'installation en arrière-plan.
+
+    Args:
+        job_id: ID du job
+        hf_space_id: ID du Space HF
+        app_name: Nom de l'app
+    """
+    job = _installation_jobs.get(job_id)
+    if not job:
+        return
+
+    try:
+        job["logs"].append(f"🚀 Démarrage installation {app_name}...")
+        job["progress"] = 10
+
+        # Installer l'app
+        result = await _hf_app_installer.install_app(
+            hf_space_id=hf_space_id,
+            app_name=app_name,
         )
 
-    return {"job_id": job_id}
+        job["logs"].append(f"✅ Installation terminée: {result['status']}")
+        job["progress"] = 100
+        job["status"] = "completed"
+
+        # Ajouter à la liste des apps installées
+        if app_name not in [
+            app["name"] for app in _bbia_apps_manager["installed_apps"]
+        ]:
+            _bbia_apps_manager["installed_apps"].append(
+                {
+                    "name": app_name,
+                    "source_kind": "hf_space",
+                    "installed": True,
+                    "app_path": result.get("app_path"),
+                },
+            )
+
+        logger.info("✅ Job %s terminé avec succès", job_id)
+
+    except Exception as e:
+        logger.exception("❌ Erreur job %s: %s", job_id, e)
+        job["status"] = "failed"
+        job["logs"].append(f"❌ Erreur: {str(e)}")
+        job["error"] = str(e)
 
 
 @router.post("/remove/{app_name}")
 async def remove_app(app_name: str) -> dict[str, str]:
-    """Supprime une application installée (simulation - background job).
+    """Supprime une application installée.
 
     Args:
         app_name: Nom de l'application à supprimer
 
     Returns:
-        ID du job en arrière-plan
+        Statut de la suppression
 
+    Raises:
+        HTTPException: Si l'app n'est pas installée ou erreur de suppression
     """
     logger.info("Suppression de l'application: %s", app_name)
 
-    # Simulation d'un job ID
-    job_id = f"remove_{app_name}_{hash(app_name) % 10000}"
+    # Vérifier si installée depuis HF Spaces
+    if _hf_app_installer.is_installed(app_name):
+        try:
+            await _hf_app_installer.uninstall_app(app_name)
+        except Exception as e:
+            logger.exception("Erreur désinstallation app %s: %s", app_name, e)
+            raise HTTPException(
+                status_code=500,
+                detail=f"Erreur désinstallation: {e}",
+            ) from e
 
     # Retirer de la liste
     _bbia_apps_manager["installed_apps"] = [
@@ -296,7 +428,7 @@ async def remove_app(app_name: str) -> dict[str, str]:
     if _bbia_apps_manager["current_app"] == app_name:
         _bbia_apps_manager["current_app"] = None
 
-    return {"job_id": job_id}
+    return {"status": "removed", "app_name": app_name}
 
 
 @router.get("/job-status/{job_id}")
@@ -307,15 +439,22 @@ async def job_status(job_id: str) -> dict[str, Any]:
         job_id: ID du job
 
     Returns:
-        Informations sur le job (status, logs, etc.)
+        Informations sur le job (status, logs, progress, etc.)
 
+    Raises:
+        HTTPException: Si le job n'existe pas
     """
-    # Simulation d'un job avec statut "completed" ou "running"
+    job = _installation_jobs.get(job_id)
+    if not job:
+        raise HTTPException(status_code=404, detail=f"Job {job_id} non trouvé")
+
     return {
         "job_id": job_id,
-        "status": "completed",
-        "logs": [f"Job {job_id} terminé avec succès"],
-        "progress": 100,
+        "status": job.get("status", "unknown"),
+        "logs": job.get("logs", []),
+        "progress": job.get("progress", 0),
+        "app_name": job.get("app_name"),
+        "error": job.get("error"),
     }
 
 
@@ -328,24 +467,53 @@ async def ws_apps_manager(websocket: WebSocket, job_id: str) -> None:
         job_id: ID du job à suivre
 
     """
-    import asyncio
-
     from fastapi import WebSocketDisconnect
 
     await websocket.accept()
 
     try:
-        # Simulation : envoyer quelques mises à jour
-        for i in range(3):
-            await websocket.send_json(
-                {
-                    "job_id": job_id,
-                    "status": "running" if i < 2 else "completed",
-                    "progress": (i + 1) * 33,
-                    "log": f"Étape {i + 1}/3 terminée",
-                },
-            )
-            await asyncio.sleep(0.5)
+        # Envoyer mises à jour en temps réel
+        last_log_count = 0
+        while True:
+            job = _installation_jobs.get(job_id)
+            if not job:
+                await websocket.send_json(
+                    {
+                        "job_id": job_id,
+                        "status": "not_found",
+                        "error": "Job non trouvé",
+                    },
+                )
+                break
+
+            # Envoyer nouveaux logs
+            current_logs = job.get("logs", [])
+            if len(current_logs) > last_log_count:
+                for log in current_logs[last_log_count:]:
+                    await websocket.send_json(
+                        {
+                            "job_id": job_id,
+                            "status": job.get("status", "running"),
+                            "progress": job.get("progress", 0),
+                            "log": log,
+                        },
+                    )
+                last_log_count = len(current_logs)
+
+            # Si terminé, envoyer statut final et fermer
+            if job.get("status") in ("completed", "failed", "already_installed"):
+                await websocket.send_json(
+                    {
+                        "job_id": job_id,
+                        "status": job.get("status"),
+                        "progress": job.get("progress", 100),
+                        "done": True,
+                    },
+                )
+                break
+
+            await asyncio.sleep(0.5)  # Poll toutes les 500ms
+
     except WebSocketDisconnect:
         logger.info("Client WebSocket déconnecté pour job %s", job_id)
     finally:

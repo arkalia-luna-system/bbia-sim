@@ -300,7 +300,7 @@ Ce document se concentre sur le **travail technique concret** des contributeurs,
 3. Fallback automatique sim → robot (2-3h)
 4. Lifespan context manager robuste (3-4h)
 5. Mode simplifié dashboard (4-6h)
-6. Intégration HF Spaces plus poussée (6-8h)
+6. ✅ Intégration HF Spaces plus poussée (6-8h) - **TERMINÉ** (15 Déc)
 7. Heartbeat WebSocket robuste (3-4h)
 8. ✅ Tests conformité SDK exhaustifs (6-8h) - **TERMINÉ** (15 Déc)
 9. ✅ Tests headless MuJoCo robustes (3-4h) - **TERMINÉ** (15 Déc)
@@ -381,7 +381,7 @@ Ce document se concentre sur le **travail technique concret** des contributeurs,
 | Fallback auto sim→robot | @pierre-rouanet | 🟡 Moyenne | 2-3h | ✅ **TERMINÉ** (15 Déc) |
 | Lifespan robuste | @pierre-rouanet | 🟡 Moyenne | 3-4h | ✅ **TERMINÉ** (15 Déc) |
 | Mode simplifié dashboard | @FabienDanieau | 🟡 Moyenne | 4-6h | ✅ **TERMINÉ** (15 Déc) |
-| HF Spaces poussé | @FabienDanieau | 🟡 Moyenne | 6-8h | ⚠️ À faire |
+| HF Spaces poussé | @FabienDanieau | 🟡 Moyenne | 6-8h | ✅ **TERMINÉ** (15 Déc) |
 | Heartbeat WebSocket | @FabienDanieau | 🟡 Moyenne | 3-4h | ✅ **TERMINÉ** (15 Déc) |
 | Tests conformité exhaustifs | @RemiFabre | 🟡 Moyenne | 6-8h | ✅ **TERMINÉ** (15 Déc) |
 | Tests headless robustes | @RemiFabre | 🟡 Moyenne | 3-4h | ✅ **TERMINÉ** (15 Déc) |

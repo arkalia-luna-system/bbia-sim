@@ -201,4 +201,3 @@ class HFAppInstaller:
         """
         app_path = self.apps_dir / app_name
         return app_path.exists() and app_path.is_dir()
-
