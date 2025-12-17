@@ -914,7 +914,7 @@ git push origin develop
    - **Impact** : 🟡 **MOYEN** - Performance, UX
    - **À faire** : File d'attente multicouche, traitement batch
 
-8. **Chargement lazy assets STL** (3-4h) - ⭐⭐ Impact Performance
+8. ✅ **Chargement lazy assets STL** (3-4h) - ⭐⭐ Impact Performance - **TERMINÉ** (15 Déc)
    - **Pourquoi** : Démarrage plus rapide, moins de RAM
    - **Impact** : 🟡 **MOYEN** - Performance Mac Mini
    - **À faire** : Chargement à la demande, cache

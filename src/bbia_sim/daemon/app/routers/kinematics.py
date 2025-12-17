@@ -7,6 +7,7 @@ from typing import Annotated, Any
 from fastapi import APIRouter, Depends, HTTPException, Response
 
 from bbia_sim.daemon.app.backend_adapter import BackendAdapter, get_backend_adapter
+from bbia_sim.stl_asset_cache import get_cached_stl
 
 logger = logging.getLogger(__name__)
 
@@ -91,9 +92,15 @@ async def get_stl_file(filename: str) -> Response:
         )
 
     try:
-        with open(file_path, "rb") as file:
-            content = file.read()
-            return Response(content, media_type="model/stl")
+        # Utiliser le cache lazy pour charger le STL
+        content = get_cached_stl(file_path)
+        return Response(content, media_type="model/stl")
+    except FileNotFoundError as e:
+        logger.warning("Fichier STL introuvable: %s", filename)
+        raise HTTPException(
+            status_code=404,
+            detail=f"Fichier STL non trouvé: {safe_filename}",
+        ) from e
     except Exception as e:
         logger.exception("Erreur lors de la lecture du fichier STL %s:", filename)
         raise HTTPException(

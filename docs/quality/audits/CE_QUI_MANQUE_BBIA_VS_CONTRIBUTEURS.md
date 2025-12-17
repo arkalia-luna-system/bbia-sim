@@ -319,7 +319,7 @@ Ce document se concentre sur le **travail technique concret** des contributeurs,
 **Total temps estimé** : ~40-60h
 
 1. Support multi-robots simultanés (8-12h)
-2. Chargement lazy assets STL (3-4h)
+2. ✅ Chargement lazy assets STL (3-4h) - **TERMINÉ** (15 Déc)
 3. Scènes complexes (4-6h)
 4. Timestep adaptatif (3-4h)
 5. ✅ Cache modèles agressif (2-3h) - **TERMINÉ** (15 Déc)
@@ -387,7 +387,7 @@ Ce document se concentre sur le **travail technique concret** des contributeurs,
 | Tests conformité exhaustifs | @RemiFabre | 🟡 Moyenne | 6-8h | ✅ **TERMINÉ** (15 Déc) |
 | Tests headless robustes | @RemiFabre | 🟡 Moyenne | 3-4h | ✅ **TERMINÉ** (15 Déc) |
 | Guides par niveau | @askurique | 🟡 Moyenne | 4-6h | ⚠️ À faire |
-| Chargement lazy STL | @apirrone | 🟢 Basse | 3-4h | ⚠️ À faire |
+| Chargement lazy STL | @apirrone | 🟡 Moyenne | 3-4h | ✅ **TERMINÉ** (15 Déc) |
 | Scènes complexes | @apirrone | 🟢 Basse | 4-6h | ⚠️ À faire |
 | Timestep adaptatif | @apirrone | 🟢 Basse | 3-4h | ⚠️ À faire |
 | Cache modèles agressif | @apirrone | 🟢 Basse | 2-3h | ✅ **TERMINÉ** (15 Déc) |
