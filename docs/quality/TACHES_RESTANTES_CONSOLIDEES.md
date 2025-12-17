@@ -72,22 +72,26 @@
 
 ---
 
-#### 2. Support simultané sim/robot réel (Inspiration @pierre-rouanet)
+#### 2. ✅ Support simultané sim/robot réel (Inspiration @pierre-rouanet)
 
-**Durée estimée** : 6-8h
+**Durée estimée** : 6-8h  
+**Statut** : ✅ **TERMINÉ** (15 Déc 2025)
 
-**État actuel** : BBIA choisit un backend (sim OU robot)
+**État actuel** : ✅ Support simultané via même daemon (sim + robot réel)
 
-**Actions** :
-- Support simultané via même daemon (sim + robot réel)
-- Multi-backends avec routing selon commande
-- API pour choisir backend par commande
+**Actions réalisées** :
+- ✅ Support simultané via même daemon (sim + robot réel)
+- ✅ Multi-backends avec routing selon commande (paramètre `backend` dans requêtes API)
+- ✅ API pour choisir backend par commande (`/api/state/backends/list`, `/api/state/backends/init`)
 
-**Impact** : Tests sim pendant utilisation robot réel
+**Impact** : Tests sim pendant utilisation robot réel, flexibilité développement
 
 **Fichiers concernés** :
-- `src/bbia_sim/daemon/app/main.py` (gestion multi-backends)
-- `src/bbia_sim/robot_factory.py` (support multi-instances)
+- ✅ `src/bbia_sim/daemon/app/main.py` (gestion multi-backends dans lifespan)
+- ✅ `src/bbia_sim/daemon/app/backend_adapter.py` (routing multi-backends)
+- ✅ `src/bbia_sim/daemon/app/routers/state.py` (endpoints API)
+- ✅ `src/bbia_sim/daemon/app/routers/move.py` (routing selon backend)
+- ✅ `tests/test_multi_backend_routing.py` (8 tests, coverage 100%)
 
 ---
 

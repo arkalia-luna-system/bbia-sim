@@ -27,6 +27,8 @@ except ImportError:
 
 import contextlib
 
+from fastapi import Query
+
 from bbia_sim.daemon.app.backend_adapter import (
     BackendAdapter,
     get_backend_adapter,
@@ -89,6 +91,23 @@ class GotoModelRequest(BaseModel):
 def get_backend_dependency() -> BackendAdapter:
     """Dependency pour obtenir le backend robot (via adaptateur conforme SDK)."""
     return get_backend_adapter()
+
+
+def get_backend_adapter_for_move(
+    backend: str | None = Query(
+        None,
+        description="Type de backend à utiliser ('mujoco', 'reachy_mini', etc.). Si None, utilise le backend par défaut.",
+    ),
+) -> BackendAdapter:
+    """Dependency pour obtenir un BackendAdapter pour les mouvements avec routing multi-backends.
+
+    Args:
+        backend: Type de backend à utiliser (optionnel, depuis query param)
+
+    Returns:
+        Instance de BackendAdapter configurée pour le backend spécifié
+    """
+    return get_backend_adapter(backend=backend)
 
 
 def create_move_task(coro: Coroutine[Any, Any, None]) -> MoveUUID:
@@ -161,7 +180,7 @@ async def get_running_moves() -> list[MoveUUID]:
 @router.post("/goto")
 async def goto(
     goto_req: GotoModelRequest,
-    backend: Annotated[BackendAdapter, Depends(get_backend_adapter)],
+    backend: Annotated[BackendAdapter, Depends(get_backend_adapter_for_move)],
 ) -> MoveUUID:
     """Demande un mouvement vers une cible spécifique (conforme SDK)."""
     # Conforme SDK officiel: ne pas passer interpolation/method à goto_target
@@ -177,7 +196,7 @@ async def goto(
 
 @router.post("/play/wake_up")
 async def play_wake_up(
-    backend: Annotated[BackendAdapter, Depends(get_backend_adapter)],
+    backend: Annotated[BackendAdapter, Depends(get_backend_adapter_for_move)],
 ) -> MoveUUID:
     """Demande au robot de se réveiller (conforme SDK)."""
     return create_move_task(backend.wake_up())
@@ -185,7 +204,7 @@ async def play_wake_up(
 
 @router.post("/play/goto_sleep")
 async def play_goto_sleep(
-    backend: Annotated[BackendAdapter, Depends(get_backend_adapter)],
+    backend: Annotated[BackendAdapter, Depends(get_backend_adapter_for_move)],
 ) -> MoveUUID:
     """Demande au robot de se mettre en veille (conforme SDK)."""
     return create_move_task(backend.goto_sleep())
@@ -271,7 +290,7 @@ async def list_recorded_move_dataset(dataset_name: str) -> list[str]:
 async def play_recorded_move_dataset(
     dataset_name: str,
     move_name: str,
-    backend: Annotated[BackendAdapter, Depends(get_backend_adapter)],
+    backend: Annotated[BackendAdapter, Depends(get_backend_adapter_for_move)],
 ) -> MoveUUID:
     """Demande au robot de jouer un mouvement enregistré depuis un dataset (conforme SDK officiel)."""
     if RecordedMoves is None:
@@ -315,7 +334,7 @@ async def ws_move_updates(websocket: WebSocket) -> None:
 @router.post("/set_target")
 async def set_target(
     target: FullBodyTarget,
-    backend: Annotated[BackendAdapter, Depends(get_backend_adapter)],
+    backend: Annotated[BackendAdapter, Depends(get_backend_adapter_for_move)],
 ) -> dict[str, str]:
     """Définit un target directement (sans mouvement) - conforme SDK."""
     # Conforme SDK officiel: utiliser to_pose_array() directement

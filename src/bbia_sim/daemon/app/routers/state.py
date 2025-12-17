@@ -3,7 +3,12 @@
 import asyncio
 import logging
 import os
-from datetime import UTC, datetime, timezone
+from datetime import datetime, timezone
+
+try:
+    from datetime import UTC  # Python 3.11+
+except ImportError:
+    UTC = timezone.utc  # Fallback Python 3.10  # noqa: UP035, UP017
 from typing import Annotated, Any, cast
 
 from fastapi import APIRouter, Depends, WebSocket, WebSocketDisconnect
@@ -177,6 +182,7 @@ class BatteryInfo(BaseModel):
 @router.get("/full")
 async def get_full_state(
     backend: Annotated[BackendAdapter, Depends(get_backend_adapter)],
+    *,
     with_control_mode: bool = True,
     with_head_pose: bool = True,
     with_target_head_pose: bool = False,

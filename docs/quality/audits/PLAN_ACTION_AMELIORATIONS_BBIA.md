@@ -1108,7 +1108,7 @@ pytest tests/test_cache_models.py -v
 |-------|--------------|------|-------|-------|--------|
 | **Phase 1** | Tests conformité exhaustifs | 4h | 2-4h | **6-8h** | 🔴 CRITIQUE |
 | **Phase 1** | Tests headless robustes | 2h | 1-2h | **3-4h** | 🔴 ÉLEVÉ |
-| **Phase 2** | Support simultané sim/robot | 4h | 2-4h | **6-8h** | 🔴 ÉLEVÉ |
+| **Phase 2** | Support simultané sim/robot | ✅ 4h | ✅ 2-4h | ✅ **6-8h** | ✅ 🔴 ÉLEVÉ |
 | **Phase 3** | HF Spaces poussé | 4h | 2-4h | **6-8h** | 🟡 MOYEN |
 | **Phase 3** | Cache modèles agressif | 1h | 1-2h | **2-3h** | 🟡 MOYEN |
 | **TOTAL Phase 1-3** | **5 améliorations** | **15h** | **8-16h** | **23-31h** | |

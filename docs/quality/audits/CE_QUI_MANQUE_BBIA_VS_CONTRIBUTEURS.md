@@ -35,14 +35,14 @@ Ce document se concentre sur le **travail technique concret** des contributeurs,
 
 ---
 
-#### 2. ⏳ Support simultané sim/robot réel
-**État actuel** : BBIA choisit un backend (sim OU robot)  
-**À faire** : Support simultané via même daemon (sim + robot réel)  
-**Technique** : Multi-backends avec routing selon commande  
-**Bénéfice** : Tests sim pendant utilisation robot réel  
+#### 2. ✅ Support simultané sim/robot réel
+**État actuel** : ✅ **TERMINÉ** (15 Déc 2025)  
+**Réalisé** : Support simultané via même daemon (sim + robot réel) avec routing selon commande  
+**Technique** : Multi-backends dans `app_state["multi_backends"]`, routing via paramètre `backend` dans requêtes API  
+**Bénéfice** : Tests sim pendant utilisation robot réel, flexibilité développement  
 **Priorité** : 🟡 Moyenne  
 **Temps estimé** : 6-8h  
-**Statut** : Infrastructure créée, routing à finaliser
+**Statut** : ✅ **TERMINÉ** - Endpoints API `/api/state/backends/list` et `/api/state/backends/init` créés, tests complets (8 tests)
 
 ---
 

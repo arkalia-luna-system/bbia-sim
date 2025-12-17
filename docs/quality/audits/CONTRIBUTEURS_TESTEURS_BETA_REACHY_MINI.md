@@ -256,13 +256,14 @@ Ce document analyse le **travail technique concret** de chaque contributeur, leu
    - **Temps estimé** : 4-6h
    - **Tests** : 16 tests, coverage 91.43%
 
-2. **Support simultané sim/robot réel** (inspiration @pierre-rouanet)
-   - **État actuel** : BBIA choisit un backend (sim OU robot)
-   - **À faire** : Support simultané via même daemon (sim + robot réel)
-   - **Technique** : Multi-backends avec routing selon commande
-   - **Bénéfice** : Tests sim pendant utilisation robot réel
+2. ✅ **Support simultané sim/robot réel** (inspiration @pierre-rouanet) - **TERMINÉ** (15 Déc 2025)
+   - **État actuel** : ✅ Support simultané via même daemon (sim + robot réel)
+   - **Réalisé** : Multi-backends avec routing selon commande (paramètre `backend` dans requêtes API)
+   - **Technique** : `app_state["multi_backends"]` avec endpoints `/api/state/backends/list` et `/api/state/backends/init`
+   - **Bénéfice** : Tests sim pendant utilisation robot réel, flexibilité développement
    - **Priorité** : 🟡 Moyenne
    - **Temps estimé** : 6-8h
+   - **Tests** : 8 tests, coverage 100%
 
 3. ✅ **Fallback automatique sim → robot** (inspiration @pierre-rouanet) - **TERMINÉ** (15 Déc 2025)
    - **État actuel** : ✅ Mode 'auto' implémenté dans RobotFactory
@@ -464,7 +465,7 @@ Ce document analyse le **travail technique concret** de chaque contributeur, leu
 ### 🟡 Priorité Moyenne (Impact Utilisateur)
 
 1. ✅ **Découverte automatique robots** (4-6h) - **TERMINÉ** (15 Déc 2025)
-2. ⏳ **Support simultané sim/robot réel** (6-8h) - Infrastructure créée
+2. ✅ **Support simultané sim/robot réel** (6-8h) - **TERMINÉ** (15 Déc 2025)
 3. ✅ **Fallback automatique sim → robot** (2-3h) - **TERMINÉ** (15 Déc 2025)
 4. ✅ **Modèle simplifié pour tests** (2-3h) - **FAIT** (8 Déc 2025)
 5. ✅ **Mode simplifié dashboard** (4-6h) - **TERMINÉ** (15 Déc 2025)

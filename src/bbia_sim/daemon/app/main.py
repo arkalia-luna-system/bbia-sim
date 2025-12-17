@@ -18,6 +18,7 @@ from bbia_sim.daemon.config import settings
 from bbia_sim.daemon.middleware import RateLimitMiddleware, SecurityMiddleware
 from bbia_sim.daemon.simulation_service import simulation_service
 from bbia_sim.daemon.ws import telemetry
+from bbia_sim.robot_factory import RobotFactory
 
 from .routers import (
     apps,
@@ -53,6 +54,7 @@ app_state: dict[str, Any] = {
         "battery": 85.5,
         "temperature": 25.5,
     },
+    "multi_backends": {},  # NOUVEAU: Support multi-backends simultanés
 }
 
 
@@ -147,14 +149,26 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
                 app_state["simulator"] = None
                 app_state["is_running"] = False
 
-    # NOUVEAU: Health check avant de marquer "ready"
-    # L'app démarre même si simulation échoue (fallback gracieux)
-    logger.info(
-        "✅ API BBIA-SIM prête (simulation: %s)",
-        "OK" if app_state["is_running"] else "NON DISPONIBLE",
-    )
+            # NOUVEAU: Initialiser multi-backends pour support simultané sim/robot
+            try:
+                multi_backends = RobotFactory.create_multi_backend(backends=["mujoco"])
+                app_state["multi_backends"] = multi_backends
+                logger.info(
+                    "✅ Multi-backends initialisés: %s",
+                    list(multi_backends.keys()),
+                )
+            except Exception as e:
+                logger.warning("⚠️ Échec initialisation multi-backends: %s", e)
+                app_state["multi_backends"] = {}
 
-    yield
+            # NOUVEAU: Health check avant de marquer "ready"
+            # L'app démarre même si simulation échoue (fallback gracieux)
+            logger.info(
+                "✅ API BBIA-SIM prête (simulation: %s)",
+                "OK" if app_state["is_running"] else "NON DISPONIBLE",
+            )
+
+            yield
 
     # Arrêt
     logger.info("🛑 Arrêt de l'API BBIA-SIM")
