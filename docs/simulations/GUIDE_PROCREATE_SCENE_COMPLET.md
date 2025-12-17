@@ -24,7 +24,7 @@
 **Paramètres recommandés** :
 
 - **Taille** : `4096 x 4096 pixels` (qualité maximale)
-  - Alternative : `2048 x 2048 pixels` (qualité très bonne)
+  - Alternative : `2048 x 2048 pixels` (qualité élevée)
 - **Résolution** : `300 DPI` (pour impression si besoin)
 - **Format** : `PNG` (avec transparence si nécessaire)
 - **Fond** : `Transparent` ou `Blanc` selon usage

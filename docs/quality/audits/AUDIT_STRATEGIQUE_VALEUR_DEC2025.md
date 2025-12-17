@@ -98,7 +98,7 @@
 - ❌ **Dépendance externe** : Nécessite API key **PAYANTE**, internet
 - ❌ **Coût utilisateur** : Utilisateurs doivent payer OpenAI (contraire au positionnement "100% gratuit")
 - ❌ **Complexité** : Ajoute de la complexité sans valeur ajoutée
-- ❌ **NON NÉCESSAIRE** : BBIA a déjà Whisper gratuit qui fonctionne très bien
+- ❌ **NON NÉCESSAIRE** : BBIA a déjà Whisper gratuit qui fonctionne correctement
 
 **Impact** : 🔴 **NÉGATIF** - Détruit votre positionnement "gratuit et offline"
 

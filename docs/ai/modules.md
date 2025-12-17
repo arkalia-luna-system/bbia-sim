@@ -252,7 +252,7 @@ def get_tts_backend():
 - ✅ Défaut actuel fonctionne bien (kitten → Pyttsx3TTS → Aurelie Enhanced)
 - ✅ Option avancée : `BBIA_TTS_BACKEND=coqui` pour contrôle pitch/émotion (Coqui TTS)
 
-**Conclusion** : Architecture modulaire déjà très bien conçue ✅
+**Conclusion** : Architecture modulaire bien conçue ✅
 
 ---
 
@@ -466,7 +466,7 @@ hf.enable_llm_chat("tinyllama")  # ✅ Fonctionne (~2GB RAM)
 
 ## 📝 Conclusion
 
-**Ton projet est DÉJÀ très bien** ! ✅
+**Le projet est bien structuré** ✅
 
 - ✅ Modèles pré-entraînés utilisés partout
 - ✅ Architecture modulaire excellente

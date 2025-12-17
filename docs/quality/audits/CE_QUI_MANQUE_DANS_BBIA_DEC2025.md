@@ -44,7 +44,7 @@
 ### 2. Direction of Arrival (DoA) Audio ⚠️
 
 **Officiel** : Localisation source audio directionnelle  
-**BBIA** : ✅ **Whisper STT gratuit** (fonctionne très bien sans DoA)
+**BBIA** : ✅ **Whisper STT gratuit** (fonctionne correctement sans DoA)
 
 **Détails** :
 - **Officiel** : DoA via microphone array (4 microphones)
@@ -54,7 +54,7 @@
 
 **Pourquoi optionnel** :
 - ✅ BBIA fonctionne avec n'importe quel microphone (pas besoin hardware spécifique)
-- ✅ Whisper STT fonctionne très bien sans DoA (reconnaissance vocale excellente)
+- ✅ Whisper STT fonctionne correctement sans DoA (reconnaissance vocale de qualité)
 - ⚠️ DoA nécessite microphone array (4 microphones directionnels - hardware spécifique)
 - ⚠️ DoA est complexe (algorithmes beamforming, traitement multi-canal)
 - ⚠️ DoA n'est utile que si on veut que le robot se tourne vers la source audio
@@ -102,7 +102,7 @@
 
 **Pourquoi manquant (et pourquoi c'est bien)** :
 - ❌ OpenAI Realtime API nécessite API key **PAYANTE**
-- ✅ Whisper STT **GRATUIT** fonctionne très bien et est équivalent
+- ✅ Whisper STT **GRATUIT** fonctionne correctement et est équivalent
 - ✅ Préférence pour solutions **offline et gratuites**
 - ✅ BBIA n'a **PAS BESOIN** de cette fonctionnalité payante
 
