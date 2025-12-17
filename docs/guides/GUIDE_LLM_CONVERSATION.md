@@ -8,7 +8,7 @@
 
 ## 🎯 Introduction
 
-BBIA utilise un **LLM conversationnel** (Phi-2 ou TinyLlama) pour remplacer les règles basiques par une compréhension contextuelle et des réponses adaptées.
+BBIA utilise un **LLM conversationnel** (Phi-2 ou TinyLlama) pour remplacer les règles par une compréhension contextuelle et des réponses adaptées.
 
 ### Fonctionnalités
 

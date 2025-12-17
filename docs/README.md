@@ -4,7 +4,7 @@
 **Version** : v1.4.0
 
 > **Moteur cognitif Python pour robot Reachy Mini**
-> *Simulation fidèle • IA avancée • SDK conforme*
+> *Simulation • IA • SDK conforme*
 
 ---
 
@@ -23,7 +23,7 @@ flowchart TB
 
     DEBUT --> INSTALL[📦 Installation]
     INSTALL --> FIRST[🤖 Premier Robot]
-    FIRST --> GUIDE[➡️ Guide Avancé]
+    FIRST --> GUIDE[➡️ Guide Technique]
 
     AVANCE --> ARCH[🏗️ Architecture]
     ARCH --> API[🔌 API & SDK]

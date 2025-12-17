@@ -1,7 +1,7 @@
 # 🌐 Guide Communauté BBIA-SIM
 
 **Dernière mise à jour : 15 Décembre 2025  
-**Objectif** : Maximiser la visibilité et l'engagement communautaire pour BBIA-SIM
+**Objectif** : Visibilité et engagement communautaire pour BBIA-SIM
 
 ---
 
@@ -9,7 +9,7 @@
 
 ### Objectifs
 
-1. **Visibilité** : Faire connaître BBIA-SIM à la communauté robotique/IA
+1. **Visibilité** : Faire connaître BBIA-SIM à la communauté
 2. **Engagement** : Attirer contributeurs et utilisateurs
 3. **Feedback** : Collecter retours pour améliorer le projet
 4. **Réseau** : Construire une communauté active

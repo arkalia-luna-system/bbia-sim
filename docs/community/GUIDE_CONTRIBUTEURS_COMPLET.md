@@ -12,8 +12,8 @@
 
 - ✅ **RobotAPI Unifié** : Même code sim/robot réel
 - ✅ **Solution 100% Gratuite** : Whisper, SmolVLM2, LLM local
-- ✅ **IA** : 15+ modules, 21 comportements, 12 émotions
-- ✅ **Qualité** : 1,743 tests, 68.86% coverage, 219 fichiers MD
+- ✅ **IA** : 15+ modules, 15 comportements, 12 émotions
+- ✅ **Qualité** : 1,743 tests, 68.86% coverage, documentation complète
 
 **Votre contribution** aide à maintenir et améliorer le projet.
 

@@ -1,4 +1,4 @@
-# 💬 Guide du Chat Intelligent BBIA
+# 💬 Guide du Chat BBIA
 
 <div align="center">
 
@@ -20,7 +20,7 @@
 3. [Personnalités BBIA](#-personnalités-bbia)
 4. [Référence API](#référence-api)
 5. [Cas d'usage](#cas-dusage)
-6. [Configuration Avancée](#configuration-avancée)
+6. [Configuration](#configuration)
 7. [Dépannage](#dépannage)
 8. [Navigation](#-navigation)
 

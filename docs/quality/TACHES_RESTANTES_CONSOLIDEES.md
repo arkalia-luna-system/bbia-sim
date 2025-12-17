@@ -228,7 +228,7 @@
 - Organiser guides par niveau (premiers pas → intermédiaire → expert)
 - Structure `docs/beginner/`, `docs/intermediate/`, `docs/advanced/`
 
-**Impact** : Navigation plus claire, progression naturelle
+**Résultat** : Navigation plus claire, progression naturelle
 
 ---
 
@@ -275,7 +275,7 @@
 - Intégrer modèle STL réel du robot
 - Remplacer placeholder Three.js
 
-**Impact** : Amélioration visuelle uniquement
+**Résultat** : Amélioration visuelle uniquement
 
 ---
 

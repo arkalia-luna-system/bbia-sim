@@ -2,7 +2,7 @@
 
 **Dernière mise à jour : 15 Décembre 2025  
 **Version** : 1.4.0  
-**Objectif** : Documenter les innovations majeures de BBIA-SIM
+**Objectif** : Documenter les fonctionnalités de BBIA-SIM
 
 ---
 
@@ -13,7 +13,7 @@
 1. ✅ **RobotAPI Unifié** : Architecture unifiée
 2. ✅ **Solution 100% Gratuite** : Alternative aux solutions payantes
 3. ✅ **12 Émotions** : Plus d'émotions disponibles
-4. ✅ **IA** : 15+ modules spécialisés
+4. ✅ **IA** : 15+ modules
 5. ✅ **Qualité** : Tests, documentation
 
 ---
@@ -171,7 +171,7 @@ emotions.set_emotion("calm", intensity=0.6)
 
 ### Modules Spécialisés
 
-**BBIA-SIM** propose **15+ modules spécialisés** pour l'intelligence artificielle :
+**BBIA-SIM** propose **15+ modules** pour l'intelligence artificielle :
 
 1. **BBIAEmotions** - 12 émotions robotiques
 2. **BBIAVision** - YOLO + MediaPipe + SmolVLM2

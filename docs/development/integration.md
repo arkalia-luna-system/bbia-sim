@@ -16,7 +16,7 @@
 5. [Intégration robot](#intégration-robot)
 6. [Modes de démonstration](#modes-de-démonstration)
 7. [Exemples d'intégration](#exemples-dintégration)
-8. [Configuration avancée](#configuration-avancée)
+8. [Configuration](#configuration)
 
 ---
 

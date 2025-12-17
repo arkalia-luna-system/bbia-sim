@@ -66,7 +66,7 @@
   - Robot génère réponse avec LLM
   - Réponse vocale
   - Animation conversationnelle
-- **Script** : "BBIA utilise Phi-2 ou TinyLlama pour des conversations intelligentes et contextuelles."
+- **Script** : "BBIA utilise Phi-2 ou TinyLlama pour des conversations contextuelles."
 
 #### 6. Antenna Animation (Animation Antennes)
 - **Durée** : 30s
