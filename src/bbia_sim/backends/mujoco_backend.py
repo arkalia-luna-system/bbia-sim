@@ -12,6 +12,7 @@ from typing import Any
 import mujoco  # type: ignore[import-untyped]
 import mujoco.viewer  # type: ignore[import-untyped]
 
+from bbia_sim.mujoco_model_cache import get_cached_mujoco_model
 from bbia_sim.robot_api import RobotAPI
 
 # Types pour goto_target
@@ -52,7 +53,8 @@ class MuJoCoBackend(RobotAPI):
                 logger.error("Modèle MuJoCo introuvable: %s", self.model_path)
                 return False
 
-            self.model = mujoco.MjModel.from_xml_path(str(self.model_path))
+            # Utiliser cache LRU pour modèles MuJoCo
+            self.model = get_cached_mujoco_model(self.model_path)
             self.data = mujoco.MjData(self.model)
 
             # Construire le mapping joint name → id

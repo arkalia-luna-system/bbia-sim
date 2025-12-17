@@ -321,7 +321,7 @@ Ce document se concentre sur le **travail technique concret** des contributeurs,
 2. Chargement lazy assets STL (3-4h)
 3. Scènes complexes (4-6h)
 4. Timestep adaptatif (3-4h)
-5. Cache modèles agressif (2-3h)
+5. ✅ Cache modèles agressif (2-3h) - **TERMINÉ** (15 Déc)
 6. Batch processing mouvements (4-6h)
 7. Rate limiting granulaire (2-3h)
 8. Documentation OpenAPI détaillée (3-4h)
@@ -389,7 +389,7 @@ Ce document se concentre sur le **travail technique concret** des contributeurs,
 | Chargement lazy STL | @apirrone | 🟢 Basse | 3-4h | ⚠️ À faire |
 | Scènes complexes | @apirrone | 🟢 Basse | 4-6h | ⚠️ À faire |
 | Timestep adaptatif | @apirrone | 🟢 Basse | 3-4h | ⚠️ À faire |
-| Cache modèles agressif | @apirrone | 🟢 Basse | 2-3h | ⚠️ À faire |
+| Cache modèles agressif | @apirrone | 🟢 Basse | 2-3h | ✅ **TERMINÉ** (15 Déc) |
 | Batch processing | @apirrone | 🟢 Basse | 4-6h | ⚠️ À faire |
 | Rate limiting granulaire | @FabienDanieau | 🟢 Basse | 2-3h | ⚠️ À faire |
 | OpenAPI détaillée | @FabienDanieau | 🟢 Basse | 3-4h | ⚠️ À faire |

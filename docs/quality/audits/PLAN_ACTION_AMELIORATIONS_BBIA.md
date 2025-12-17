@@ -1083,25 +1083,28 @@ pytest tests/test_hf_spaces_installation.py -v
 
 ---
 
-#### 5. Cache Modèles Agressif
+#### 5. Cache Modèles Agressif ✅ **TERMINÉ**
 
 **Fichiers concernés** :
-- ⚠️ `src/bbia_sim/robot_factory.py` (cache à ajouter)
-- ⚠️ `src/bbia_sim/sim/simulator.py` (cache modèles MuJoCo)
+- ✅ `src/bbia_sim/mujoco_model_cache.py` (NOUVEAU - cache LRU)
+- ✅ `src/bbia_sim/sim/simulator.py` (modifié - utilise cache)
+- ✅ `src/bbia_sim/backends/mujoco_backend.py` (modifié - utilise cache)
 
-**À faire** :
-- Cache LRU pour modèles MuJoCo fréquemment utilisés
-- Cache assets STL
-- Tests cache
+**Réalisé** :
+- ✅ Cache LRU pour modèles MuJoCo (max 5 modèles)
+- ✅ Éviction automatique du moins récemment utilisé
+- ✅ Statistiques cache + nettoyage
+- ✅ Intégration dans MuJoCoSimulator et MuJoCoBackend
 
-**Tests à créer** :
-- `tests/test_cache_models.py` (nouveau)
-- Tests : ❌ À créer
+**Tests créés** :
+- ✅ `tests/test_cache_models.py` (10 tests, coverage 96.30% mujoco_model_cache.py)
 
 **Validation** :
 ```bash
 pytest tests/test_cache_models.py -v
 ```
+
+**Statut** : ✅ **TERMINÉ** (15 Déc 2025)
 
 ---
 
@@ -1113,7 +1116,7 @@ pytest tests/test_cache_models.py -v
 | **Phase 1** | Tests headless robustes | 2h | 1-2h | **3-4h** | 🔴 ÉLEVÉ |
 | **Phase 2** | Support simultané sim/robot | ✅ 4h | ✅ 2-4h | ✅ **6-8h** | ✅ 🔴 ÉLEVÉ |
 | **Phase 3** | HF Spaces poussé | ✅ 4h | ✅ 2-4h | ✅ **6-8h** | ✅ 🟡 MOYEN |
-| **Phase 3** | Cache modèles agressif | 1h | 1-2h | **2-3h** | 🟡 MOYEN |
+| **Phase 3** | Cache modèles agressif | ✅ 1h | ✅ 1-2h | ✅ **2-3h** | ✅ 🟡 MOYEN |
 | **TOTAL Phase 1-3** | **5 améliorations** | **15h** | **8-16h** | **23-31h** | |
 
 **Autres améliorations** (priorité basse) : ~40-60h restantes
