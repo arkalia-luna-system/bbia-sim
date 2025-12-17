@@ -176,6 +176,7 @@ class BatteryInfo(BaseModel):
 
 @router.get("/full")
 async def get_full_state(
+    backend: Annotated[BackendAdapter, Depends(get_backend_adapter)],
     with_control_mode: bool = True,
     with_head_pose: bool = True,
     with_target_head_pose: bool = False,
@@ -187,7 +188,6 @@ async def get_full_state(
     with_target_antenna_positions: bool = False,
     with_passive_joints: bool = False,
     use_pose_matrix: bool = False,
-    backend: BackendAdapter = Depends(get_backend_adapter),
 ) -> FullState:
     """Récupère l'état complet du robot avec paramètres optionnels (conforme SDK).
 
@@ -453,8 +453,8 @@ async def get_joint_states() -> dict[str, Any]:
 
 @router.get("/present_head_pose")
 async def get_present_head_pose(
+    backend: Annotated[BackendAdapter, Depends(get_backend_adapter)],
     use_pose_matrix: bool = False,
-    backend: BackendAdapter = Depends(get_backend_adapter),
 ) -> dict[str, Any]:
     """Récupère la pose actuelle de la tête (conforme SDK).
 
@@ -671,6 +671,83 @@ async def list_robots() -> dict[str, Any]:
         return {
             "robots": [],
             "count": 0,
+            "error": str(e),
+            "timestamp": datetime.now(UTC).isoformat(),
+        }
+
+
+@router.get("/backends/list")
+async def list_multi_backends() -> dict[str, Any]:
+    """NOUVEAU: Liste les backends multi-backends disponibles.
+
+    Returns:
+        Liste des backends disponibles avec leurs statuts
+    """
+    try:
+        from bbia_sim.daemon.app.main import app_state
+
+        multi_backends = app_state.get("multi_backends", {})
+        backends_info = []
+        for backend_type, backend_instance in multi_backends.items():
+            backends_info.append(
+                {
+                    "type": backend_type,
+                    "available": backend_instance is not None,
+                    "connected": (
+                        backend_instance.is_connected
+                        if backend_instance
+                        and hasattr(backend_instance, "is_connected")
+                        else False
+                    ),
+                }
+            )
+        return {
+            "backends": backends_info,
+            "count": len(backends_info),
+            "timestamp": datetime.now(UTC).isoformat(),
+        }
+    except Exception as e:
+        logger.exception("Erreur lors de la liste des backends: %s", e)
+        return {
+            "backends": [],
+            "count": 0,
+            "error": str(e),
+            "timestamp": datetime.now(UTC).isoformat(),
+        }
+
+
+@router.post("/backends/init")
+async def init_multi_backends(
+    backends: list[str] | None = None,
+) -> dict[str, Any]:
+    """NOUVEAU: Initialise les multi-backends pour support simultané sim/robot.
+
+    Args:
+        backends: Liste des types de backends à initialiser. Si None, initialise tous disponibles.
+
+    Returns:
+        Statut de l'initialisation avec liste des backends créés
+    """
+    try:
+        from bbia_sim.daemon.app.main import app_state
+
+        multi_backends = RobotFactory.create_multi_backend(backends=backends)
+        app_state["multi_backends"] = multi_backends
+
+        created = [bt for bt, be in multi_backends.items() if be is not None]
+        failed = [bt for bt, be in multi_backends.items() if be is None]
+
+        return {
+            "status": "success",
+            "backends_created": created,
+            "backends_failed": failed,
+            "count": len(created),
+            "timestamp": datetime.now(UTC).isoformat(),
+        }
+    except Exception as e:
+        logger.exception("Erreur lors de l'initialisation des multi-backends: %s", e)
+        return {
+            "status": "error",
             "error": str(e),
             "timestamp": datetime.now(UTC).isoformat(),
         }
