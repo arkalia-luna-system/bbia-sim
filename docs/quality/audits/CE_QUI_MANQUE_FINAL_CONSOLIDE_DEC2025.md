@@ -122,8 +122,8 @@ Toutes les fonctionnalités critiques sont implémentées et testées.
 
 **À faire** :
 - Mode simplifié avec contrôles essentiels (on/off, mouvements basiques)
-- Toggle mode simplifié/avancé dans dashboard
-- Masquer fonctionnalités avancées en mode simplifié
+- Toggle mode simplifié/complet dans dashboard
+- Masquer fonctionnalités en mode simplifié
 
 **Fichiers** :
 - `src/bbia_sim/daemon/app/dashboard/templates/base.html` (toggle mode)

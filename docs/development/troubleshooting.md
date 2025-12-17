@@ -9,7 +9,7 @@
 
 > **💡 Ce guide est complémentaire à la [FAQ principale](../getting-started/troubleshooting.md)**  
 > - **FAQ principale** : Questions fréquentes générales (installation, MuJoCo, audio basique)  
-> - **Ce guide** : Problèmes techniques avancés (IA, modules, CI, WebSocket, etc.)
+> - **Ce guide** : Problèmes techniques (IA, modules, CI, WebSocket, etc.)
 
 ---
 

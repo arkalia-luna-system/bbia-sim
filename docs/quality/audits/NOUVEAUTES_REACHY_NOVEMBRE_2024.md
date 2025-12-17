@@ -258,7 +258,7 @@ L'email mentionne un **nouveau tableau de bord** avec les fonctionnalités suiva
 2. ✅ **Vérification état/capteurs** - Endpoints REST + WebSocket complets
 3. ✅ **Gestion applications** - Router complet + 3 apps locales + installation depuis HF Hub
 4. ✅ **Contrôle media** - Microphone, caméra, haut-parleurs via SDK + contrôles visuels dashboard
-5. ✅ **Dashboard** - Dashboard officiel-like + dashboard avancé avec Quick Actions (15 emojis)
+5. ✅ **Dashboard** - Dashboard officiel-like + dashboard avec Quick Actions (15 emojis)
 6. ✅ **Hugging Face Hub** - Infrastructure complète (chargement dynamique, installation, déploiement)
 
 ### 📊 Statut Global : **99% COMPLET** ✅

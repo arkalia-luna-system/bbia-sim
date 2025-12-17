@@ -14,7 +14,7 @@
 - ✅ **Score Global : 9.2/10** ⭐⭐⭐⭐⭐
 - ✅ **Analyse exhaustive** : 10 catégories analysées
 - ✅ **100+ points de vérification** complétés
-- ✅ **Opportunités d'excellence** identifiées (8 domaines)
+- ✅ **Opportunités d'amélioration** identifiées (8 domaines)
 - ✅ **Plan d'action priorisé** créé (4 phases)
 
 **Fichier** : `docs/quality/audits/AUDIT_COMPLET_EXPERT_26NOV2025.md`
@@ -26,7 +26,7 @@
 4. ⏳ Performance (cache LRU réponses LLM) - Optionnel (2-3h)
 5. ⏳ Multi-robots (scalabilité) - Optionnel (8-12h)
 
-**Statut** : ✅ **Projet d'excellence technique, prêt pour production**
+**Statut** : ✅ **Projet technique, prêt pour production**
 
 **Phase 1 Quick Wins - TERMINÉE** ✅ :
 - ✅ Python 3.12 dans CI (matrice lint)
