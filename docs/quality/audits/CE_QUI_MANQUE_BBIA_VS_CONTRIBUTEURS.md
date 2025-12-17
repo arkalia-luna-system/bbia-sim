@@ -295,8 +295,8 @@ Ce document se concentre sur le **travail technique concret** des contributeurs,
 
 **Total temps estimé** : ~50-70h
 
-1. ⏳ Découverte automatique robots (4-6h) - Infrastructure créée
-2. ⏳ Support simultané sim/robot réel (6-8h) - Infrastructure créée
+1. ✅ Découverte automatique robots (4-6h) - **TERMINÉ** (15 Déc)
+2. ✅ Support simultané sim/robot réel (6-8h) - **TERMINÉ** (15 Déc)
 3. Fallback automatique sim → robot (2-3h)
 4. Lifespan context manager robuste (3-4h)
 5. Mode simplifié dashboard (4-6h)
@@ -377,7 +377,7 @@ Ce document se concentre sur le **travail technique concret** des contributeurs,
 | Amélioration | Contributeur | Priorité | Temps | Statut |
 |--------------|--------------|----------|-------|--------|
 | Découverte auto robots | @pierre-rouanet | 🟡 Moyenne | 4-6h | ✅ **TERMINÉ** (15 Déc) |
-| Support simultané sim/robot | @pierre-rouanet | 🟡 Moyenne | 6-8h | ⏳ Infrastructure créée |
+| Support simultané sim/robot | @pierre-rouanet | 🟡 Moyenne | 6-8h | ✅ **TERMINÉ** (15 Déc) |
 | Fallback auto sim→robot | @pierre-rouanet | 🟡 Moyenne | 2-3h | ✅ **TERMINÉ** (15 Déc) |
 | Lifespan robuste | @pierre-rouanet | 🟡 Moyenne | 3-4h | ✅ **TERMINÉ** (15 Déc) |
 | Mode simplifié dashboard | @FabienDanieau | 🟡 Moyenne | 4-6h | ✅ **TERMINÉ** (15 Déc) |
