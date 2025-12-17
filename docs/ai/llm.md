@@ -219,7 +219,7 @@ Avantages LLM :
 
 3. **Mistral 7B Instruct** (optionnel - BBIAHuggingFace)
    - Qualité : élevée
-   - Français : très bon
+   - Français : bon
    - Taille : ~14GB RAM
    - Support MPS : oui
    - Vitesse : ~1-3 secondes/réponse
