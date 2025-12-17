@@ -2,7 +2,7 @@
 
 **Dernière mise à jour : 15 Décembre 2025  
 **Dernière mise à jour :** 8 Décembre 2025  
-**Auteur :** Analyse Expert  
+**Auteur :** Analyse technique  
 **Objectif :** Identifier blocages macOS, solutions voix alternatives, et état intelligence BBIA
 
 ---

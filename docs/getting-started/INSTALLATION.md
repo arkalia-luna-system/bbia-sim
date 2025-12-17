@@ -152,6 +152,6 @@ Pour les problèmes d'installation, consultez :
 
 ---
 
-**Source unique** : Ce fichier est la référence pour toutes les instructions d'installation  
+**Source** : Ce fichier est la référence pour toutes les instructions d'installation  
 **Mise à jour** : Automatique lors des changements de configuration
 

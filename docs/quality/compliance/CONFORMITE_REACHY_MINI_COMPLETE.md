@@ -314,7 +314,7 @@ Le Reachy Mini a **9 joints officiels**:
 - `stewart_5` - Cinquième joint tête (limite: [-1.222, 1.400] rad)
 - `stewart_6` - Sixième joint tête (limite: [-1.400, 0.838] rad)
 
-**⚠️ IMPORTANT (Expert Robotique):** Les joints stewart **ne peuvent pas être contrôlés individuellement** car la plateforme Stewart utilise la **cinématique inverse (IK)**. Chaque joint stewart influence plusieurs degrés de liberté simultanément (roll, pitch, yaw, position X/Y/Z).
+**⚠️ IMPORTANT (Note technique):** Les joints stewart **ne peuvent pas être contrôlés individuellement** car la plateforme Stewart utilise la **cinématique inverse (IK)**. Chaque joint stewart influence plusieurs degrés de liberté simultanément (roll, pitch, yaw, position X/Y/Z).
 
 **Méthodes Correctes pour Contrôler la Tête:**
 
@@ -564,7 +564,7 @@ Votre projet inclut **47 tests de conformité** qui vérifient (mis à jour 8 D�
 
 **Nouvelles fonctionnalités :** Intelligence augmentée dans tous les comportements BBIA
 
-#### ConversationBehavior Intelligent
+#### ConversationBehavior
 
 ✅ **Intelligence Avancée :** Utilise BBIAHuggingFace si disponible pour analyse de sentiment et réponses contextuelles
 ✅ **Fallback Robuste :** Système de réponses enrichies avec 8 catégories et 4+ variantes par catégorie
