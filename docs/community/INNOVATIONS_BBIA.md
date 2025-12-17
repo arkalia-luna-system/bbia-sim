@@ -8,21 +8,21 @@
 
 ## 🎯 Vue d'Ensemble
 
-**BBIA-SIM** apporte plusieurs innovations majeures dans l'écosystème Reachy Mini :
+**BBIA-SIM** apporte plusieurs fonctionnalités dans l'écosystème Reachy Mini :
 
-1. ✅ **RobotAPI Unifié** : Innovation architecturale unique
+1. ✅ **RobotAPI Unifié** : Architecture unifiée
 2. ✅ **Solution 100% Gratuite** : Alternative aux solutions payantes
-3. ✅ **12 Émotions** : Expressivité supérieure
-4. ✅ **IA Avancée** : 15+ modules spécialisés
-5. ✅ **Qualité** : Tests exhaustifs, documentation complète
+3. ✅ **12 Émotions** : Plus d'émotions disponibles
+4. ✅ **IA** : 15+ modules spécialisés
+5. ✅ **Qualité** : Tests, documentation
 
 ---
 
 ## 1. RobotAPI Unifié ⭐⭐⭐⭐⭐
 
-### Innovation Unique
+### Architecture
 
-**RobotAPI Unifié** est une innovation architecturale majeure qui permet d'utiliser le **même code** pour la simulation et le robot réel.
+**RobotAPI Unifié** permet d'utiliser le **même code** pour la simulation et le robot réel.
 
 ### Architecture
 
@@ -123,9 +123,9 @@ response = hf.chat("Bonjour")
 
 ## 3. 12 Émotions vs 6 Officielles ⭐⭐⭐⭐
 
-### Expressivité Supérieure
+### Expressivité
 
-**BBIA-SIM** propose **12 émotions robotiques** vs 6 dans le SDK officiel.
+**BBIA-SIM** propose **12 émotions robotiques** (6 dans le SDK officiel + 6 supplémentaires).
 
 ### Émotions Disponibles
 
@@ -161,13 +161,13 @@ emotions.set_emotion("calm", intensity=0.6)
 
 ### Avantages
 
-- ✅ **Expressivité supérieure** : 2x plus d'émotions
+- ✅ **Plus d'émotions** : 2x plus d'émotions
 - ✅ **Différenciation** : Visible par les utilisateurs
 - ✅ **Innovation** : Extension créative du SDK
 
 ---
 
-## 4. IA Avancée (15+ Modules) ⭐⭐⭐⭐
+## 4. IA (15+ Modules)
 
 ### Modules Spécialisés
 

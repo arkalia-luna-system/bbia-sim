@@ -21,7 +21,7 @@
 - 5 personnalités disponibles
 - Tests complets
 
-#### Comportements Avancés
+#### Comportements
 
 - 15/15 comportements créés et testés
 - Module apprentissage adaptatif opérationnel
@@ -124,8 +124,8 @@
 **État actuel** : ✅ Mode simplifié implémenté avec toggle
 
 **Actions réalisées** :
-- ✅ Mode simplifié avec masquage sections avancées (télémétrie, apps, appstore, move_player)
-- ✅ Toggle mode simplifié/avancé dans dashboard
+- ✅ Mode simplifié avec masquage sections (télémétrie, apps, appstore, move_player)
+- ✅ Toggle mode simplifié/complet dans dashboard
 - ✅ Persistance préférence dans localStorage
 - ✅ Émission événement `simplifiedmodechange` pour autres composants
 
@@ -387,7 +387,7 @@ Les patterns try/except étaient répétés ~383 fois dans le code. La factorisa
 | Catégorie | Statut | Progression |
 |-----------|--------|------------|
 | **Intelligence Conversationnelle** | Terminé | Complété |
-| **Comportements Avancés** | Terminé | 15/15 comportements |
+| **Comportements** | Terminé | 15/15 comportements |
 | **Dashboard Media** | Terminé | Contrôles visuels OK |
 | **Vue 3D Robot** | En cours | Placeholder fonctionnel |
 | **Design Épuré** | Terminé | Fond blanc + Quick Actions |
@@ -426,7 +426,7 @@ Les patterns try/except étaient répétés ~383 fois dans le code. La factorisa
 - **94.5%** des fonctions publiques sont utilisées
 - **81.0%** des méthodes publiques sont utilisées
 - Tous les modules principaux sont utilisés dans les tests/exemples
-- Les comportements avancés sont tous testés et fonctionnels
+- Les comportements sont tous testés et fonctionnels
 - L'API daemon est complètement documentée et testée
 
 ### Points d'Amélioration
@@ -439,7 +439,7 @@ Les patterns try/except étaient répétés ~383 fois dans le code. La factorisa
 **Note** : Un pourcentage de 88.2% est élevé pour un projet de cette envergure. Les capacités non utilisées sont principalement :
 
 - Des utilitaires internes
-- Des fonctionnalités avancées réservées à des cas d'usage spécifiques
+- Des fonctionnalités réservées à des cas d'usage spécifiques
 - Des capacités exposées via l'API mais testées via des tests d'intégration
 
 ---

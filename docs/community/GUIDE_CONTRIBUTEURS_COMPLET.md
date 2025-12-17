@@ -8,14 +8,14 @@
 
 ## 🎯 Pourquoi Contribuer à BBIA-SIM ?
 
-**BBIA-SIM** est un projet open source innovant qui apporte :
+**BBIA-SIM** est un projet open source qui apporte :
 
-- ✅ **RobotAPI Unifié** : Innovation unique (même code sim/robot réel)
-- ✅ **Solution 100% Gratuite** : Whisper, SmolVLM2, LLM local (vs solutions payantes)
-- ✅ **IA Avancée** : 15+ modules, 21 comportements, 12 émotions
-- ✅ **Qualité Exceptionnelle** : 1,743 tests, 68.86% coverage, 219 fichiers MD
+- ✅ **RobotAPI Unifié** : Même code sim/robot réel
+- ✅ **Solution 100% Gratuite** : Whisper, SmolVLM2, LLM local
+- ✅ **IA** : 15+ modules, 21 comportements, 12 émotions
+- ✅ **Qualité** : 1,743 tests, 68.86% coverage, 219 fichiers MD
 
-**Votre contribution** aide à maintenir et améliorer cette excellence !
+**Votre contribution** aide à maintenir et améliorer le projet.
 
 ---
 

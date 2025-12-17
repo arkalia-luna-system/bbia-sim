@@ -239,3 +239,31 @@ class TelemetryMessage(BaseModel):
         if len(v) > 50:
             raise ValueError("Maximum 50 clés autorisées dans data")
         return v
+
+
+class Matrix4x4Pose(BaseModel):
+    """Pose représentée par une matrice 4x4 (16 éléments)."""
+
+    m: tuple[float, ...] = Field(..., min_length=16, max_length=16, description="Matrice 4x4 aplatie (16 éléments)")
+
+    @classmethod
+    def from_pose_array(cls, pose_array: np.ndarray) -> "Matrix4x4Pose":
+        """Crée une Matrix4x4Pose depuis un numpy array 4x4.
+
+        Args:
+            pose_array: Matrice numpy 4x4
+
+        Returns:
+            Instance Matrix4x4Pose
+        """
+        if pose_array.shape != (4, 4):
+            raise ValueError(f"pose_array doit être 4x4, obtenu {pose_array.shape}")
+        return cls(m=tuple(pose_array.flatten().tolist()))
+
+    def to_pose_array(self) -> np.ndarray:
+        """Convertit en tableau numpy 4x4.
+
+        Returns:
+            Matrice numpy 4x4
+        """
+        return np.array(self.m, dtype=np.float64).reshape(4, 4)  # type: ignore[no-any-return]

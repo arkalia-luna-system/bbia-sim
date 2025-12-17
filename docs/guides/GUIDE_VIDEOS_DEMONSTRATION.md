@@ -87,7 +87,7 @@
 
 ---
 
-### Comportements Avancés (14)
+### Comportements (14)
 
 #### 8. Follow Face (Suivi Visage)
 - **Durée** : 40s

@@ -120,7 +120,7 @@ self.emotional_sync.sync_speak_with_emotion(
 - ✅ **BBIA offre plus de flexibilité** : REST pour intégration standard, WebSocket pour temps réel
 - ⚠️ **MCP ajouterait de la complexité** sans bénéfice réel
 
-**Recommandation** : ✅ **IGNORER** (BBIA a déjà une solution supérieure)
+**Recommandation** : ✅ **IGNORER** (BBIA a déjà une solution équivalente)
 
 **Ce qui manque** :
 - ❌ Serveur MCP pour contrôle via FastMCP
@@ -278,11 +278,11 @@ self.emotional_sync.sync_speak_with_emotion(
 
 ---
 
-## ✅ CE QUE BBIA A DÉJÀ (Forces - Meilleur que l'officiel)
+## ✅ CE QUE BBIA A DÉJÀ
 
-### Fonctionnalités Supérieures
+### Fonctionnalités
 
-- ✅ **12 émotions** vs 6 officielles (supérieur)
+- ✅ **12 émotions** vs 6 officielles
 - ✅ **Synchronisation fine** mouvements émotionnels ↔ parole (nouveau module `bbia_emotional_sync.py`)
 - ✅ **Conversation** avec reconnaissance/synthèse vocale
 - ✅ **RobotAPI unifié** (sim/robot - officiel n'a pas ça)

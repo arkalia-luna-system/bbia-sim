@@ -1,10 +1,10 @@
-# 🚀 Guide Avancé - BBIA-SIM
+# 🚀 Guide Technique - BBIA-SIM
 
 <div align="center">
 
 **Dernière mise à jour** : 15 Décembre 2025
 [![Version](https://img.shields.io/badge/version-1.4.0-blue.svg)](https://github.com/arkalia-luna-system/bbia-sim)
-[![Niveau](https://img.shields.io/badge/niveau-Avancé-orange.svg)](docs/guides/)
+[![Niveau](https://img.shields.io/badge/niveau-Technique-orange.svg)](docs/guides/)
 [![Temps](https://img.shields.io/badge/temps-15%20min-purple.svg)](#architecture-détaillée)
 
 </div>
@@ -13,7 +13,7 @@
 
 > **Compatibilité Python** : Python 3.11+ requis. Voir [`docs/getting-started/INSTALLATION.md`](../getting-started/INSTALLATION.md) pour les détails d'installation.
 
-## 🎯 Pour Développeurs Avancés
+## 🎯 Pour Développeurs
 
 <div align="center">
 
@@ -21,9 +21,9 @@
 **Public cible :** développeurs expérimentés souhaitant exploiter les fonctionnalités de BBIA
 
 [![🔧 Backend](https://img.shields.io/badge/🔧-Backend%20Unifié-blue)](#backend-unifié)
-[![🧠 Modules](https://img.shields.io/badge/🧠-Modules%20BBIA-green)](#modules-bbia-avancés)
-[![🚀 API](https://img.shields.io/badge/🚀-API%20Avancée-purple)](#api-avancée)
-[![🧪 Tests](https://img.shields.io/badge/🧪-Tests%20Avancés-orange)](#tests-avancés)
+[![🧠 Modules](https://img.shields.io/badge/🧠-Modules%20BBIA-green)](#modules-bbia)
+[![🚀 API](https://img.shields.io/badge/🚀-API-purple)](#api)
+[![🧪 Tests](https://img.shields.io/badge/🧪-Tests-orange)](#tests)
 
 </div>
 
@@ -31,24 +31,24 @@
 
 ## 📋 Table des Matières
 
-- [🚀 Guide Avancé - BBIA-SIM](#-guide-avancé---bbia-sim)
-  - [🎯 Pour Développeurs Avancés](#-pour-développeurs-avancés)
+- [🚀 Guide Technique - BBIA-SIM](#-guide-technique---bbia-sim)
+  - [🎯 Pour Développeurs](#-pour-développeurs)
   - [📋 Table des Matières](#-table-des-matières)
   - [🏗️ Architecture Détaillée](#️-architecture-détaillée)
     - [🔧 Backend Unifié](#-backend-unifié)
     - [Backend unifié](#backend-unifié)
       - [Flux Backend Unifié](#flux-backend-unifié)
-    - [🧠 Modules BBIA Avancés](#-modules-bbia-avancés)
+    - [🧠 Modules BBIA](#-modules-bbia)
       - [🏛️ Architecture Modules BBIA](#️-architecture-modules-bbia)
-    - [🤖 12 modules intelligents pour robot avancé](#-12-modules-intelligents-pour-robot-avancé)
+    - [🤖 12 modules pour robot](#-12-modules-pour-robot)
       - [1. Module Émotions](#1-module-émotions)
       - [2. Module Comportements](#2-module-comportements)
       - [3. Module Vision](#3-module-vision)
-    - [Tests avancés](#tests-avancés)
+    - [Tests](#tests)
     - [Optimisations de performance](#optimisations-de-performance)
   - [🔄 Migration Simulation → Robot Réel](#-migration-simulation--robot-réel)
     - [Migration vers robot réel](#migration-vers-robot-réel)
-  - [🚀 API Avancée](#-api-avancée)
+  - [🚀 API](#-api)
     - [✅ Conformité SDK Officiel](#-conformité-sdk-officiel)
     - [🎯 100% compatible avec le SDK Pollen Robotics](#-100-compatible-avec-le-sdk-pollen-robotics)
   - [🎯 Navigation](#-navigation)
@@ -128,13 +128,13 @@ flowchart TB
 - Debugging facilité
 - Migration vers robot réel
 
-### 🧠 Modules BBIA Avancés
+### 🧠 Modules BBIA
 
 #### 🏛️ Architecture Modules BBIA
 
 <div align="center">
 
-### 🤖 12 modules intelligents pour robot avancé
+### 🤖 12 modules pour robot
 
 [![🧠 IA](https://img.shields.io/badge/🧠-Intelligence%20Artificielle-purple)](#1-module-émotions)
 [![👁️ Vision](https://img.shields.io/badge/👁️-Vision%20Avancée-blue)](#3-module-vision)
@@ -228,7 +228,7 @@ faces = vision.detect_faces()
 
 ```
 
-### Tests avancés
+### Tests
 
 ```bash
 # Lancer tous les tests
@@ -270,7 +270,7 @@ Voir : [MIGRATION_GUIDE.md](../development/migration.md)
 
 ---
 
-## 🚀 API Avancée
+## 🚀 API
 
 ### ✅ Conformité SDK Officiel
 

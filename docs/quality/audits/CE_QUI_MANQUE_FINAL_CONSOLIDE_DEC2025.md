@@ -214,7 +214,7 @@ Toutes les fonctionnalités critiques sont implémentées et testées.
 - ✅ MCP est juste un protocole alternatif, pas nécessairement meilleur
 - ⚠️ MCP ajouterait de la complexité sans bénéfice réel
 
-**Recommandation** : ✅ **IGNORER** (BBIA a déjà une solution supérieure)
+**Recommandation** : ✅ **IGNORER** (BBIA a déjà une solution équivalente)
 
 ---
 
