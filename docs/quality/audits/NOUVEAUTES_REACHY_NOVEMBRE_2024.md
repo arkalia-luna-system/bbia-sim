@@ -319,7 +319,7 @@ D'après les retours de la communauté (125 unités bêta) :
 
 #### Applications Conversationnelles
 - ✅ **BBIA a :** `bbia_chat.py` avec LLM (Phi-2, TinyLlama) + intégration Hugging Face
-- ✅ **BBIA a :** Chat interactif dans dashboard avancé
+- ✅ **BBIA a :** Chat interactif dans dashboard
 - ⚠️ **BBIA manque :** OpenAI Realtime API (optionnel, BBIA utilise Whisper offline)
 
 #### Applications Vision
@@ -328,7 +328,7 @@ D'après les retours de la communauté (125 unités bêta) :
 - ✅ **BBIA a :** Intégration caméra SDK officiel
 
 #### Applications Mouvements
-- ✅ **BBIA a :** 15 comportements avancés (FollowFace, Dance, EmotionShow, etc.)
+- ✅ **BBIA a :** 15 comportements (FollowFace, Dance, EmotionShow, etc.)
 - ✅ **BBIA a :** Support mouvements enregistrés (recorded moves)
 - ✅ **BBIA a :** Intégration danses SDK officiel
 

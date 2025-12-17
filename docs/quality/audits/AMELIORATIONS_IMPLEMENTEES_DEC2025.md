@@ -112,7 +112,7 @@
 
 **Fonctionnalités ajoutées** :
 - Section toggle mode simplifié dans dashboard (`sections/simplified_mode.html`)
-- Masquage automatique sections avancées (télémétrie, apps, appstore, move_player)
+- Masquage automatique sections (télémétrie, apps, appstore, move_player)
 - Persistance préférence dans localStorage
 - Émission événement `simplifiedmodechange` pour autres composants
 
