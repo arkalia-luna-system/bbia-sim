@@ -15,7 +15,8 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 from bbia_sim.daemon.config import settings
-from bbia_sim.daemon.middleware import RateLimitMiddleware, SecurityMiddleware
+from bbia_sim.daemon.granular_rate_limit import GranularRateLimitMiddleware
+from bbia_sim.daemon.middleware import SecurityMiddleware
 from bbia_sim.daemon.simulation_service import simulation_service
 from bbia_sim.daemon.ws import telemetry
 from bbia_sim.robot_factory import RobotFactory
@@ -317,11 +318,12 @@ app.add_middleware(
 # Middleware de sécurité
 app.add_middleware(SecurityMiddleware)
 
-# Rate limiting (en production uniquement)
+# Rate limiting granulaire (en production uniquement)
 if settings.is_production():
     app.add_middleware(
-        RateLimitMiddleware,
-        requests_per_minute=settings.rate_limit_requests,
+        GranularRateLimitMiddleware,
+        default_requests_per_minute=settings.rate_limit_requests,
+        default_window_seconds=settings.rate_limit_window,
     )
 
 # Inclusion des routers (conforme SDK officiel: router parent /api avec sous-routers)

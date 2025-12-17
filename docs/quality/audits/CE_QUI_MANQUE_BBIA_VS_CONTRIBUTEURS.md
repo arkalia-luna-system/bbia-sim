@@ -391,7 +391,7 @@ Ce document se concentre sur le **travail technique concret** des contributeurs,
 | Timestep adaptatif | @apirrone | 🟢 Basse | 3-4h | ⚠️ À faire |
 | Cache modèles agressif | @apirrone | 🟢 Basse | 2-3h | ✅ **TERMINÉ** (15 Déc) |
 | Batch processing | @apirrone | 🟢 Basse | 4-6h | ⚠️ À faire |
-| Rate limiting granulaire | @FabienDanieau | 🟢 Basse | 2-3h | ⚠️ À faire |
+| Rate limiting granulaire | @FabienDanieau | 🟢 Basse | 2-3h | ✅ **TERMINÉ** (15 Déc) |
 | OpenAPI détaillée | @FabienDanieau | 🟢 Basse | 3-4h | ⚠️ À faire |
 | Sharding tests | @RemiFabre | 🟢 Basse | 2-3h | ⚠️ À faire |
 | MyPy strict mode | @RemiFabre | 🟢 Basse | 8-12h | ⚠️ À faire |

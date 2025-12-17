@@ -931,7 +931,7 @@ git push origin develop
 
 #### 🟢 PRIORITÉ BASSE - Améliorations Futures (12 améliorations)
 
-11. **Rate limiting granulaire** (2-3h) - ⭐⭐ Impact
+11. ✅ **Rate limiting granulaire** (2-3h) - ⭐⭐ Impact - **TERMINÉ** (15 Déc)
 12. **OpenAPI détaillée** (3-4h) - ⭐⭐ Impact
 13. **Sharding tests** (2-3h) - ⭐ Impact Performance
 14. **Pre-commit hooks complets** (2-3h) - ⭐ Impact Qualité
