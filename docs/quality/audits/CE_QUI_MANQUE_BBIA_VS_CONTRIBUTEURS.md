@@ -163,13 +163,14 @@ Ce document se concentre sur le **travail technique concret** des contributeurs,
 
 ---
 
-#### 14. Rate limiting plus granulaire
-**État actuel** : Rate limiting global  
-**À faire** : Rate limiting par endpoint (motion, state, media, etc.)  
-**Technique** : Middleware FastAPI avec limites par route  
-**Bénéfice** : Protection plus fine, meilleure UX  
+#### 14. Rate limiting plus granulaire ✅ **TERMINÉ**
+**État actuel** : ✅ Rate limiting granulaire par endpoint  
+**Réalisé** : GranularRateLimitMiddleware avec limites spécifiques par endpoint  
+**Technique** : Middleware FastAPI avec limites par route (30-200 req/min selon endpoint)  
+**Bénéfice** : Protection plus fine, meilleure UX, headers X-RateLimit-*  
 **Priorité** : 🟢 Basse  
-**Temps estimé** : 2-3h
+**Temps estimé** : 2-3h  
+**Statut** : ✅ **TERMINÉ** (15 Déc 2025) - Tests complets (9 tests, coverage 96.55%)
 
 ---
 
