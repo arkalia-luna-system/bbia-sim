@@ -3,6 +3,7 @@
 import asyncio
 import logging
 import time
+from collections import deque
 from typing import Any
 from uuid import uuid4
 
@@ -16,9 +17,42 @@ logger = logging.getLogger(__name__)
 _hf_app_installer = HFAppInstaller()
 
 # Jobs d'installation en cours
+# OPTIMISATION RAM: Limiter nombre de jobs en mémoire (max 50 jobs)
 _installation_jobs: dict[str, dict[str, Any]] = {}
+_MAX_JOBS_IN_MEMORY = 50
+_MAX_JOB_LOGS = 500  # Maximum 500 logs par job
 
 router = APIRouter(prefix="/apps")
+
+
+def _cleanup_old_jobs() -> None:
+    """Nettoie les jobs terminés pour libérer la RAM.
+
+    Supprime les jobs terminés (completed, failed, already_installed)
+    si le nombre de jobs dépasse la limite.
+    """
+    global _installation_jobs
+
+    # Compter jobs terminés
+    finished_jobs = [
+        job_id
+        for job_id, job in _installation_jobs.items()
+        if job.get("status") in ("completed", "failed", "already_installed")
+    ]
+
+    # Si on dépasse la limite, supprimer les jobs terminés les plus anciens
+    if len(_installation_jobs) > _MAX_JOBS_IN_MEMORY:
+        # Trier par timestamp (si disponible) ou supprimer les plus anciens
+        jobs_to_remove = finished_jobs[: len(_installation_jobs) - _MAX_JOBS_IN_MEMORY]
+        for job_id in jobs_to_remove:
+            del _installation_jobs[job_id]
+            logger.debug("🗑️ Job terminé supprimé pour libérer RAM: %s", job_id)
+
+        logger.info(
+            "🧹 Nettoyage jobs: %d jobs supprimés (reste: %d)",
+            len(jobs_to_remove),
+            len(_installation_jobs),
+        )
 
 
 class AppInfo:
@@ -188,10 +222,11 @@ async def list_all_available_apps() -> list[dict[str, Any]]:
         from huggingface_hub import HfApi
 
         api = HfApi()
-        # Rechercher spaces avec préfixe "reachy-mini"
+        # OPTIMISATION RAM: Limiter le nombre de spaces récupérés
+        # (limite déjà à 20, mais on peut réduire si nécessaire)
         hf_spaces = api.list_spaces(
             search="reachy-mini",
-            limit=20,
+            limit=20,  # Maximum 20 spaces pour éviter surcharge mémoire
         )
 
         # Filtrer et ajouter les spaces trouvés (éviter doublons)
@@ -295,6 +330,10 @@ async def install_app(app_info: dict[str, Any]) -> dict[str, str]:
     hf_space_id = app_info.get("hf_space") or app_info.get("name")
     source_kind = app_info.get("source_kind", "hf_space")
 
+    # Normaliser "huggingface" vers "hf_space" pour compatibilité
+    if source_kind == "huggingface":
+        source_kind = "hf_space"
+
     logger.info("Installation de l'application: %s (source: %s)", app_name, source_kind)
 
     # Générer un job ID unique
@@ -386,11 +425,17 @@ async def _run_installation_job(
 
         logger.info("✅ Job %s terminé avec succès", job_id)
 
+        # OPTIMISATION RAM: Nettoyer les vieux jobs après chaque job terminé
+        _cleanup_old_jobs()
+
     except Exception as e:
         logger.exception("❌ Erreur job %s: %s", job_id, e)
         job["status"] = "failed"
         job["logs"].append(f"❌ Erreur: {str(e)}")
         job["error"] = str(e)
+
+        # OPTIMISATION RAM: Nettoyer les vieux jobs même en cas d'erreur
+        _cleanup_old_jobs()
 
 
 @router.post("/remove/{app_name}")
@@ -448,10 +493,15 @@ async def job_status(job_id: str) -> dict[str, Any]:
     if not job:
         raise HTTPException(status_code=404, detail=f"Job {job_id} non trouvé")
 
+    # OPTIMISATION RAM: Convertir deque en liste pour la sérialisation JSON
+    logs = job.get("logs", [])
+    if isinstance(logs, deque):
+        logs = list(logs)
+    
     return {
         "job_id": job_id,
         "status": job.get("status", "unknown"),
-        "logs": job.get("logs", []),
+        "logs": logs,
         "progress": job.get("progress", 0),
         "app_name": job.get("app_name"),
         "error": job.get("error"),
@@ -487,7 +537,11 @@ async def ws_apps_manager(websocket: WebSocket, job_id: str) -> None:
                 break
 
             # Envoyer nouveaux logs
+            # OPTIMISATION RAM: Convertir deque en liste si nécessaire
             current_logs = job.get("logs", [])
+            if isinstance(current_logs, deque):
+                current_logs = list(current_logs)
+            
             if len(current_logs) > last_log_count:
                 for log in current_logs[last_log_count:]:
                     await websocket.send_json(
