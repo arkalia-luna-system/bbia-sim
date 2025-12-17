@@ -31,6 +31,7 @@ class TestMovementBatchProcessor:
     @pytest.mark.asyncio
     async def test_add_movement(self, processor):
         """Test que les mouvements peuvent être ajoutés au batch."""
+
         async def dummy_movement():
             await asyncio.sleep(0.01)
 
@@ -131,6 +132,7 @@ class TestMovementBatchProcessor:
     @pytest.mark.asyncio
     async def test_get_queue_size(self, processor):
         """Test que get_queue_size retourne la taille correcte."""
+
         async def dummy_movement():
             await asyncio.sleep(0.01)
 
@@ -195,4 +197,3 @@ class TestMovementBatchProcessor:
 
 if __name__ == "__main__":
     pytest.main([__file__, "-v", "-s"])
-

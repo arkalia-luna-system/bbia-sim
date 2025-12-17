@@ -468,7 +468,9 @@ async def _run_uninstallation_job(
 
         # Retirer de la liste
         _bbia_apps_manager["installed_apps"] = [
-            app for app in _bbia_apps_manager["installed_apps"] if app["name"] != app_name
+            app
+            for app in _bbia_apps_manager["installed_apps"]
+            if app["name"] != app_name
         ]
 
         job["progress"] = 75

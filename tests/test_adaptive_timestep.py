@@ -92,9 +92,7 @@ class TestAdaptiveTimestep:
         assert MIN_TIMESTEP <= timestep_complex <= MAX_TIMESTEP
         assert timestep_simple < timestep_complex  # Simple < Complexe
 
-        print(
-            f"✅ Timestep range: {timestep_simple:.4f}s - {timestep_complex:.4f}s"
-        )
+        print(f"✅ Timestep range: {timestep_simple:.4f}s - {timestep_complex:.4f}s")
 
     def test_get_timestep_info(self, simple_model):
         """Test que get_timestep_info retourne les bonnes informations."""
@@ -173,4 +171,3 @@ class TestAdaptiveTimestep:
 
 if __name__ == "__main__":
     pytest.main([__file__, "-v", "-s"])
-

@@ -136,16 +136,24 @@ class Pose(BaseModel):
     x: float = Field(..., ge=-1.0, le=1.0, description="Position X")
     y: float = Field(..., ge=-1.0, le=1.0, description="Position Y")
     z: float = Field(..., ge=0.0, le=2.0, description="Position Z")
-    roll: float = Field(default=0.0, ge=-math.pi, le=math.pi, description="Rotation roll")
-    pitch: float = Field(default=0.0, ge=-math.pi, le=math.pi, description="Rotation pitch")
+    roll: float = Field(
+        default=0.0, ge=-math.pi, le=math.pi, description="Rotation roll"
+    )
+    pitch: float = Field(
+        default=0.0, ge=-math.pi, le=math.pi, description="Rotation pitch"
+    )
     yaw: float = Field(default=0.0, ge=-math.pi, le=math.pi, description="Rotation yaw")
 
 
 class JointPosition(BaseModel):
     """Position d'une articulation."""
 
-    joint_name: str = Field(..., min_length=1, max_length=50, description="Nom de l'articulation")
-    position: float = Field(..., ge=-math.pi, le=math.pi, description="Position en radians")
+    joint_name: str = Field(
+        ..., min_length=1, max_length=50, description="Nom de l'articulation"
+    )
+    position: float = Field(
+        ..., ge=-math.pi, le=math.pi, description="Position en radians"
+    )
 
     @field_validator("joint_name")
     @classmethod
@@ -167,7 +175,10 @@ class JointPosition(BaseModel):
         ]
         if v not in valid_joints:
             # Pour les tests, on accepte aussi les joints qui commencent par "yaw_", "head_", etc.
-            if not any(v.startswith(prefix) for prefix in ["yaw_", "head_", "stewart_", "left_", "right_", "neck_"]):
+            if not any(
+                v.startswith(prefix)
+                for prefix in ["yaw_", "head_", "stewart_", "left_", "right_", "neck_"]
+            ):
                 raise ValueError(f"Joint '{v}' non autorisé")
         return v
 
@@ -182,8 +193,12 @@ class HeadControl(BaseModel):
 class MotionCommand(BaseModel):
     """Commande de mouvement personnalisée."""
 
-    command: str = Field(..., min_length=1, max_length=100, description="Commande à exécuter")
-    parameters: dict[str, Any] = Field(default_factory=dict, description="Paramètres de la commande")
+    command: str = Field(
+        ..., min_length=1, max_length=100, description="Commande à exécuter"
+    )
+    parameters: dict[str, Any] = Field(
+        default_factory=dict, description="Paramètres de la commande"
+    )
 
     @field_validator("parameters")
     @classmethod
@@ -244,7 +259,12 @@ class TelemetryMessage(BaseModel):
 class Matrix4x4Pose(BaseModel):
     """Pose représentée par une matrice 4x4 (16 éléments)."""
 
-    m: tuple[float, ...] = Field(..., min_length=16, max_length=16, description="Matrice 4x4 aplatie (16 éléments)")
+    m: tuple[float, ...] = Field(
+        ...,
+        min_length=16,
+        max_length=16,
+        description="Matrice 4x4 aplatie (16 éléments)",
+    )
 
     @classmethod
     def from_pose_array(cls, pose_array: np.ndarray) -> "Matrix4x4Pose":
