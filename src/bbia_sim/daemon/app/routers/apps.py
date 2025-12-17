@@ -497,7 +497,7 @@ async def job_status(job_id: str) -> dict[str, Any]:
     logs = job.get("logs", [])
     if isinstance(logs, deque):
         logs = list(logs)
-    
+
     return {
         "job_id": job_id,
         "status": job.get("status", "unknown"),
@@ -541,7 +541,7 @@ async def ws_apps_manager(websocket: WebSocket, job_id: str) -> None:
             current_logs = job.get("logs", [])
             if isinstance(current_logs, deque):
                 current_logs = list(current_logs)
-            
+
             if len(current_logs) > last_log_count:
                 for log in current_logs[last_log_count:]:
                     await websocket.send_json(
