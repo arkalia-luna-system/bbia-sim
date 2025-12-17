@@ -207,7 +207,7 @@ python -m bbia_sim.bbia_voice_advanced
    - Support pitch : Oui
 
 2. **`tts_models/multilingual/multi-dataset/your_tts`**
-   - Qualité : Très bonne
+   - Qualité : Élevée
    - Multi-langues : Oui
    - Support clonage : Oui (3 secondes audio)
    - Support émotion : Oui

@@ -316,14 +316,14 @@
 #### 2. Direction of Arrival (DoA) ⚠️
 
 **Officiel** : Localisation source audio directionnelle  
-**BBIA** : ✅ **Whisper STT gratuit** (fonctionne très bien sans DoA)
+**BBIA** : ✅ **Whisper STT gratuit** (fonctionne correctement sans DoA)
 
 **Impact** : 🟢 **FAIBLE** (nécessite hardware spécifique - microphone array)  
 **Priorité** : 🟢 Basse (nécessite hardware spécifique)
 
 **Pourquoi optionnel** :
 - ✅ BBIA fonctionne avec n'importe quel microphone (pas besoin hardware spécifique)
-- ✅ Whisper STT fonctionne très bien sans DoA
+- ✅ Whisper STT fonctionne correctement sans DoA
 - ⚠️ DoA nécessite microphone array (4 microphones directionnels)
 
 **Recommandation** : ✅ **IGNORER** (sauf si microphone array disponible - hardware spécifique requis)

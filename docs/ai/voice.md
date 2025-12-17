@@ -138,7 +138,7 @@ pip install TTS[all]
 **Avantages :**
 
 - ✅ Très léger (modèles ~10-20MB)
-- ✅ Très rapide (temps réel garanti)
+- ✅ Rapide (temps réel garanti)
 - ✅ Contrôle pitch via SSML
 - ✅ Installation : `pip install piper-tts`
 
@@ -441,7 +441,7 @@ class BBIAHuggingFace:
 
 #### C. API OpenAI (GPT-4o-mini) (Simple mais payant)
 
-- ✅ Très facile à intégrer
+- ✅ Facile à intégrer
 - ✅ Qualité maximale
 - ❌ Coût (~$0.15/M tokens)
 - ❌ Dépendance externe
