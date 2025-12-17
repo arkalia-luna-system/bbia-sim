@@ -208,7 +208,7 @@ docs/
 1. `scripts/verify_docs_complete.py`
    - Script optimisé et testé
    - Modifications nécessitent tests approfondis
-   - Mode intelligent avec détection contextuelle
+   - Mode avec détection contextuelle
 
 2. `scripts/bbia_doctor.py`
    - Diagnostic environnement critique

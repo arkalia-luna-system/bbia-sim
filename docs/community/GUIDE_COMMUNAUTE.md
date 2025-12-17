@@ -93,7 +93,7 @@
    - Simulation 3D MuJoCo
    - Dashboard web
    - Comportements en action
-   - Chat intelligent LLM
+   - Chat LLM
    - Détection objets temps réel
 
 3. **Architecture Technique** (2-3 min)
@@ -118,7 +118,7 @@
 🤖 BBIA-SIM: Cognitive Robot Engine for Reachy Mini
 
 ✅ 12 robotic emotions (6 official + 6 extended)
-✅ 21 intelligent behaviors
+✅ 21 comportements
 ✅ Advanced AI: YOLO, Whisper, Transformers
 ✅ 100% SDK compliant with Pollen Robotics
 ✅ 1,743 automated tests, 68.86% coverage
@@ -167,7 +167,7 @@ I've been working on BBIA-SIM, a cognitive engine for the Reachy Mini robot.
 
 Key features:
 - 12 robotic emotions (6 official SDK + 6 extended)
-- 21 intelligent behaviors
+- 21 comportements
 - Advanced AI: YOLO (object detection), Whisper (speech), Transformers (LLM)
 - 100% compliant with Pollen Robotics official SDK
 - Unified backend: same code for simulation and real hardware

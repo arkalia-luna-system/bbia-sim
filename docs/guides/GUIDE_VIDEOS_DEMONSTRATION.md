@@ -178,7 +178,7 @@
   - Alarme programmée
   - Réveil avec animation
   - Message vocal
-- **Script** : "BBIA peut servir de réveil intelligent avec animations."
+- **Script** : "BBIA peut servir de réveil avec animations."
 
 #### 19. Weather Report (Météo)
 - **Durée** : 45s

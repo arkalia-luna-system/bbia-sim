@@ -185,7 +185,7 @@ logging.info(bbia.chat("Je suis stressé")) # 😌 Respirez, tout va bien...
 
 ### `chat(user_message: str, use_context: bool = True) -> str`
 
-**Description :** Chat intelligent avec BBIA
+**Description :** Chat avec BBIA
 
 **Paramètres :**
 - `user_message` : Message utilisateur

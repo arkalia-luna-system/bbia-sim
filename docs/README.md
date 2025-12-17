@@ -78,7 +78,7 @@ flowchart TB
 ### Par Sujet
 
 - 🤖 **[Reachy Mini Wireless](guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md)** — Guide complet du robot physique
-- 💬 **[Chat BBIA](guides/GUIDE_CHAT_BBIA.md)** — Système de chat intelligent
+- 💬 **[Chat BBIA](guides/GUIDE_CHAT_BBIA.md)** — Système de chat
 - 🧠 **[NLP & SmolVLM2](guides/GUIDE_NLP_SMOLVLM.md)** — Intelligence artificielle
 
 ---

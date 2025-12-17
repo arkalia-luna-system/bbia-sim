@@ -85,7 +85,7 @@ git checkout -b feature/nom-de-votre-contribution
 3. **Tests** : Améliorer la couverture de tests
 4. **Performance** : Optimiser les hot-paths
 
-### 🔴 Avancées (Niveau expert)
+### 🔴 Avancées (Niveau technique)
 
 1. **Architecture** : Améliorer la structure modulaire
 2. **Robot** : Améliorer l'intégration Reachy Mini

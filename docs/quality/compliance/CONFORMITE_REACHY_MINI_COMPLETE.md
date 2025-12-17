@@ -385,7 +385,7 @@ Le SDK officiel supporte **3 comportements**:
 - **Validation:** Clamping multi-niveaux (hardware puis sécurité) via `ReachyMapping.validate_position()`
 - **Vitesse:** Contrôlée via `goto_target()` avec `duration` adaptative (0.5-1.2s)
 - **Interpolation:** Méthode `minjerk` recommandée pour fluidité optimale
-- **Mapping Centralisé:** Module `mapping_reachy.py` comme source de vérité unique pour noms/limites joints (sim ↔ réel)
+- **Mapping Centralisé:** Module `mapping_reachy.py` comme source de référence pour noms/limites joints (sim ↔ réel)
 
 ### Joints Protégés
 
@@ -407,7 +407,7 @@ Toutes les commandes sont validées avant exécution:
 
 ### Module Mapping Centralisé (`mapping_reachy.py`)
 
-**Source de vérité unique** pour les joints Reachy Mini (sim ↔ réel):
+**Source de référence** pour les joints Reachy Mini (sim ↔ réel):
 
 ✅ **Fonctionnalités:**
 

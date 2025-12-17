@@ -125,7 +125,7 @@ sequenceDiagram
 - mode `--force` pour les scripts automatisés
 - affichage détaillé des processus avant arrêt
 
-#### 4. Monitoring intelligent
+#### 4. Monitoring
 - surveillance CPU et mémoire en temps réel
 - détection automatique des processus BBIA
 - statut détaillé avec PID et ressources
