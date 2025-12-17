@@ -86,8 +86,9 @@ class BBIAAdvancedWebSocketManager:
         self._heartbeat_interval = 30.0  # 30 secondes (optimisé depuis 10s)
         self._last_heartbeat: float = 0.0
         # NOUVEAU: Heartbeat adaptatif selon latence
-        self._latency_history: list[float] = []  # Historique latence en ms
+        # OPTIMISATION RAM: Utiliser deque avec maxlen pour limiter historique
         self._max_latency_history = 10  # Garder 10 dernières mesures
+        self._latency_history: deque[float] = deque(maxlen=self._max_latency_history)
 
         # Modules BBIA
         self.emotions = BBIAEmotions()
@@ -410,9 +411,8 @@ class BBIAAdvancedWebSocketManager:
         Args:
             latency_ms: Latence en millisecondes
         """
+        # OPTIMISATION RAM: deque avec maxlen gère automatiquement la limite
         self._latency_history.append(latency_ms)
-        if len(self._latency_history) > self._max_latency_history:
-            self._latency_history.pop(0)
 
         # Recalculer heartbeat adaptatif
         self._heartbeat_interval = self._calculate_adaptive_heartbeat()

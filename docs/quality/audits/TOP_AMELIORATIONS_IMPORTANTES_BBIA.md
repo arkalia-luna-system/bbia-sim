@@ -1,7 +1,7 @@
 # 🎯 TOP AMÉLIORATIONS IMPORTANTES POUR BBIA
 
 **Date** : 15 Décembre 2025  
-**Source** : Inspiration contributeurs [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini)  
+**Source** : Analyse des améliorations prioritaires pour BBIA  
 **Objectif** : Liste des améliorations les plus importantes et leur impact réel pour BBIA
 
 Ce document se concentre sur les améliorations qui apportent le **plus de valeur** à BBIA, en évitant les doublons avec ce qui existe déjà.
@@ -25,7 +25,6 @@ Ce document se concentre sur les améliorations qui apportent le **plus de valeu
 
 ### 1. Fallback Automatique Sim → Robot ✅ **FAIT**
 
-**Inspiration** : @pierre-rouanet  
 **Temps estimé** : 2-3h  
 **Impact** : 🔴 **TRÈS ÉLEVÉ** - Expérience utilisateur transformée  
 **Statut** : ✅ **IMPLÉMENTÉ** - Tests complets (7 tests, 100% coverage)
@@ -75,7 +74,6 @@ robot = RobotFactory.create_backend('auto')  # Détecte robot, fallback sim si a
 
 ### 2. Heartbeat WebSocket Adaptatif ✅ **FAIT**
 
-**Inspiration** : @FabienDanieau  
 **Temps estimé** : 3-4h  
 **Impact** : 🔴 **TRÈS ÉLEVÉ** - Connexions beaucoup plus stables  
 **Statut** : ✅ **IMPLÉMENTÉ** - Tests complets (8 tests, 100% coverage)
@@ -128,7 +126,6 @@ heartbeat_interval = Math.max(10000, Math.min(60000, latency * 2));
 
 ### 3. Finaliser Découverte Automatique Robots ✅ **FAIT**
 
-**Inspiration** : @pierre-rouanet  
 **Temps estimé** : 2-3h  
 **Impact** : 🟡 **MOYEN** - Améliore UX mais pas critique  
 **Statut** : ✅ **IMPLÉMENTÉ** - Tests complets (16 tests, coverage maintenu)
@@ -181,7 +178,6 @@ robot = RobotFactory.create_backend('reachy_mini', robot_id='robot-1')
 
 ### 4. Lifespan Context Manager Robust ✅ **FAIT**
 
-**Inspiration** : @pierre-rouanet  
 **Temps estimé** : 3-4h  
 **Impact** : 🟡 **MOYEN** - Améliore robustesse démarrage  
 **Statut** : ✅ **IMPLÉMENTÉ** - Tests complets (6 tests, 100% coverage)
@@ -237,7 +233,6 @@ async def lifespan(app):
 
 ### 5. Mode Simplifié Dashboard ✅ **FAIT**
 
-**Inspiration** : @FabienDanieau  
 **Temps estimé** : 4-6h  
 **Impact** : 🟡 **MOYEN** - Améliore accessibilité  
 **Statut** : ✅ **IMPLÉMENTÉ** - Tests complets (8 tests, 100% coverage)

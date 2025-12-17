@@ -223,7 +223,7 @@ async def get_full_state(
 
     if with_head_pose:
         pose = backend.get_present_head_pose()
-        result["head_pose"] = as_any_pose(pose, use_pose_matrix)
+        result["head_pose"] = as_any_pose(pose)
 
     if with_target_head_pose:
         target_pose = backend.target_head_pose
@@ -232,7 +232,7 @@ async def get_full_state(
             raise ValueError(
                 msg,
             )
-        result["target_head_pose"] = as_any_pose(target_pose, use_pose_matrix)
+        result["target_head_pose"] = as_any_pose(target_pose)
     if with_head_joints:
         result["head_joints"] = backend.get_present_head_joint_positions()
     if with_target_head_joints:
@@ -473,7 +473,7 @@ async def get_present_head_pose(
 
     """
     pose = backend.get_present_head_pose()
-    pose_data = as_any_pose(pose, use_pose_matrix)
+    pose_data = as_any_pose(pose)
     # Wrapper dans dict pour conformité avec les tests
     return {
         "head_pose": (

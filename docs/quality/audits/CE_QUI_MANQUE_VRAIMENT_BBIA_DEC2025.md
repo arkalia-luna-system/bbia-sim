@@ -219,7 +219,7 @@ self.emotional_sync.sync_speak_with_emotion(
    - **Impact** : Robot plus vivant
    - **Fichiers** : `bbia_emotional_sync.py` (amélioré)
 
-5. ⏳ **Découverte automatique robots** (inspiration @pierre-rouanet) - **INFRASTRUCTURE CRÉÉE** (8 Déc 2025)
+5. ⏳ **Découverte automatique robots**  - **INFRASTRUCTURE CRÉÉE** (8 Déc 2025)
    - **État actuel** : ✅ Infrastructure créée (`RobotRegistry`)
    - **Réalisé** : Classe `RobotRegistry`, méthode `discover_robots()`
    - **À finaliser** : Découverte complète Zenoh, API `/robots/list`
@@ -227,7 +227,7 @@ self.emotional_sync.sync_speak_with_emotion(
    - **Impact** : Plus besoin de configurer manuellement
    - **Fichiers** : ✅ `robot_registry.py` (créé), ⏳ endpoint API à créer
 
-6. ⏳ **Support simultané sim/robot réel** (inspiration @pierre-rouanet) - **INFRASTRUCTURE CRÉÉE** (8 Déc 2025)
+6. ⏳ **Support simultané sim/robot réel**  - **INFRASTRUCTURE CRÉÉE** (8 Déc 2025)
    - **État actuel** : ✅ Infrastructure créée (`create_multi_backend()`)
    - **Réalisé** : Support création plusieurs backends simultanément
    - **À finaliser** : Routing API selon commande
@@ -235,22 +235,21 @@ self.emotional_sync.sync_speak_with_emotion(
    - **Impact** : Tests sim pendant utilisation robot réel
    - **Fichiers** : ✅ `robot_factory.py` (ajouté), ⏳ routing API à finaliser
 
-7. ✅ **Modèle simplifié pour tests rapides** (inspiration @apirrone) - **FAIT** (8 Déc 2025)
+7. ✅ **Modèle simplifié pour tests rapides**  - **FAIT** (8 Déc 2025)
    - **État actuel** : ✅ Flag `--fast` implémenté
    - **Réalisé** : Support modèle 7 joints pour tests rapides
    - **Technique** : Flag `--fast` pour charger `reachy_mini.xml`
    - **Impact** : Tests 2-3x plus rapides
    - **Fichiers** : ✅ `__main__.py` (flag ajouté), ✅ `robot_factory.py` (support)
 
-8. ⚠️ **Mode simplifié dashboard** (inspiration @FabienDanieau)
-   - **État actuel** : Interface complète mais complexe
+8. ⚠️ **Mode simplifié dashboard**    - **État actuel** : Interface complète mais complexe
    - **À faire** : Mode simplifié avec contrôles essentiels
    - **Technique** : Toggle mode simplifié/avancé
    - **Impact** : Accessibilité pour nouveaux utilisateurs
    - **Priorité** : 🟡 Moyenne
    - **Temps estimé** : 4-6h
 
-9. ✅ **Tests de performance avec baselines** (inspiration @RemiFabre) - **FAIT** (8 Déc 2025)
+9. ✅ **Tests de performance avec baselines**  - **FAIT** (8 Déc 2025)
    - **État actuel** : ✅ Baselines p50/p95/p99 avec validation automatique
    - **Réalisé** : Export JSONL, validation automatique, détection régression
    - **Technique** : Export métriques JSONL, validation fourchette en CI
@@ -261,18 +260,18 @@ self.emotional_sync.sync_speak_with_emotion(
 
 ### 🟢 BASSE PRIORITÉ (Optionnel - BBIA a déjà mieux ou équivalent)
 
-10. 🟢 **Chargement lazy assets STL** (inspiration @apirrone) - 3-4h
-11. 🟢 **Scènes complexes avec objets** (inspiration @apirrone) - 4-6h
-12. 🟢 **Timestep adaptatif** (inspiration @apirrone) - 3-4h
-13. 🟢 **Rate limiting granulaire** (inspiration @FabienDanieau) - 2-3h
-14. 🟢 **Documentation OpenAPI détaillée** (inspiration @FabienDanieau) - 3-4h
-15. 🟢 **Sharding tests** (inspiration @RemiFabre) - 2-3h
-16. 🟢 **MyPy strict mode** (inspiration @RemiFabre) - 8-12h
-17. 🟢 **Pre-commit hooks complets** (inspiration @RemiFabre) - 2-3h
-18. 🟢 **Exemples erreurs communes** (inspiration @askurique) - 3-4h
-19. 🟢 **Exemples exécutables validés** (inspiration @askurique) - 4-6h
-20. 🟢 **Cache modèles agressif** (inspiration @apirrone) - 2-3h
-21. 🟢 **Batch processing mouvements** (inspiration @apirrone) - 4-6h
+10. 🟢 **Chargement lazy assets STL**  - 3-4h
+11. 🟢 **Scènes complexes avec objets**  - 4-6h
+12. 🟢 **Timestep adaptatif**  - 3-4h
+13. 🟢 **Rate limiting granulaire**  - 2-3h
+14. 🟢 **Documentation OpenAPI détaillée**  - 3-4h
+15. 🟢 **Sharding tests**  - 2-3h
+16. 🟢 **MyPy strict mode**  - 8-12h
+17. 🟢 **Pre-commit hooks complets**  - 2-3h
+18. 🟢 **Exemples erreurs communes**  - 3-4h
+19. 🟢 **Exemples exécutables validés**  - 4-6h
+20. 🟢 **Cache modèles agressif**  - 2-3h
+21. 🟢 **Batch processing mouvements**  - 4-6h
 22. 🟢 **Intégration MCP** (optionnel - BBIA a déjà API REST + WebSocket)
 23. 🟢 **WebRTC Streaming** (optionnel - BBIA a déjà WebSocket <10ms)
 24. 🟢 **DoA Audio** (nécessite hardware spécifique - microphone array)

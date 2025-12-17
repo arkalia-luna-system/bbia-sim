@@ -516,7 +516,7 @@ async def remove_app(app_name: str) -> dict[str, str]:
     is_in_list = app_name in [
         app["name"] for app in _bbia_apps_manager["installed_apps"]
     ]
-    
+
     # Si l'app n'est ni installée ni dans la liste, on laisse quand même créer le job
     # pour permettre la suppression même si elle n'est pas trouvée (nettoyage)
     if not is_installed and not is_in_list:

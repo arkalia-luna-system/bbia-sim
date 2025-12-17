@@ -2,6 +2,7 @@
 
 import logging
 import time
+from collections import deque
 from collections.abc import Callable
 from typing import Any
 
@@ -77,7 +78,10 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         self.window_seconds = window_seconds
         self.message = message
         self.force_enable = force_enable
-        self.requests: dict[str, list[float]] = {}
+        # OPTIMISATION RAM: Utiliser deque avec maxlen pour limiter taille
+        # Max 2x la limite pour garder un peu d'historique
+        self._max_timestamps = requests_per_minute * 2
+        self.requests: dict[str, deque[float]] = {}
 
     async def dispatch(
         self,
@@ -89,15 +93,22 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
             client_ip = request.client.host if request.client else "unknown"
             now = time.time()
 
-            # Nettoyage des anciennes requêtes
+            # OPTIMISATION RAM: Nettoyage des anciennes requêtes
             if client_ip in self.requests:
-                self.requests[client_ip] = [
-                    req_time
-                    for req_time in self.requests[client_ip]
-                    if now - req_time < self.window_seconds
-                ]
+                # Créer nouveau deque avec seulement les timestamps récents
+                request_times = self.requests[client_ip]
+                recent_times = deque(
+                    (
+                        req_time
+                        for req_time in request_times
+                        if now - req_time < self.window_seconds
+                    ),
+                    maxlen=request_times.maxlen or self._max_timestamps,
+                )
+                self.requests[client_ip] = recent_times
             else:
-                self.requests[client_ip] = []
+                # OPTIMISATION RAM: Initialiser avec deque limité
+                self.requests[client_ip] = deque(maxlen=self._max_timestamps)
 
             # Vérification de la limite
             if len(self.requests[client_ip]) >= self.requests_per_minute:

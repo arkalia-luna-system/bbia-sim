@@ -119,6 +119,5 @@
 
 **Documents complets** :
 - 📄 `AUDIT_REACHY_MINI_DECEMBRE_2025.md` - Audit complet
-- 📄 `CONTRIBUTEURS_TESTEURS_BETA_REACHY_MINI.md` - Contributeurs mis à jour
 - 📄 `MISE_A_JOUR_REACHY_MINI_NOVEMBRE_2025.md` - Mise à jour novembre
 

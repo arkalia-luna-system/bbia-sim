@@ -7,6 +7,7 @@ import logging
 import sys
 import threading
 import time
+from collections import deque
 from typing import Any
 
 import numpy as np
@@ -26,8 +27,10 @@ except ImportError:
 
 # OPTIMISATION PERFORMANCE: Cache global pour pipelines transformers
 # (évite chargements répétés)
+# OPTIMISATION RAM: Limiter cache à 2 devices max (cpu, cuda)
 _emotion_pipelines_cache: dict[str, dict[str, Any]] = {}  # device -> models dict
 _emotion_cache_lock = threading.Lock()
+_MAX_EMOTION_CACHE_SIZE = 2  # Maximum 2 devices en cache
 
 # Réduction du bruit de logs TensorFlow/MediaPipe (avant tout import MediaPipe)
 try:
@@ -129,8 +132,12 @@ class BBIAEmotionRecognition:
             "fusion_weights": {"facial": 0.7, "vocal": 0.3},
         }
 
-        # Historique des émotions pour moyennage temporel
-        self.emotion_history: list[dict[str, Any]] = []
+        # OPTIMISATION RAM: Utiliser deque avec maxlen pour limiter historique
+        # Limiter à temporal_window_size * 2 pour garder assez d'historique
+        max_history_size = int(
+            self.detection_config.get("temporal_window_size", 5) * 2,
+        )
+        self.emotion_history: deque[dict[str, Any]] = deque(maxlen=max_history_size)
 
         logger.info("😊 BBIA Emotion Recognition initialisé (device: %s)", self.device)
 
@@ -179,6 +186,16 @@ class BBIAEmotionRecognition:
                 self.emotion_models = _emotion_pipelines_cache[self.device].copy()
                 logger.info("📥 Modèles d'émotion chargés (cache)")
                 return
+
+            # OPTIMISATION RAM: Vérifier limite cache et supprimer device le moins utilisé
+            if len(_emotion_pipelines_cache) >= _MAX_EMOTION_CACHE_SIZE:
+                # Supprimer le premier device (FIFO simple)
+                oldest_device = next(iter(_emotion_pipelines_cache))
+                del _emotion_pipelines_cache[oldest_device]
+                logger.debug(
+                    "🗑️ Device évincé du cache émotion: %s",
+                    oldest_device,
+                )
 
         try:
             # Modèle de sentiment pour analyse vocale
@@ -495,13 +512,8 @@ class BBIAEmotionRecognition:
 
     def _update_emotion_history(self, emotion_result: dict[str, Any]) -> None:
         """Met à jour l'historique des émotions."""
+        # OPTIMISATION RAM: deque avec maxlen gère automatiquement la limite
         self.emotion_history.append(emotion_result)
-
-        # Limitation de la taille de l'historique
-        temporal_window_size = int(self.detection_config.get("temporal_window_size", 5))
-        max_history = temporal_window_size * 2
-        if len(self.emotion_history) > max_history:
-            self.emotion_history = self.emotion_history[-max_history:]
 
     def _apply_temporal_smoothing(
         self,
@@ -571,7 +583,8 @@ class BBIAEmotionRecognition:
 
     def reset_history(self) -> None:
         """Remet à zéro l'historique des émotions."""
-        self.emotion_history = []
+        # OPTIMISATION RAM: Conserver le type deque avec maxlen
+        self.emotion_history.clear()
         logger.info("🔄 Historique des émotions réinitialisé")
 
 

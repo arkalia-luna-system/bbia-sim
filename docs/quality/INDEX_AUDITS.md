@@ -41,7 +41,6 @@
 
 ## Documents de Référence
 
-- **`CONTRIBUTEURS_TESTEURS_BETA_REACHY_MINI.md`** - Contributeurs et testeurs
 - **`MISE_A_JOUR_REACHY_MINI_NOVEMBRE_2025.md`** - Mise à jour novembre
 
 ---

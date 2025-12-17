@@ -4,7 +4,7 @@
 **Source** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini)  
 **Version SDK Officiel** : v1.1.1 (Latest - Nov 25, 2025)  
 **Version BBIA** : 1.4.0  
-**Objectif** : Synthèse complète des mises à jour, contributeurs et conformité
+**Objectif** : Synthèse complète des mises à jour et conformité
 
 Ce document a été mis à jour en décembre 2025 avec les dernières informations. Voir `AUDIT_REACHY_MINI_DECEMBRE_2025.md` pour l'audit complet le plus récent.
 
@@ -37,210 +37,6 @@ Ce document a été mis à jour en décembre 2025 avec les dernières informatio
 - ... (9 releases précédentes)
 
 **Action** : Vérifier changelog v1.1.1 pour nouvelles fonctionnalités
-
----
-
-## 👥 CONTRIBUTEURS OFFICIELS - MISE À JOUR COMPLÈTE
-
-### Statistiques Globales
-
-**Total contributeurs** : **20 contributeurs** (nouveau : iizukak)  
-**Période analysée** : 11 mai 2025 au 7 décembre 2025  
-**Commits totaux** : ~1,600+ commits  
-**Branche principale** : `develop` / `main`
-
-### Contributeurs Principaux (Top 5)
-
-#### 1. @pierre-rouanet
-**Rôle** : Core Developer Principal  
-**Contributions** :
-- **467 commits** (29.8% du total)
-- **33,909 ++** (ajouts)
-- **29,321 --** (suppressions)
-- **Pic d'activité** : 47 commits/semaine max
-
-**Travail documenté** :
-- Architecture principale du SDK
-- Développement daemon FastAPI
-- Intégration SDK officiel
-- Gestion backends simulation/robot réel
-- Architecture Zenoh pour communication
-
-**Comparaison BBIA** :
-- ✅ BBIA utilise le SDK développé par @pierre-rouanet
-- ✅ Architecture daemon similaire (FastAPI)
-- ✅ Backends compatibles
-- ✅ Communication Zenoh intégrée
-
-**GitHub** : [@pierre-rouanet](https://github.com/pierre-rouanet)
-
----
-
-#### 2. @apirrone
-**Rôle** : Core Developer (Simulation)  
-**Contributions** :
-- **278 commits** (17.8% du total)
-- **57,029 ++** (ajouts)
-- **43,590 --** (suppressions)
-- **Pic d'activité** : 32 commits/semaine max
-
-**Travail documenté** :
-- Développement simulation MuJoCo
-- Modèles 3D officiels
-- Intégration physique réaliste
-- Scènes (empty, minimal)
-- Optimisations performance simulation
-
-**Comparaison BBIA** :
-- ✅ BBIA utilise modèles 3D officiels
-- ✅ Simulation MuJoCo complète
-- ✅ Scènes compatibles
-- ✅ Optimisations appliquées
-
-**GitHub** : [@apirrone](https://github.com/apirrone)
-
----
-
-#### 3. @FabienDanieau
-**Rôle** : Core Developer (Dashboard & API)  
-**Contributions** :
-- **171 commits** (10.9% du total)
-- **10,632 ++** (ajouts)
-- **2,806 --** (suppressions)
-- **Pic d'activité** : 29 commits/semaine max
-
-**Travail documenté** :
-- Développement dashboard officiel
-- Endpoints API REST
-- Interface web simple
-- Communication WebSocket
-- Intégration Hugging Face Spaces
-
-**Comparaison BBIA** :
-- ✅ BBIA a 4 dashboards (supérieur)
-- ✅ API REST conforme + étendue
-- ✅ WebSocket avancé temps réel
-- ✅ Intégration HF Spaces prête
-
-**GitHub** : [@FabienDanieau](https://github.com/FabienDanieau)
-
----
-
-#### 4. @RemiFabre
-**Rôle** : Core Developer (Tests & CI/CD)  
-**Contributions** :
-- **118 commits** (7.5% du total)
-- **16,079 ++** (ajouts)
-- **14,937 --** (suppressions)
-- **Pic d'activité** : 34 commits/semaine max
-
-**Travail documenté** :
-- Suite de tests
-- Pipeline CI/CD GitHub Actions
-- Qualité code (black, ruff, mypy)
-- Validation conformité
-- Pre-commit hooks
-
-**Comparaison BBIA** :
-- ✅ BBIA : 1,743 tests (supérieur)
-- ✅ CI/CD complet
-- ✅ Qualité code élevée
-- ✅ Pre-commit configuré
-
-**GitHub** : [@RemiFabre](https://github.com/RemiFabre)
-
----
-
-#### 5. @askuric
-**Rôle** : Contributor (Documentation)  
-**Contributions** :
-- **104 commits** (6.6% du total)
-- **9,249 ++** (ajouts)
-- **5,081 --** (suppressions)
-- **Pic d'activité** : 16 commits/semaine max
-
-**Travail documenté** :
-- Guides d'utilisation
-- Exemples de base
-- Documentation API
-- Démonstrations
-- Tutoriels
-
-**Comparaison BBIA** :
-- ✅ BBIA : 219 fichiers MD (supérieur)
-- ✅ 67 exemples (supérieur)
-- ✅ Guides détaillés
-- ✅ Documentation exhaustive
-
-**GitHub** : [@askuric](https://github.com/askuric)
-
----
-
-### Contributeurs Spécialisés (6-14)
-
-#### 6. @cdussieux
-**Rôle** : Contributor (Hardware)  
-**Contributions** : 3 commits (6 ++, 5 --)  
-**Travail** : Support USB, détection ports série, communication hardware
-
-#### 7. @alozowski
-**Rôle** : Contributor (Vision)  
-**Contributions** : 16 commits (1,344 ++, 349 --)  
-**Travail** : Intégration caméra, vision basique, traitement image
-
-#### 8. @oxkitsune
-**Rôle** : Contributor (Audio)  
-**Contributions** : 10 commits (524 ++, 576 --)  
-**Travail** : Support microphone array, enregistrement audio, traitement audio
-
-#### 9. @tfrere
-**Rôle** : Contributor (Wireless)  
-**Contributions** : 9 commits (217 ++, 123 --)  
-**Travail** : Support version wireless, communication réseau, configuration Wi-Fi
-
-#### 10. @haixuanTao
-**Rôle** : Contributor (IA)  
-**Contributions** : 6 commits (32 ++, 19 --)  
-**Travail** : Intégration LLM, conversation basique, NLP simple
-
-#### 11. @CarolinePascal
-**Rôle** : Contributor (Qualité)  
-**Contributions** : 5 commits (108 ++, 60 --)  
-**Travail** : Tests qualité, validation fonctionnelle, assurance qualité
-
-#### 12. @AnneCharlotte-pollen
-**Rôle** : Contributor (Documentation)  
-**Contributions** : 4 commits (11 ++, 3 --)  
-**Travail** : Guides d'utilisation, documentation API, tutoriels
-
-#### 13. @andimarafioti
-**Rôle** : Contributor (Exemples)  
-**Contributions** : 3 commits (11 ++, 5 --)  
-**Travail** : Exemples de base, démonstrations, cas d'usage simples
-
-#### 14. @matthieu-lapeyre
-**Rôle** : Contributor (Performance)  
-**Contributions** : 3 commits (174 ++, 32 --)  
-**Travail** : Optimisations performance, réduction latence, optimisation mémoire
-
----
-
-### Contributeurs Occasionnels (15-19)
-
-#### 15. @iizukak
-**Contributions** : 2 commits (7 ++, 1 --)
-
-#### 16. @Gregwar
-**Contributions** : 2 commits (153 ++, 1 --)
-
-#### 17. @Copilote
-**Contributions** : 1 commit (1 ++, 1 --)
-
-#### 18. @OriNachum
-**Contributions** : 1 commit (5 ++, 4 --)
-
-#### 19. @Augustin-Crampette
-**Contributions** : 1 commit (4 ++, 0 --)
 
 ---
 
@@ -408,7 +204,6 @@ Ce document a été mis à jour en décembre 2025 avec les dernières informatio
    - Communauté Discord/Slack
 
 6. ✅ **Mettre à jour documentation**
-   - Contributeurs officiels
    - Testeurs bêta identifiés
    - Nouvelles fonctionnalités v1.1.1
 
@@ -435,14 +230,6 @@ Ce document a été mis à jour en décembre 2025 avec les dernières informatio
 
 ## 📊 COMPARAISON BBIA vs OFFICIEL
 
-### Contributeurs
-
-| Aspect | Reachy Mini Officiel | BBIA-SIM | Statut |
-|--------|---------------------|----------|--------|
-| **Nombre contributeurs** | 19 contributeurs | 1 développeur principal | ⚠️ **Moins de contributeurs** |
-| **Core developers** | 4-5 core | 1 principal | ⚠️ **Moins de core** |
-| **Contributions** | Diversifiées | Consolidées | ✅ **Consolidées** |
-| **Spécialisations** | Multiples | Toutes intégrées | ✅ **Toutes intégrées** |
 
 ### Qualité et Documentation
 
@@ -470,7 +257,6 @@ Ce document a été mis à jour en décembre 2025 avec les dernières informatio
 ### Résumé
 
 **Reachy Mini Officiel** :
-- ✅ 19 contributeurs actifs
 - ✅ Communauté testeurs bêta
 - ✅ Hugging Face Spaces
 - ✅ Feedback régulier
@@ -494,15 +280,14 @@ Ce document a été mis à jour en décembre 2025 avec les dernières informatio
 ### Points à Améliorer
 
 1. ⚠️ **Communauté** : À développer
-2. ⚠️ **Contributeurs** : À recruter
-3. ⚠️ **Testeurs bêta** : À créer
-4. ⚠️ **Visibilité** : À améliorer (Hugging Face Spaces, etc.)
+2. ⚠️ **Testeurs bêta** : À créer
+3. ⚠️ **Visibilité** : À améliorer (Hugging Face Spaces, etc.)
 
 ### Verdict
 
 **BBIA-SIM a une base technique supérieure mais doit développer sa communauté pour égaler le projet officiel en termes de contributions et de testeurs bêta.**
 
-**Recommandation** : Ouvrir le projet à la communauté et créer un programme de contributeurs/testeurs bêta.
+**Recommandation** : Ouvrir le projet à la communauté et créer un programme de testeurs bêta.
 
 ---
 
@@ -510,5 +295,4 @@ Ce document a été mis à jour en décembre 2025 avec les dernières informatio
 **Prochaine révision** : Après réception robot physique ou mise à jour majeure SDK  
 **Voir aussi** :
 - [AUDIT_REACHY_MINI_DECEMBRE_2025.md](AUDIT_REACHY_MINI_DECEMBRE_2025.md) - Audit complet décembre 2025
-- [CONTRIBUTEURS_TESTEURS_BETA_REACHY_MINI.md](CONTRIBUTEURS_TESTEURS_BETA_REACHY_MINI.md) - Contributeurs et testeurs mis à jour
 

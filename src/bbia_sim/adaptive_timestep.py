@@ -58,7 +58,7 @@ def calculate_scene_complexity(model: mujoco.MjModel) -> float:
     )
 
     # Normaliser entre 0.0 et 1.0
-    return min(max(complexity, 0.0), 1.0)
+    return float(min(max(complexity, 0.0), 1.0))
 
 
 def calculate_adaptive_timestep(

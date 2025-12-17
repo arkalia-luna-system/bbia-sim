@@ -4,7 +4,7 @@
 **Source** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini)  
 **Version SDK Officiel** : v1.2.0 (Latest - Dec 12, 2025)  
 **Version BBIA** : 1.4.0  
-**Objectif** : Audit exhaustif des changements récents, conformité BBIA, analyse contributeurs et testeurs bêta
+**Objectif** : Audit exhaustif des changements récents, conformité BBIA, analyse testeurs bêta
 
 ---
 
@@ -54,116 +54,6 @@
 
 ---
 
-## 👥 TRAVAIL TECHNIQUE DES CONTRIBUTEURS POLLEN ROBOTICS
-
-**Source** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini)  
-**Version SDK** : v1.2.0 (Latest - Dec 12, 2025)  
-**Total contributeurs** : 23 contributeurs (selon GitHub)
-
-> **📖 Analyse technique détaillée** : Voir [`CONTRIBUTEURS_TESTEURS_BETA_REACHY_MINI.md`](CONTRIBUTEURS_TESTEURS_BETA_REACHY_MINI.md) pour l'analyse complète du travail technique de chaque contributeur et ce que BBIA peut s'inspirer.
-
-### Contributeurs Principaux - Travail Technique
-
-#### @pierre-rouanet - Architecture SDK & Daemon
-**Travail technique** :
-- Architecture daemon FastAPI (API REST + WebSocket)
-- Support simultané simulation MuJoCo ET robot réel via même daemon
-- Architecture Zenoh pour communication distribuée
-- Découverte automatique robots sur réseau local
-- Backends USB et Wireless avec fallback gracieux
-
-**Ce que BBIA peut s'inspirer** :
-- ✅ BBIA a déjà daemon FastAPI similaire
-- 💡 **À améliorer** : Lifespan context manager plus robuste
-- 💡 **À améliorer** : Détection automatique type connexion (USB vs wireless)
-- 💡 **À améliorer** : Fallback automatique sim → robot si robot disponible
-
-#### @apirrone - Simulation MuJoCo & Modèles 3D
-**Travail technique** :
-- Modèles 3D officiels (modèle simplifié 7 joints + complet 16 joints)
-- Chargement conditionnel selon besoins (performance vs précision)
-- Intégration physique réaliste avec timestep fixe 0.01s
-- Support headless pour CI/CD
-- Optimisations performance (cache modèles, batch processing)
-
-**Ce que BBIA peut s'inspirer** :
-- ✅ BBIA utilise modèles 3D officiels
-- ✅ BBIA a support modèle simplifié (flag `--fast`)
-- 💡 **À améliorer** : Chargement lazy des assets STL
-- 💡 **À améliorer** : Scènes complexes avec objets interactifs
-- 💡 **À améliorer** : Timestep adaptatif selon complexité scène
-
-#### @FabienDanieau - Dashboard Web & API REST
-**Travail technique** :
-- Dashboard web minimaliste avec FastAPI + templates Jinja2
-- Intégration Hugging Face Spaces pour recherche apps
-- API REST avec rate limiting et authentification Bearer Token
-- WebSocket pour télémétrie temps réel avec batching optimisé
-- Support multi-clients simultanés avec heartbeat
-
-**Ce que BBIA peut s'inspirer** :
-- ✅ BBIA a 4 dashboards (supérieur)
-- ✅ BBIA a API REST complète avec 50+ endpoints
-- 💡 **À améliorer** : Mode simplifié avec contrôles essentiels
-- 💡 **À améliorer** : Intégration HF Spaces plus poussée (installation apps)
-- 💡 **À améliorer** : Rate limiting plus granulaire par endpoint
-- 💡 **À améliorer** : Heartbeat WebSocket plus robuste avec reconnection auto
-
-#### @RemiFabre - Tests & CI/CD
-**Travail technique** :
-- Suite de tests (unitaires + intégration + E2E)
-- Tests de conformité SDK (validation API)
-- Pipeline CI/CD GitHub Actions avec matrice Python
-- Tests headless MuJoCo en CI
-- Qualité code (Black, Ruff, MyPy) avec pre-commit hooks
-
-**Ce que BBIA peut s'inspirer** :
-- ✅ BBIA a 1,743 tests (supérieur)
-- ✅ BBIA a CI/CD complet
-- 💡 **À améliorer** : Tests de conformité SDK plus exhaustifs
-- 💡 **À améliorer** : Tests headless MuJoCo plus robustes (retry auto)
-- 💡 **À améliorer** : Sharding tests si durée > 10 min
-- 💡 **À améliorer** : MyPy strict mode progressif
-
-#### @askurique - Documentation & Exemples
-**Travail technique** :
-- Guides d'utilisation par niveau (essentiel, intermédiaire, avancé)
-- Exemples exécutables (scripts Python complets)
-- Documentation API avec liens croisés
-- Exemples avec erreurs communes et solutions
-
-**Ce que BBIA peut s'inspirer** :
-- ✅ BBIA a 219 fichiers MD (supérieur)
-- ✅ BBIA a 67 exemples (supérieur)
-- 💡 **À améliorer** : Guides par niveau plus clairs
-- 💡 **À améliorer** : Exemples avec erreurs communes documentées
-- 💡 **À améliorer** : Validation automatique exemples (tests)
-
-### Autres Contributeurs Notables
-
-- **@andimarafioti** : Exemples d'utilisation, démonstrations
-- **@Matthieu-Lapeyre** : Performance et optimisation
-- **@alozowski** : Vision et caméra, intégration hardware
-- **@tfrere** : Wireless et réseau, communication
-- **@oxkitsune** : Audio et microphone, support hardware audio
-- **@haixuanTao** : IA et LLM, intégration intelligence artificielle
-- **@OriNachum** : Intégration MCP (Model Context Protocol), plugin reachy-mini-mcp
-
-### Projets Communautaires Inspirants
-
-1. **reachy-mini-plugin (LAURA-agent)** : Mouvements émotionnels naturels pendant conversation
-   - ✅ BBIA a déjà synchronisation fine émotions/mouvements
-   - ✅ BBIA a micro-mouvements subtils pendant écoute
-
-2. **reachy-mini-mcp (OriNachum)** : Serveur MCP pour contrôle robot
-   - ⚠️ Optionnel : BBIA a déjà API REST + WebSocket (supérieur)
-
----
-
-**📖 Pour l'analyse technique complète avec patterns, techniques et améliorations prioritaires** : Voir [`CONTRIBUTEURS_TESTEURS_BETA_REACHY_MINI.md`](CONTRIBUTEURS_TESTEURS_BETA_REACHY_MINI.md)
-
----
-
 ## 🧪 TESTEURS BÊTA ET PROJETS COMMUNAUTAIRES
 
 ### Projets Communautaires Identifiés
@@ -179,11 +69,6 @@
 - Intégration conversationnelle
 - Synchronisation émotions/mouvements
 
-**Inspiration pour BBIA** :
-- ✅ BBIA a déjà 12 émotions (supérieur)
-- ✅ BBIA a synchronisation émotions/mouvements
-- ⚠️ BBIA pourrait améliorer mouvements naturels conversationnels
-- 💡 **Action** : Examiner plugin pour améliorer fluidité mouvements émotionnels
 
 ---
 
@@ -448,7 +333,6 @@
    - Communauté Discord/Slack
 
 7. ✅ **Mettre à jour documentation**
-   - Contributeurs officiels (23 contributeurs)
    - Testeurs bêta identifiés
    - Nouvelles fonctionnalités v1.2.0
    - Projets communautaires
@@ -484,7 +368,6 @@
 ### Résumé
 
 **Reachy Mini Officiel** :
-- ✅ 23 contributeurs actifs (selon GitHub)
 - ✅ Version v1.2.0 (Dec 12, 2025)
 - ✅ Première production en série version sans fil (v1.1.0)
 - ✅ Communauté testeurs bêta active
@@ -510,21 +393,18 @@
 
 1. ⚠️ **Version SDK** : **1.1.3** (vérifier mise à jour vers v1.2.0)
 2. ⚠️ **Communauté** : À développer
-3. ⚠️ **Contributeurs** : À recruter
-4. ⚠️ **Testeurs bêta** : À créer
-5. ⚠️ **Visibilité** : À améliorer (Hugging Face Spaces, etc.)
-6. ⚠️ **Mouvements émotionnels** : Améliorer fluidité conversationnelle
+3. ⚠️ **Testeurs bêta** : À créer
+4. ⚠️ **Visibilité** : À améliorer (Hugging Face Spaces, etc.)
+5. ⚠️ **Mouvements émotionnels** : Améliorer fluidité conversationnelle
 
 ### Verdict
 
 **BBIA-SIM a une base technique supérieure mais doit :**
 1. ✅ Version SDK : **1.1.3** ✅ (fait)
 2. Développer sa communauté
-3. Créer programme contributeurs/testeurs bêta
+3. Créer programme testeurs bêta
 4. Améliorer visibilité (Hugging Face Spaces)
 5. Améliorer synchronisation fine mouvements émotionnels ↔ parole
-
-**Recommandation** : Ouvrir le projet à la communauté et créer un programme de contributeurs/testeurs bêta.
 
 ---
 
@@ -532,9 +412,7 @@
 **Prochaine révision** : Après réception robot physique ou mise à jour majeure SDK  
 **Documents liés** :
 - `TOP_AMELIORATIONS_IMPORTANTES_BBIA.md` - **Top 5 améliorations les plus importantes** ⭐ NOUVEAU
-- `CE_QUI_MANQUE_BBIA_VS_CONTRIBUTEURS.md` - Ce qui manque dans BBIA vs contributeurs (liste complète)
 - `TECHNIQUES_EFFICACITE_BBIA.md` - Techniques d'efficacité et astuces BBIA
-- `CONTRIBUTEURS_TESTEURS_BETA_REACHY_MINI.md` - Analyse technique détaillée contributeurs
 - `CE_QUI_MANQUE_VRAIMENT_BBIA_DEC2025.md` - Ce qui manque vraiment (détaillé)
 - `RESUME_AUDIT_DECEMBRE_2025.md` - Résumé exécutif
 

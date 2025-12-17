@@ -42,7 +42,7 @@ Toutes les fonctionnalités critiques sont implémentées et testées.
 
 **Statut** : ✅ **FAIT** (8 Décembre 2025)  
 **Durée** : 4-6h  
-**Inspiration** : LAURA-agent (`reachy-mini-plugin`)
+ (`reachy-mini-plugin`)
 
 **État actuel** :
 - ✅ Timing adaptatif implémenté
@@ -64,7 +64,6 @@ Toutes les fonctionnalités critiques sont implémentées et testées.
 
 **Statut** : ⏳ **INFRASTRUCTURE CRÉÉE** (8 Décembre 2025)  
 **Durée** : 4-6h  
-**Inspiration** : @pierre-rouanet
 
 **État actuel** :
 - ✅ Infrastructure créée (`RobotRegistry`)
@@ -83,7 +82,6 @@ Toutes les fonctionnalités critiques sont implémentées et testées.
 
 **Statut** : ⏳ **INFRASTRUCTURE CRÉÉE** (8 Décembre 2025)  
 **Durée** : 6-8h  
-**Inspiration** : @pierre-rouanet
 
 **État actuel** :
 - ✅ Infrastructure créée (`create_multi_backend()`)
@@ -101,7 +99,6 @@ Toutes les fonctionnalités critiques sont implémentées et testées.
 
 **Statut** : ✅ **FAIT** (8 Décembre 2025)  
 **Durée** : 2-3h  
-**Inspiration** : @apirrone
 
 **État actuel** :
 - ✅ Flag `--fast` implémenté
@@ -119,7 +116,6 @@ Toutes les fonctionnalités critiques sont implémentées et testées.
 
 **Statut** : ⏳ À faire  
 **Durée** : 4-6h  
-**Inspiration** : @FabienDanieau
 
 **État actuel** :
 - Interface complète mais complexe
@@ -139,7 +135,6 @@ Toutes les fonctionnalités critiques sont implémentées et testées.
 
 **Statut** : ✅ **FAIT** (8 Décembre 2025)  
 **Durée** : 4-6h  
-**Inspiration** : @RemiFabre
 
 **État actuel** :
 - ✅ Export métriques JSONL avec p50/p95/p99
@@ -163,7 +158,6 @@ Toutes les fonctionnalités critiques sont implémentées et testées.
 
 **Statut** : ✅ **FAIT** (8 Décembre 2025)  
 **Durée** : 3-4h  
-**Inspiration** : LAURA-agent
 
 **État actuel** :
 - ✅ Micro-mouvements réduits (0.01-0.02 rad)
@@ -181,7 +175,6 @@ Toutes les fonctionnalités critiques sont implémentées et testées.
 #### 8. Chargement lazy assets STL
 
 **Durée** : 3-4h  
-**Inspiration** : @apirrone
 
 **Impact** : Démarrage plus rapide, moins de RAM
 
@@ -190,7 +183,6 @@ Toutes les fonctionnalités critiques sont implémentées et testées.
 #### 9. Scènes complexes avec objets
 
 **Durée** : 4-6h  
-**Inspiration** : @apirrone
 
 **Impact** : Tests manipulation objets, interactions
 
@@ -199,7 +191,6 @@ Toutes les fonctionnalités critiques sont implémentées et testées.
 #### 10. Heartbeat WebSocket robuste
 
 **Durée** : 3-4h  
-**Inspiration** : @FabienDanieau
 
 **Impact** : Connexions plus stables
 
@@ -208,7 +199,6 @@ Toutes les fonctionnalités critiques sont implémentées et testées.
 #### 11. Guides par niveau
 
 **Durée** : 4-6h  
-**Inspiration** : @askurique
 
 **Impact** : Navigation plus claire, progression naturelle
 

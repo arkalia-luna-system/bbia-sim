@@ -2,6 +2,7 @@
 
 import logging
 import time
+from collections import deque
 from collections.abc import Callable
 from typing import Any
 
@@ -60,8 +61,11 @@ class GranularRateLimitMiddleware(BaseHTTPMiddleware):
         self.default_requests_per_minute = default_requests_per_minute
         self.default_window_seconds = default_window_seconds
         self.force_enable = force_enable
-        # Structure: {client_ip: {endpoint: [timestamps]}}
-        self.requests: dict[str, dict[str, list[float]]] = {}
+        # OPTIMISATION RAM: Structure: {client_ip: {endpoint: deque[timestamps]}}
+        # Utiliser deque avec maxlen pour éviter accumulation illimitée
+        # Max 2x la limite pour garder un peu d'historique au-delà de la fenêtre
+        self._max_timestamps_per_endpoint = default_requests_per_minute * 2
+        self.requests: dict[str, dict[str, deque[float]]] = {}
 
     def _get_endpoint_key(self, path: str) -> str:
         """Extrait la clé d'endpoint depuis le chemin.
@@ -117,14 +121,19 @@ class GranularRateLimitMiddleware(BaseHTTPMiddleware):
         if client_ip not in self.requests:
             self.requests[client_ip] = {}
         if endpoint_key not in self.requests[client_ip]:
-            self.requests[client_ip][endpoint_key] = []
+            # OPTIMISATION RAM: Utiliser deque avec maxlen pour limiter taille
+            max_size = max(requests_per_minute * 2, self._max_timestamps_per_endpoint)
+            self.requests[client_ip][endpoint_key] = deque(maxlen=max_size)
 
-        # Nettoyage des anciennes requêtes pour cet endpoint
-        self.requests[client_ip][endpoint_key] = [
-            req_time
-            for req_time in self.requests[client_ip][endpoint_key]
-            if now - req_time < window_seconds
-        ]
+        # OPTIMISATION RAM: Nettoyage des anciennes requêtes pour cet endpoint
+        # (deque avec maxlen gère automatiquement, mais on nettoie quand même pour être sûr)
+        request_times = self.requests[client_ip][endpoint_key]
+        # Créer nouveau deque avec seulement les timestamps récents
+        recent_times = deque(
+            (req_time for req_time in request_times if now - req_time < window_seconds),
+            maxlen=request_times.maxlen,
+        )
+        self.requests[client_ip][endpoint_key] = recent_times
 
         # Vérification de la limite
         if len(self.requests[client_ip][endpoint_key]) >= requests_per_minute:

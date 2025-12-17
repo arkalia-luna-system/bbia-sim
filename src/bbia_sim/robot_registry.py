@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Robot Registry - Découverte automatique des robots via Zenoh.
 
-Inspiré de @pierre-rouanet pour découverte automatique robots sur réseau local.
+Découverte automatique robots sur réseau local.
 """
 
 import logging

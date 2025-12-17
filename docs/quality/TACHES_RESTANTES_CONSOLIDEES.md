@@ -49,9 +49,9 @@
 
 ## Tâches Restantes (Optionnel - Priorité Moyenne/Basse)
 
-### 🟡 Priorité Moyenne - Inspiration Contributeurs
+### 🟡 Priorité Moyenne
 
-#### 1. ✅ Découverte automatique robots (Inspiration @pierre-rouanet)
+#### 1. ✅ Découverte automatique robots
 
 **Durée estimée** : 4-6h  
 **Statut** : ✅ **TERMINÉ** (15 Décembre 2025)
@@ -72,7 +72,7 @@
 
 ---
 
-#### 2. ✅ Support simultané sim/robot réel (Inspiration @pierre-rouanet)
+#### 2. ✅ Support simultané sim/robot réel
 
 **Durée estimée** : 6-8h  
 **Statut** : ✅ **TERMINÉ** (15 Déc 2025)
@@ -95,7 +95,7 @@
 
 ---
 
-#### 3. Modèle simplifié pour tests rapides (Inspiration @apirrone)
+#### 3. Modèle simplifié pour tests rapides
 
 **Durée estimée** : 2-3h  
 **Statut** : ✅ **FAIT** (8 Décembre 2025)
@@ -116,7 +116,7 @@
 
 ---
 
-#### 4. ✅ Mode simplifié dashboard (Inspiration @FabienDanieau)
+#### 4. ✅ Mode simplifié dashboard
 
 **Durée estimée** : 4-6h  
 **Statut** : ✅ **TERMINÉ** (15 Décembre 2025)
@@ -160,7 +160,7 @@
 
 ---
 
-#### 6. Tests de performance avec baselines (Inspiration @RemiFabre)
+#### 6. Tests de performance avec baselines
 
 **Durée estimée** : 4-6h  
 **Statut** : ✅ **FAIT** (8 Décembre 2025)
@@ -184,7 +184,7 @@
 
 ### 🟢 Priorité Basse - Inspiration Contributeurs
 
-#### 7. Chargement lazy assets STL (Inspiration @apirrone)
+#### 7. Chargement lazy assets STL
 
 **Durée estimée** : 3-4h
 
@@ -196,7 +196,7 @@
 
 ---
 
-#### 8. Scènes complexes avec objets (Inspiration @apirrone)
+#### 8. Scènes complexes avec objets
 
 **Durée estimée** : 4-6h
 
@@ -208,7 +208,7 @@
 
 ---
 
-#### 9. Heartbeat WebSocket robuste (Inspiration @FabienDanieau)
+#### 9. Heartbeat WebSocket robuste
 
 **Durée estimée** : 3-4h
 
@@ -220,7 +220,7 @@
 
 ---
 
-#### 10. Guides par niveau (Inspiration @askurique)
+#### 10. Guides par niveau
 
 **Durée estimée** : 4-6h
 
