@@ -119,7 +119,7 @@ graph TB
 - **`scripts/voice_clone/generate_voice.py`** : Clonage voix avec XTTS v2
 - **`src/bbia_sim/bbia_voice.py`** : Intégration TTS/STT
 
-**État** : ✅ **FONCTIONNEL** - STT avancé (Whisper) + TTS personnalisable (Coqui)
+**État** : ✅ **FONCTIONNEL** - STT (Whisper) + TTS personnalisable (Coqui)
 
 ---
 
@@ -218,7 +218,7 @@ result = vision.scan_environment()
 
 ## ✅ 3. Architecture modulaire - Déjà fait ✅
 
-**État** : ✅ **EXCELLENT**
+**État** : ✅ **FONCTIONNEL**
 
 **Preuve :**
 
@@ -250,7 +250,7 @@ def get_tts_backend():
 **Recommandation** :
 
 - ✅ Défaut actuel fonctionne bien (kitten → Pyttsx3TTS → Aurelie Enhanced)
-- ✅ Option avancée : `BBIA_TTS_BACKEND=coqui` pour contrôle pitch/émotion (Coqui TTS)
+- ✅ Option : `BBIA_TTS_BACKEND=coqui` pour contrôle pitch/émotion (Coqui TTS)
 
 **Conclusion** : Architecture modulaire bien conçue ✅
 

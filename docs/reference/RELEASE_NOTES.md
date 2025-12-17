@@ -38,12 +38,12 @@ Cette version marque l'atteinte de **100% d'exploitation** de toutes les capacit
 
 ### Résumé
 
-Alignement intégral des branches (future → develop → main), création du tag v1.3.2 et branche de sauvegarde `backup-v1.3.2-stable`. Extension importante des tests (performance, watchdog, conformité avancée), documentation réorganisée et CI Python 3.11+ homogénéisée.
+Alignement intégral des branches (future → develop → main), création du tag v1.3.2 et branche de sauvegarde `backup-v1.3.2-stable`. Extension importante des tests (performance, watchdog, conformité), documentation réorganisée et CI Python 3.11+ homogénéisée.
 
 ### Points principaux
 
 - Branches: fusion contrôlée future → develop, puis develop → main (CI verte), tag v1.3.2
-- Tests: suites élargies (audio/vision/perf/watchdog), conformité avancée
+- Tests: suites élargies (audio/vision/perf/watchdog), conformité
 - CI/Qualité: Python 3.11+, Black/Ruff/MyPy/Bandit propres, seuils documentés
 - Docs: guides et références enrichis, notes de release consolidées, historique à jour
 

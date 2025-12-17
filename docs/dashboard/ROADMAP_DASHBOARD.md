@@ -9,7 +9,7 @@
 
 ---
 
-## Architecture Dashboard Proposée
+## Architecture Dashboard
 
 ```mermaid 📊
 graph TB

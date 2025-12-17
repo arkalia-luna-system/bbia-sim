@@ -21,5 +21,5 @@
 
 **Retour à** : [README Documentation](../README.md)
 **Voir aussi** : [Index Thématique](../reference/INDEX_THEMATIQUE.md)
-**Development** : [Dashboard Avancé](../development/dashboard-advanced.md)
+**Development** : [Dashboard](../development/dashboard-advanced.md)
 

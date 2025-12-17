@@ -87,7 +87,7 @@ with ReachyMini() as reachy_mini:
 - ✅ **3 Dashboards disponibles** :
   1. **Dashboard officiel-like** (route `/`) - **PRINCIPAL** ✅
   2. `dashboard.py` - Dashboard minimal (HTML inline)
-  3. `dashboard_advanced.py` - Dashboard avancé avec métriques temps réel
+  3. `dashboard_advanced.py` - Dashboard avec métriques temps réel
   4. `dashboard_gradio.py` - Interface Gradio no-code (vision + chat)
 
 **Status:** ✅ **PRÉSENT ET CONFORME (même mieux)**

@@ -46,7 +46,7 @@
 **Analyse** :
 - `ARCHITECTURE_OVERVIEW.md` : Vue générale, accessible
 - `ARCHITECTURE.md` : Guide intermédiaire
-- `ARCHITECTURE_DETAILED.md` : Détails avancés
+- `ARCHITECTURE_DETAILED.md` : Détails techniques
 
 **Recommandation** : ✅ **CONSERVER** tous (hiérarchie logique : vue → guide → détails)
 

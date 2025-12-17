@@ -176,11 +176,11 @@ Les animations SVG pour le daemon sont optionnelles. Si absentes, le dashboard f
 
 ---
 
-## 🎯 Différences avec Dashboard BBIA Avancé
+## 🎯 Différences avec Dashboard BBIA
 
-Ce dashboard **officiel-like** est différent du dashboard avancé BBIA (`dashboard_advanced.py`) :
+Ce dashboard **officiel-like** est différent du dashboard BBIA (`dashboard_advanced.py`) :
 
-| Aspect | Dashboard Officiel-Like | Dashboard Avancé BBIA |
+| Aspect | Dashboard Officiel-Like | Dashboard BBIA |
 |--------|------------------------|----------------------|
 | **Design** | Minimaliste, épuré | Plus riche, métriques |
 | **Focus** | Reachy Mini uniquement | BBIA + Reachy Mini |

@@ -5,7 +5,7 @@
 **Version** : **0.7.18** (décembre 2025)  
 **Bundle ID** : `com.pollen-robotics.reachy-mini`  
 **Emplacement** : `/Volumes/Reachy Mini Control/Reachy Mini Control.app`  
-**Système requis** : macOS 10.15+ (Catalina ou supérieur)
+**Système requis** : macOS 10.15+ (Catalina ou plus récent)
 
 ## 📥 Téléchargement - Quelle Version ?
 

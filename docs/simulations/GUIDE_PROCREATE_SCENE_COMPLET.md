@@ -2,7 +2,7 @@
 
 **Dernière mise à jour : 15 Décembre 2025
 
-> **Guide professionnel** pour créer des textures de pièce dans Procreate, optimisées pour MuJoCo
+> **Guide** pour créer des textures de pièce dans Procreate, optimisées pour MuJoCo
 
 ---
 

@@ -46,7 +46,7 @@
 
 ### MCP (Model Context Protocol)
 - **Statut** : Optionnel
-- **Raison** : BBIA a déjà API REST complète + WebSocket (supérieur)
+- **Raison** : BBIA a déjà API REST complète + WebSocket
 - **Action** : Aucune nécessaire
 
 ### DoA Audio (Direction of Arrival)
@@ -62,7 +62,7 @@
 2. **12 Émotions** vs 6 officielles
 3. **Whisper STT Gratuit** vs OpenAI Realtime API payant
 4. **WebSocket <10ms** vs WebRTC (équivalent ou meilleur)
-5. **API REST Complète** : 50+ endpoints vs MCP (supérieur)
+5. **API REST Complète** : 50+ endpoints vs MCP
 
 ---
 

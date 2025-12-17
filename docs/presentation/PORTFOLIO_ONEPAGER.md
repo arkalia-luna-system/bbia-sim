@@ -10,7 +10,7 @@
 
 ## 🎯 Valeur proposée
 
-### 🔬 Innovation technique
+### 🔬 Technique
 
 - **RobotAPI unifié** : interface abstraite pour simulation (MuJoCo) et robot réel
 - **IA légère** : Whisper STT + YOLOv8n + MediaPipe pour interactions naturelles

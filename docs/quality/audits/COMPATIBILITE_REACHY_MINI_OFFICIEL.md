@@ -9,9 +9,9 @@
 
 ## 🎯 Vue d'Ensemble
 
-Ce document fait un inventaire exhaustif de **TOUT** ce que propose le repo officiel Reachy Mini et compare avec l'état actuel de BBIA-SIM.
+Ce document fait un inventaire de ce que propose le repo officiel Reachy Mini et compare avec l'état actuel de BBIA-SIM.
 
-**Objectif :** Vérifier qu'on a bien **TOUT** ce qui est nécessaire pour que BBIA fonctionne parfaitement avec le robot réel en 8 Décembre 2025.
+**Objectif :** Vérifier que BBIA a tout ce qui est nécessaire pour fonctionner avec le robot réel en 8 Décembre 2025.
 
 **Statut Global :** **98% COMPLET** ✅
 
@@ -46,7 +46,7 @@ Ce document fait un inventaire exhaustif de **TOUT** ce que propose le repo offi
 - **BBIA :** ✅ Endpoints identiques dans `daemon/app/routers/state.py`
 - **Verdict :** ✅ **CORRECT** - Aucune correction nécessaire
 
-### ⚠️ Différences Acceptables (BBIA est un projet différent)
+### ⚠️ Différences (BBIA est un projet différent)
 
 #### Entry Point CLI
 - **Officiel :** `reachy-mini-daemon = "reachy_mini.daemon.app.main:main"`

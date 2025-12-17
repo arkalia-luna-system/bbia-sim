@@ -10,7 +10,7 @@
 ## 📋 Table des Matières
 
 1. [État Actuel : Voix BBIA](#-état-actuel--voix-bbia)
-2. [Solutions Alternatives : Générateurs de Voix Avancés](#-solutions-alternatives--générateurs-de-voix-avancés)
+2. [Solutions Alternatives : Générateurs de Voix](#-solutions-alternatives--générateurs-de-voix)
 3. [État Actuel : Intelligence BBIA](#-état-actuel--intelligence-bbia)
 4. [Recommandations Proposées](#-recommandations-proposées)
 5. [Plan d'Implémentation](#-plan-dimplémentation)

@@ -25,7 +25,7 @@
 graph TB
     subgraph "Modes de Simulation"
         BASIC[Simulation BBIA de Base<br/>Émotions + Mouvements]
-        ADVANCED[Simulation Avancée<br/>Vision + Audio + IA]
+        ADVANCED[Simulation<br/>Vision + Audio + IA]
         UNITY[Simulation Unity<br/>3D Interactive]
         MUJOCO[Simulation MuJoCo<br/>Physique réaliste]
     end

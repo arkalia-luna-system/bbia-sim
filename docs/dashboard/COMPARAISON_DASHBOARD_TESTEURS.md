@@ -102,13 +102,13 @@ D'après les captures d'écran de l'email Pollen Robotics (Novembre 2024) :
 - ✅ **Vue 3D robot** : ✅ **FAIT** (19 nov 2025) - Three.js + robot_3d.js + canvas 3D
 - ✅ **Design épuré** : ✅ **FAIT** (19 nov 2025) - Fond blanc, Quick Actions (15 emojis), FPS display
 
-### Dashboard Avancé BBIA (`dashboard_advanced.py`)
+### Dashboard BBIA (`dashboard_advanced.py`)
 
 #### **Points Forts :**
 
 - ✅ Métriques temps réel complètes
 - ✅ Graphiques de performance
-- ✅ Contrôles joints avancés
+- ✅ Contrôles joints
 - ✅ Vision et détection
 - ✅ Chat interactif
 

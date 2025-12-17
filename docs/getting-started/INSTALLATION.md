@@ -1,6 +1,6 @@
 # 🔧 Installation BBIA-SIM
 
-> **Guide centralisé d'installation - Source de vérité unique**  
+> **Guide centralisé d'installation**  
 > **⚠️ IMPORTANT** : Ce fichier est la référence unique pour toutes les instructions d'installation. Les autres guides référencent ce fichier.
 
 **Dernière mise à jour** : 15 Décembre 2025
