@@ -4,7 +4,7 @@ Cet adaptateur permet d'utiliser RobotAPI de BBIA comme Backend du SDK officiel.
 """
 
 import logging
-from typing import Any
+from typing import Any, cast
 
 import numpy as np
 import numpy.typing as npt
@@ -63,30 +63,30 @@ class BackendAdapter:
             multi_backends = app_state.get("multi_backends", {})
             if backend_type and backend_type in multi_backends:
                 backend = multi_backends[backend_type]
-                if backend is not None:
+                if backend is not None and isinstance(backend, RobotAPI):
                     logger.info(
                         "Utilisation backend %s depuis multi_backends", backend_type
                     )
-                    return backend
+                    return cast(RobotAPI, backend)
         except ImportError:
             pass
 
         # Fallback: créer backend directement
         if backend_type:
             backend = RobotFactory.create_backend(backend_type)
-            if backend is not None:
-                return backend
+            if backend is not None and isinstance(backend, RobotAPI):
+                return cast(RobotAPI, backend)
 
         # Par défaut: essayer mujoco puis reachy_mini
         backend = RobotFactory.create_backend("mujoco")
         if backend is None:
             backend = RobotFactory.create_backend("reachy_mini")
-        if backend is None:
+        if backend is None or not isinstance(backend, RobotAPI):
             raise HTTPException(
                 status_code=503,
                 detail="Aucun backend robot disponible",
             )
-        return backend
+        return cast(RobotAPI, backend)
 
     def connect_if_needed(self) -> None:
         """Connecte le backend si nécessaire."""
