@@ -8,7 +8,7 @@ from typing import Any
 
 import numpy as np
 import numpy.typing as npt
-from fastapi import HTTPException, WebSocket  # type: ignore[import-untyped]
+from fastapi import HTTPException, Query, WebSocket  # type: ignore[import-untyped]
 
 from bbia_sim.robot_api import RobotAPI
 from bbia_sim.robot_factory import RobotFactory
@@ -20,9 +20,18 @@ logger = logging.getLogger(__name__)
 class BackendAdapter:
     """Adaptateur qui convertit RobotAPI en interface Backend SDK (conforme Backend officiel)."""
 
-    def __init__(self, robot: RobotAPI | None = None) -> None:
-        """Initialise l'adaptateur."""
-        self._robot = robot or self._create_backend()
+    def __init__(
+        self, robot: RobotAPI | None = None, backend_type: str | None = None
+    ) -> None:
+        """Initialise l'adaptateur.
+
+        Args:
+            robot: Instance RobotAPI (optionnel, créé automatiquement si None)
+            backend_type: Type de backend à utiliser ("mujoco", "reachy_mini", etc.)
+                Si None, utilise le backend par défaut ou depuis multi_backends
+        """
+        self._backend_type = backend_type
+        self._robot = robot or self._create_backend(backend_type)
         self._connected = False
 
         # Initialiser attributs target (conforme SDK - attributs directs, pas propriétés)
@@ -34,8 +43,41 @@ class BackendAdapter:
         ) = None
         self.ik_required: bool = False  # Flag pour IK computation (conforme SDK)
 
-    def _create_backend(self) -> RobotAPI:
-        """Crée un backend RobotAPI."""
+    def _create_backend(self, backend_type: str | None = None) -> RobotAPI:
+        """Crée un backend RobotAPI.
+
+        Args:
+            backend_type: Type de backend à créer. Si None, utilise multi_backends ou défaut.
+
+        Returns:
+            Instance RobotAPI
+
+        Raises:
+            HTTPException: Si aucun backend n'est disponible
+        """
+        # NOUVEAU: Support multi-backends simultanés
+        # Vérifier si multi_backends est disponible dans app_state
+        try:
+            from bbia_sim.daemon.app.main import app_state
+
+            multi_backends = app_state.get("multi_backends", {})
+            if backend_type and backend_type in multi_backends:
+                backend = multi_backends[backend_type]
+                if backend is not None:
+                    logger.info(
+                        "Utilisation backend %s depuis multi_backends", backend_type
+                    )
+                    return backend
+        except ImportError:
+            pass
+
+        # Fallback: créer backend directement
+        if backend_type:
+            backend = RobotFactory.create_backend(backend_type)
+            if backend is not None:
+                return backend
+
+        # Par défaut: essayer mujoco puis reachy_mini
         backend = RobotFactory.create_backend("mujoco")
         if backend is None:
             backend = RobotFactory.create_backend("reachy_mini")
@@ -619,9 +661,21 @@ class BackendAdapter:
         logger.debug("wrapped_run: non nécessaire pour adaptateur")
 
 
-def get_backend_adapter() -> BackendAdapter:
-    """Dependency FastAPI pour obtenir un BackendAdapter."""
-    return BackendAdapter()
+def get_backend_adapter(
+    backend: str | None = Query(
+        None,
+        description="Type de backend à utiliser ('mujoco', 'reachy_mini', etc.). Si None, utilise le backend par défaut.",
+    ),
+) -> BackendAdapter:
+    """Dependency FastAPI pour obtenir un BackendAdapter avec routing multi-backends.
+
+    Args:
+        backend: Type de backend à utiliser (optionnel, depuis query param)
+
+    Returns:
+        Instance de BackendAdapter configurée pour le backend spécifié
+    """
+    return BackendAdapter(backend_type=backend)
 
 
 def ws_get_backend_adapter(websocket: WebSocket | None = None) -> BackendAdapter:

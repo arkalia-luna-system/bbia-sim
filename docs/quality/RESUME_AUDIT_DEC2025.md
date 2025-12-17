@@ -254,7 +254,7 @@
 
 **Score exemples** : **100%** ✅ **COMPLET**
 
-**✅ POINT FORT** : Les exemples principaux exploitent très bien les capacités du projet
+**✅ POINT FORT** : Les exemples principaux exploitent correctement les capacités du projet
 
 ---
 

@@ -178,7 +178,7 @@ self.emotional_sync.sync_speak_with_emotion(
 
 **Pourquoi DoA est optionnel** :
 - ✅ **BBIA fonctionne avec n'importe quel microphone** (pas besoin de hardware spécifique)
-- ✅ **Whisper STT fonctionne très bien** sans DoA (reconnaissance vocale de qualité)
+- ✅ **Whisper STT fonctionne correctement** sans DoA (reconnaissance vocale de qualité)
 - ⚠️ **DoA nécessite hardware spécifique** (microphone array avec 4 microphones directionnels)
 - ⚠️ **DoA est complexe** (algorithmes de beamforming, traitement multi-canal)
 - ⚠️ **DoA n'est utile que** si on veut que le robot se tourne vers la source audio
