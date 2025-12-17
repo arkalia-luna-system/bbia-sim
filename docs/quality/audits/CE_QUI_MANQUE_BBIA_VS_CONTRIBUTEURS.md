@@ -110,13 +110,14 @@ Ce document se concentre sur le **travail technique concret** des contributeurs,
 
 ---
 
-#### 9. Timestep adaptatif
-**État actuel** : Timestep fixe 0.01s (100Hz)  
-**À faire** : Timestep adaptatif selon complexité scène  
-**Technique** : Ajuster timestep dynamiquement (0.005s-0.02s)  
-**Bénéfice** : Performance optimale selon scène  
-**Priorité** : 🟢 Basse  
-**Temps estimé** : 3-4h
+#### 9. Timestep adaptatif ✅ **TERMINÉ**
+**État actuel** : ✅ Timestep adaptatif selon complexité scène  
+**Réalisé** : `adaptive_timestep.py` avec calcul complexité et ajustement dynamique  
+**Technique** : Ajuster timestep dynamiquement (0.005s-0.02s) selon joints/bodies/geoms  
+**Bénéfice** : Performance optimale selon scène, meilleure utilisation CPU  
+**Priorité** : 🟡 Moyenne  
+**Temps estimé** : 3-4h  
+**Statut** : ✅ **TERMINÉ** (15 Déc 2025) - Tests complets (9 tests, coverage 87.50%)
 
 ---
 
@@ -322,7 +323,7 @@ Ce document se concentre sur le **travail technique concret** des contributeurs,
 1. Support multi-robots simultanés (8-12h)
 2. ✅ Chargement lazy assets STL (3-4h) - **TERMINÉ** (15 Déc)
 3. Scènes complexes (4-6h)
-4. Timestep adaptatif (3-4h)
+4. ✅ Timestep adaptatif (3-4h) - **TERMINÉ** (15 Déc)
 5. ✅ Cache modèles agressif (2-3h) - **TERMINÉ** (15 Déc)
 6. Batch processing mouvements (4-6h)
 7. Rate limiting granulaire (2-3h)
@@ -390,7 +391,7 @@ Ce document se concentre sur le **travail technique concret** des contributeurs,
 | Guides par niveau | @askurique | 🟡 Moyenne | 4-6h | ⚠️ À faire |
 | Chargement lazy STL | @apirrone | 🟡 Moyenne | 3-4h | ✅ **TERMINÉ** (15 Déc) |
 | Scènes complexes | @apirrone | 🟢 Basse | 4-6h | ⚠️ À faire |
-| Timestep adaptatif | @apirrone | 🟢 Basse | 3-4h | ⚠️ À faire |
+| Timestep adaptatif | @apirrone | 🟡 Moyenne | 3-4h | ✅ **TERMINÉ** (15 Déc) |
 | Cache modèles agressif | @apirrone | 🟢 Basse | 2-3h | ✅ **TERMINÉ** (15 Déc) |
 | Batch processing | @apirrone | 🟢 Basse | 4-6h | ⚠️ À faire |
 | Rate limiting granulaire | @FabienDanieau | 🟢 Basse | 2-3h | ✅ **TERMINÉ** (15 Déc) |

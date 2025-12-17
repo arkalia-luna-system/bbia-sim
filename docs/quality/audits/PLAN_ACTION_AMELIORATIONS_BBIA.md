@@ -919,7 +919,7 @@ git push origin develop
    - **Impact** : 🟡 **MOYEN** - Performance Mac Mini
    - **À faire** : Chargement à la demande, cache
 
-9. **Timestep adaptatif** (3-4h) - ⭐⭐ Impact Performance
+9. ✅ **Timestep adaptatif** (3-4h) - ⭐⭐ Impact Performance - **TERMINÉ** (15 Déc)
    - **Pourquoi** : Performance optimale selon complexité scène
    - **Impact** : 🟡 **MOYEN** - Performance simulation
    - **À faire** : Ajustement dynamique timestep (0.005s-0.02s)
