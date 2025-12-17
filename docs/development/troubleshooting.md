@@ -5,7 +5,7 @@
 
 > **Voir aussi** : [`docs/reference/INDEX_THEMATIQUE.md`](../reference/INDEX_THEMATIQUE.md) et [`docs/reference/project-status.md`](../reference/project-status.md) (État par axe)
 
-**📚 [FAQ principale](../getting-started/troubleshooting.md)** | **🔧 [Guide avancé](../guides/GUIDE_AVANCE.md)** | **🧪 [Guide tests](testing.md)**
+**📚 [FAQ principale](../getting-started/troubleshooting.md)** | **🔧 [Guide technique](../guides/GUIDE_AVANCE.md)** | **🧪 [Guide tests](testing.md)**
 
 > **💡 Ce guide est complémentaire à la [FAQ principale](../getting-started/troubleshooting.md)**  
 > - **FAQ principale** : Questions fréquentes générales (installation, MuJoCo, audio basique)  
@@ -458,4 +458,4 @@ python scripts/bbia_doctor.py
 ## 🎯 Navigation
 
 **Retour à** : [README Documentation](../README.md)  
-**Voir aussi** : [FAQ Principale](../getting-started/troubleshooting.md) • [Guide Avancé](../guides/GUIDE_AVANCE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
+**Voir aussi** : [FAQ Principale](../getting-started/troubleshooting.md) • [Guide Technique](../guides/GUIDE_AVANCE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)

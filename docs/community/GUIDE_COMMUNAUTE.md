@@ -37,12 +37,12 @@
 3. **Intégration IA** (400 mots)
    - YOLO, Whisper, Transformers
    - 12 émotions robotiques
-   - 21 comportements intelligents
+   - 21 comportements
 
 4. **Qualité et Tests** (300 mots)
    - 1,743 tests automatisés
    - Coverage 68.86%
-   - CI/CD professionnel
+   - CI/CD
 
 5. **Démonstration** (200 mots)
    - Exemples de code

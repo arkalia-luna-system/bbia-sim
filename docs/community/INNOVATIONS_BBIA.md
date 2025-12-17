@@ -281,7 +281,7 @@ emotions.set_emotion("calm", intensity=0.6)
 ### Guides
 
 - **Guide Démarrage** : `docs/guides/GUIDE_DEMARRAGE.md`
-- **Guide Avancé** : `docs/guides/GUIDE_AVANCE.md`
+- **Guide Technique** : `docs/guides/GUIDE_AVANCE.md`
 - **Guide Chat** : `docs/guides/GUIDE_CHAT_BBIA.md`
 
 ---

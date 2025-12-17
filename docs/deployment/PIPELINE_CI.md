@@ -6,7 +6,7 @@
 
 > **Voir aussi** : [`docs/reference/INDEX_THEMATIQUE.md`](../reference/INDEX_THEMATIQUE.md) et [`docs/reference/project-status.md`](../reference/project-status.md)
 
-**📚 [Guide tests](../development/testing.md)** | **🔧 [Guide avancé](../guides/GUIDE_AVANCE.md)**
+**📚 [Guide tests](../development/testing.md)** | **🔧 [Guide technique](../guides/GUIDE_AVANCE.md)**
 
 ---
 

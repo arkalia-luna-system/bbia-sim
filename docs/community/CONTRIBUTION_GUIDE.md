@@ -356,7 +356,7 @@ open htmlcov/index.html
 ### Documentation
 
 - **Guide de Démarrage** : `docs/guides/GUIDE_DEMARRAGE.md`
-- **Guide Avancé** : `docs/guides/GUIDE_AVANCE.md`
+- **Guide Technique** : `docs/guides/GUIDE_AVANCE.md`
 - **Architecture** : `docs/development/architecture/ARCHITECTURE_DETAILED.md`
 - **Conformité SDK** : `docs/quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md`
 

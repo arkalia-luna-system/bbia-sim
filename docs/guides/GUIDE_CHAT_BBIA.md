@@ -357,7 +357,7 @@ def test_chat():
 
 ---
 
-## Configuration avancée
+## Configuration
 
 ### Modifier le comportement des réponses
 

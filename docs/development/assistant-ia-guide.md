@@ -12,7 +12,7 @@ Ce guide est destiné aux **assistants IA** (Claude, GPT, Cursor AI, etc.) pour 
 
 > **💡 Pour les humains** : Si vous cherchez à apprendre à utiliser BBIA-SIM, consultez plutôt :
 > - 🟢 **[Guide de Démarrage](../guides/GUIDE_DEMARRAGE.md)** - Pour commencer
-> - 🟡 **[Guide Avancé](../guides/GUIDE_AVANCE.md)** - Pour développeurs
+> - 🟡 **[Guide Technique](../guides/GUIDE_AVANCE.md)** - Pour développeurs
 > - 📚 **[README Documentation](../README.md)** - Navigation complète
 
 ---
@@ -265,7 +265,7 @@ docs/
 
 - `docs/INDEX_FINAL.md` - Index complet documentation
 - `docs/guides/GUIDE_DEMARRAGE.md` - Guide de démarrage
-- `docs/guides/GUIDE_AVANCE.md` - Guide avancé
+- `docs/guides/GUIDE_AVANCE.md` - Guide technique
 - `docs/development/architecture/ARCHITECTURE_OVERVIEW.md` - Vue d'ensemble architecture
 - `docs/quality/audits/RESUME_ETAT_ACTUEL_BBIA.md` - État actuel détaillé
 

@@ -558,7 +558,7 @@ Le **Reachy Mini Wireless** fournit une base solide pour BBIA :
 ## 🎯 Navigation
 
 **Retour à** : [README Documentation](../README.md)
-**Voir aussi** : [Guide de Démarrage](GUIDE_DEMARRAGE.md) • [Guide Avancé](GUIDE_AVANCE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
+**Voir aussi** : [Guide de Démarrage](GUIDE_DEMARRAGE.md) • [Guide Technique](GUIDE_AVANCE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
 
 ---
 

@@ -8,7 +8,7 @@
 
 ## 📋 Liste des Comportements Disponibles
 
-BBIA dispose de **15 comportements avancés** organisés en catégories :
+BBIA dispose de **15 comportements** organisés en catégories :
 
 ### 🎯 Comportements de Suivi
 
@@ -57,7 +57,7 @@ behavior.execute(context)
 
 ### 💬 Comportements de Communication
 
-#### 3. **Conversation** - Conversation intelligente
+#### 3. **Conversation** - Conversation avec IA
 
 **Description :** Conversation naturelle avec LLM (BBIAHuggingFace si disponible), mouvements expressifs, et réactions visuelles.
 
@@ -200,7 +200,7 @@ behavior = TeachingBehavior(robot_api=robot_api)
 # Leçon de maths niveau essentiel
 behavior.execute({"subject": "maths", "level": "beginner"})
 
-# Leçon de sciences niveau avancé
+# Leçon de sciences
 behavior.execute({"subject": "sciences", "level": "advanced"})
 ```
 
@@ -287,9 +287,9 @@ behavior.execute({"exercise": "stretching", "repetitions": 3})
 
 ---
 
-#### 12. **AlarmClock** - Réveil intelligent
+#### 12. **AlarmClock** - Réveil
 
-**Description :** Réveil intelligent avec séquence progressive, détection si l'utilisateur se réveille, et mode snooze.
+**Description :** Réveil avec séquence progressive, détection si l'utilisateur se réveille, et mode snooze.
 
 **Utilisation :**
 ```python
@@ -415,7 +415,7 @@ behavior.execute({"music_type": "happy", "duration": 30})
 
 ---
 
-## ⚙️ Configuration Avancée
+## ⚙️ Configuration
 
 ### Priorités des Comportements
 

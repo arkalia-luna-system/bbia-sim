@@ -873,7 +873,7 @@ Télécharge automatiquement les 41 fichiers STL depuis le repo officiel.
 python scripts/process_manager.py --cleanup
 ```
 
-Nettoie les processus gourmands tout en préservant les applications importantes.
+Nettoie les processus consommateurs de ressources tout en préservant les applications importantes.
 
 ## 🔧 Résolution de problèmes
 

@@ -35,7 +35,7 @@
 
 ### 💻 Développeur
 
-1. [Guide Avancé](guides/GUIDE_AVANCE.md) — Fonctionnalités avancées
+1. [Guide Technique](guides/GUIDE_AVANCE.md) — Fonctionnalités techniques
 2. [Architecture Vue d'Ensemble](development/architecture/ARCHITECTURE_OVERVIEW.md) — Structure du projet
 3. [Guide d'Intégration](development/integration.md) — Intégrer BBIA-SIM
 4. [Guide de Test](development/testing.md) — Tests et qualité

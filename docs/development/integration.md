@@ -5,7 +5,7 @@
 
 > **Compatibilité Python** : Python 3.11+ requis. Voir [`docs/getting-started/INSTALLATION.md`](../getting-started/INSTALLATION.md) pour les détails d'installation.
 **Public** : développeurs, chercheurs, communauté technique  
-**📚 [Guide de démarrage](../guides/GUIDE_DEMARRAGE.md)** | **🔧 [Guide avancé](../guides/GUIDE_AVANCE.md)** | **🧪 [Guide tests](testing.md)**
+**📚 [Guide de démarrage](../guides/GUIDE_DEMARRAGE.md)** | **🔧 [Guide technique](../guides/GUIDE_AVANCE.md)** | **🧪 [Guide tests](testing.md)**
 
 ## 📋 Table des Matières
 
@@ -1214,4 +1214,4 @@ Vous avez intégré BBIA-SIM dans votre projet. Écosystème BBIA-SIM prêt à l
 ## 🎯 Navigation
 
 **Retour à** : [README Documentation](../README.md)  
-**Voir aussi** : [Guide Avancé](../guides/GUIDE_AVANCE.md) • [Architecture](../development/architecture/ARCHITECTURE_OVERVIEW.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md) • [Roadmap Dashboard](../dashboard/ROADMAP_DASHBOARD.md)
+**Voir aussi** : [Guide Technique](../guides/GUIDE_AVANCE.md) • [Architecture](../development/architecture/ARCHITECTURE_OVERVIEW.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md) • [Roadmap Dashboard](../dashboard/ROADMAP_DASHBOARD.md)

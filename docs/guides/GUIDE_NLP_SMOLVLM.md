@@ -383,7 +383,7 @@ for msg in messages:
 
 ```
 
-### Exemple 2 : Extraction paramètres avancée
+### Exemple 2 : Extraction paramètres
 
 ```python
 # Extraction angle + direction

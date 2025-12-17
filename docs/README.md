@@ -72,7 +72,7 @@ flowchart TB
 ### Par Niveau
 
 - 🟢 **[Guide de Démarrage](guides/GUIDE_DEMARRAGE.md)** — Installation et premiers pas en 5 minutes
-- 🟡 **[Guide Avancé](guides/GUIDE_AVANCE.md)** — Fonctionnalités avancées et architecture
+- 🟡 **[Guide Technique](guides/GUIDE_AVANCE.md)** — Fonctionnalités techniques et architecture
 - 🔴 **[Guides Techniques](development/)** — Intégration, tests, migration
 
 ### Par Sujet

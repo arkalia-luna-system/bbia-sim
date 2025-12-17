@@ -62,7 +62,7 @@ flowchart TD
     SCRIPT --> EMOTION[😊 Émotions<br/>set_emotion]
     MUJOCO --> VISUAL[👁️ Visualisation 3D<br/>Robot Animé]
 
-    CHAT --> NEXT1[➡️ Guide Avancé]
+    CHAT --> NEXT1[➡️ Guide Technique]
     EMOTION --> NEXT2[➡️ Comportements]
     VISUAL --> NEXT3[➡️ Simulation Complète]
 
@@ -76,7 +76,7 @@ flowchart TD
 
 ### 1. 📦 Installation
 
-> **📚 Guide complet** : Pour les détails d'installation, consultez [`docs/getting-started/INSTALLATION.md`](../getting-started/INSTALLATION.md) (source de vérité unique)
+> **📚 Guide complet** : Pour les détails d'installation, consultez [`docs/getting-started/INSTALLATION.md`](../getting-started/INSTALLATION.md)
 
 <div align="center">
 
@@ -346,7 +346,7 @@ R : Oui, le système est extensible. Voir `examples/demo_emotion_ok.py`
 1. **Découvrir** : [Architecture (vue d'ensemble)](../development/architecture/ARCHITECTURE_OVERVIEW.md)
 2. **Créer** : vos propres comportements avec `examples/demo_*`
 3. **Comprendre** : [Architecture détaillée](../development/architecture/ARCHITECTURE_DETAILED.md)
-4. **Avancer** : [Guide Avancé](GUIDE_AVANCE.md)
+4. **Avancer** : [Guide Technique](GUIDE_AVANCE.md)
 5. **Index thématique** : [Index Thématique](../reference/INDEX_THEMATIQUE.md)
 
 ---
