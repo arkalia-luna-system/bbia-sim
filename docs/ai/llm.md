@@ -205,7 +205,7 @@ Avantages LLM :
 
 1. **Phi-2 2.7B** (recommandé - BBIAChat)
    - Qualité : élevée
-   - Français : très bon
+   - Français : bon
    - Taille : ~5GB RAM (compatible RPi 5)
    - Support MPS/CUDA : oui
    - Vitesse : ~1-2 secondes/réponse
