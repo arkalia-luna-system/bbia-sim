@@ -564,7 +564,9 @@ class FaceDetector:
             if MEDIAPIPE_AVAILABLE and mp is not None:
                 # Vérifier que mp a l'attribut solutions avant de l'utiliser
                 if not hasattr(mp, "solutions"):
-                    raise AttributeError("mediapipe module has no attribute 'solutions'")
+                    raise AttributeError(
+                        "mediapipe module has no attribute 'solutions'"
+                    )
                 self.mp_face_detection = mp.solutions.face_detection
                 self.mp_drawing = mp.solutions.drawing_utils
                 face_detection = self.mp_face_detection.FaceDetection(

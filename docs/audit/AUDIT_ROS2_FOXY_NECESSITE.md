@@ -184,7 +184,7 @@ grep -r "ros2\|ROS2" --include="*.py" --include="*.md"
 | Caractéristique | Zenoh (actuel) | ROS 2 (non utilisé) |
 |----------------|----------------|---------------------|
 | **Utilisé par SDK Reachy** | ✅ Oui | ❌ Non |
-| **Performance** | ⚡ Très rapide | ⚡ Rapide |
+| **Performance** | ⚡ Rapide | ⚡ Rapide |
 | **Complexité** | 🟢 Simple | 🟡 Moyenne |
 | **Installation** | ✅ Déjà installé (`eclipse-zenoh`) | ❌ Nécessiterait installation |
 | **Compatibilité** | ✅ 100% compatible SDK | ❌ Non compatible SDK |
