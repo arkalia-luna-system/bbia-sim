@@ -89,13 +89,14 @@ Ce document se concentre sur le **travail technique concret** des contributeurs,
 
 ---
 
-#### 7. Chargement lazy assets STL
-**État actuel** : Tous les assets STL chargés au démarrage  
-**À faire** : Chargement à la demande (lazy loading)  
-**Technique** : Charger assets seulement si nécessaire pour rendu  
-**Bénéfice** : Démarrage plus rapide, moins de RAM  
-**Priorité** : 🟢 Basse  
-**Temps estimé** : 3-4h
+#### 7. Chargement lazy assets STL ✅ **TERMINÉ**
+**État actuel** : ✅ Cache LRU pour STL avec chargement à la demande  
+**Réalisé** : `stl_asset_cache.py` avec cache LRU (20 fichiers max, 50 MB max)  
+**Technique** : Cache LRU pour STL, chargement seulement quand demandé via API `/stl/{filename}`  
+**Bénéfice** : Démarrage plus rapide, moins de mémoire utilisée, performances améliorées  
+**Priorité** : 🟡 Moyenne  
+**Temps estimé** : 3-4h  
+**Statut** : ✅ **TERMINÉ** (15 Déc 2025) - Tests complets (9 tests, coverage 77.11%)
 
 ---
 
