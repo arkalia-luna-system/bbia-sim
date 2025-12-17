@@ -199,7 +199,9 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install --no-cache-dir -e .[test]
+          # Installer torch séparément avec timeout augmenté (gros package ~900MB)
+          pip install --no-cache-dir --default-timeout=600 torch>=2.0.0 || echo "torch installation failed, continuing..."
+          pip install --no-cache-dir --default-timeout=600 -e .[test]
           pip install --no-cache-dir pytest-asyncio pytest-timeout
           # Installation optionnelle de pyaudio si disponible
           pip install --no-cache-dir pyaudio || echo "pyaudio non disponible, continuons sans"
@@ -302,7 +304,9 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install --no-cache-dir -e .[test]
+          # Installer torch séparément avec timeout augmenté (gros package ~900MB)
+          pip install --no-cache-dir --default-timeout=600 torch>=2.0.0 || echo "torch installation failed, continuing..."
+          pip install --no-cache-dir --default-timeout=600 -e .[test]
           pip install --no-cache-dir pytest-asyncio pytest-timeout
           # Installation optionnelle de pyaudio si disponible
           pip install --no-cache-dir pyaudio || echo "pyaudio non disponible, continuons sans"
@@ -455,7 +459,9 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install --no-cache-dir -e .[test]
+          # Installer torch séparément avec timeout augmenté (gros package ~900MB)
+          pip install --no-cache-dir --default-timeout=600 torch>=2.0.0 || echo "torch installation failed, continuing..."
+          pip install --no-cache-dir --default-timeout=600 -e .[test]
           pip install --no-cache-dir pytest-asyncio pytest-timeout
           # Installation optionnelle de pyaudio si disponible
           pip install --no-cache-dir pyaudio || echo "pyaudio non disponible, continuons sans"
@@ -535,7 +541,9 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install --no-cache-dir -e ".[dev]"
+          # Installer torch séparément avec timeout augmenté (gros package ~900MB)
+          pip install --no-cache-dir --default-timeout=600 torch>=2.0.0 || echo "torch installation failed, continuing..."
+          pip install --no-cache-dir --default-timeout=600 -e ".[dev]"
           python -m pip cache purge || true
 
       - name: Test examples
@@ -653,7 +661,9 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install --no-cache-dir -e .[test]
+          # Installer torch séparément avec timeout augmenté (gros package ~900MB)
+          pip install --no-cache-dir --default-timeout=600 torch>=2.0.0 || echo "torch installation failed, continuing..."
+          pip install --no-cache-dir --default-timeout=600 -e .[test]
           pip install --no-cache-dir pytest-timeout
           python -m pip cache purge || true
 

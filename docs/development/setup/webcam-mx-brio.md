@@ -186,7 +186,7 @@ logging.info(f"Postures détectées: {result.get('poses')}")
 
 ---
 
-## 🔧 Configuration avancée
+## 🔧 Configuration
 
 ### Améliorer la détection
 

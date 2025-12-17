@@ -68,8 +68,8 @@
 ### 🚀 Démarrage & Guides
 
 - [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) — Installation et premiers pas
-- [Guide Avancé](guides/GUIDE_AVANCE.md) — Fonctionnalités avancées
-- [Guide Chat BBIA](guides/GUIDE_CHAT_BBIA.md) — Système de chat intelligent
+- [Guide Technique](guides/GUIDE_AVANCE.md) — Fonctionnalités techniques
+- [Guide Chat BBIA](guides/GUIDE_CHAT_BBIA.md) — Système de chat
 - [Guide Reachy Mini Wireless](guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md) — Guide complet
 - [FAQ Troubleshooting](development/troubleshooting.md) — Dépannage
 
@@ -155,7 +155,7 @@
 1. **Nouveau sur le projet ?** → [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md)
 2. **Installer le projet ?** → [Installation Audio](installation/AUDIO_SETUP.md)
 3. **Utiliser le robot ?** → [Guide Reachy Mini](guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md)
-4. **Développer ?** → [Guide Avancé](guides/GUIDE_AVANCE.md)
+4. **Développer ?** → [Guide Technique](guides/GUIDE_AVANCE.md)
 5. **Tester ?** → [Guide de Test](development/testing.md)
 
 ---
