@@ -455,7 +455,7 @@ python examples/view_scene_piece.py src/bbia_sim/sim/scenes/ma_scene_procreate.x
 
 ### **Astuce 4 : Pinceaux Personnalisés**
 
-- Créer vos propres pinceaux pour style unique
+- Créer vos propres pinceaux pour style personnalisé
 - Sauvegarder dans Procreate pour réutilisation
 
 ### **Astuce 5 : Test dans MuJoCo**

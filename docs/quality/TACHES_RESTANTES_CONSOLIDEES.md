@@ -225,7 +225,7 @@
 **Durée estimée** : 4-6h
 
 **Actions** :
-- Organiser guides par niveau (premiers pas → intermédiaire → expert)
+- Organiser guides par niveau (premiers pas → intermédiaire → technique)
 - Structure `docs/beginner/`, `docs/intermediate/`, `docs/advanced/`
 
 **Résultat** : Navigation plus claire, progression naturelle

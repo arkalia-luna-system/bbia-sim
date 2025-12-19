@@ -64,14 +64,26 @@ class TestAppsEndpoints:
 
     def test_job_status(self, api_token: str) -> None:
         """Test GET /api/apps/job-status/{job_id}."""
+        # D'abord créer un job en installant une app
+        app_info = {"name": "test_app_status", "source_kind": "huggingface"}
+        install_response = client.post(
+            "/api/apps/install",
+            json=app_info,
+            headers={"Authorization": f"Bearer {api_token}"},
+        )
+        assert install_response.status_code == 200
+        job_id = install_response.json()["job_id"]
+
+        # Ensuite vérifier le statut du job
         response = client.get(
-            "/api/apps/job-status/test_job_123",
+            f"/api/apps/job-status/{job_id}",
             headers={"Authorization": f"Bearer {api_token}"},
         )
         assert response.status_code == 200
         data = response.json()
         assert "job_id" in data
         assert "status" in data
+        assert data["job_id"] == job_id
 
     def test_start_app(self, api_token: str) -> None:
         """Test POST /api/apps/start-app/{app_name}."""

@@ -221,12 +221,9 @@ jobs:
         timeout-minutes: 45
         run: |
           export PYTHONPATH=src:$PYTHONPATH
-          # OPTIMISATION CI: Parallélisation avec pytest-xdist si disponible
-          if python -c "import xdist" 2>/dev/null; then
-            pytest -vv -m "not e2e and not slow" --cov=src/bbia_sim --cov-report=xml --cov-report=term-missing --cov-fail-under=0 --timeout=30 --maxfail=10 --log-cli-level=INFO --durations=20 --tb=short --showlocals -n auto
-          else
-            pytest -vv -m "not e2e and not slow" --cov=src/bbia_sim --cov-report=xml --cov-report=term-missing --cov-fail-under=0 --timeout=30 --maxfail=10 --log-cli-level=INFO --durations=20 --tb=short --showlocals -x
-          fi
+          # OPTIMISATION CI: Limiter parallélisation pour éviter surcharge RAM
+          # Utiliser -x pour arrêter au premier échec et économiser ressources
+          pytest -vv -m "not e2e and not slow" --cov=src/bbia_sim --cov-report=xml --cov-report=term-missing --cov-fail-under=0 --timeout=30 --maxfail=1 --log-cli-level=INFO --durations=20 --tb=short --showlocals -x
         env:
           PYTHONDONTWRITEBYTECODE: 1
 

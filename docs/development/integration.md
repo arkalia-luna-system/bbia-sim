@@ -1034,7 +1034,7 @@ self.addEventListener('fetch', (event) => {
 #### **2. React Native - ⭐⭐ Court Terme**
 
 **Avantages :**
-- ✅ Codebase unique (Android + iOS)
+- ✅ Codebase unifié (Android + iOS)
 - ✅ Écosystème riche
 - ✅ Performance native
 - ✅ Distribution stores
@@ -1207,7 +1207,7 @@ Vous avez intégré BBIA-SIM dans votre projet. Écosystème BBIA-SIM prêt à l
 ---
 
 **Dernière mise à jour** : 8 Décembre 2025  
-**Expert Review** : Sections apps mobiles et PWA ajoutées
+**Note** : Sections apps mobiles et PWA ajoutées
 
 ---
 
