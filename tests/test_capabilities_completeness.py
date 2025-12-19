@@ -661,8 +661,8 @@ class TestAdditionalCapabilities:
     def test_create_pose_detector(self) -> None:
         """Test create_pose_detector."""
         from bbia_sim.pose_detection import (
-            create_pose_detector,
             MEDIAPIPE_POSE_AVAILABLE,
+            create_pose_detector,
         )
 
         detector = create_pose_detector()
