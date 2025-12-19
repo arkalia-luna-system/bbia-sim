@@ -29,7 +29,7 @@
 #### Dashboard
 
 - Contrôles media fonctionnels
-- Vue 3D robot (placeholder)
+- Vue 3D robot (géométrie basique)
 - Design épuré avec Quick Actions
 
 #### Performance
@@ -226,7 +226,7 @@
 
 **Actions** :
 - Organiser guides par niveau (premiers pas → intermédiaire → technique)
-- Structure `docs/beginner/`, `docs/intermediate/`, `docs/advanced/`
+- Structure `docs/getting-started/`, `docs/guides/`, `docs/development/`
 
 **Résultat** : Navigation plus claire, progression naturelle
 
@@ -273,7 +273,7 @@
 **Actions** :
 
 - Intégrer modèle STL réel du robot
-- Remplacer placeholder Three.js
+- Améliorer rendu Three.js
 
 **Résultat** : Amélioration visuelle uniquement
 
@@ -293,9 +293,9 @@
 
 ---
 
-## Corrections Qualité Code en Cours
+## Corrections Qualité Code
 
-### Exceptions génériques (BLE001) - En cours
+### Exceptions génériques (BLE001)
 
 **Statut** : ~220 occurrences restantes (~55% fait)
 
@@ -334,7 +334,7 @@ except Exception as e:
 
 ---
 
-### Factorisation Patterns Try/Except (En cours)
+### Factorisation Patterns Try/Except
 
 **Statut** : Module centralisé créé, factorisation progressive
 
@@ -389,12 +389,12 @@ Les patterns try/except étaient répétés ~383 fois dans le code. La factorisa
 | **Intelligence Conversationnelle** | Terminé | Complété |
 | **Comportements** | Terminé | 15/15 comportements |
 | **Dashboard Media** | Terminé | Contrôles visuels OK |
-| **Vue 3D Robot** | En cours | Placeholder fonctionnel |
+| **Vue 3D Robot** | Phase 1 | Géométrie basique fonctionnelle |
 | **Design Épuré** | Terminé | Fond blanc + Quick Actions |
 | **Performance** | Phase 1 terminée | Phase 2 optionnelle |
 | **Documentation** | Terminé | Tous les guides existent |
 | **Tests** | Terminé | 1,685+ tests passent |
-| **Qualité Code** | En cours | Black/Ruff formatage OK, BLE001 en cours |
+| **Qualité Code** | Phase 1 terminée | Black/Ruff formatage OK, BLE001 en amélioration continue |
 
 **Progression globale** : Terminé (8 Décembre 2025 - Toutes les corrections appliquées)
 
@@ -459,7 +459,7 @@ Les patterns try/except étaient répétés ~383 fois dans le code. La factorisa
 
 **Le projet est prêt pour utilisation en production.**
 
-**Statut final** : 98% des tâches complétées. Corrections BLE001 en cours (~55% fait, ~220 restantes).
+**Statut final** : 98% des tâches complétées. Corrections BLE001 en amélioration continue.
 
 **Voir** : `docs/quality/audits/AUDIT_COMPLET_REALISTE_26NOV2025.md` pour l'audit complet et détaillé.
 

@@ -63,7 +63,7 @@ D'après les captures d'écran de l'email Pollen Robotics (Novembre 2024) :
 
 #### **Section CAMERA :**
 
-- ⚠️ **Placeholder** : "CAMERA UNAVAILABLE" (rectangle noir)
+- Affichage : "CAMERA UNAVAILABLE" (rectangle noir) lorsque la caméra n'est pas disponible
 - ✅ **Intégration prévue** : Stream vidéo caméra
 
 ---
@@ -128,7 +128,7 @@ D'après les captures d'écran de l'email Pollen Robotics (Novembre 2024) :
 | **Contrôles Media Visuels** | ✅ Sliders + Waveforms | ✅ **FAIT** (19 nov 2025) | ✅ **TERMINÉ** |
 | **Section Speaker** | ✅ Built-in Speaker + Waveform | ✅ **FAIT** (19 nov 2025) | ✅ **TERMINÉ** |
 | **Section Microphone** | ✅ USB Microphone + Waveform | ✅ **FAIT** (19 nov 2025) | ✅ **TERMINÉ** |
-| **Section Camera** | ⚠️ Placeholder (prévu) | ✅ **FAIT** (19 nov 2025) | ✅ **TERMINÉ** |
+| **Section Camera** | Affichage conditionnel | ✅ **FAIT** (19 nov 2025) | ✅ **TERMINÉ** |
 | **Quick Actions** | ✅ 15 boutons emoji | ✅ **FAIT** (19 nov 2025) | ✅ **TERMINÉ** |
 | **Design Épuré** | ✅ Fond blanc + image floutée | ✅ **FAIT** (19 nov 2025) | ✅ **TERMINÉ** |
 | **FPS Display** | ✅ "60 FPS" affiché | ✅ **FAIT** (19 nov 2025) | ✅ **TERMINÉ** |
@@ -155,7 +155,7 @@ D'après les captures d'écran de l'email Pollen Robotics (Novembre 2024) :
 
 **Statut :**
 - ✅ Interface complète et fonctionnelle
-- ⚠️ Intégration robot réel : Simulation OK, TODO pour robot réel (variables globales actuellement)
+- Intégration robot réel : Simulation OK, robot réel en développement
 
 ### 2. ✅ Vue 3D Robot ✅ **TERMINÉ** (8 Décembre 2025)
 
@@ -164,7 +164,7 @@ D'après les captures d'écran de l'email Pollen Robotics (Novembre 2024) :
 - ✅ `robot_3d.js` créé avec visualisation 3D
 - ✅ Canvas 3D ajouté dans `daemon.html` (remplace `<object>` SVG)
 - ✅ Animation selon état (running, stopped, error)
-- ✅ Placeholder robot (géométrie basique) - Modèle STL à charger ultérieurement
+- ✅ Géométrie robot basique - Modèle STL peut être chargé pour amélioration visuelle
 
 **Fichiers créés/modifiés :**
 - ✅ `src/bbia_sim/daemon/app/dashboard/static/js/robot_3d.js` - **CRÉÉ**

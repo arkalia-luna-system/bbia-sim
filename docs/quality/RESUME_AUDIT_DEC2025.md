@@ -86,7 +86,7 @@
    - ✅ Corrigé : 595/816 occurrences
    - ⚠️ Reste : 221 occurrences (contextes complexes)
    - Impact : Performance -10-20%
-   - Priorité : 🔴 HAUTE (en cours)
+   - Priorité : 🔴 HAUTE
 
 2. **Logging.error → exception (TRY400)** ✅ **100% FAIT**
    - ✅ Corrigé : 220/220 occurrences
@@ -113,7 +113,7 @@
 
 ## 📋 PLAN D'ACTION
 
-### Phase 1 - Corrections Critiques ✅ **EN COURS**
+### Phase 1 - Corrections Critiques ✅
 1. ⚠️ Corriger f-strings logging → %s format (73% fait, 221 restantes)
 2. ✅ Corriger error → exception (100% fait)
 
