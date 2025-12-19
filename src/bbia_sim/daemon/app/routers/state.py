@@ -477,13 +477,25 @@ async def get_present_head_pose(
 
     """
     pose = backend.get_present_head_pose()
-    pose_data = as_any_pose(pose)
-    # Wrapper dans dict pour conformité avec les tests
-    return {
-        "head_pose": (
-            pose_data.model_dump() if hasattr(pose_data, "model_dump") else pose_data
-        ),
-    }
+
+    if use_pose_matrix:
+        # Convertir en matrice 4x4
+        pose_data = as_any_pose(pose)
+        pose_array = pose_data.to_pose_array()
+        from bbia_sim.daemon.models import Matrix4x4Pose
+
+        matrix_pose = Matrix4x4Pose.from_pose_array(pose_array)
+        return {"head_pose": matrix_pose.model_dump()}
+    else:
+        # Format XYZRPY par défaut
+        pose_data = as_any_pose(pose)
+        return {
+            "head_pose": (
+                pose_data.model_dump()
+                if hasattr(pose_data, "model_dump")
+                else pose_data
+            ),
+        }
 
 
 @router.get("/present_body_yaw")
