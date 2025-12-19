@@ -223,6 +223,7 @@ jobs:
           export PYTHONPATH=src:$PYTHONPATH
           # OPTIMISATION CI: Limiter parallélisation pour éviter surcharge RAM
           # Utiliser -x pour arrêter au premier échec et économiser ressources
+          # Pas de parallélisation (-n auto) pour éviter surcharge mémoire
           pytest -vv -m "not e2e and not slow" --cov=src/bbia_sim --cov-report=xml --cov-report=term-missing --cov-fail-under=0 --timeout=30 --maxfail=1 --log-cli-level=INFO --durations=20 --tb=short --showlocals -x
         env:
           PYTHONDONTWRITEBYTECODE: 1
@@ -479,7 +480,8 @@ jobs:
         run: |
           export PYTHONPATH=src:$PYTHONPATH
           # Tests slow avec timeout plus long (60s par test)
-          pytest -vv -m "slow and not e2e" --cov=src/bbia_sim --cov-report=xml --cov-report=term-missing --cov-fail-under=0 --timeout=60 --maxfail=5 --log-cli-level=INFO --durations=20 --tb=short --showlocals
+          # OPTIMISATION CI: Pas de parallélisation pour éviter surcharge RAM
+          pytest -vv -m "slow and not e2e" --cov=src/bbia_sim --cov-report=xml --cov-report=term-missing --cov-fail-under=0 --timeout=60 --maxfail=1 --log-cli-level=INFO --durations=20 --tb=short --showlocals -x
         env:
           PYTHONDONTWRITEBYTECODE: 1
 

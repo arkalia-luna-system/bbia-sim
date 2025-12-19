@@ -25,6 +25,46 @@ os.environ.setdefault("BBIA_DISABLE_AUDIO", "1")
 os.environ.setdefault("BBIA_DISABLE_VISION_MODELS", "1")
 os.environ.setdefault("BBIA_FORCE_MOCK_MODELS", "1")
 
+
+def _suppress_portaudio_error() -> None:
+    """Supprime l'exception PortAudio dans le handler atexit de sounddevice."""
+    try:
+        import sounddevice as sd
+
+        # Remplacer le handler atexit de sounddevice pour supprimer l'exception
+        # L'exception se produit quand sounddevice essaie de terminer PortAudio
+        # alors qu'il n'a pas été initialisé (CI/headless)
+        if hasattr(sd, "_exit_handler"):
+            # Supprimer le handler existant
+            try:
+                atexit.unregister(sd._exit_handler)
+            except (ValueError, AttributeError):
+                pass
+
+            # Créer un nouveau handler qui ignore l'exception
+            def _safe_exit_handler() -> None:
+                try:
+                    if hasattr(sd, "_lib") and sd._lib is not None:
+                        # Vérifier si PortAudio est initialisé avant de terminer
+                        try:
+                            sd._lib.Pa_Terminate()
+                        except Exception:
+                            # Ignorer l'exception PortAudio (non bloquant)
+                            pass
+                except Exception:
+                    # Ignorer toutes les exceptions (non bloquant)
+                    pass
+
+            # Enregistrer le nouveau handler
+            atexit.register(_safe_exit_handler)
+    except (ImportError, AttributeError):
+        # sounddevice non disponible, rien à faire
+        pass
+
+
+# Supprimer l'exception PortAudio au démarrage
+_suppress_portaudio_error()
+
 # Chemin vers le fichier de lock
 LOCK_FILE = Path(__file__).parent.parent / ".pytest.lock"
 LOCK_TIMEOUT = 300  # 5 minutes max pour un run de tests
