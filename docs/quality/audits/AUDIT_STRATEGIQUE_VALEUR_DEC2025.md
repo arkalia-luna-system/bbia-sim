@@ -198,7 +198,7 @@
 
 **Pourquoi c'est la priorité #2** :
 - ✅ **Améliore UX** : Mouvements plus fluides
-- ✅ **Différenciation** : Système multicouche unique
+- ✅ **Différenciation** : Système multicouche
 - ✅ **Complexité raisonnable** : 6-8h de développement
 
 **Action** :
@@ -249,7 +249,7 @@
 
 ### Strengths (Forces) - À MAXIMISER
 
-1. ✅ **RobotAPI Unifié** : Innovation unique
+1. ✅ **RobotAPI Unifié** : Innovation
 2. ✅ **Solution Gratuite** : Whisper, SmolVLM2, LLM local
 3. ✅ **12 Émotions** : Plus d'émotions disponibles
 4. ✅ **IA** : 15+ modules, 21 comportements

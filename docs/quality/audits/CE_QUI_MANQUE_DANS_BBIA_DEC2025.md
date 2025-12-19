@@ -244,7 +244,7 @@
 
 ### 1. RobotAPI Unifié ✅
 
-**BBIA** : Interface abstraite unique pour simulation et robot réel  
+**BBIA** : Interface abstraite unifiée pour simulation et robot réel  
 **Officiel** : ❌ Absent (code séparé)
 
 **Avantage** : Même code pour sim et robot, tests unifiés

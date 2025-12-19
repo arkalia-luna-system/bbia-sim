@@ -52,40 +52,40 @@
 
 ---
 
-#### 2. INTEGRATION - Information unique
+#### 2. INTEGRATION - Information centralisée
 
 **Fichiers concernés** :
 
 - `integration.md` : Guide d'intégration BBIA-SIM
 
 **Analyse** :
-- Document unique, pas de redondance
+- Document centralisé, pas de redondance
 
 **Recommandation** : ✅ **CONSERVER**
 
 ---
 
-#### 3. TESTING - Information unique
+#### 3. TESTING - Information centralisée
 
 **Fichiers concernés** :
 
 - `testing.md` : Guide de test complet
 
 **Analyse** :
-- Document unique, pas de redondance
+- Document centralisé, pas de redondance
 
 **Recommandation** : ✅ **CONSERVER**
 
 ---
 
-#### 4. MIGRATION - Information unique
+#### 4. MIGRATION - Information centralisée
 
 **Fichiers concernés** :
 
 - `migration.md` : Guide de migration Sim → Robot
 
 **Analyse** :
-- Document unique, pas de redondance
+- Document centralisé, pas de redondance
 
 **Recommandation** : ✅ **CONSERVER**
 
