@@ -335,11 +335,11 @@ class TestDaemonModels:
         from bbia_sim.daemon.models import FullState
 
         state = FullState(
-            head_pose=None,
-            antennas_position=[0.0, 0.0],
-            body_yaw=0.0,
+            present_head_pose=None,
+            present_antenna_joint_positions=(0.0, 0.0),
+            present_body_yaw=0.0,
         )
-        assert state.body_yaw == 0.0
+        assert state.present_body_yaw == 0.0
 
     def test_goto_model_request(self) -> None:
         """Test GotoModelRequest."""
