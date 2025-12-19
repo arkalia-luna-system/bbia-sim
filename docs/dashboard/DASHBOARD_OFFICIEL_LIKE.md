@@ -140,7 +140,7 @@ python scripts/start_public_api.py
 
 Les animations SVG pour le daemon sont optionnelles. Si absentes, le dashboard fonctionne mais sans animations visuelles.
 
-### Fichiers SVG attendus (optionnels) :
+### Fichiers SVG attendus (optionnels)
 
 - `awake-cartoon.svg` - Animation réveil
 - `awake-cartoon-static.svg` - Robot éveillé (statique)
@@ -154,21 +154,21 @@ Les animations SVG pour le daemon sont optionnelles. Si absentes, le dashboard f
 
 ## ✅ Conformité avec SDK Officiel
 
-### Structure identique :
+### Structure identique
 
 - ✅ Templates Jinja2 modulaires
 - ✅ Sections séparées (daemon, apps, appstore)
 - ✅ Static files montés sur `/static`
 - ✅ Route `GET /` qui rend le dashboard
 
-### API conforme :
+### API conforme
 
 - ✅ Endpoints `/development/api/daemon/*` pour contrôle daemon
 - ✅ Endpoints `/development/api/apps/*` pour gestion apps
 - ✅ Endpoints `/development/api/move/*` pour mouvements
 - ✅ WebSocket pour temps réel
 
-### JavaScript identique :
+### JavaScript identique
 
 - ✅ Même logique de gestion daemon
 - ✅ Même structure apps/appstore
@@ -194,7 +194,7 @@ Ce dashboard **officiel-like** est différent du dashboard BBIA (`dashboard_adva
 
 ## 🔍 Vérification
 
-### Checklist de vérification :
+### Checklist de vérification
 
 ```bash
 # 1. Vérifier structure

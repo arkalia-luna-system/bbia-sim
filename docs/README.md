@@ -111,7 +111,7 @@ flowchart TB
 
 ## 📁 Navigation Complète
 
-- **[Guide de Navigation](getting-started/NAVIGATION.md)** — Guide simple pour trouver rapidement ce dont vous avez besoin
+- **[Guide de Navigation](getting-started/NAVIGATION.md)** — Guide pour trouver rapidement ce dont vous avez besoin
 - **[INDEX_FINAL.md](INDEX_FINAL.md)** — Index complet avec navigation par profil et catégorie
 
 ---

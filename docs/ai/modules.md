@@ -125,7 +125,7 @@ graph TB
 
 ## ✅ 2. Ce qui est déjà ajouté (modules récemment créés)
 
-### ✅ Reconnaissance visage personnalisée (DeepFace) - Ajouté !
+### ✅ Reconnaissance visage personnalisée (DeepFace) - Ajouté
 
 **État** : ✅ **Module créé et intégré**
 
@@ -153,7 +153,7 @@ pip install -r requirements/requirements-deepface.txt
 
 ---
 
-### ✅ Détection postures/corps (MediaPipe Pose) - Ajouté !
+### ✅ Détection postures/corps (MediaPipe Pose) - Ajouté
 
 **État** : ✅ **Module créé et intégré**
 
@@ -173,7 +173,7 @@ pip install -r requirements/requirements-deepface.txt
 
 ---
 
-### ✅ Détection émotions visuelles (DeepFace) - Ajouté !
+### ✅ Détection émotions visuelles (DeepFace) - Ajouté
 
 **État** : ✅ **Intégré dans DeepFace**
 
@@ -381,7 +381,7 @@ if st.button("Scan Environment"):
 
 ## 🎯 Priorités recommandées (Open-Source & Gratuit)
 
-### ✅ Priorité 1 : DeepFace ⭐⭐⭐ - Déjà fait !
+### ✅ Priorité 1 : DeepFace ⭐⭐⭐ - Déjà fait
 
 **État** : ✅ **Module créé et intégré**
 
@@ -414,7 +414,7 @@ python scripts/test_deepface.py --emotion photo.jpg
 
 ---
 
-### ✅ Priorité 2 : MediaPipe Pose ⭐⭐ - Déjà fait !
+### ✅ Priorité 2 : MediaPipe Pose ⭐⭐ - Déjà fait
 
 **État** : ✅ **Module créé et intégré**
 

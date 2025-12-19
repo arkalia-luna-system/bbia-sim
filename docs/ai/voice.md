@@ -509,20 +509,20 @@ class BBIAVoiceAdvanced:
 
 ## 🎯 Résumé des blocages
 
-### Blocages macOS avec pyttsx3 :
+### Blocages macOS avec pyttsx3
 
 - ❌ Pitch non contrôlable
 - ❌ Contrôle émotionnel inexistant
 - ❌ Voix limitées (197 dispo mais non exploitables)
 - ❌ Vitesse fixe
 
-### Solutions proposées :
+### Solutions proposées
 
 - ✅ **Coqui TTS** : Résout tous les blocages
 - ✅ **Piper TTS** : Alternative légère (pas d'émotion)
 - ✅ **XTTS v2** : Clonage voix (si besoin voix personnalisée)
 
-### Intelligence conversationnelle :
+### Intelligence conversationnelle
 
 - ❌ **Actuellement** : Règles + sentiment analysis uniquement
 - ✅ **Solution** : Mistral 7B Instruct ou Llama 3 8B
