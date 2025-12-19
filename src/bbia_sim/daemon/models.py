@@ -90,6 +90,27 @@ class FullState(BaseModel):
     target_head_pose: Any | None = None
     target_body_yaw: float | None = None
     target_antenna_joint_positions: tuple[float, float] | None = None
+    # Champs de compatibilité pour certains tests
+    position: dict[str, float] | None = Field(
+        default=None,
+        description="Position du robot (x, y, z) pour compatibilité",
+    )
+    status: str | None = Field(
+        default=None,
+        description="Statut du robot pour compatibilité",
+    )
+    battery: float | None = Field(
+        default=None,
+        description="Niveau de batterie pour compatibilité",
+    )
+    temperature: float | None = Field(
+        default=None,
+        description="Température du robot pour compatibilité",
+    )
+    timestamp: Any = Field(
+        default=None,
+        description="Horodatage de l'état",
+    )
 
 
 class MoveUUID(BaseModel):

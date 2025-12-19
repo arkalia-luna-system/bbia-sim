@@ -223,7 +223,7 @@ async def get_full_state(
 
     if with_head_pose:
         pose = backend.get_present_head_pose()
-        result["head_pose"] = as_any_pose(pose)
+        result["present_head_pose"] = as_any_pose(pose)
 
     if with_target_head_pose:
         target_pose = backend.target_head_pose
@@ -238,14 +238,18 @@ async def get_full_state(
     if with_target_head_joints:
         result["target_head_joints"] = backend.target_head_joint_positions
     if with_body_yaw:
-        result["body_yaw"] = backend.get_present_body_yaw()
+        result["present_body_yaw"] = backend.get_present_body_yaw()
     if with_target_body_yaw:
         result["target_body_yaw"] = backend.target_body_yaw
 
     if with_antenna_positions:
-        result["antennas_position"] = backend.get_present_antenna_joint_positions()
+        result["present_antenna_joint_positions"] = (
+            backend.get_present_antenna_joint_positions()
+        )
     if with_target_antenna_positions:
-        result["target_antennas_position"] = backend.target_antenna_joint_positions
+        result["target_antenna_joint_positions"] = (
+            backend.target_antenna_joint_positions
+        )
 
     if with_passive_joints:
         joints = backend.get_present_passive_joint_positions()
