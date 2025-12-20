@@ -124,7 +124,10 @@ class TestSimulatorCoverage(unittest.TestCase):
     @patch("bbia_sim.sim.simulator.mujoco.MjModel")
     @patch("bbia_sim.sim.simulator.mujoco.MjData")
     @patch("bbia_sim.sim.simulator.Path.exists")
-    def test_simulator_creation(self, mock_exists, mock_mjdata, mock_mjmodel):
+    @patch("bbia_sim.adaptive_timestep.apply_adaptive_timestep")
+    def test_simulator_creation(
+        self, mock_apply_timestep, mock_exists, mock_mjdata, mock_mjmodel
+    ):
         """Test création du simulateur avec mock (optimisé, pas de chargement XML réel)."""
         from bbia_sim.sim.simulator import MuJoCoSimulator
 
@@ -136,8 +139,16 @@ class TestSimulatorCoverage(unittest.TestCase):
         mock_model.njnt = 16
         mock_model.nbody = 19
         mock_model.ngeom = 161
+        mock_model.nu = 16  # Nombre d'actuateurs
+        mock_model.nv = 16  # Nombre de contraintes
+        # Mock opt.timestep pour éviter erreurs lors de l'application du timestep adaptatif
+        mock_model.opt = MagicMock()
+        mock_model.opt.timestep = 0.01
         mock_mjmodel.from_xml_path.return_value = mock_model
         mock_mjdata.return_value = MagicMock()
+        
+        # Mock apply_adaptive_timestep pour éviter comparaisons avec MagicMock
+        mock_apply_timestep.return_value = 0.01
 
         # Utiliser un chemin minimal (ne sera pas réellement chargé grâce au mock)
         simulator = MuJoCoSimulator(
