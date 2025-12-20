@@ -155,6 +155,11 @@ class BBIAEmotionRecognition:
         """Initialise tous les modèles et composants."""
         try:
             # Initialisation MediaPipe
+            # Vérifier que mp a l'attribut solutions avant de l'utiliser
+            if mp is None or not hasattr(mp, "solutions"):
+                raise AttributeError(
+                    "mediapipe module has no attribute 'solutions'"
+                )
             self.mp_face_detection = mp.solutions.face_detection
             self.mp_face_mesh = mp.solutions.face_mesh
             self.mp_drawing = mp.solutions.drawing_utils
@@ -166,6 +171,9 @@ class BBIAEmotionRecognition:
             logger.info("✅ BBIA Emotion Recognition initialisé avec succès")
             return True
 
+        except (AttributeError, ImportError, RuntimeError) as e:
+            logger.error("❌ Erreur initialisation MediaPipe: %s", e)
+            return False
         except Exception:
             logger.exception("❌ Erreur initialisation")
             return False

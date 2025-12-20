@@ -54,13 +54,18 @@ class BBIAPoseDetection:
         self.pose_detector = None
         self.is_initialized = False
 
-        if not MEDIAPIPE_POSE_AVAILABLE:
+        if not MEDIAPIPE_POSE_AVAILABLE or mp is None:
             logger.warning(
                 "⚠️ MediaPipe non disponible. Installer avec: pip install mediapipe",
             )
             return
 
         try:
+            # Vérifier que mp a l'attribut solutions avant de l'utiliser
+            if not hasattr(mp, "solutions"):
+                raise AttributeError(
+                    "mediapipe module has no attribute 'solutions'"
+                )
             self.pose_detector = mp.solutions.pose.Pose(
                 static_image_mode=False,
                 model_complexity=model_complexity,
@@ -72,6 +77,8 @@ class BBIAPoseDetection:
                 f"✅ BBIAPoseDetection initialisé (complexité: {model_complexity})",
             )
             self.is_initialized = True
+        except (AttributeError, ImportError, RuntimeError) as e:
+            logger.error("❌ Erreur initialisation MediaPipe Pose (critique): %s", e)
         except Exception as e:  # noqa: BLE001 - Erreur initialisation MediaPipe Pose
             logger.error("❌ Erreur initialisation MediaPipe Pose (critique): %s", e)
 

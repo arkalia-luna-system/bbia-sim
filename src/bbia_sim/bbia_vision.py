@@ -368,6 +368,11 @@ class BBIAVision:
                             self.face_detector = None
                         else:
                             # Créer nouvelle instance et mettre en cache
+                            # Vérifier que mp a l'attribut solutions avant de l'utiliser
+                            if not hasattr(mp, "solutions"):
+                                raise AttributeError(
+                                    "mediapipe module has no attribute 'solutions'"
+                                )
                             self.face_detector = (
                                 mp.solutions.face_detection.FaceDetection(
                                     model_selection=0,
@@ -378,11 +383,17 @@ class BBIAVision:
                             logger.debug("✅ Détecteur MediaPipe Face initialisé")
                 except ImportError:
                     # Fallback si import cache échoue
-                    self.face_detector = mp.solutions.face_detection.FaceDetection(
-                        model_selection=0,
-                        min_detection_confidence=0.5,
-                    )
-                    logger.debug("✅ Détecteur MediaPipe Face initialisé")
+                    # Vérifier que mp a l'attribut solutions avant de l'utiliser
+                    if mp is not None and hasattr(mp, "solutions"):
+                        self.face_detector = mp.solutions.face_detection.FaceDetection(
+                            model_selection=0,
+                            min_detection_confidence=0.5,
+                        )
+                        logger.debug("✅ Détecteur MediaPipe Face initialisé")
+                    else:
+                        raise AttributeError(
+                            "mediapipe module has no attribute 'solutions'"
+                        ) from None
             except (ImportError, RuntimeError, AttributeError) as e:
                 logger.warning("⚠️ MediaPipe non disponible: %s", e)
             except Exception as e:  # noqa: BLE001 - Erreur inattendue mais critique
