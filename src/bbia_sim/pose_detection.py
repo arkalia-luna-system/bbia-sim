@@ -63,9 +63,7 @@ class BBIAPoseDetection:
         try:
             # Vérifier que mp a l'attribut solutions avant de l'utiliser
             if not hasattr(mp, "solutions"):
-                raise AttributeError(
-                    "mediapipe module has no attribute 'solutions'"
-                )
+                raise AttributeError("mediapipe module has no attribute 'solutions'")
             self.pose_detector = mp.solutions.pose.Pose(
                 static_image_mode=False,
                 model_complexity=model_complexity,
