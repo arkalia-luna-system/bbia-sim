@@ -400,16 +400,16 @@ class TestDaemonModels:
         assert hasattr(pose, "z")
 
     def test_xyzrpy_pose_from_array(self) -> None:
-        """Test XYZRPYPose.from_pose_array."""
+        """Test conversion matrice 4x4 en AnyPose (XYZRPY)."""
         # OPTIMISATION RAM: Import lazy uniquement dans le test
         import numpy as np
 
-        from bbia_sim.daemon.models import XYZRPYPose
+        from bbia_sim.daemon.models import as_any_pose
 
-        # Créer matrice 4x4 (forme attendue par from_pose_array)
+        # Créer matrice 4x4 (forme attendue par as_any_pose)
         pose_array = np.eye(4, dtype=np.float64)
         pose_array[:3, 3] = [0.0, 0.0, 0.0]  # Position xyz
-        pose = XYZRPYPose.from_pose_array(pose_array)
+        pose = as_any_pose(pose_array)
         assert pose is not None
         assert pose.x == 0.0
         assert pose.y == 0.0
