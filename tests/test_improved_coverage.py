@@ -146,7 +146,7 @@ class TestSimulatorCoverage(unittest.TestCase):
         mock_model.opt.timestep = 0.01
         mock_mjmodel.from_xml_path.return_value = mock_model
         mock_mjdata.return_value = MagicMock()
-        
+
         # Mock apply_adaptive_timestep pour éviter comparaisons avec MagicMock
         mock_apply_timestep.return_value = 0.01
 
