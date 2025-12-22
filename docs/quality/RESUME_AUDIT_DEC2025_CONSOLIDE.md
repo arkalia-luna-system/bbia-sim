@@ -490,7 +490,7 @@
 | **Exemples et Démos** | **100%** | **100%** | 0% ✅ |
 | **SCORE GLOBAL** | **83.1%** | **100%** | +16.9% ✅ |
 
-**🎉 TOUTES LES CAPACITÉS SONT MAINTENANT EXPLOITÉES À 100% !**
+**Les capacités principales sont maintenant exploitées.**
 
 ---
 
