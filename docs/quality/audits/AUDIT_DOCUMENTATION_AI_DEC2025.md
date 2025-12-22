@@ -257,12 +257,10 @@
 
 ### Score qualité
 
-- **Clarté** : 9/10 (bien structuré, README présent)
-- **Structure** : 9/10 (hiérarchie logique)
-- **Maintenabilité** : 9/10 (dates uniformisées)
-- **Complétude** : 10/10 (information complète + schémas visuels)
-
-**Score global** : **9.25/10** ✅
+- **Clarté** : Bien structuré, README présent
+- **Structure** : Hiérarchie logique
+- **Maintenabilité** : Dates uniformisées
+- **Complétude** : Information complète + schémas visuels
 
 ---
 

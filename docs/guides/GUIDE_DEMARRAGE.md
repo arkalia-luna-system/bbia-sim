@@ -122,9 +122,9 @@ docker-compose down
 
 Voir aussi : [Docker Compose Documentation](https://docs.docker.com/compose/)
 
-#### Option B : Script All-in-One ⚡
+#### Option B : Script All-in-One
 
-> **🚀 Installation automatique complète en une commande**
+> **Installation automatique en une commande**
 
 ```bash
 # Cloner le projet

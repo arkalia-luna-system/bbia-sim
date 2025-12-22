@@ -163,7 +163,7 @@ Ce document fait un inventaire de ce que propose le repo officiel Reachy Mini et
 | **`GET /development/api/kinematics/stl/{filename}`** | ✅ Fichiers STL | ✅ **Implémenté** | |
 | **`GET /development/api/apps/list-available`** | ✅ Liste apps HF | ✅ **Implémenté** | Router `/development/api/apps/*` complet |
 
-**Score :** **25/26 endpoints (96%)** ✅ **EXCELLENT**
+**Conformité endpoints** : **25/26 endpoints** ✅ **EXCELLENT**
 
 **Statut :** ✅ **QUASI-COMPLET** - Seulement 1 endpoint optionnel manquant (RecordedMoves HuggingFace datasets)
 

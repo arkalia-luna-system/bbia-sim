@@ -272,12 +272,10 @@
 
 ### Score qualité
 
-- **Clarté** : 9/10 (index unique, références corrigées, fichiers performance vérifiés)
-- **Structure** : 9/10 (archives bien organisées)
-- **Maintenabilité** : 9/10 (index à jour, toutes références corrigées)
-- **Complétude** : 9/10 (information complète)
-
-**Score global** : **9.0/10** ✅ (amélioration de 8.25/10)
+- **Clarté** : Index unique, références corrigées, fichiers performance vérifiés
+- **Structure** : Archives bien organisées
+- **Maintenabilité** : Index à jour, toutes références corrigées
+- **Complétude** : Information complète
 
 ---
 

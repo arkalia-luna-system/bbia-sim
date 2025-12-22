@@ -1,7 +1,7 @@
 # 📚 Index Complet — Documentation BBIA-SIM
 
-> **Documentation complète du moteur cognitif BBIA-SIM**
-> *Organisée par usage • Navigation intuitive • Contenu exhaustif*
+> **Documentation du moteur cognitif BBIA-SIM**
+> *Organisée par usage • Navigation intuitive*
 
 ---
 

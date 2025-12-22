@@ -200,14 +200,12 @@
 2. ✅ **SCHÉMAS MERMAID** validés et corrigés
 3. ✅ **DATES UNIFORMISÉES** à "8 Décembre 2025"
 
-### Score qualité
+### Qualité documentation
 
-- **Clarté** : 9/10 (hiérarchie logique, bien structuré)
-- **Structure** : 9/10 (organisation claire)
-- **Maintenabilité** : 9/10 (dates uniformisées)
-- **Complétude** : 9/10 (information complète)
-
-**Score global** : **9/10** ✅
+- **Clarté** : Hiérarchie logique, bien structuré
+- **Structure** : Organisation claire
+- **Maintenabilité** : Dates uniformisées
+- **Complétude** : Information complète
 
 ---
 

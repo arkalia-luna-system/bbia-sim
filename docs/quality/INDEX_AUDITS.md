@@ -14,12 +14,6 @@
   - Ce qui manque (optionnel)
   - Forces BBIA
 
-### 2. Tâches Restantes
-
-- **`TACHES_RESTANTES_CONSOLIDEES.md`** - Tâches restantes consolidées
-  - État actuel
-  - Tâches optionnelles
-  - Progression
 
 ### 3. Ce Qui Manque
 
@@ -34,16 +28,6 @@
   - Comparaison officiel vs BBIA
   - Conformité SDK
   - Fonctionnalités
-
-### 5. Résumé Exécutif
-
-- **`RESUME_AUDIT_DEC2025_CONSOLIDE.md`** - Résumé exécutif consolidé
-  - Audit complet 24 Novembre 2025
-  - Audit des capacités 8 Décembre 2025
-  - Audit Reachy Mini Décembre 2025
-  - Résultats principaux
-  - Actions requises
-  - Conclusion
 
 ---
 

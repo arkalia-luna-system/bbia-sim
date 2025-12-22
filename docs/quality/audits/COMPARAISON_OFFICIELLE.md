@@ -231,17 +231,17 @@ with ReachyMini() as reachy_mini:
 
 ## 📊 RÉSUMÉ GLOBAL
 
-### Score Global : **~85-90%** ✅
+### Comparaison fonctionnalités
 
-| Catégorie | Score | Détails |
-|-----------|-------|---------|
-| **Vision** | 95% | ✅ YOLO + MediaPipe + SmolVLM2 (parité complète) |
-| **Contrôle Robot** | 90% | ✅ API complète |
-| **Extraction Paramètres** | 90% | ✅ NER (angles, intensités) |
-| **Conversation** | 85% | ✅ Outils LLM intégrés, NLP, VAD, Streaming |
-| **Animations** | 85% | ✅ Danses API, Idle animations, Tremblement vocal |
-| **Émotions** | 70% | ✅ 12 émotions (format différent) |
-| **UI** | 60% | ✅ Dashboard (différent de Gradio) |
+| Catégorie | Statut | Détails |
+|-----------|--------|---------|
+| **Vision** | ✅ | YOLO + MediaPipe + SmolVLM2 (parité complète) |
+| **Contrôle Robot** | ✅ | API complète |
+| **Extraction Paramètres** | ✅ | NER (angles, intensités) |
+| **Conversation** | ✅ | Outils LLM intégrés, NLP, VAD, Streaming |
+| **Animations** | ✅ | Danses API, Idle animations, Tremblement vocal |
+| **Émotions** | ✅ | 12 émotions (format différent) |
+| **UI** | ✅ | Dashboard (différent de Gradio) |
 
 ---
 
