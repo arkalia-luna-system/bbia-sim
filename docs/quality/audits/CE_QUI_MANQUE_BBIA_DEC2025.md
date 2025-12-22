@@ -390,7 +390,7 @@ BBIA a 90-95% de parité fonctionnelle + fonctionnalités supplémentaires. Les 
 
 **Documents liés** :
 - `AUDIT_REACHY_MINI_DECEMBRE_2025.md` - Audit complet Reachy Mini
-- `RESUME_AUDIT_DEC2025.md` - Résumé exécutif consolidé
+- `RESUME_AUDIT_DEC2025_CONSOLIDE.md` - Résumé exécutif consolidé
 - `AUDIT_CONSOLIDE_DECEMBRE_2025.md` - Audit consolidé
 
 ---

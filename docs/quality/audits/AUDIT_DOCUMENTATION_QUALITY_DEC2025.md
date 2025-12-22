@@ -55,7 +55,7 @@
 
 - `AUDIT_REACHY_MINI_DECEMBRE_2025.md` (584 lignes) : Audit complet Reachy Mini
 - `AUDIT_CONSOLIDE_DECEMBRE_2025.md` (477 lignes) : Document consolidé
-- `RESUME_AUDIT_DEC2025.md` : Résumé exécutif consolidé (fusionné)
+- `RESUME_AUDIT_DEC2025_CONSOLIDE.md` : Résumé exécutif consolidé (fusionné)
 - `CE_QUI_MANQUE_BBIA_DEC2025.md` (400 lignes) : Détails fonctionnalités manquantes (consolidé)
 
 **Analyse** :
