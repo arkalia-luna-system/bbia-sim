@@ -6,9 +6,7 @@ Ce dossier contient les guides pour créer et utiliser des simulations avec MuJo
 
 ### 🎨 Procreate (Création de Scènes)
 - **`INDEX_GUIDES_PROCREATE.md`** - Index des guides Procreate
-- **`GUIDE_PROCREATE_SCENE_COMPLET.md`** - Guide complet création scènes
-- **`RESUME_RAPIDE_PROCREATE.md`** - Résumé rapide Procreate
-- **`CONSEILS_PROCREATE_ROBOT.md`** - Conseils pour robot Procreate
+- **`GUIDE_PROCREATE_COMPLET.md`** - Guide complet fusionné (résumé rapide + guide complet + conseils robot)
 - **`GUIDE_IMPORT_IMAGES_MUJOCO.md`** - Guide import images MuJoCo
 
 ### 🤖 Simulation MuJoCo

@@ -7,6 +7,7 @@
 ## Documents Principaux
 
 ### 1. Audit Consolidé
+
 - **`AUDIT_CONSOLIDE_DECEMBRE_2025.md`** - Document unique consolidé
   - Statut global
   - Actions complétées
@@ -14,25 +15,32 @@
   - Forces BBIA
 
 ### 2. Tâches Restantes
+
 - **`TACHES_RESTANTES_CONSOLIDEES.md`** - Tâches restantes consolidées
   - État actuel
   - Tâches optionnelles
   - Progression
 
 ### 3. Ce Qui Manque
+
 - **`CE_QUI_MANQUE_VRAIMENT_BBIA_DEC2025.md`** - Détails fonctionnalités manquantes
   - Synchronisation fine : FAIT
   - Fluidité conversationnelle : FAIT
   - WebRTC/MCP/DoA : Optionnel (BBIA a déjà mieux ou équivalent)
 
 ### 4. Audit Reachy Mini
+
 - **`AUDIT_REACHY_MINI_DECEMBRE_2025.md`** - Audit complet Reachy Mini
   - Comparaison officiel vs BBIA
   - Conformité SDK
   - Fonctionnalités
 
 ### 5. Résumé Exécutif
-- **`RESUME_AUDIT_DECEMBRE_2025.md`** - Résumé exécutif
+
+- **`RESUME_AUDIT_DEC2025.md`** - Résumé exécutif consolidé
+  - Audit complet 24 Novembre 2025
+  - Audit des capacités 8 Décembre 2025
+  - Audit Reachy Mini Décembre 2025
   - Résultats principaux
   - Actions requises
   - Conclusion
