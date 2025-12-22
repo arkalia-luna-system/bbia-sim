@@ -252,6 +252,10 @@ class ReachyMiniBackend(RobotAPI):
     def _try_connect_robot(self) -> bool:
         """Tente de se connecter au robot physique.
 
+        Note: Avec SDK v1.2.4+, le reflash automatique des moteurs se fait
+        lors de la connexion et du démarrage du robot. Cela protège les futurs
+        moteurs contre le problème de batch QC 2544 (moteurs non flashés à l'usine).
+
         Returns:
             True si connexion réussie, False sinon
 
@@ -272,6 +276,11 @@ class ReachyMiniBackend(RobotAPI):
             if not self.use_sim:
                 self._start_watchdog()
             logger.info("✅ Connecté au robot Reachy-Mini officiel")
+            # Note: SDK v1.2.4+ reflash automatique des moteurs lors de la connexion
+            # Cela protège les futurs moteurs contre le problème batch QC 2544
+            logger.debug(
+                "SDK v1.2.4+ : Reflash automatique des moteurs activé (protection batch QC 2544)"
+            )
             return True
         except (
             OSError,
