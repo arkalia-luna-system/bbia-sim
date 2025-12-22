@@ -469,6 +469,64 @@
 
 ---
 
+## 🎯 Phase 3 : Améliorations Moyennes (Complétée - 22 Décembre 2025)
+
+### ✅ File d'Attente Multicouche
+
+**Implémentation** : `src/bbia_sim/multi_layer_queue.py`
+
+**Fonctionnalités** :
+- ✅ Support priorités (Emergency > Dance > Emotion > Pose > Background)
+- ✅ Exécution parallèle (max 3 mouvements simultanés par défaut)
+- ✅ Gestion danses, émotions, poses simultanées
+- ✅ Arrêt d'urgence
+- ✅ Statistiques et monitoring
+
+**Tests** : 11/11 passants (`tests/test_multi_layer_queue.py`)
+
+**Utilisation** :
+```python
+from bbia_sim.multi_layer_queue import get_multi_layer_queue
+
+queue = get_multi_layer_queue()
+
+# Ajouter une danse (priorité haute)
+await queue.add_dance(dance_func)
+
+# Ajouter une émotion (priorité moyenne)
+await queue.add_emotion(emotion_func)
+
+# Ajouter une pose (priorité basse)
+await queue.add_pose(pose_func)
+```
+
+### ✅ Support Multi-Robots Complet
+
+**Implémentation** : 
+- `src/bbia_sim/robot_registry.py` (amélioré)
+- `src/bbia_sim/daemon/app/routers/state.py` (endpoint `/robots/list`)
+
+**Fonctionnalités** :
+- ✅ Découverte automatique via Zenoh
+- ✅ Fallback variables d'environnement
+- ✅ API `/robots/list` pour lister robots disponibles
+- ✅ Support multi-instances via `RobotFactory.create_multi_backend()`
+
+**Tests** : Tests existants passants (`tests/test_robot_registry.py`)
+
+**Utilisation** :
+```python
+from bbia_sim.robot_registry import RobotRegistry
+
+registry = RobotRegistry()
+robots = registry.discover_robots()
+
+# Ou via API
+# GET /api/robots/list
+```
+
+---
+
 **Dernière mise à jour** : 22 Décembre 2025  
 **Prochaine révision** : Après réception robot physique ou mise à jour majeure SDK  
 **Branches analysées** : `develop` (principale), `main` (stable), toutes les branches feature/bugfix/hotfix  
