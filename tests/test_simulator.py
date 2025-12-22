@@ -291,13 +291,17 @@ class TestMuJoCoSimulator:
             os.unlink(temp_model)
 
     @patch("bbia_sim.sim.simulator.mujoco")
-    def test_load_scene_success(self, mock_mujoco):
+    @patch("bbia_sim.sim.simulator.get_cached_mujoco_model")
+    @patch("bbia_sim.sim.simulator.apply_adaptive_timestep")
+    def test_load_scene_success(
+        self, mock_apply_timestep, mock_get_cached, mock_mujoco
+    ):
         """Test chargement de scène réussi."""
         # Mock setup
         mock_model = Mock()
         mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
-        mock_mujoco.MjModel.from_xml_path.return_value = mock_model
+        mock_get_cached.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
 
         # Mock viewer
@@ -337,8 +341,9 @@ class TestMuJoCoSimulator:
                 # Test chargement de scène
                 simulator.load_scene(scene_path)
 
-                # Vérifier que le modèle a été rechargé
-                assert mock_mujoco.MjModel.from_xml_path.call_count == 2
+                # Vérifier que get_cached_mujoco_model a été appelé 2 fois
+                # (une fois pour l'init, une fois pour load_scene)
+                assert mock_get_cached.call_count == 2
                 mock_viewer.update_model.assert_called_once()
 
             finally:
