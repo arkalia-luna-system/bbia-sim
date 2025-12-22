@@ -29,15 +29,26 @@ class MuJoCoBackend(RobotAPI):
 
     def __init__(
         self,
-        model_path: str = ("src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml"),
+        model_path: str | None = None,
     ) -> None:
         """Initialise le backend MuJoCo.
 
         Note: Le modèle par défaut est `reachy_mini_REAL_OFFICIAL.xml`
         (16 joints, complet). Le fichier `reachy_mini.xml` (7 joints, simplifié)
         existe mais n'est pas utilisé par défaut pour garantir la cohérence.
+
+        Args:
+            model_path: Chemin vers le modèle MuJoCo. Si None, utilise le modèle
+                       par défaut résolu par rapport au module.
         """
         super().__init__()
+        if model_path is None:
+            # Résoudre le chemin par rapport au module pour éviter les problèmes
+            # de répertoire de travail dans les tests
+            module_dir = Path(__file__).parent.parent
+            model_path = str(
+                module_dir / "sim" / "models" / "reachy_mini_REAL_OFFICIAL.xml"
+            )
         self.model_path = Path(model_path)
         self.model: mujoco.MjModel | None = None
         self.data: mujoco.MjData | None = None
@@ -72,7 +83,13 @@ class MuJoCoBackend(RobotAPI):
             self.start_time = time.time()
             logger.info("MuJoCo connecté: %s joints détectés", self.model.njnt)
             return True
-        except (OSError, RuntimeError, ValueError, AttributeError, FileNotFoundError) as e:
+        except (
+            OSError,
+            RuntimeError,
+            ValueError,
+            AttributeError,
+            FileNotFoundError,
+        ) as e:
             logger.exception("Erreur connexion MuJoCo: %s", e)
             return False
         except mujoco.FatalError as e:
