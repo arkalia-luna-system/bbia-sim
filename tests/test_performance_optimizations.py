@@ -77,7 +77,17 @@ class TestPerformanceOptimizations:
             pytest.skip("ReachyMiniBackend non disponible")
 
         backend = ReachyMiniBackend()
-        backend.connect()
+        try:
+            connected = backend.connect()
+            if not connected:
+                pytest.skip(
+                    "Robot Reachy Mini non disponible (daemon Zenoh non accessible)"
+                )
+        except Exception as e:
+            # Si erreur de connexion (Zenoh, etc.), skip le test
+            if "zenoh" in str(e).lower() or "connect" in str(e).lower():
+                pytest.skip(f"Robot Reachy Mini non disponible: {e}")
+            raise
 
         # Vérifier que robot.media et robot.io sont accessibles si robot réel disponible
         if backend.is_connected and backend.robot:
