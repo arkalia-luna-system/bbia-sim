@@ -35,8 +35,35 @@ class RobotFactory:
 
         """
         try:
+            # Normaliser backend_type en chaîne (gère les cas où c'est un objet Query FastAPI)
+            if backend_type is None:
+                backend_type = "mujoco"
+            elif not isinstance(backend_type, str):
+                # Convertir en chaîne si ce n'est pas déjà une chaîne
+                # Si c'est un objet Query FastAPI, utiliser la valeur par défaut
+                backend_type_str = str(backend_type)
+                # Détecter si c'est une représentation d'objet Query
+                if (
+                    "Query" in backend_type_str
+                    or not backend_type_str
+                    or backend_type_str.startswith("<")
+                ):
+                    # Essayer d'extraire la valeur par défaut de Query si disponible
+                    if (
+                        hasattr(backend_type, "default")
+                        and backend_type.default is not None
+                    ):
+                        backend_type = str(backend_type.default)
+                    else:
+                        backend_type = "mujoco"  # Fallback vers défaut
+                else:
+                    backend_type = backend_type_str
+
+            # Normaliser en minuscules pour comparaisons
+            backend_type = backend_type.lower()
+
             # NOUVEAU: Support mode "auto" - détection automatique robot réel
-            if backend_type.lower() == "auto":
+            if backend_type == "auto":
                 # NOUVEAU: Utiliser RobotRegistry pour découverte automatique
                 try:
                     from bbia_sim.robot_registry import RobotRegistry
@@ -105,7 +132,7 @@ class RobotFactory:
                 logger.info("⚠️ Robot réel non disponible, utilisation simulation")
                 return RobotFactory.create_backend("mujoco", **kwargs)
 
-            if backend_type.lower() == "mujoco":
+            if backend_type == "mujoco":
                 # Support mode rapide (modèle simplifié)
                 if kwargs.get("fast", False):
                     model_path = kwargs.get(
@@ -119,12 +146,12 @@ class RobotFactory:
                     )
                 return MuJoCoBackend(model_path=model_path)
 
-            if backend_type.lower() == "reachy":
+            if backend_type == "reachy":
                 robot_ip = kwargs.get("robot_ip", "localhost")
                 robot_port = kwargs.get("robot_port", 8080)
                 return ReachyBackend(robot_ip=robot_ip, robot_port=robot_port)
 
-            if backend_type.lower() == "reachy_mini":
+            if backend_type == "reachy_mini":
                 # Paramètres SDK officiel ReachyMini
                 # use_sim=True par défaut pour éviter timeout si pas de robot physique
                 # L'utilisateur peut forcer use_sim=False pour chercher un robot réel
@@ -184,6 +211,27 @@ class RobotFactory:
             },
         }
 
+        # Normaliser backend_type en chaîne (gère les cas où c'est un objet Query FastAPI)
+        if backend_type is None:
+            return {}
+        if not isinstance(backend_type, str):
+            backend_type_str = str(backend_type)
+            # Détecter si c'est une représentation d'objet Query
+            if (
+                "Query" in backend_type_str
+                or not backend_type_str
+                or backend_type_str.startswith("<")
+            ):
+                # Essayer d'extraire la valeur par défaut de Query si disponible
+                if (
+                    hasattr(backend_type, "default")
+                    and backend_type.default is not None
+                ):
+                    backend_type = str(backend_type.default)
+                else:
+                    return {}  # Pas de valeur par défaut, retourner dict vide
+            else:
+                backend_type = backend_type_str
         return info.get(backend_type.lower(), {})
 
     @staticmethod
