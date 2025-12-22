@@ -278,7 +278,7 @@ Toutes les fonctionnalités critiques sont implémentées et testées.
 - ✅ **RobotAPI unifié** (sim/robot - officiel n'a pas ça)
 - ✅ **WebSocket temps réel** (<10ms latence - équivalent ou meilleur que WebRTC pour contrôle robot)
 - ✅ **API REST complète** (50+ endpoints - plus complète que l'officiel)
-- ✅ **Whisper STT gratuit** vs OpenAI Realtime API payant (BBIA = 100% gratuit)
+- ✅ **Whisper STT gratuit** vs OpenAI Realtime API payant (BBIA = gratuit)
 - ✅ **Mouvements expressifs** (hochement tête, etc.)
 - ✅ **Tests exhaustifs** (1,743 tests)
 - ✅ **Documentation** complète (219 fichiers MD)

@@ -241,7 +241,7 @@ emotions.set_emotion("calm", intensity=0.6)
 | Catégorie | Reachy Mini Officiel | BBIA-SIM | Statut |
 |-----------|---------------------|----------|--------|
 | **RobotAPI Unifié** | ❌ Absent | ✅ Innovation | ✅ **Différent** |
-| **Solution Gratuite** | ⚠️ Partiel | ✅ 100% gratuit | ✅ **Différent** |
+| **Solution Gratuite** | ⚠️ Partiel | ✅ Gratuit | ✅ **Différent** |
 | **Émotions** | ✅ 6 émotions | ✅ 12 émotions | ✅ **Différent** |
 | **IA** | ⚠️ Basique | ✅ 15+ modules | ✅ **Différent** |
 | **Tests** | ✅ Standards | ✅ 1,743 tests | ✅ **Différent** |
@@ -263,7 +263,7 @@ emotions.set_emotion("calm", intensity=0.6)
 **BBIA-SIM** se différencie par :
 
 - ✅ **Innovation** : RobotAPI unifié
-- ✅ **Gratuité** : Solution 100% gratuite et offline
+- ✅ **Gratuité** : Solution gratuite et offline
 - ✅ **Expressivité** : 12 émotions vs 6
 - ✅ **Intelligence** : IA avec 15+ modules
 
