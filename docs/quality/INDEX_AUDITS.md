@@ -52,5 +52,5 @@
 
 ---
 
-**Dernière mise à jour** : 8 Décembre 2025
+**Dernière mise à jour** : 22 Décembre 2025
 
