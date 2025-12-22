@@ -4,6 +4,7 @@
 Backend pour simulation MuJoCo.
 """
 
+import importlib.resources
 import logging
 import os
 import time
@@ -32,11 +33,26 @@ def _find_mujoco_model() -> Path | None:
         Chemin vers le fichier modèle si trouvé, None sinon.
     """
     model_name = "reachy_mini_REAL_OFFICIAL.xml"
+    tried_paths = []
+
+    # Stratégie 0: Utiliser importlib.resources (le plus fiable pour les packages installés)
+    try:
+        with importlib.resources.path("bbia_sim.sim.models", model_name) as model_path:
+            if model_path.exists():
+                logger.debug(
+                    "Modèle trouvé (stratégie 0 - importlib.resources): %s", model_path
+                )
+                return Path(model_path)
+    except (ModuleNotFoundError, FileNotFoundError, TypeError):
+        # importlib.resources peut échouer si le package n'est pas installé ou en mode développement
+        pass
 
     # Stratégie 1: Depuis le module (cas normal)
     module_dir = Path(__file__).parent.parent
     path = module_dir / "sim" / "models" / model_name
+    tried_paths.append(path)
     if path.exists():
+        logger.debug("Modèle trouvé (stratégie 1 - module): %s", path.resolve())
         return path.resolve()
 
     # Stratégie 2: Depuis la racine du projet (src/bbia_sim/...)
@@ -48,36 +64,69 @@ def _find_mujoco_model() -> Path | None:
         / "models"
         / model_name
     )
+    tried_paths.append(path)
     if path.exists():
+        logger.debug("Modèle trouvé (stratégie 2 - racine projet): %s", path.resolve())
         return path.resolve()
 
-    # Stratégie 3: Depuis le répertoire de travail courant
+    # Stratégie 3: Depuis le répertoire de travail courant (comme dans les tests)
     cwd = Path.cwd()
     for base in [cwd, cwd / "src", cwd.parent]:
         path = base / "bbia_sim" / "sim" / "models" / model_name
+        tried_paths.append(path)
         if path.exists():
+            logger.debug("Modèle trouvé (stratégie 3a - cwd): %s", path.resolve())
             return path.resolve()
         path = base / "src" / "bbia_sim" / "sim" / "models" / model_name
+        tried_paths.append(path)
         if path.exists():
+            logger.debug("Modèle trouvé (stratégie 3b - cwd/src): %s", path.resolve())
             return path.resolve()
 
-    # Stratégie 4: Chercher récursivement depuis le répertoire courant (limité à 3 niveaux)
-    for depth in range(3):
-        for root, _dirs, files in os.walk(Path.cwd()):
-            if depth > 0 and Path(root).relative_to(Path.cwd()).parts[0] in [
+    # Stratégie 4: Depuis le répertoire des tests (comme test_mujoco_backend.py)
+    # Chercher depuis différents points de départ possibles
+    for test_base in [cwd, cwd.parent]:
+        if (test_base / "tests").exists():
+            path = test_base / "src" / "bbia_sim" / "sim" / "models" / model_name
+            tried_paths.append(path)
+            if path.exists():
+                logger.debug(
+                    "Modèle trouvé (stratégie 4 - depuis tests): %s", path.resolve()
+                )
+                return path.resolve()
+
+    # Stratégie 5: Chercher récursivement depuis le répertoire courant (limité à 2 niveaux pour performance)
+    logger.debug("Recherche récursive du modèle...")
+    for depth in range(2):
+        for root, _dirs, files in os.walk(cwd):
+            # Éviter les répertoires inutiles
+            rel_path = Path(root).relative_to(cwd)
+            if rel_path.parts and rel_path.parts[0] in [
                 ".git",
                 "venv",
                 "__pycache__",
                 ".pytest_cache",
+                "node_modules",
+                ".tox",
             ]:
                 continue
             if model_name in files:
                 found = Path(root) / model_name
+                tried_paths.append(found)
                 if found.exists():
+                    logger.debug(
+                        "Modèle trouvé (stratégie 5 - récursif): %s", found.resolve()
+                    )
                     return found.resolve()
             if depth == 0:
                 break
 
+    # Si rien n'est trouvé, logger tous les chemins essayés
+    logger.warning(
+        "Modèle MuJoCo introuvable après %d tentatives. Chemins testés: %s",
+        len(tried_paths),
+        [str(p.resolve()) for p in tried_paths[:10]],  # Limiter à 10 pour éviter spam
+    )
     return None
 
 
