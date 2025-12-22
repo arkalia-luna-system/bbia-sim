@@ -1,40 +1,7 @@
 {
-  "last_updated": "2025-12-22T07:23:27.843321",
+  "last_updated": "2025-12-22T07:40:30.122614",
   "conversation_count": 1000,
   "history": [
-    {
-      "user": "Message 11",
-      "bbia": "Super nouvelle ! Continuez comme ça, vous allez très bien ! Racontez-moi ce qui vous motive, j'aimerais comprendre.",
-      "sentiment": {
-        "text": "Message 11",
-        "sentiment": "neutral",
-        "score": 0.8104287981987,
-        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
-      },
-      "timestamp": "2025-11-03T23:47:24.535556"
-    },
-    {
-      "user": "Message 12",
-      "bbia": "C'est excellent ! Votre bonne humeur est contagieuse ! Comment aimeriez-vous explorer cette dynamique positive ?",
-      "sentiment": {
-        "text": "Message 12",
-        "sentiment": "neutral",
-        "score": 0.7929601669311523,
-        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
-      },
-      "timestamp": "2025-11-03T23:47:24.969133"
-    },
-    {
-      "user": "Message 13",
-      "bbia": "Super nouvelle ! Continuez comme ça, vous allez très bien ! Racontez-moi ce qui vous motive, j'aimerais comprendre.",
-      "sentiment": {
-        "text": "Message 13",
-        "sentiment": "neutral",
-        "score": 0.7972954511642456,
-        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
-      },
-      "timestamp": "2025-11-03T23:47:25.409293"
-    },
     {
       "user": "Message 14",
       "bbia": "Super nouvelle ! Continuez comme ça, vous allez très bien ! Racontez-moi ce qui vous motive, j'aimerais comprendre.",
@@ -10776,6 +10743,15 @@
       "bbia": "Salut ! Qu'est-ce qui vous amène aujourd'hui ?",
       "sentiment": "neutral",
       "timestamp": "2025-11-20T11:52:48.932775"
+    },
+    {
+      "test": "data"
+    },
+    {
+      "test": "data"
+    },
+    {
+      "test": "data"
     },
     {
       "test": "data"

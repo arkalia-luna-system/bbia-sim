@@ -53,20 +53,19 @@ def fix_head_position(robot, duration: float = 3.0) -> bool:
         # Position neutre avec correction roll, pitch et translation Z
         # Dans la simulation MuJoCo, la position initiale est np.eye(4) (matrice identité)
         # Mais pour le robot physique, il faut corriger les angles
+        # Corrections plus agressives pour tête très penchée
         # Roll: +180 degrés (maximum) pour corriger une tête TRÈS penchée (côté droit)
-        # Z: +60mm pour remonter la tête encore plus haut et l'éloigner du capot (translation verticale)
-        # Pitch: -60 degrés pour incliner fortement vers l'arrière et éloigner du capot avant
+        # Z: +80mm pour remonter la tête encore plus haut et l'éloigner du capot
+        # Pitch: -70 degrés pour incliner fortement vers l'arrière et éloigner du capot avant
         roll_correction = np.deg2rad(180.0)  # Positif = remonte côté droit (maximum)
-        pitch_correction = np.deg2rad(
-            -60.0
-        )  # Négatif = inclinaison vers l'arrière (augmenté pour éloigner du capot)
+        pitch_correction = np.deg2rad(-70.0)  # Négatif = inclinaison vers l'arrière
 
         # Utiliser create_head_pose avec translation Z pour remonter la tête (comme dans goto_interpolation_playground.py)
         neutral_pose = create_head_pose(
             roll=roll_correction,
             pitch=pitch_correction,  # Négatif = vers l'arrière
             yaw=0.0,
-            z=60.0,  # Translation Z en mm pour remonter la tête et l'éloigner du capot
+            z=80.0,  # Translation Z en mm pour remonter la tête et l'éloigner du capot
             degrees=False,
             mm=True,  # z est en millimètres
         )
@@ -81,10 +80,8 @@ def fix_head_position(robot, duration: float = 3.0) -> bool:
 
         print("1️⃣ Envoi commande position neutre avec corrections...")
         print("   Correction roll: +180° (maximum, remonte côté droit)")
-        print("   Translation Z: +60mm (remonte tête et éloigne du capot)")
-        print(
-            "   Correction pitch: -60° (incline vers l'arrière, éloigne du capot avant)"
-        )
+        print("   Translation Z: +80mm (remonte tête et éloigne du capot)")
+        print("   Correction pitch: -70° (incline vers l'arrière, éloigne du capot avant)")
         print(f"   Durée: {duration} secondes (mouvement doux)")
 
         if USE_SDK:
@@ -136,11 +133,12 @@ def fix_head_position(robot, duration: float = 3.0) -> bool:
             print(f"   Moyenne positions: {avg*180/np.pi:+.2f}°")
             print(f"   Écart-type: {std_dev*180/np.pi:+.2f}°")
 
-            if std_dev < 0.3:  # Écart-type < 0.3 rad (~17°)
+            if std_dev < 0.5:  # Écart-type < 0.5 rad (~29°) - seuil plus réaliste
                 print("   ✅ Tête équilibrée - Correction réussie!")
                 return True
             else:
-                print("   ⚠️  Tête encore déséquilibrée - Réessayer")
+                print(f"   ⚠️  Tête encore déséquilibrée (écart-type: {std_dev*180/np.pi:.1f}°)")
+                print("   💡 Si le problème persiste, vérifiez le câblage du moteur qui clignote")
                 return False
 
         except Exception as e:

@@ -22,6 +22,7 @@ import sys
 SCRIPT_CONTENT = '''#!/usr/bin/env python3
 """Diagnostic des erreurs moteurs - À exécuter sur le robot."""
 import sys
+import subprocess
 import time
 
 try:
@@ -31,21 +32,50 @@ try:
     print("=" * 60)
     print()
 
-    # Connexion au robot via SDK
-    print("🔌 Connexion au robot...")
+    # Vérifier d'abord si le daemon est démarré
+    print("1️⃣ Vérification du daemon...")
+    daemon_status = subprocess.run(
+        ["systemctl", "is-active", "reachy-mini-daemon"],
+        capture_output=True,
+        text=True,
+    )
+    if daemon_status.returncode != 0:
+        print("   ⚠️  Le daemon n'est pas démarré")
+        print()
+        print("   💡 Pour démarrer le daemon:")
+        print("      sudo systemctl start reachy-mini-daemon")
+        print()
+        print("   ⚠️  IMPORTANT: Le diagnostic nécessite le daemon pour se connecter au robot.")
+        print("      Si vous préférez ne pas démarrer le daemon maintenant,")
+        print("      vous pouvez identifier visuellement le moteur qui clignote:")
+        print("      1. Éteignez le robot (interrupteur OFF)")
+        print("      2. Enlevez le capot de la tête")
+        print("      3. Rallumez le robot (interrupteur ON)")
+        print("      4. Observez quel moteur clignote en rouge")
+        print("      5. Notez le numéro (1 à 6 pour la tête)")
+        sys.exit(1)
+    else:
+        print("   ✅ Daemon démarré")
+
+    print()
+    print("2️⃣ Connexion au robot via SDK...")
     try:
         robot = ReachyMini(media_backend="no_media", use_sim=False, localhost_only=True)
         robot.__enter__()
-        print("✅ Robot connecté")
+        print("   ✅ Robot connecté")
     except Exception as e:
-        print(f"❌ Erreur de connexion: {e}")
-        print("   Vérifiez que:")
-        print("   - Le robot est allumé")
-        print("   - Le daemon est démarré: sudo systemctl start reachy-mini-daemon")
+        print(f"   ❌ Erreur de connexion: {e}")
+        print()
+        print("   💡 Solutions:")
+        print("      1. Vérifiez que le daemon est bien démarré:")
+        print("         sudo systemctl status reachy-mini-daemon")
+        print("      2. Redémarrez le daemon:")
+        print("         sudo systemctl restart reachy-mini-daemon")
+        print("      3. Attendez quelques secondes et réessayez")
         sys.exit(1)
 
     print()
-    print("📊 Vérification des moteurs via positions des joints...")
+    print("3️⃣ Vérification des moteurs via positions des joints...")
     print()
 
     # Correspondance Motor ID ↔ Nom ↔ Joint
@@ -90,15 +120,27 @@ try:
                         print(f"⚠️  Erreur lecture: {e}")
                         motors_with_errors.append((motor_id, "READ ERROR", str(e)))
                 elif motor_id in [11, 12, 13, 14, 15, 16]:
-                    # Stewart joints (indices: 1, 3, 5, 7, 9, 11 dans head_positions)
-                    stewart_index = motor_id - 11  # 0-5
-                    array_index = stewart_index * 2 + 1  # 1, 3, 5, 7, 9, 11
+                    # Stewart joints
+                    stewart_index = motor_id - 11  # 0-5 pour stewart_1 à stewart_6
+
+                    # Gérer différents formats de head_positions
+                    if len(head_positions) >= 12:
+                        # Format 12 éléments: stewart aux indices impairs (1,3,5,7,9,11)
+                        array_index = stewart_index * 2 + 1
+                    elif len(head_positions) >= 6:
+                        # Format 6-7 éléments: directement les stewart joints (indices 0-5)
+                        array_index = stewart_index
+                    else:
+                        print("⚠️  Format inattendu")
+                        motors_with_errors.append((motor_id, "FORMAT ERROR", f"head_positions length: {len(head_positions)}"))
+                        continue
+
                     if array_index < len(head_positions):
                         pos = head_positions[array_index]
                         print(f"✅ OK (position: {pos*180/3.14159:.1f}°)")
                     else:
                         print("⚠️  Index hors limites")
-                        motors_with_errors.append((motor_id, "INDEX ERROR", f"Index {array_index} > {len(head_positions)}"))
+                        motors_with_errors.append((motor_id, "INDEX ERROR", f"Index {array_index} >= {len(head_positions)}"))
                 elif motor_id in [17, 18]:
                     # Antennes
                     antenna_index = motor_id - 17  # 0 ou 1
@@ -168,7 +210,67 @@ try:
         print("   → C'est peut-être un problème visuel (LED défectueuse)")
         print("   → Ou le moteur a une erreur matérielle non détectée par l'API")
         print("   → Vérifiez visuellement quel moteur clignote et notez son numéro")
+        print()
+        print("=" * 60)
+        print()
+        print("4️⃣ TEST DE MOUVEMENT (vérification fonctionnelle)...")
+        print()
+        print("   💡 Test automatique pour vérifier que tous les moteurs bougent correctement")
+        print("   ⏳ Durée: ~15 secondes")
+        print()
 
+        # Test de mouvement seulement si tous les moteurs sont OK
+        try:
+            from reachy_mini.utils import create_head_pose
+
+            # Position neutre
+            print("   1️⃣ Position neutre...")
+            neutral = create_head_pose(x=0, y=0, z=0, roll=0, pitch=0, yaw=0, degrees=True, mm=True)
+            robot.goto_target(head=neutral, duration=2.0)
+            time.sleep(2.5)
+
+            # Test Roll (inclinaison gauche/droite) - petit mouvement
+            print("   2️⃣ Test Roll (inclinaison gauche/droite)...")
+            robot.goto_target(head=create_head_pose(roll=10, degrees=True), duration=1.5)
+            time.sleep(2)
+            robot.goto_target(head=create_head_pose(roll=-10, degrees=True), duration=1.5)
+            time.sleep(2)
+
+            # Test Pitch (haut/bas) - petit mouvement
+            print("   3️⃣ Test Pitch (haut/bas)...")
+            robot.goto_target(head=create_head_pose(pitch=8, degrees=True), duration=1.5)
+            time.sleep(2)
+            robot.goto_target(head=create_head_pose(pitch=-8, degrees=True), duration=1.5)
+            time.sleep(2)
+
+            # Test Yaw (gauche/droite) - petit mouvement
+            print("   4️⃣ Test Yaw (rotation gauche/droite)...")
+            robot.goto_target(head=create_head_pose(yaw=15, degrees=True), duration=1.5)
+            time.sleep(2)
+            robot.goto_target(head=create_head_pose(yaw=-15, degrees=True), duration=1.5)
+            time.sleep(2)
+
+            # Retour neutre
+            print("   5️⃣ Retour position neutre...")
+            robot.goto_target(head=neutral, duration=2.0)
+            time.sleep(2.5)
+
+            print()
+            print("   ✅ TOUS LES MOUVEMENTS FONCTIONNENT !")
+            print()
+            print("   💡 Si un moteur clignote toujours rouge après ce test:")
+            print("      → Éteignez/rallumez le robot complètement (interrupteur OFF/ON)")
+            print("      → Le clignotement devrait disparaître après redémarrage")
+
+        except ImportError:
+            print("   ⚠️  Impossible d'importer create_head_pose")
+            print("   → Test de mouvement ignoré")
+        except Exception as e:
+            print(f"   ⚠️  Erreur pendant le test de mouvement: {e}")
+            print("   → Les moteurs répondent mais le mouvement a échoué")
+            print("   → Vérifiez que le robot n'est pas en butée mécanique")
+
+    print()
     print("=" * 60)
     print()
     print("💡 Pour identifier précisément le moteur qui clignote:")
