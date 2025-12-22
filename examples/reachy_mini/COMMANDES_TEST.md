@@ -187,7 +187,7 @@ python examples/reachy_mini/fix_head_tilted.py
 **⚠️ IMPORTANT: Si la tête est TRÈS penchée ET le moteur 1 ne bouge pas mais devient rigide,**
 **c'est le bug du lot décembre 2025. Il faut reconfigurer le moteur AVANT de corriger la position.**
 
-**📖 Guide complet:** Voir `examples/reachy_mini/REFLASH_GUIDE.md` pour la procédure détaillée.
+**📖 Guide complet:** Voir `examples/reachy_mini/GUIDE_DEPANNAGE_REACHY_MINI.md` (section Reflash moteurs) pour la procédure détaillée.
 
 #### 🔧 ÉTAPE 1: Reconfigurer le moteur (si bug décembre 2025)
 
@@ -345,7 +345,7 @@ python examples/reachy_mini/fix_head_tilted.py
    - Aucun câble n'est coincé ou plié
 
 5. **Guide complet** :
-   - Voir `examples/reachy_mini/GUIDE_MOTEUR_CLIGNOTANT.md`
+   - Voir `examples/reachy_mini/GUIDE_DEPANNAGE_REACHY_MINI.md` (section Problèmes moteurs)
    - Guide d'assemblage: https://huggingface.co/spaces/pollen-robotics/Reachy_Mini_Assembly_Guide
 
 ---

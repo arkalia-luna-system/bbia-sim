@@ -59,7 +59,7 @@ if hasattr(self.robot, "set_operating_mode"):
 **Impact BBIA** : Le moteur 4 (stewart_4) est référencé dans :
 - `reachy_mini_backend.py` : Joint stewart_4 (ID 14)
 - Scripts de diagnostic : `diagnose_motor_2_issue.py`, `diagnostic_motor_errors.py`
-- Documentation : `SUPPORT_POLLEN_INFO.md`, `PROBLEME_CALIBRATION.md`
+- Documentation : `examples/reachy_mini/GUIDE_DEPANNAGE_REACHY_MINI.md` (guide consolidé)
 
 **Action** : ✅ SDK v1.2.4 va reflasher automatiquement - Voir `PROBLEME_MOTEURS_QC_BATCH_DEC2025.md` pour détails complets
 

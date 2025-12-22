@@ -70,9 +70,7 @@ python examples/view_scene_piece.py src/bbia_sim/sim/scenes/votre_scene.xml
 
 ### **Guides Procreate** (Recommandé pour créer vos textures) :
 
-- **🚀 Résumé Rapide** : `docs/simulations/RESUME_RAPIDE_PROCREATE.md` (2 minutes)
-- **📖 Guide Complet** : `docs/simulations/GUIDE_PROCREATE_SCENE_COMPLET.md` (référence complète)
-- **🤖 Conseils Robot** : `docs/simulations/CONSEILS_PROCREATE_ROBOT.md` (robot en texture)
+- **📖 Guide Complet** : `docs/simulations/GUIDE_PROCREATE_COMPLET.md` (guide fusionné avec résumé rapide, guide complet et conseils robot)
 - **📚 Index** : `docs/simulations/INDEX_GUIDES_PROCREATE.md` (navigation tous guides)
 
 ### **Guides MuJoCo** :

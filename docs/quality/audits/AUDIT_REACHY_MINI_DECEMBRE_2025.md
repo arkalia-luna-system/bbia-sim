@@ -48,8 +48,7 @@
 - `diagnostic_motor_errors_ssh.py` : Diagnostic complet moteurs + test mouvement
 - `fix_head_tilted.py` : Correction automatique tête penchée
 - `diagnostic_stewart.py` : Diagnostic joints Stewart platform
-- `REFLASH_GUIDE.md` : Guide reflash moteurs
-- `GUIDE_MOTEUR_CLIGNOTANT.md` : Guide résolution problèmes moteurs
+- `GUIDE_DEPANNAGE_REACHY_MINI.md` : Guide complet de dépannage (consolidé)
 
 ### Versions SDK Récentes
 
@@ -607,5 +606,5 @@ POST /api/move/multi-layer
 - `TOP_AMELIORATIONS_IMPORTANTES_BBIA.md` - **Top 5 améliorations les plus importantes** ⭐ NOUVEAU
 - `TECHNIQUES_EFFICACITE_BBIA.md` - Techniques d'efficacité et astuces BBIA
 - `CE_QUI_MANQUE_BBIA_DEC2025.md` - Ce qui manque (document consolidé)
-- `RESUME_AUDIT_DEC2025.md` - Résumé exécutif
+- `RESUME_AUDIT_DEC2025_CONSOLIDE.md` - Résumé exécutif consolidé
 

@@ -159,8 +159,7 @@ Observations: _______________
 - ✅ `diagnostic_motor_errors_ssh.py` : Diagnostic complet des moteurs avec test de mouvement
 - ✅ `fix_head_tilted.py` : Correction automatique de la tête penchée
 - ✅ `diagnostic_stewart.py` : Diagnostic des joints Stewart platform
-- ✅ `REFLASH_GUIDE.md` : Guide complet pour le reflash des moteurs
-- ✅ `GUIDE_MOTEUR_CLIGNOTANT.md` : Guide pour résoudre les problèmes de moteurs
+- ✅ `GUIDE_DEPANNAGE_REACHY_MINI.md` : Guide complet de dépannage consolidé (problèmes moteurs, calibration, reflash, support)
 
 ### Prochaines étapes
 

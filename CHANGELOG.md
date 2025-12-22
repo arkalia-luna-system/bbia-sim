@@ -21,8 +21,7 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   - `diagnostic_motor_errors_ssh.py` : Diagnostic complet moteurs + test mouvement automatique
   - `fix_head_tilted.py` : Correction automatique tête penchée (amélioré)
   - `diagnostic_stewart.py` : Diagnostic joints Stewart platform
-  - `REFLASH_GUIDE.md` : Guide complet reflash moteurs
-  - `GUIDE_MOTEUR_CLIGNOTANT.md` : Guide résolution problèmes moteurs
+  - `GUIDE_DEPANNAGE_REACHY_MINI.md` : Guide complet de dépannage consolidé (problèmes moteurs, calibration, reflash, support)
 - ✅ **Documentation mise à jour** : Tous les fichiers MD principaux mis à jour avec statut robot
 
 ## [1.4.0] - 26 Novembre 2025
