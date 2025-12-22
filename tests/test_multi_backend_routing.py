@@ -20,14 +20,20 @@ class TestMultiBackendRouting:
         # Créer un mock qui est reconnu comme instance de RobotAPI
         mock_backend = MagicMock(spec=RobotAPI)
         mock_backend.is_connected = True
-        # Patcher app_state en modifiant directement le dictionnaire dans main
+        # Patcher app_state pour utiliser notre mock
         original_multi = main.app_state.get("multi_backends", {})
         main.app_state["multi_backends"] = {"mujoco": mock_backend}
         try:
-            adapter = BackendAdapter(backend_type="mujoco")
+            # Patcher RobotFactory.create_backend pour éviter qu'il crée un vrai backend
+            with patch(
+                "bbia_sim.daemon.app.backend_adapter.RobotFactory.create_backend"
+            ) as mock_create:
+                adapter = BackendAdapter(backend_type="mujoco")
 
-            assert adapter._robot is not None
-            assert adapter._robot is mock_backend
+                assert adapter._robot is not None
+                assert adapter._robot is mock_backend
+                # Vérifier que RobotFactory.create_backend n'a pas été appelé
+                mock_create.assert_not_called()
         finally:
             main.app_state["multi_backends"] = original_multi
 

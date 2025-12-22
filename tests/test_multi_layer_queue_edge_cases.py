@@ -30,14 +30,14 @@ class TestMultiLayerQueueEdgeCases:
         # Le code actuel utilise put() qui attend, donc on teste juste
         # que les mouvements sont acceptés même avec max_queue_size limité
         # Le worker consomme les items pendant l'ajout, donc pas de blocage réel
-        
+
         # Ajouter plusieurs mouvements rapidement
         # Le worker devrait consommer pendant l'ajout
         results = []
         for i in range(5):
             result = await asyncio.wait_for(
                 queue.add_movement(test_func),
-                timeout=2.0  # Timeout plus long pour laisser le worker consommer
+                timeout=2.0,  # Timeout plus long pour laisser le worker consommer
             )
             results.append(result)
             # Petite pause pour laisser le worker consommer
@@ -127,6 +127,7 @@ class TestMultiLayerQueueEdgeCases:
         async def add_many_movements(start_id: int):
             for i in range(10):
                 movement_id = start_id * 10 + i
+
                 async def func(id_val: int = movement_id):
                     await asyncio.sleep(0.01)
 
@@ -170,7 +171,9 @@ class TestMultiLayerQueueEdgeCases:
             max_running = max(max_running, running_count)
 
         # Vérifier qu'au plus max_parallel sont en cours
-        assert max_running <= queue.max_parallel, f"max_running={max_running} > max_parallel={queue.max_parallel}"
+        assert (
+            max_running <= queue.max_parallel
+        ), f"max_running={max_running} > max_parallel={queue.max_parallel}"
 
         # Flush pour terminer
         await queue.flush()

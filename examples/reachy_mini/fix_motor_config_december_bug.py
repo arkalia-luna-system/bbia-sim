@@ -91,12 +91,31 @@ def diagnose_motor_issue(serialport: str, motor_id: int = 13, old_id: int = 1) -
         print(f"   - À 1,000,000 baud: recherche moteur ID {motor_id}")
         print(f"   - À 57,600 baud: recherche moteur ID {old_id} (paramètres d'usine)")
 
-        # Note: La détection réelle nécessite d'accéder au bus Dynamixel
-        # Ici on simule la logique basée sur les rapports Discord
-        print("   ⚠️  Si le moteur répond à 57,600 baud avec ID=1, c'est le bug!")
-        print("   ✅ Si le moteur répond à 1,000,000 baud avec ID=13, c'est OK")
+        # Essayer d'utiliser le script de scan automatique si disponible
+        try:
+            from examples.reachy_mini.scan_motors_baudrate import diagnose_motors_baudrate
 
-        return True
+            print("\n   🔍 Utilisation du scan automatique...")
+            results = diagnose_motors_baudrate(serialport)
+
+            if motor_id in results["wrong_baudrate_motors"]:
+                print(f"   ⚠️  PROBLÈME DÉTECTÉ: Motor ID {motor_id} a un mauvais baudrate!")
+                print(f"      → Trouvé à 57.6k baud mais pas à 1M baud")
+                return True
+            elif motor_id in results["missing_motors"]:
+                print(f"   ⚠️  PROBLÈME DÉTECTÉ: Motor ID {motor_id} est manquant!")
+                return True
+            else:
+                print(f"   ✅ Motor ID {motor_id} est correctement configuré")
+                return False
+
+        except ImportError:
+            # Fallback: message informatif
+            print("   ⚠️  Si le moteur répond à 57,600 baud avec ID=1, c'est le bug!")
+            print("   ✅ Si le moteur répond à 1,000,000 baud avec ID=13, c'est OK")
+            print("\n   💡 Pour un scan automatique, utilisez:")
+            print("      python examples/reachy_mini/scan_motors_baudrate.py")
+            return True
 
     except Exception as e:
         print(f"   ❌ Erreur diagnostic: {e}")

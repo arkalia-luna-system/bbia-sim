@@ -63,7 +63,12 @@ class BackendAdapter:
             multi_backends = app_state.get("multi_backends", {})
             if backend_type and backend_type in multi_backends:
                 backend = multi_backends[backend_type]
-                if backend is not None and isinstance(backend, RobotAPI):
+                # Accepter les mocks et les vraies instances de RobotAPI
+                if backend is not None and (
+                    isinstance(backend, RobotAPI)
+                    or hasattr(backend, "connect")
+                    and hasattr(backend, "disconnect")
+                ):
                     logger.info(
                         "Utilisation backend %s depuis multi_backends", backend_type
                     )

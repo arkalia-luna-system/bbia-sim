@@ -271,7 +271,9 @@ class MuJoCoBackend(RobotAPI):
                                         try:
                                             range_len = len(joint_range)
                                         except (TypeError, AttributeError):
-                                            range_len = 2  # Par défaut, supposer 2 éléments
+                                            range_len = (
+                                                2  # Par défaut, supposer 2 éléments
+                                            )
                                         if (
                                             hasattr(joint_range, "__getitem__")
                                             and range_len >= 2

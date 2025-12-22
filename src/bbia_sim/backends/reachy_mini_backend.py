@@ -467,9 +467,77 @@ class ReachyMiniBackend(RobotAPI):
 
         Note: OPTIMISATION - Utilise un cache car le résultat ne change pas
         après l'initialisation.
+
+        NOUVEAU: Détecte les moteurs manquants en vérifiant les positions.
         """
         if self._cached_available_joints is None:
             self._cached_available_joints = list(self.joint_mapping.keys())
+
+        # Vérifier les moteurs réellement disponibles si connecté
+        if self.is_connected and self.robot is not None:
+            try:
+                head_positions, antenna_positions = (
+                    self.robot.get_current_joint_positions()
+                )
+
+                # Détecter les joints manquants basés sur les positions disponibles
+                available = []
+
+                # Vérifier yaw_body
+                try:
+                    self._get_yaw_body_position()
+                    available.append("yaw_body")
+                except Exception:
+                    logger.warning("yaw_body non disponible")
+
+                # Vérifier les joints stewart (doivent être 6)
+                expected_stewart_count = 6
+                if len(head_positions) >= expected_stewart_count:
+                    # Format standard: 6 éléments directement
+                    for i in range(1, 7):
+                        joint_name = f"stewart_{i}"
+                        try:
+                            pos = self._get_stewart_joint_position(
+                                joint_name, head_positions
+                            )
+                            if pos is not None:
+                                available.append(joint_name)
+                        except (IndexError, ValueError, AttributeError):
+                            logger.warning(
+                                "Joint %s non disponible (position invalide)",
+                                joint_name,
+                            )
+                elif len(head_positions) < expected_stewart_count:
+                    # Moins de 6 joints détectés → certains moteurs manquants
+                    logger.warning(
+                        "⚠️  MOTEURS MANQUANTS DÉTECTÉS: "
+                        "Seulement %d/%d joints stewart détectés. "
+                        "Possible cause: mauvais baudrate (57,600 au lieu de 1,000,000) "
+                        "ou paramètres d'usine (ID=1 au lieu de ID correct). "
+                        "Solution: python examples/reachy_mini/scan_motors_baudrate.py",
+                        len(head_positions),
+                        expected_stewart_count,
+                    )
+                    # Ajouter seulement les joints détectés
+                    for i in range(1, len(head_positions) + 1):
+                        joint_name = f"stewart_{i}"
+                        available.append(joint_name)
+
+                # Vérifier les antennes
+                if len(antenna_positions) >= 2:
+                    available.extend(["left_antenna", "right_antenna"])
+                elif len(antenna_positions) == 1:
+                    available.append("left_antenna")
+
+                # Mettre à jour le cache avec les joints réellement disponibles
+                self._cached_available_joints = available
+
+            except (AttributeError, RuntimeError, OSError, ValueError, TypeError) as e:
+                logger.debug("Impossible de vérifier les joints disponibles: %s", e)
+                # Fallback: utiliser la liste complète
+                if self._cached_available_joints is None:
+                    self._cached_available_joints = list(self.joint_mapping.keys())
+
         return self._cached_available_joints
 
     def _get_yaw_body_position(self) -> float:
