@@ -1,40 +1,7 @@
 {
-  "last_updated": "2025-12-22T12:46:12.340389",
+  "last_updated": "2025-12-22T13:14:49.516865",
   "conversation_count": 1000,
   "history": [
-    {
-      "user": "Message 31",
-      "bbia": "C'est excellent ! Votre bonne humeur est contagieuse ! Comment aimeriez-vous explorer cette dynamique positive ?  Qu'attends-tu exactement comme aide ?",
-      "sentiment": {
-        "text": "Message 31",
-        "sentiment": "neutral",
-        "score": 0.8011675477027893,
-        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
-      },
-      "timestamp": "2025-11-03T23:47:33.864685"
-    },
-    {
-      "user": "Message 32",
-      "bbia": "Super nouvelle ! Continuez comme ça, vous allez très bien ! Racontez-moi ce qui vous motive, j'aimerais comprendre.",
-      "sentiment": {
-        "text": "Message 32",
-        "sentiment": "neutral",
-        "score": 0.8123560547828674,
-        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
-      },
-      "timestamp": "2025-11-03T23:47:34.321221"
-    },
-    {
-      "user": "Message 33",
-      "bbia": "Super nouvelle ! Continuez comme ça, vous allez très bien ! Racontez-moi ce qui vous motive, j'aimerais comprendre.",
-      "sentiment": {
-        "text": "Message 33",
-        "sentiment": "neutral",
-        "score": 0.802742063999176,
-        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
-      },
-      "timestamp": "2025-11-03T23:47:34.792390"
-    },
     {
       "user": "Message 34",
       "bbia": "C'est vraiment formidable ! Je suis content que vous vous sentiez bien. Pourquoi cela vous rend-il heureux aujourd'hui ?",
@@ -10556,6 +10523,15 @@
       "bbia": "Salut ! Qu'est-ce qui vous amène aujourd'hui ?",
       "sentiment": "neutral",
       "timestamp": "2025-11-20T11:52:48.932775"
+    },
+    {
+      "test": "data"
+    },
+    {
+      "test": "data"
+    },
+    {
+      "test": "data"
     },
     {
       "test": "data"

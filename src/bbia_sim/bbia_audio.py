@@ -8,6 +8,7 @@ Compatible macOS, simple, portable, testé.
 
 import logging
 import os
+import sys
 import wave
 from typing import TYPE_CHECKING, Any, Optional
 
@@ -449,8 +450,10 @@ def lire_audio(fichier: str, robot_api: Optional["RobotAPI"] = None) -> None:
             _sd.wait()
         logging.info("Lecture de %s terminée.", fichier)
     except Exception as e:
-        # Log en debug en CI (erreurs attendues dans les tests avec mocks)
-        if os.environ.get("CI", "false").lower() == "true":
+        # Log en debug en CI ou dans les tests (erreurs attendues avec mocks)
+        # Détecter si on est dans pytest
+        is_pytest = "pytest" in sys.modules or os.environ.get("PYTEST_CURRENT_TEST")
+        if os.environ.get("CI", "false").lower() == "true" or is_pytest:
             logging.debug("Erreur de lecture audio: %s", e)
         else:
             logging.exception("Erreur de lecture audio")
