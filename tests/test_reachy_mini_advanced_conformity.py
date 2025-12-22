@@ -32,7 +32,17 @@ class TestReachyMiniAdvancedConformity:
     def setup_method(self):
         """Configuration avant chaque test."""
         self.backend: ReachyMiniBackend = ReachyMiniBackend()
-        self.backend.connect()
+        try:
+            connected = self.backend.connect()
+            if not connected:
+                pytest.skip(
+                    "Robot Reachy Mini non disponible (daemon Zenoh non accessible)"
+                )
+        except Exception as e:
+            # Si erreur de connexion (Zenoh, etc.), skip le test
+            if "zenoh" in str(e).lower() or "connect" in str(e).lower():
+                pytest.skip(f"Robot Reachy Mini non disponible: {e}")
+            raise
 
     def teardown_method(self):
         """Nettoyage après chaque test."""
