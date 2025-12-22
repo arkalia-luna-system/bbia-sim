@@ -606,5 +606,5 @@ POST /api/move/multi-layer
 - `TOP_AMELIORATIONS_IMPORTANTES_BBIA.md` - **Top 5 améliorations les plus importantes** ⭐ NOUVEAU
 - `TECHNIQUES_EFFICACITE_BBIA.md` - Techniques d'efficacité et astuces BBIA
 - `CE_QUI_MANQUE_BBIA_DEC2025.md` - Ce qui manque (document consolidé)
-- `RESUME_AUDIT_DEC2025_CONSOLIDE.md` - Résumé exécutif consolidé
+- `RESUME_AUDIT_DEC2025.md` - Résumé exécutif consolidé
 

@@ -38,7 +38,7 @@
 - `docs/quality/RESUME_AUDIT_DEC2025.md` (478 lignes)
 - `docs/quality/audits/RESUME_AUDIT_DECEMBRE_2025.md` (124 lignes)
 
-**→ Fusionner en** : `docs/quality/RESUME_AUDIT_DEC2025.md` (garder celui dans quality/)
+**→ Fusionner en** : `docs/quality/RESUME_AUDIT_DEC2025_CONSOLIDE.md` (document consolidé)
 
 **Raison** : Deux résumés d'audit avec des contenus similaires.
 
@@ -98,7 +98,7 @@
 
 ### Phase 3 : Fusion Résumés d'audit (Priorité Moyenne) ✅ **TERMINÉ**
 - [x] Comparer les deux résumés
-- [x] Fusionner dans `docs/quality/RESUME_AUDIT_DEC2025.md`
+- [x] Fusionner dans `docs/quality/RESUME_AUDIT_DEC2025_CONSOLIDE.md`
 - [x] Supprimer `docs/quality/audits/RESUME_AUDIT_DECEMBRE_2025.md` (références mises à jour)
 
 ### Phase 4 : Fusion Guides Procreate (Priorité Moyenne) ✅ **TERMINÉ**
@@ -162,7 +162,7 @@
 
 - ✅ Phase 1 : SDK v1.2.4 fusionné → `REACHY_MINI_SDK_v1.2.4.md`
 - ✅ Phase 2 : "Ce qui manque" fusionné → `CE_QUI_MANQUE_BBIA_DEC2025.md`
-- ✅ Phase 3 : Résumés audit fusionnés → `RESUME_AUDIT_DEC2025.md`
+- ✅ Phase 3 : Résumés audit fusionnés → `RESUME_AUDIT_DEC2025_CONSOLIDE.md`
 - ✅ Phase 4 : Guides Procreate fusionnés → `GUIDE_PROCREATE_COMPLET.md`
 - ✅ Phase 5 : Guides dépannage → `GUIDE_DEPANNAGE_REACHY_MINI.md` (déjà existant)
 - ✅ Références mises à jour dans tous les INDEX et README
@@ -174,7 +174,7 @@
 **Fichiers créés/consolidés** :
 1. `docs/hardware/REACHY_MINI_SDK_v1.2.4.md`
 2. `docs/quality/audits/CE_QUI_MANQUE_BBIA_DEC2025.md`
-3. `docs/quality/RESUME_AUDIT_DEC2025.md`
+3. `docs/quality/RESUME_AUDIT_DEC2025_CONSOLIDE.md`
 4. `docs/simulations/GUIDE_PROCREATE_COMPLET.md`
 5. `examples/reachy_mini/GUIDE_DEPANNAGE_REACHY_MINI.md`
 
