@@ -477,9 +477,7 @@ class TestMuJoCoSimulator:
     @patch("bbia_sim.sim.simulator.mujoco")
     @patch("bbia_sim.sim.simulator.get_cached_mujoco_model")
     @patch("bbia_sim.sim.simulator.apply_adaptive_timestep")
-    def test_get_robot_state(
-        self, mock_apply_timestep, mock_get_cached, mock_mujoco
-    ):
+    def test_get_robot_state(self, mock_apply_timestep, mock_get_cached, mock_mujoco):
         """Test récupération état robot."""
         # Mock setup
         mock_model = Mock()
@@ -842,9 +840,7 @@ class TestMuJoCoSimulator:
     @patch("bbia_sim.sim.simulator.mujoco")
     @patch("bbia_sim.sim.simulator.get_cached_mujoco_model")
     @patch("bbia_sim.sim.simulator.apply_adaptive_timestep")
-    def test_step_simulation(
-        self, mock_apply_timestep, mock_get_cached, mock_mujoco
-    ):
+    def test_step_simulation(self, mock_apply_timestep, mock_get_cached, mock_mujoco):
         """Test step simulation."""
         mock_model = Mock()
         mock_model.nu = 7  # Nombre d'actuateurs
@@ -878,9 +874,7 @@ class TestMuJoCoSimulator:
     @patch("bbia_sim.sim.simulator.mujoco")
     @patch("bbia_sim.sim.simulator.get_cached_mujoco_model")
     @patch("bbia_sim.sim.simulator.apply_adaptive_timestep")
-    def test_close_with_viewer(
-        self, mock_apply_timestep, mock_get_cached, mock_mujoco
-    ):
+    def test_close_with_viewer(self, mock_apply_timestep, mock_get_cached, mock_mujoco):
         """Test fermeture avec viewer actif."""
         # Mock setup
         mock_model = Mock()
