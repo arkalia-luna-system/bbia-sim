@@ -536,19 +536,56 @@ async def multi_layer_movements(
         ) -> None:
             """Crée une fonction async pour exécuter le mouvement."""
             if m_type == "dance":
-                # Exécuter une danse
+                # Exécuter une danse via BBIA
                 dance_name = m_data.get("func", "dance_happy")
-                logger.info("Exécution danse: %s", dance_name)
-                # TODO: Intégrer avec système de danses BBIA
-                await asyncio.sleep(1.0)  # Placeholder
+                dataset = m_data.get(
+                    "dataset", "pollen-robotics/reachy-mini-dances-library"
+                )
+                logger.info("Exécution danse: %s (dataset: %s)", dance_name, dataset)
+
+                try:
+                    # Utiliser RecordedMoves pour jouer la danse
+                    from reachy_mini.motion.recorded_move import RecordedMoves
+
+                    recorded_moves = RecordedMoves(dataset)
+                    move = recorded_moves.get(dance_name)
+
+                    # Jouer le mouvement via backend (BackendAdapter a play_move async)
+                    if hasattr(backend, "play_move"):
+                        # BackendAdapter.play_move est async
+                        await backend.play_move(move)
+                    else:
+                        logger.warning("play_move non disponible sur backend")
+                except ImportError:
+                    logger.warning("SDK officiel reachy_mini requis pour danses")
+                except ValueError as e:
+                    logger.warning("Mouvement non trouvé: %s", e)
+                except Exception as e:
+                    logger.exception("Erreur exécution danse: %s", e)
 
             elif m_type == "emotion":
-                # Appliquer une émotion
+                # Appliquer une émotion via BBIAEmotions
                 emotion = m_data.get("emotion", "neutral")
                 intensity = m_data.get("intensity", 0.5)
                 logger.info("Application émotion: %s (intensité: %s)", emotion, intensity)
-                # TODO: Intégrer avec BBIAEmotions
-                await asyncio.sleep(0.5)  # Placeholder
+
+                try:
+                    from bbia_sim.bbia_emotions import BBIAEmotions
+
+                    # Utiliser BBIAEmotions pour gérer l'émotion
+                    emotions_module = BBIAEmotions()
+                    success = emotions_module.set_emotion(emotion, intensity)
+
+                    # Appliquer aussi via robot sous-jacent si disponible
+                    if success and hasattr(backend, "_robot"):
+                        robot = backend._robot
+                        if hasattr(robot, "set_emotion"):
+                            robot.set_emotion(emotion, intensity)
+                            logger.debug("Émotion appliquée via robot: %s", emotion)
+                except ImportError:
+                    logger.warning("BBIAEmotions non disponible")
+                except Exception as e:
+                    logger.exception("Erreur application émotion: %s", e)
 
             elif m_type == "pose":
                 # Exécuter une pose
