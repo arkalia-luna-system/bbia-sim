@@ -49,12 +49,14 @@ class MuJoCoBackend(RobotAPI):
     def connect(self) -> bool:
         """Connecte au simulateur MuJoCo."""
         try:
-            if not self.model_path.exists():
-                logger.error("Modèle MuJoCo introuvable: %s", self.model_path)
+            # Résoudre le chemin absolu pour éviter les problèmes de chemin relatif
+            model_path_resolved = Path(self.model_path).resolve()
+            if not model_path_resolved.exists():
+                logger.error("Modèle MuJoCo introuvable: %s", model_path_resolved)
                 return False
 
             # Utiliser cache LRU pour modèles MuJoCo
-            self.model = get_cached_mujoco_model(self.model_path)
+            self.model = get_cached_mujoco_model(model_path_resolved)
             self.data = mujoco.MjData(self.model)
 
             # Construire le mapping joint name → id
@@ -70,11 +72,14 @@ class MuJoCoBackend(RobotAPI):
             self.start_time = time.time()
             logger.info("MuJoCo connecté: %s joints détectés", self.model.njnt)
             return True
-        except (OSError, RuntimeError, ValueError, AttributeError):
-            logger.exception("Erreur connexion MuJoCo")
+        except (OSError, RuntimeError, ValueError, AttributeError, FileNotFoundError) as e:
+            logger.exception("Erreur connexion MuJoCo: %s", e)
             return False
-        except Exception:
-            logger.exception("Erreur inattendue connexion MuJoCo")
+        except mujoco.FatalError as e:
+            logger.exception("Erreur fatale MuJoCo (modèle invalide): %s", e)
+            return False
+        except Exception as e:
+            logger.exception("Erreur inattendue connexion MuJoCo: %s", e)
             return False
 
     def disconnect(self) -> bool:
