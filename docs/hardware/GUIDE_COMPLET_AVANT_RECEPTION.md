@@ -15,7 +15,12 @@
 
 - ✅ **Bug décembre 2025** : Moteurs avec paramètres d'usine incorrects (ID=1, baudrate 57,600) → **Reflash effectué** le 22 déc 2025
 - ⚠️ **Tête penchée** : Correction logicielle effectuée, vérification câblage nécessaire
-- ⚠️ **Moteur clignotant rouge** : Diagnostic effectué, tous les moteurs répondent logiciellement, vérification matérielle nécessaire
+- 🔴 **Moteurs défectueux (batch QC 2544/2543)** : **Problème matériel identifié par Pollen** → Voir `PROBLEME_MOTEURS_QC_BATCH_DEC2025.md`
+  - Moteur 1 (QC 2543) : Raide mécaniquement → **Remplacement en attente**
+  - Moteur 2 (QC 2544) : Raide + clignotement rouge → **Remplacement en attente**
+  - Moteur 4 (QC 2544) : Raide mécaniquement → **Remplacement en attente**
+  - **Cause** : Moteurs non flashés correctement à l'usine (SDK v1.2.4 va reflasher automatiquement)
+  - **Statut** : Formulaires de remplacement remplis, en attente des nouveaux moteurs
 
 ---
 

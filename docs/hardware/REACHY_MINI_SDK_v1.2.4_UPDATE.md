@@ -31,13 +31,15 @@ Selon l'annonce officielle, cette release corrige :
 - **Impact BBIA** : Pas d'impact direct sur notre code (problème système)
 - **Action** : ✅ Aucune action requise
 
-### ✅ 4. Problème du moteur 4 (QC 2544)
-- **Problème** : Problème spécifique du moteur 4 (stewart_4, ID 14)
+### ✅ 4. Problème du moteur 4 (QC 2544) - **CAUSE IDENTIFIÉE**
+- **Problème** : **Moteur 4 non flashé correctement à l'usine** (batch QC 2544)
+- **Solution SDK v1.2.4** : **Reflash automatique** lors de la connexion et du démarrage du robot
+- **⚠️ IMPORTANT** : Si le moteur est **déjà endommagé** (raide mécaniquement), le reflash ne peut pas le réparer → **Remplacement nécessaire**
 - **Impact BBIA** : Le moteur 4 (stewart_4) est référencé dans plusieurs endroits :
   - `reachy_mini_backend.py` : Joint stewart_4 (ID 14)
   - Scripts de diagnostic : `diagnose_motor_2_issue.py`, `diagnostic_motor_errors.py`
   - Documentation : `SUPPORT_POLLEN_INFO.md`, `PROBLEME_CALIBRATION.md`
-- **Action** : ⚠️ **À tester** : Vérifier si les problèmes de calibration/stewart_4 sont résolus
+- **Action** : ✅ **SDK v1.2.4 va reflasher automatiquement** - Voir `PROBLEME_MOTEURS_QC_BATCH_DEC2025.md` pour détails complets
 
 ### ✅ 5. Et plus encore
 - **Action** : ⚠️ **À tester** : Tester toutes les fonctionnalités après mise à jour
@@ -100,5 +102,7 @@ pip install --upgrade reachy-mini
 
 - **SDK Officiel** : <https://github.com/pollen-robotics/reachy_mini>
 - **Release Notes** : Voir l'annonce officielle pour détails complets
-- **Documentation BBIA** : `docs/hardware/GUIDE_COMPLET_AVANT_RECEPTION.md`
+- **Documentation BBIA** : 
+  - `docs/hardware/GUIDE_COMPLET_AVANT_RECEPTION.md`
+  - `docs/hardware/PROBLEME_MOTEURS_QC_BATCH_DEC2025.md` ⚠️ **NOUVEAU - Problème batch QC identifié**
 
