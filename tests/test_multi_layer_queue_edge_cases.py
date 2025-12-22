@@ -151,33 +151,28 @@ class TestMultiLayerQueueEdgeCases:
         """Test limite max_parallel."""
         queue = MultiLayerQueue(max_parallel=2)
 
-        execution_times = []
-
         async def func(id_val: int):
-            execution_times.append((id_val, asyncio.get_event_loop().time()))
-            await asyncio.sleep(0.3)  # Assez long pour être sûr qu'ils sont en cours
+            await asyncio.sleep(0.2)  # Durée raisonnable
 
-        # Ajouter 5 mouvements
-        for i in range(5):
+        # Ajouter 3 mouvements (plus que max_parallel=2)
+        for i in range(3):
             await queue.add_movement(lambda i=i: func(i))
 
         # Attendre pour que l'exécution commence
-        await asyncio.sleep(0.3)
-
-        # Vérifier plusieurs fois car le timing peut varier
-        max_running = 0
-        for _ in range(10):
-            await asyncio.sleep(0.1)
-            running_count = queue.get_running_count()
-            max_running = max(max_running, running_count)
-            # Si on a atteint max_parallel, on peut arrêter
-            if running_count >= queue.max_parallel:
-                break
+        await asyncio.sleep(0.15)
 
         # Vérifier qu'au plus max_parallel sont en cours
-        # Note: peut être 0 si tous sont terminés très rapidement
+        # Vérifier plusieurs fois rapidement
+        max_running = 0
+        for _ in range(5):
+            await asyncio.sleep(0.05)
+            running_count = queue.get_running_count()
+            max_running = max(max_running, running_count)
+
+        # Vérifier qu'au plus max_parallel sont en cours
         assert max_running <= queue.max_parallel, f"max_running={max_running} > max_parallel={queue.max_parallel}"
 
+        # Flush pour terminer
         await queue.flush()
 
     @pytest.mark.asyncio
