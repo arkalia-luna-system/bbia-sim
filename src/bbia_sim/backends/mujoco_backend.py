@@ -48,9 +48,17 @@ class MuJoCoBackend(RobotAPI):
             # Essayer plusieurs chemins possibles pour robustesse
             module_dir = Path(__file__).parent.parent
             possible_paths = [
+                # Chemin relatif au module (cas normal)
                 module_dir / "sim" / "models" / "reachy_mini_REAL_OFFICIAL.xml",
-                # Fallback: depuis la racine du projet
+                # Fallback: depuis la racine du projet (src/bbia_sim/...)
                 Path(__file__).parent.parent.parent.parent
+                / "src"
+                / "bbia_sim"
+                / "sim"
+                / "models"
+                / "reachy_mini_REAL_OFFICIAL.xml",
+                # Fallback: depuis le répertoire des tests (tests/...)
+                Path(__file__).parent.parent.parent.parent.parent
                 / "src"
                 / "bbia_sim"
                 / "sim"
@@ -60,14 +68,22 @@ class MuJoCoBackend(RobotAPI):
 
             model_path = None
             for path in possible_paths:
-                if path.exists():
-                    model_path = str(path)
+                path_resolved = path.resolve()
+                if path_resolved.exists():
+                    model_path = str(path_resolved)
+                    logger.debug("Modèle MuJoCo trouvé: %s", model_path)
                     break
 
             if model_path is None:
-                # Utiliser le premier chemin par défaut même s'il n'existe pas
-                # (l'erreur sera levée dans connect())
-                model_path = str(possible_paths[0])
+                # Utiliser le premier chemin résolu par défaut
+                # (l'erreur sera levée dans connect() avec message clair)
+                default_path = possible_paths[0].resolve()
+                model_path = str(default_path)
+                logger.warning(
+                    "Modèle MuJoCo non trouvé dans les chemins de fallback, "
+                    "utilisation de: %s",
+                    model_path,
+                )
         self.model_path = Path(model_path)
         self.model: mujoco.MjModel | None = None
         self.data: mujoco.MjData | None = None
@@ -82,8 +98,41 @@ class MuJoCoBackend(RobotAPI):
             # Résoudre le chemin absolu pour éviter les problèmes de chemin relatif
             model_path_resolved = Path(self.model_path).resolve()
             if not model_path_resolved.exists():
-                logger.error("Modèle MuJoCo introuvable: %s", model_path_resolved)
-                return False
+                # Essayer de trouver le fichier avec les chemins de fallback
+                module_dir = Path(__file__).parent.parent
+                possible_paths = [
+                    module_dir / "sim" / "models" / "reachy_mini_REAL_OFFICIAL.xml",
+                    Path(__file__).parent.parent.parent.parent
+                    / "src"
+                    / "bbia_sim"
+                    / "sim"
+                    / "models"
+                    / "reachy_mini_REAL_OFFICIAL.xml",
+                    Path(__file__).parent.parent.parent.parent.parent
+                    / "src"
+                    / "bbia_sim"
+                    / "sim"
+                    / "models"
+                    / "reachy_mini_REAL_OFFICIAL.xml",
+                ]
+
+                found_path = None
+                for path in possible_paths:
+                    path_resolved = path.resolve()
+                    if path_resolved.exists():
+                        found_path = path_resolved
+                        logger.info("Modèle MuJoCo trouvé via fallback: %s", found_path)
+                        break
+
+                if found_path is None:
+                    logger.error(
+                        "Modèle MuJoCo introuvable: %s (chemins testés: %s)",
+                        model_path_resolved,
+                        [str(p.resolve()) for p in possible_paths],
+                    )
+                    return False
+
+                model_path_resolved = found_path
 
             # Utiliser cache LRU pour modèles MuJoCo
             self.model = get_cached_mujoco_model(model_path_resolved)
