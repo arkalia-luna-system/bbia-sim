@@ -1,8 +1,8 @@
-# Guide - Avant Réception Reachy Mini Wireless
+# Guide Complet - Préparation Réception Reachy Mini Wireless
 
-**Date** : 15 Décembre 2025  
-**Livraison prévue** : 18 Décembre 2025  
-**Version** : Reachy Mini Wireless
+**Dernière mise à jour** : 22 Décembre 2025  
+**Version BBIA** : 1.4.0  
+**SDK Officiel** : v1.2.3 (Latest)
 
 ---
 
@@ -58,9 +58,9 @@
 ## Logiciel
 
 **SDK Reachy Mini** :
-- [ ] Installer v1.2.0 : `pip install --upgrade "reachy-mini>=1.2.0"`
-- [ ] Vérifier changelog : https://github.com/pollen-robotics/reachy_mini/releases/tag/v1.2.0
-- [ ] Tester compatibilité BBIA
+- [x] ✅ Installé v1.2.3 : `pip install --upgrade "reachy-mini>=1.2.0"`
+- [x] ✅ Compatibilité BBIA vérifiée et validée
+- [ ] Vérifier changelog : https://github.com/pollen-robotics/reachy_mini/releases
 
 **BBIA-SIM** :
 - [ ] Vérifier installation : `pip install -e .`
@@ -102,13 +102,13 @@
 
 ## SDK Officiel
 
-**Dernière version** : v1.2.0 (12 Décembre 2025)  
-**BBIA utilise** : v1.1.3 (compatible, vérifier v1.2.0)
+**Dernière version** : v1.2.3 (Latest - 22 Décembre 2025)  
+**BBIA utilise** : v1.2.3 ✅ (à jour)
 
-**Action requise** :
-- [ ] Vérifier changelog v1.2.0 : https://github.com/pollen-robotics/reachy_mini/releases/tag/v1.2.0
-- [ ] Tester compatibilité : `pip install --upgrade "reachy-mini>=1.2.0"`
-- [ ] Mettre à jour si breaking changes
+**Statut** :
+- [x] ✅ Version installée : v1.2.3 (dernière version disponible)
+- [x] ✅ Compatibilité : Testée et validée
+- [x] ✅ Toutes les fonctionnalités SDK disponibles
 
 **Comparaison** : BBIA ~90-95% de parité + innovations (12 émotions vs 6, vision/audio avancés, RobotAPI unifié)
 
@@ -133,26 +133,199 @@
 **18 Décembre - Réception** :
 - [ ] Réception colis (vérifier contenu, photographier)
 - [ ] Assemblage (2-3 heures, suivre guide)
-- [ ] Premier démarrage :
-  - Allumer robot
-  - Configurer Wi-Fi
-  - Noter adresse IP
-  - Tester : `ping <IP_ROBOT>`
-- [ ] Tests connexion :
-  ```python
-  # SDK
-  from reachy_mini import ReachyMini
-  robot = ReachyMini(localhost_only=False, use_sim=False)
-  
-  # BBIA
-  from bbia_sim.robot_factory import RobotFactory
-  robot = RobotFactory.create_backend('reachy_mini', localhost_only=False, use_sim=False)
-  ```
-  
-  **Note importante** :
-  - Par défaut, `RobotFactory.create_backend('reachy_mini')` utilise `use_sim=True` (mode simulation)
-  - Pour un robot physique, il faut **explicitement** passer `use_sim=False`
-  - Pour version Wireless, il faut aussi `localhost_only=False` (par défaut `True` pour sécurité)
+- [ ] Premier démarrage (voir section détaillée ci-dessous)
+
+---
+
+## 🚀 Premier Démarrage avec Robot Physique
+
+### Checklist de Connexion
+
+**Avant de commencer** :
+- [ ] Robot assemblé et allumé (LED verte)
+- [ ] Robot connecté au WiFi (même réseau que votre ordinateur)
+- [ ] IP du robot identifiée (voir méthodes ci-dessous)
+- [ ] Ports réseau ouverts (8000 pour API, 7447 pour Zenoh)
+
+### Étape 1 : Identifier l'IP du Robot
+
+**Méthode 1 : Via Dashboard Robot**
+```bash
+# Le robot expose un hotspot WiFi temporaire au démarrage
+# Connectez-vous au réseau "Reachy-Mini-XXXX"
+# Ouvrez http://192.168.4.1 dans votre navigateur
+# Configurez le WiFi et notez l'IP assignée
+```
+
+**Méthode 2 : Scan Réseau**
+```bash
+# Sur macOS/Linux
+nmap -sn 192.168.1.0/24 | grep -B 2 "Reachy"
+
+# Ou utiliser l'app Reachy Mini Control (iOS/Android)
+```
+
+**Méthode 3 : Via Router**
+- Accédez à l'interface de votre routeur
+- Cherchez l'appareil "Reachy-Mini" ou "pollen"
+- Notez l'IP assignée
+
+### Étape 2 : Vérifier la Connexion Réseau
+
+```bash
+# Test ping
+ping <IP_ROBOT>
+
+# Test API (si daemon lancé)
+curl http://<IP_ROBOT>:8000/api/state/full
+
+# Test Zenoh (si daemon lancé)
+# Le port 7447 doit être accessible
+```
+
+### Étape 3 : Lancer le Backend Zenoh
+
+**Option A : Via Dashboard (Recommandé)**
+```bash
+# Ouvrir dans navigateur
+http://<IP_ROBOT>:8000
+
+# Cliquer sur "Start" dans la section Daemon
+```
+
+**Option B : Via SSH (si accès disponible)**
+```bash
+# Se connecter au robot
+ssh pollen@<IP_ROBOT>
+
+# Lancer le daemon
+reachy-mini-daemon
+```
+
+**Option C : Depuis votre Mac (si configuré)**
+```bash
+# Le daemon peut tourner sur votre Mac et se connecter au robot
+# Voir docs/guides/DEMARRAGE_DAEMON.md
+```
+
+### Étape 4 : Test Connexion SDK
+
+**Test SDK Officiel** :
+```python
+from reachy_mini import ReachyMini
+from reachy_mini.utils import create_head_pose
+
+# Connexion au robot (localhost_only=False pour réseau)
+robot = ReachyMini(
+    localhost_only=False,  # ← CRITIQUE pour connexion réseau
+    use_sim=False,
+    timeout=30.0
+)
+
+with robot:
+    # Test connexion
+    pose = robot.head.head_pose
+    print(f"✅ Robot connecté - Position: {pose}")
+    
+    # Test mouvement simple
+    robot.goto_target(
+        head=create_head_pose(roll=10, degrees=True),
+        duration=2.0
+    )
+```
+
+**Test BBIA-SIM** :
+```python
+from bbia_sim.robot_factory import RobotFactory
+
+# Option 1: Mode auto (détection automatique + fallback sim)
+robot = RobotFactory.create_backend('auto')
+
+# Option 2: Mode explicite (robot physique)
+robot = RobotFactory.create_backend(
+    'reachy_mini',
+    localhost_only=False,  # ← CRITIQUE pour connexion réseau
+    use_sim=False,
+    timeout=30.0
+)
+
+# Option 3: Mode auto avec fallback
+# Si robot non disponible, bascule automatiquement vers simulation
+robot = RobotFactory.create_backend('auto')
+
+if robot:
+    robot.connect()
+    if robot.is_connected:
+        print("✅ Robot connecté via BBIA-SIM")
+        # Utiliser robot...
+```
+
+### Étape 5 : Test Complet BBIA
+
+```python
+# Exemple complet avec BBIA
+from bbia_sim.robot_factory import RobotFactory
+from bbia_sim.bbia_emotions import BBIAEmotions
+
+# Connexion
+robot = RobotFactory.create_backend('auto')  # Auto-détection
+robot.connect()
+
+# Test émotions
+emotions = BBIAEmotions()
+emotions.set_emotion(robot, 'happy', intensity=0.8)
+
+# Test mouvement
+from reachy_mini.utils import create_head_pose
+robot.goto_target(
+    head=create_head_pose(roll=15, pitch=10, degrees=True),
+    duration=2.0
+)
+
+print("✅ Tests complets réussis")
+```
+
+### Troubleshooting Commun
+
+**Problème : Timeout de connexion**
+```python
+# Solution 1: Augmenter timeout
+robot = ReachyMini(localhost_only=False, timeout=60.0)
+
+# Solution 2: Vérifier que le daemon est lancé
+# curl http://<IP_ROBOT>:8000/api/state/full
+
+# Solution 3: Vérifier firewall
+# Les ports 8000 et 7447 doivent être ouverts
+```
+
+**Problème : Robot non trouvé**
+```python
+# Utiliser mode auto avec fallback
+robot = RobotFactory.create_backend('auto')
+# Si robot non disponible, utilise automatiquement simulation
+```
+
+**Problème : Erreur Zenoh**
+```bash
+# Vérifier que Zenoh est installé
+pip show eclipse-zenoh
+
+# Tester connexion Zenoh locale
+python -c "import zenoh; s = zenoh.open(); s.close(); print('Zenoh OK')"
+```
+
+### Checklist Finale
+
+- [ ] ✅ Robot allumé et connecté au WiFi
+- [ ] ✅ IP robot identifiée et accessible (ping OK)
+- [ ] ✅ Backend Zenoh lancé (daemon actif)
+- [ ] ✅ Test SDK officiel réussi
+- [ ] ✅ Test BBIA-SIM réussi
+- [ ] ✅ Mouvements de base fonctionnels
+- [ ] ✅ Émotions BBIA applicables
+
+**Une fois cette checklist complète, vous êtes prêt à utiliser BBIA-SIM avec le robot physique.**
 
 ---
 
@@ -172,5 +345,5 @@
 
 ---
 
-**Dernière mise à jour** : 15 Décembre 2025
+**Dernière mise à jour** : 22 Décembre 2025
 

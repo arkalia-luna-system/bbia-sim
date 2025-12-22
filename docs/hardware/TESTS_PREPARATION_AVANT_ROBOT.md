@@ -1,6 +1,8 @@
 # Tests de Préparation - Avant Arrivée Robot
 
-**Objectif** : Tester l'environnement local avant l'arrivée du robot Reachy Mini  
+**Dernière mise à jour** : 22 Décembre 2025  
+**Version BBIA** : 1.4.0  
+**Objectif** : Valider l'environnement local avant l'arrivée du robot Reachy Mini  
 **Durée estimée** : 30-60 minutes
 
 Ces tests peuvent être effectués sans robot physique pour valider que tout est prêt.
@@ -541,5 +543,5 @@ python scripts/demo_bridge_zenoh.py
 
 ---
 
-**Dernière mise à jour** : 15 Décembre 2025
+**Dernière mise à jour** : 22 Décembre 2025
 
