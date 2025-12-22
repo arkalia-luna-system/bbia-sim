@@ -152,18 +152,18 @@ class TestMultiLayerQueueEdgeCases:
         queue = MultiLayerQueue(max_parallel=2)
 
         execution_times = []
-        lock = asyncio.Lock()
 
         async def func(id_val: int):
-            async with lock:
-                execution_times.append((id_val, asyncio.get_event_loop().time()))
-            await asyncio.sleep(0.3)  # Plus long pour être sûr qu'ils sont en cours
+            execution_times.append((id_val, asyncio.get_event_loop().time()))
+            await asyncio.sleep(0.3)  # Assez long pour être sûr qu'ils sont en cours
 
         # Ajouter 5 mouvements
         for i in range(5):
             await queue.add_movement(lambda i=i: func(i))
 
-        # Attendre pour que l'exécution commence et que max_parallel soit atteint
+        # Attendre pour que l'exécution commence
+        await asyncio.sleep(0.3)
+
         # Vérifier plusieurs fois car le timing peut varier
         max_running = 0
         for _ in range(10):
@@ -171,10 +171,11 @@ class TestMultiLayerQueueEdgeCases:
             running_count = queue.get_running_count()
             max_running = max(max_running, running_count)
             # Si on a atteint max_parallel, on peut arrêter
-            if running_count == queue.max_parallel:
+            if running_count >= queue.max_parallel:
                 break
 
         # Vérifier qu'au plus max_parallel sont en cours
+        # Note: peut être 0 si tous sont terminés très rapidement
         assert max_running <= queue.max_parallel, f"max_running={max_running} > max_parallel={queue.max_parallel}"
 
         await queue.flush()

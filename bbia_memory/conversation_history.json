@@ -1,18 +1,7 @@
 {
-  "last_updated": "2025-12-22T08:24:38.122333",
+  "last_updated": "2025-12-22T08:35:06.103764",
   "conversation_count": 1000,
   "history": [
-    {
-      "user": "Message 17",
-      "bbia": "C'est vraiment formidable ! Je suis content que vous vous sentiez bien. Pourquoi cela vous rend-il heureux aujourd'hui ?",
-      "sentiment": {
-        "text": "Message 17",
-        "sentiment": "neutral",
-        "score": 0.8299508690834045,
-        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
-      },
-      "timestamp": "2025-11-03T23:47:27.192003"
-    },
     {
       "user": "Message 18",
       "bbia": "C'est vraiment formidable ! Je suis content que vous vous sentiez bien. Pourquoi cela vous rend-il heureux aujourd'hui ?",
@@ -10710,6 +10699,9 @@
       "bbia": "Salut ! Qu'est-ce qui vous amène aujourd'hui ?",
       "sentiment": "neutral",
       "timestamp": "2025-11-20T11:52:48.932775"
+    },
+    {
+      "test": "data"
     },
     {
       "test": "data"
