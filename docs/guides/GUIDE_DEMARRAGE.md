@@ -76,7 +76,7 @@ flowchart TD
 
 ### 1. 📦 Installation
 
-> **📚 Guide complet** : Pour les détails d'installation, consultez [`docs/getting-started/INSTALLATION.md`](../getting-started/INSTALLATION.md)
+> **Guide d'installation** : Pour les détails d'installation, consultez [`docs/getting-started/INSTALLATION.md`](../getting-started/INSTALLATION.md)
 
 <div align="center">
 
@@ -131,7 +131,7 @@ Voir aussi : [Docker Compose Documentation](https://docs.docker.com/compose/)
 git clone https://github.com/arkalia-luna-system/bbia-sim.git
 cd bbia-sim
 
-# Lancer le script all-in-one (fait tout automatiquement)
+# Lancer le script all-in-one
 ./scripts/reachy-mini-sim-starter.sh
 
 # Le script :
