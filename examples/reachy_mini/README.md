@@ -145,6 +145,20 @@ Si le SDK officiel n'est pas disponible, les exemples utilisent automatiquement 
 
 ---
 
+## 🔧 Guide de Dépannage
+
+**👉 `GUIDE_DEPANNAGE_REACHY_MINI.md`** - Guide complet de dépannage consolidé
+
+Ce guide unique contient toutes les solutions pour :
+- Problèmes moteurs (clignotement rouge, surcharge, surchauffe)
+- Problèmes calibration (tête penchée, offsets)
+- Reflash moteurs (bug décembre 2025, paramètres d'usine)
+- Support Pollen (informations techniques, diagnostics)
+
+**Quand l'utiliser** : En cas de problème avec le robot physique
+
+---
+
 ## 📝 Notes
 
 - Tous les exemples fonctionnent en **mode simulation** par défaut (`use_sim=True`)
