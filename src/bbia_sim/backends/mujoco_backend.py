@@ -44,11 +44,30 @@ class MuJoCoBackend(RobotAPI):
         super().__init__()
         if model_path is None:
             # Résoudre le chemin par rapport au module pour éviter les problèmes
-            # de répertoire de travail dans les tests
+            # de répertoire de travail dans les tests et CI
+            # Essayer plusieurs chemins possibles pour robustesse
             module_dir = Path(__file__).parent.parent
-            model_path = str(
-                module_dir / "sim" / "models" / "reachy_mini_REAL_OFFICIAL.xml"
-            )
+            possible_paths = [
+                module_dir / "sim" / "models" / "reachy_mini_REAL_OFFICIAL.xml",
+                # Fallback: depuis la racine du projet
+                Path(__file__).parent.parent.parent.parent
+                / "src"
+                / "bbia_sim"
+                / "sim"
+                / "models"
+                / "reachy_mini_REAL_OFFICIAL.xml",
+            ]
+
+            model_path = None
+            for path in possible_paths:
+                if path.exists():
+                    model_path = str(path)
+                    break
+
+            if model_path is None:
+                # Utiliser le premier chemin par défaut même s'il n'existe pas
+                # (l'erreur sera levée dans connect())
+                model_path = str(possible_paths[0])
         self.model_path = Path(model_path)
         self.model: mujoco.MjModel | None = None
         self.data: mujoco.MjData | None = None
