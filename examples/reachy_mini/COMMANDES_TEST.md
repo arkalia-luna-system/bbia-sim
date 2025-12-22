@@ -302,6 +302,43 @@ python examples/reachy_mini/fix_head_tilted.py
 2. **Vérifier permissions** (macOS) :
    - Système → Confidentialité → Caméra → Autoriser Terminal/Python
 
+### Si un moteur clignote en rouge :
+
+**⚠️ C'EST ANORMAL ! Un moteur qui clignote en rouge indique une erreur matérielle.**
+
+1. **Diagnostic automatique** :
+   ```bash
+   python examples/reachy_mini/diagnostic_motor_errors.py
+   ```
+
+2. **Vérification visuelle** :
+   - Éteignez le robot (interrupteur OFF)
+   - Enlevez le capot de la tête
+   - Rallumez le robot (interrupteur ON)
+   - Observez quel moteur clignote en rouge
+   - Notez le numéro du moteur (1 à 6 pour la tête)
+
+3. **Correspondance Motor ID ↔ Moteur physique** :
+   - Motor ID 10 = Base (rotation corps)
+   - Motor ID 11 = stewart_1 (tête, moteur 1)
+   - Motor ID 12 = stewart_2 (tête, moteur 2) ← **Si c'est celui qui clignote !**
+   - Motor ID 13 = stewart_3 (tête, moteur 3)
+   - Motor ID 14 = stewart_4 (tête, moteur 4)
+   - Motor ID 15 = stewart_5 (tête, moteur 5)
+   - Motor ID 16 = stewart_6 (tête, moteur 6)
+   - Motor ID 17 = Antenne gauche
+   - Motor ID 18 = Antenne droite
+
+4. **Vérifications à faire** :
+   - Le moteur est dans le bon emplacement (voir guide d'assemblage)
+   - Le câble est bien branché
+   - Le moteur n'est pas en butée mécanique
+   - Aucun câble n'est coincé ou plié
+
+5. **Guide complet** :
+   - Voir `examples/reachy_mini/GUIDE_MOTEUR_CLIGNOTANT.md`
+   - Guide d'assemblage: https://huggingface.co/spaces/pollen-robotics/Reachy_Mini_Assembly_Guide
+
 ---
 
 ## 📋 9. COMMANDES RAPIDES (Copier-Coller)
@@ -317,6 +354,9 @@ python examples/reachy_mini/fix_head_tilted.py
 
 # Diagnostic complet
 python examples/reachy_mini/diagnostic_stewart.py
+
+# Diagnostic erreurs moteurs (si moteur clignote en rouge)
+python examples/reachy_mini/diagnostic_motor_errors.py
 
 # Test mouvement tête
 python examples/reachy_mini/minimal_demo.py
@@ -338,7 +378,8 @@ python examples/reachy_mini/goto_interpolation_playground.py
 | Test | Commande | Durée |
 |------|----------|-------|
 | **Correction tête** | `fix_head_tilted.py` | 3-5 sec |
-| Diagnostic | `diagnostic_stewart.py` | 1-2 min |
+| Diagnostic Stewart | `diagnostic_stewart.py` | 1-2 min |
+| **Diagnostic erreurs moteurs** | `diagnostic_motor_errors.py` | 30 sec |
 | Mouvement basique | `minimal_demo.py` | Continu |
 | Caméra | `look_at_image.py` | Continu |
 | Séquences | `sequence.py` | Continu |

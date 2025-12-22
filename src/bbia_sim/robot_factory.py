@@ -135,23 +135,9 @@ class RobotFactory:
             if backend_type == "mujoco":
                 # Laisser MuJoCoBackend utiliser sa recherche automatique du modèle
                 # Ne passer model_path que si explicitement fourni dans kwargs
+                # Si fast=True, on pourrait spécifier le modèle simplifié, mais
+                # pour l'instant on laisse MuJoCoBackend utiliser sa recherche robuste
                 model_path = kwargs.get("model_path", None)
-                if model_path is None:
-                    # Si fast=True, essayer de spécifier le modèle simplifié
-                    # Sinon, laisser MuJoCoBackend utiliser le modèle par défaut
-                    if kwargs.get("fast", False):
-                        # Essayer de trouver le modèle simplifié, sinon laisser None
-                        # pour que MuJoCoBackend utilise sa recherche automatique
-                        from pathlib import Path
-                        # Chercher depuis différents emplacements possibles
-                        possible_paths = [
-                            Path("src/bbia_sim/sim/models/reachy_mini.xml"),
-                            Path(__file__).parent.parent / "sim" / "models" / "reachy_mini.xml",
-                        ]
-                        for path in possible_paths:
-                            if path.exists():
-                                model_path = str(path.resolve())
-                                break
                 return MuJoCoBackend(model_path=model_path)
 
             if backend_type == "reachy":
