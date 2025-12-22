@@ -93,11 +93,19 @@ python examples/reachy_mini/diagnostic_motor_errors.py
 
 ## 🔧 **Vérification étape par étape**
 
-### **Étape 1: Diagnostic automatique**
+### **Étape 1: Diagnostic automatique (RECOMMANDÉ AVANT DE DÉMONTER)**
 
+**Option A: Depuis votre Mac (via SSH automatique - RECOMMANDÉ)**
+```bash
+python examples/reachy_mini/diagnostic_motor_errors_ssh.py
+```
+→ Ce script se connecte automatiquement au robot et identifie précisément quel moteur (par ID) a un problème
+
+**Option B: Depuis votre Mac (connexion directe)**
 ```bash
 python examples/reachy_mini/diagnostic_motor_errors.py
 ```
+→ Nécessite que le robot soit accessible via Zenoh
 
 ### **Étape 2: Vérification visuelle**
 

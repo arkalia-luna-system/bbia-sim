@@ -11,6 +11,7 @@ This exposes:
 import asyncio
 import logging
 from collections.abc import Coroutine
+from datetime import datetime
 from enum import Enum
 from typing import Annotated, Any
 from uuid import UUID, uuid4
@@ -41,6 +42,10 @@ from bbia_sim.daemon.models import (
     MoveUUID,
 )
 from bbia_sim.movement_batch_processor import get_batch_processor
+from bbia_sim.multi_layer_queue import (
+    MovementPriority,
+    get_multi_layer_queue,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -462,4 +467,176 @@ async def batch_movements(
         "movement_count": len(movement_uuids),
         "movement_ids": movement_uuids,
         "batch_size": batch_processor.get_queue_size(),
+    }
+
+
+@router.post("/multi-layer")
+async def multi_layer_movements(
+    movements: list[dict[str, Any]],
+    backend: Annotated[BackendAdapter, Depends(get_backend_adapter_for_move)],
+) -> dict[str, Any]:
+    """Exécute plusieurs mouvements avec file d'attente multicouche.
+
+    Support pour danses, émotions, poses simultanées avec priorités.
+
+    Args:
+        movements: Liste de mouvements avec type et priorité
+        backend: Backend adapter pour exécuter les mouvements
+
+    Returns:
+        Dictionnaire avec statut et IDs des mouvements créés
+
+    Exemple de requête:
+    ```json
+    {
+        "movements": [
+            {
+                "type": "dance",
+                "priority": "DANCE",
+                "func": "dance_happy",
+                "metadata": {}
+            },
+            {
+                "type": "emotion",
+                "priority": "EMOTION",
+                "emotion": "happy",
+                "intensity": 0.8
+            },
+            {
+                "type": "pose",
+                "priority": "POSE",
+                "head_pose": {...},
+                "duration": 2.0
+            }
+        ]
+    }
+    ```
+    """
+    multi_queue = get_multi_layer_queue()
+    movement_ids: list[str] = []
+
+    for movement_data in movements:
+        move_type = movement_data.get("type", "pose").lower()
+        priority_str = movement_data.get("priority", "POSE").upper()
+
+        # Mapper la priorité
+        priority_map = {
+            "EMERGENCY": MovementPriority.EMERGENCY,
+            "DANCE": MovementPriority.DANCE,
+            "EMOTION": MovementPriority.EMOTION,
+            "POSE": MovementPriority.POSE,
+            "BACKGROUND": MovementPriority.BACKGROUND,
+        }
+        priority = priority_map.get(priority_str, MovementPriority.POSE)
+
+        # Créer la fonction async selon le type
+        async def create_movement_func(
+            m_type: str = move_type,
+            m_data: dict[str, Any] = movement_data.copy(),
+        ) -> None:
+            """Crée une fonction async pour exécuter le mouvement."""
+            if m_type == "dance":
+                # Exécuter une danse
+                dance_name = m_data.get("func", "dance_happy")
+                logger.info("Exécution danse: %s", dance_name)
+                # TODO: Intégrer avec système de danses BBIA
+                await asyncio.sleep(1.0)  # Placeholder
+
+            elif m_type == "emotion":
+                # Appliquer une émotion
+                emotion = m_data.get("emotion", "neutral")
+                intensity = m_data.get("intensity", 0.5)
+                logger.info("Application émotion: %s (intensité: %s)", emotion, intensity)
+                # TODO: Intégrer avec BBIAEmotions
+                await asyncio.sleep(0.5)  # Placeholder
+
+            elif m_type == "pose":
+                # Exécuter une pose
+                head_pose_data = m_data.get("head_pose")
+                antennas_data = m_data.get("antennas")
+                duration = m_data.get("duration", 1.0)
+
+                if head_pose_data or antennas_data:
+                    head_pose = (
+                        AnyPose(**head_pose_data).to_pose_array()
+                        if head_pose_data
+                        else None
+                    )
+                    antennas = (
+                        np.array(antennas_data) if antennas_data else None
+                    )
+
+                    await backend.goto_target(
+                        head=head_pose,
+                        antennas=antennas,
+                        duration=duration,
+                    )
+            else:
+                logger.warning("Type de mouvement inconnu: %s", m_type)
+
+        # Ajouter à la queue selon le type
+        if move_type == "dance":
+            result = await multi_queue.add_dance(
+                create_movement_func,
+                dance_id=movement_data.get("id"),
+                metadata=movement_data.get("metadata", {}),
+            )
+        elif move_type == "emotion":
+            result = await multi_queue.add_emotion(
+                create_movement_func,
+                emotion_id=movement_data.get("id"),
+                metadata=movement_data.get("metadata", {}),
+            )
+        elif move_type == "pose":
+            result = await multi_queue.add_pose(
+                create_movement_func,
+                pose_id=movement_data.get("id"),
+                metadata=movement_data.get("metadata", {}),
+            )
+        else:
+            result = await multi_queue.add_movement(
+                create_movement_func,
+                priority=priority,
+                movement_type=move_type,
+                movement_id=movement_data.get("id"),
+                metadata=movement_data.get("metadata", {}),
+            )
+
+        movement_ids.append(result["movement_id"])
+
+    stats = multi_queue.get_stats()
+
+    return {
+        "status": "queued",
+        "movement_count": len(movement_ids),
+        "movement_ids": movement_ids,
+        "queue_stats": stats,
+    }
+
+
+@router.get("/multi-layer/stats")
+async def get_multi_layer_stats() -> dict[str, Any]:
+    """Retourne les statistiques de la file d'attente multicouche.
+
+    Returns:
+        Statistiques détaillées de la queue
+    """
+    multi_queue = get_multi_layer_queue()
+    stats: dict[str, Any] = multi_queue.get_stats()
+    return stats
+
+
+@router.post("/multi-layer/emergency-stop")
+async def emergency_stop_multi_layer() -> dict[str, Any]:
+    """Arrêt d'urgence - vide toutes les queues et arrête les mouvements.
+
+    Returns:
+        Confirmation de l'arrêt d'urgence
+    """
+    multi_queue = get_multi_layer_queue()
+    await multi_queue.emergency_stop()
+    return {
+        "status": "stopped",
+        "message": "Toutes les queues ont été vidées et les mouvements arrêtés",
+        "timestamp": datetime.now().isoformat(),
     }

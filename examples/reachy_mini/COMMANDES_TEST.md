@@ -306,7 +306,16 @@ python examples/reachy_mini/fix_head_tilted.py
 
 **⚠️ C'EST ANORMAL ! Un moteur qui clignote en rouge indique une erreur matérielle.**
 
-1. **Diagnostic automatique** :
+**🔍 IMPORTANT: Faites le diagnostic AVANT de démonter !**
+
+1. **Diagnostic automatique (via SSH - RECOMMANDÉ)** :
+   ```bash
+   # Depuis votre Mac, ce script se connecte au robot et identifie le problème
+   python examples/reachy_mini/diagnostic_motor_errors_ssh.py
+   ```
+   → Identifie précisément quel moteur (par ID) a un problème
+
+2. **Diagnostic direct (si robot accessible)** :
    ```bash
    python examples/reachy_mini/diagnostic_motor_errors.py
    ```
