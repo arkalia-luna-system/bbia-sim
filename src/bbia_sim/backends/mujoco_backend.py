@@ -37,13 +37,39 @@ def _find_mujoco_model() -> Path | None:
 
     # Stratégie 0: Utiliser importlib.resources (le plus fiable pour les packages installés)
     try:
-        with importlib.resources.path("bbia_sim.sim.models", model_name) as model_path:
-            if model_path.exists():
-                logger.debug(
-                    "Modèle trouvé (stratégie 0 - importlib.resources): %s", model_path
+        # Python 3.9+ : utiliser files() API (plus robuste)
+        if hasattr(importlib.resources, "files"):
+            try:
+                model_path_traversable = (
+                    importlib.resources.files("bbia_sim.sim.models") / model_name
                 )
-                return Path(model_path)
-    except (ModuleNotFoundError, FileNotFoundError, TypeError):
+                # Convertir Traversable en Path pour vérifier existence
+                resolved = Path(str(model_path_traversable))
+                if resolved.exists():
+                    logger.debug(
+                        "Modèle trouvé (stratégie 0a - importlib.resources.files): %s",
+                        resolved,
+                    )
+                    return resolved
+            except (
+                ModuleNotFoundError,
+                FileNotFoundError,
+                TypeError,
+                AttributeError,
+                ValueError,
+            ):
+                pass
+
+        # Fallback: utiliser path() API (Python 3.6+)
+        with importlib.resources.path("bbia_sim.sim.models", model_name) as model_path:
+            resolved = Path(model_path)
+            if resolved.exists():
+                logger.debug(
+                    "Modèle trouvé (stratégie 0b - importlib.resources.path): %s",
+                    resolved,
+                )
+                return resolved
+    except (ModuleNotFoundError, FileNotFoundError, TypeError, AttributeError):
         # importlib.resources peut échouer si le package n'est pas installé ou en mode développement
         pass
 
@@ -181,18 +207,31 @@ class MuJoCoBackend(RobotAPI):
             model_path_resolved = Path(self.model_path).resolve()
             if not model_path_resolved.exists():
                 # Essayer de trouver le fichier avec la fonction de recherche robuste
+                logger.debug(
+                    "Chemin modèle initial n'existe pas: %s, recherche alternative...",
+                    model_path_resolved,
+                )
                 found_path = _find_mujoco_model()
-                if found_path:
+                if found_path and found_path.exists():
                     model_path_resolved = found_path
                     logger.info(
                         "Modèle MuJoCo trouvé via recherche: %s", model_path_resolved
                     )
                 else:
                     logger.error(
-                        "Modèle MuJoCo introuvable: %s (recherche échouée)",
+                        "Modèle MuJoCo introuvable: %s (recherche échouée, "
+                        "fichier n'existe pas)",
                         model_path_resolved,
                     )
                     return False
+
+            # Vérification finale que le fichier existe
+            if not model_path_resolved.exists():
+                logger.error(
+                    "Modèle MuJoCo introuvable après résolution: %s",
+                    model_path_resolved,
+                )
+                return False
 
             # Utiliser cache LRU pour modèles MuJoCo
             self.model = get_cached_mujoco_model(model_path_resolved)
