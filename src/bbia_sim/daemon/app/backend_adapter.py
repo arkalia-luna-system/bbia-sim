@@ -617,7 +617,11 @@ class BackendAdapter:
     def get_available_joints(self) -> list[str]:
         """Récupère la liste des joints disponibles (délègue à RobotAPI)."""
         self.connect_if_needed()
-        return self._robot.get_available_joints()
+        joints = self._robot.get_available_joints()
+        # Vérifier que c'est bien une liste de strings
+        if isinstance(joints, list):
+            return [str(j) for j in joints]
+        return []
 
     def get_status(self) -> RobotStatus | dict[str, Any]:
         """Récupère le statut du backend (conforme SDK)."""
