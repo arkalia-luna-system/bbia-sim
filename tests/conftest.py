@@ -620,6 +620,14 @@ def clear_model_caches_after_test():
         # Ignorer si module non disponible ou erreurs
         pass
 
+    # Nettoyer cache MuJoCo après chaque test
+    try:
+        from bbia_sim.mujoco_model_cache import clear_mujoco_cache
+
+        clear_mujoco_cache()
+    except (ImportError, AttributeError):
+        pass
+
     # Nettoyer après chaque test
     try:
         gc.collect()  # Force garbage collection
