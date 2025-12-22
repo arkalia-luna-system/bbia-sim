@@ -525,6 +525,35 @@ robots = registry.discover_robots()
 # GET /api/robots/list
 ```
 
+### ✅ Intégration Complète API (Complétée - 22 Décembre 2025)
+
+**Endpoints API** :
+- `POST /api/move/multi-layer` : Exécute danses, émotions, poses simultanées
+- `GET /api/move/multi-layer/stats` : Statistiques de la queue
+- `POST /api/move/multi-layer/emergency-stop` : Arrêt d'urgence
+
+**Intégrations** :
+- ✅ BBIAEmotions intégré (gestion complète des 12 émotions)
+- ✅ Danses intégrées (RecordedMoves depuis Hugging Face)
+- ✅ Poses intégrées (goto_target via backend)
+
+**Tests** : 
+- ✅ Tests unitaires : 11/11 passants
+- ✅ Tests d'intégration : 4/4 passants
+
+**Exemple d'utilisation** :
+```python
+# Via API REST
+POST /api/move/multi-layer
+{
+  "movements": [
+    {"type": "dance", "priority": "DANCE", "func": "dance_happy"},
+    {"type": "emotion", "priority": "EMOTION", "emotion": "happy", "intensity": 0.8},
+    {"type": "pose", "priority": "POSE", "head_pose": {...}, "duration": 2.0}
+  ]
+}
+```
+
 ---
 
 **Dernière mise à jour** : 22 Décembre 2025  
