@@ -18,7 +18,7 @@
 
 ---
 
-## 1. RobotAPI Unifié ⭐⭐⭐⭐⭐
+## 1. RobotAPI Unifié
 
 ### Architecture
 
@@ -65,11 +65,11 @@ robot_real.goto_target(head=pose, duration=2.0)
 
 ---
 
-## 2. Solution 100% Gratuite et Offline ⭐⭐⭐⭐⭐
+## 2. Solution Gratuite et Offline
 
 ### Positionnement Stratégique
 
-**BBIA-SIM** offre une solution **100% gratuite et offline** vs solutions payantes.
+**BBIA-SIM** offre une solution **gratuite et offline** vs solutions payantes.
 
 ### Comparaison avec Solutions Payantes
 
@@ -121,7 +121,7 @@ response = hf.chat("Bonjour")
 
 ---
 
-## 3. 12 Émotions vs 6 Officielles ⭐⭐⭐⭐
+## 3. 12 Émotions vs 6 Officielles
 
 ### Expressivité
 

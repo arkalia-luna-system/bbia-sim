@@ -253,5 +253,5 @@ python -m pytest tests/ -m "not e2e" -v
 
 **Version** : 1.4.0
 **Dernière mise à jour : 15 Décembre 2025
-**Statut** : Production Ready • **100% d'exploitation des capacités** ✅
+**Statut** : Production Ready • **Exploitation des capacités principales** ✅
 **Licence** : MIT
