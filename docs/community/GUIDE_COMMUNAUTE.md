@@ -367,5 +367,5 @@ Good for learning advanced Python!
 ### Pour Comprendre
 
 - **[Audit Stratégique Valeur](../../quality/audits/AUDIT_STRATEGIQUE_VALEUR_26NOV2025.md)** : Analyse valeur et recommandations
-- **[Ce qui Manque](../../quality/audits/CE_QUI_MANQUE_DANS_BBIA_26NOV2025.md)** : Analyse fonctionnalités manquantes
+- **[Ce qui Manque](../../quality/audits/CE_QUI_MANQUE_BBIA_DEC2025.md)** : Analyse fonctionnalités manquantes
 

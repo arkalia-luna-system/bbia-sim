@@ -135,7 +135,7 @@ Si vous avez des moteurs QC 2542 (moteurs 5 et 6) :
 - **Formulaire de remplacement** : Google Form "Dynamixel motor replacement request"
 - **SDK v1.2.4** : Mise à jour automatique via dashboard
 - **Support Pollen** : Contact via Discord #support
-- **Documentation BBIA** : `docs/hardware/REACHY_MINI_SDK_v1.2.4_UPDATE.md`
+- **Documentation BBIA** : `docs/hardware/REACHY_MINI_SDK_v1.2.4.md`
 
 ---
 

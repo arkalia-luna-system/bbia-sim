@@ -76,9 +76,9 @@
 ## Documents de Référence
 
 - `TACHES_RESTANTES_CONSOLIDEES.md` - Tâches restantes
-- `CE_QUI_MANQUE_VRAIMENT_BBIA_DEC2025.md` - Détails fonctionnalités manquantes
+- `CE_QUI_MANQUE_BBIA_DEC2025.md` - Détails fonctionnalités manquantes (document consolidé)
 - `AUDIT_REACHY_MINI_DECEMBRE_2025.md` - Audit complet Reachy Mini
-- `RESUME_AUDIT_DECEMBRE_2025.md` - Résumé exécutif
+- `RESUME_AUDIT_DEC2025.md` - Résumé exécutif
 
 ---
 

@@ -599,7 +599,7 @@
 5. 🟢 **WebRTC Streaming** (optionnel - BBIA a déjà WebSocket <10ms)
 6. 🟢 **DoA Audio** (nécessite hardware spécifique - microphone array)
 
-**Voir** : `CE_QUI_MANQUE_VRAIMENT_BBIA_DEC2025.md` pour détails complets
+**Voir** : `CE_QUI_MANQUE_BBIA_DEC2025.md` pour détails complets
 
 ---
 

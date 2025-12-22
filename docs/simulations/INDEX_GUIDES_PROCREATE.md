@@ -102,5 +102,3 @@ Ce guide unique contient toutes les sections :
 **Voir aussi** : [Guide MuJoCo](MUJOCO_SIMULATION_GUIDE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
 
 ---
-
-**Index Guides Procreate - BBIA-SIM - 22 Décembre 2025**

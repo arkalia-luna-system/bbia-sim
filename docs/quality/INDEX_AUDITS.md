@@ -23,7 +23,7 @@
 
 ### 3. Ce Qui Manque
 
-- **`CE_QUI_MANQUE_VRAIMENT_BBIA_DEC2025.md`** - Détails fonctionnalités manquantes
+- **`CE_QUI_MANQUE_BBIA_DEC2025.md`** - Détails fonctionnalités manquantes (document consolidé)
   - Synchronisation fine : FAIT
   - Fluidité conversationnelle : FAIT
   - WebRTC/MCP/DoA : Optionnel (BBIA a déjà mieux ou équivalent)
