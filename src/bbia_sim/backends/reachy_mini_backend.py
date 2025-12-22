@@ -1437,6 +1437,9 @@ class ReachyMiniBackend(RobotAPI):
         """Active les moteurs.
 
         Issue #323: S'assure que enable_motors définit le mode position controlled.
+
+        Note: Avec SDK v1.2.4+, le SDK gère automatiquement le mode position.
+        Ce workaround est conservé pour compatibilité avec anciennes versions SDK (< v1.2.4).
         """
         if not self.is_connected or not self.robot:
             logger.debug("Mode simulation: enable_motors")
@@ -1445,18 +1448,21 @@ class ReachyMiniBackend(RobotAPI):
         try:
             self.robot.enable_motors()
             # Issue #323: S'assurer que le mode est position controlled après enable
+            # NOTE: SDK v1.2.4+ gère automatiquement, mais on garde ce code pour
+            # compatibilité avec anciennes versions (< v1.2.4) où le bug existait
             if hasattr(self.robot, "set_operating_mode"):
                 try:
                     # Essayer de définir explicitement le mode position
+                    # (workaround pour SDK < v1.2.4, mais inoffensif pour v1.2.4+)
                     self.robot.set_operating_mode("position")
                     logger.debug(
                         "✅ Mode position controlled défini après enable_motors",
                     )
                 except (AttributeError, ValueError, TypeError):
                     # Si set_operating_mode n'existe pas, c'est OK
-                    # (SDK gère automatiquement)
+                    # (SDK v1.2.4+ gère automatiquement)
                     logger.debug(
-                        "set_operating_mode non disponible (SDK gère automatiquement)",
+                        "set_operating_mode non disponible (SDK v1.2.4+ gère automatiquement)",
                     )
         except Exception:
             logger.exception("Erreur enable_motors")
