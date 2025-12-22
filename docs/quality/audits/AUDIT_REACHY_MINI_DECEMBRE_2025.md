@@ -575,6 +575,31 @@ POST /api/move/multi-layer
 
 ---
 
+### ✅ Tests Edge Cases (Complétée - 22 Décembre 2025)
+
+**Tests edge cases** : `tests/test_multi_layer_queue_edge_cases.py`
+
+**Fonctionnalités testées** :
+- ✅ Queue pleine avec max_queue_size limité
+- ✅ Ordre des priorités avec beaucoup de mouvements
+- ✅ Arrêt d'urgence pendant exécution
+- ✅ Gestion exceptions dans mouvements
+- ✅ Ajout concurrent de mouvements
+- ✅ Limite max_parallel respectée
+- ✅ Stats pendant exécution
+- ✅ Préservation métadonnées
+- ✅ Récupération après exception worker
+- ✅ Appels multiples emergency_stop
+- ✅ get_queue_size par priorité
+- ✅ Singleton global instance
+- ✅ Précision statistiques
+
+**Tests** : 15/15 passants
+
+**Résultat** : Couverture de code améliorée, robustesse validée
+
+---
+
 **Dernière mise à jour** : 22 Décembre 2025  
 **Prochaine révision** : Après réception robot physique ou mise à jour majeure SDK  
 **Branches analysées** : `develop` (principale), `main` (stable), toutes les branches feature/bugfix/hotfix  
