@@ -1,8 +1,11 @@
-# 📋 CHECKLIST PRÉ-REACHY RÉEL (A4)
+# 📋 CHECKLIST REACHY RÉEL - STATUT ACTUEL
 
-**Date** : Oct / Nov. 2025
-**Version** : 1.1.1
-**Robot** : Reachy Mini Wireless (Pollen Robotics)
+**Date réception** : 18 Décembre 2025  
+**Date montage** : 20 Décembre 2025 (durée : 4 heures)  
+**Dernière mise à jour** : 22 Décembre 2025  
+**Version** : 1.2.0  
+**Robot** : Reachy Mini Wireless (Pollen Robotics)  
+**IP Robot** : 192.168.129.64
 
 ---
 
@@ -10,10 +13,11 @@
 
 ### **🔌 Connexion Robot**
 
-- [ ] **SDK Reachy installé** : Version notée _______________
-- [ ] **Robot allumé** : LED de statut verte
-- [ ] **Connexion réseau** : IP robot _______________
-- [ ] **Ports ouverts** : 8080 (API), 8081 (WebSocket)
+- [x] **SDK Reachy installé** : Version 1.2.3 ✅
+- [x] **Robot allumé** : LED de statut verte ✅
+- [x] **Connexion réseau** : IP robot 192.168.129.64 ✅
+- [x] **Ports ouverts** : 8080 (API), 8081 (WebSocket) ✅
+- [x] **WiFi configuré** : Robot connecté au réseau local ✅
 
 ### **🛡️ Sécurité**
 
@@ -131,6 +135,42 @@ Observations: _______________
 
 ---
 
-**✅ CHECKLIST VALIDÉE** : Robot prêt pour les démos BBIA !
+## 📝 NOTES POST-MONTAGE (22 Déc 2025)
 
-*Dernière mise à jour : Oct / Nov. 2025*
+### Problèmes identifiés et actions
+
+1. **Bug décembre 2025 - Reflash moteurs** ✅
+   - Problème : Moteurs avec paramètres d'usine incorrects (ID=1, baudrate 57,600)
+   - Solution : Reflash effectué le 22 déc 2025 via `reachy-mini-reflash-motors`
+   - Résultat : Tous les moteurs (ID 10-18) reconfigurés correctement
+
+2. **Tête penchée** ⚠️
+   - Problème : Tête penchée vers l'avant et sur le côté droit
+   - Correction logicielle : Script `fix_head_tilted.py` avec corrections roll=180°, pitch=-70°, z=80mm
+   - Statut : Amélioration mais problème persiste → Vérification câblage nécessaire
+
+3. **Moteur clignotant rouge** ⚠️
+   - Problème : Moteur physique (probablement stewart_2) clignote en rouge
+   - Diagnostic : Tous les moteurs répondent logiciellement (positions lisibles)
+   - Action : Vérification câblage et placement du moteur nécessaire
+
+### Scripts de diagnostic créés
+
+- ✅ `diagnostic_motor_errors_ssh.py` : Diagnostic complet des moteurs avec test de mouvement
+- ✅ `fix_head_tilted.py` : Correction automatique de la tête penchée
+- ✅ `diagnostic_stewart.py` : Diagnostic des joints Stewart platform
+- ✅ `REFLASH_GUIDE.md` : Guide complet pour le reflash des moteurs
+- ✅ `GUIDE_MOTEUR_CLIGNOTANT.md` : Guide pour résoudre les problèmes de moteurs
+
+### Prochaines étapes
+
+- [ ] Vérification câblage du moteur qui clignote
+- [ ] Vérification placement des moteurs selon guide d'assemblage
+- [ ] Calibration complète via app Reachy Mini Control
+- [ ] Tests de mouvement complets
+
+---
+
+**✅ CHECKLIST VALIDÉE** : Robot monté et opérationnel, diagnostics effectués
+
+*Dernière mise à jour : 22 Décembre 2025*

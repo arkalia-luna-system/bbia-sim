@@ -1,8 +1,21 @@
-# Guide Complet - Préparation Réception Reachy Mini Wireless
+# Guide Complet - Réception et Utilisation Reachy Mini Wireless
 
 **Dernière mise à jour** : 22 Décembre 2025  
 **Version BBIA** : 1.4.0  
 **SDK Officiel** : v1.2.3 (Latest)
+
+## 📦 STATUT RÉCEPTION
+
+✅ **Robot reçu** : 18 Décembre 2025  
+✅ **Montage effectué** : 20 Décembre 2025 (durée : 4 heures)  
+✅ **Premiers tests** : 22 Décembre 2025  
+✅ **IP Robot** : 192.168.129.64 (WiFi configuré)
+
+### Problèmes rencontrés et résolus
+
+- ✅ **Bug décembre 2025** : Moteurs avec paramètres d'usine incorrects (ID=1, baudrate 57,600) → **Reflash effectué** le 22 déc 2025
+- ⚠️ **Tête penchée** : Correction logicielle effectuée, vérification câblage nécessaire
+- ⚠️ **Moteur clignotant rouge** : Diagnostic effectué, tous les moteurs répondent logiciellement, vérification matérielle nécessaire
 
 ---
 

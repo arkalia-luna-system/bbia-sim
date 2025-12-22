@@ -244,6 +244,7 @@ class MuJoCoBackend(RobotAPI):
                 # Si TypeError, c'est probablement un mock dans les tests
                 # Créer un mock pour MjData aussi
                 from unittest.mock import MagicMock
+
                 self.data = MagicMock()
                 logger.debug("Mode test détecté: utilisation de mocks pour MuJoCo")
 
@@ -251,9 +252,13 @@ class MuJoCoBackend(RobotAPI):
             # Vérifier si self.model a l'attribut njnt (évite erreur avec mocks)
             if hasattr(self.model, "njnt"):
                 try:
-                    njnt = int(self.model.njnt)  # Convertir en int pour éviter erreurs avec mocks
+                    njnt = int(
+                        self.model.njnt
+                    )  # Convertir en int pour éviter erreurs avec mocks
                     for i in range(njnt):
-                        name = mujoco.mj_id2name(self.model, mujoco.mjtObj.mjOBJ_JOINT, i)
+                        name = mujoco.mj_id2name(
+                            self.model, mujoco.mjtObj.mjOBJ_JOINT, i
+                        )
                         if name:
                             self.joint_name_to_id[name] = i
                             # Charger les limites du joint
@@ -266,14 +271,22 @@ class MuJoCoBackend(RobotAPI):
                                         range_len = len(joint_range)
                                     except (TypeError, AttributeError):
                                         range_len = 2  # Par défaut, supposer 2 éléments
-                                    if hasattr(joint_range, "__getitem__") and range_len >= 2:
-                                        self.joint_limits[name] = (joint_range[0], joint_range[1])
+                                    if (
+                                        hasattr(joint_range, "__getitem__")
+                                        and range_len >= 2
+                                    ):
+                                        self.joint_limits[name] = (
+                                            joint_range[0],
+                                            joint_range[1],
+                                        )
                                 except (IndexError, TypeError, AttributeError):
                                     # Ignorer si joint_range n'est pas accessible (mock)
                                     pass
                 except (TypeError, ValueError, AttributeError):
                     # Si njnt n'est pas accessible ou convertible, ignorer (mode mock)
-                    logger.debug("Impossible de construire mapping joints (mode mock probable)")
+                    logger.debug(
+                        "Impossible de construire mapping joints (mode mock probable)"
+                    )
 
             self.is_connected = True
             self.start_time = time.time()

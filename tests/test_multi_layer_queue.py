@@ -181,4 +181,3 @@ class TestMultiLayerQueue:
 
         # Vérifier que tous les mouvements ont été exécutés
         assert len(executed) == 3
-

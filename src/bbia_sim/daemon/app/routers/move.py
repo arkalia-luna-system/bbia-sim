@@ -567,7 +567,9 @@ async def multi_layer_movements(
                 # Appliquer une émotion via BBIAEmotions
                 emotion = m_data.get("emotion", "neutral")
                 intensity = m_data.get("intensity", 0.5)
-                logger.info("Application émotion: %s (intensité: %s)", emotion, intensity)
+                logger.info(
+                    "Application émotion: %s (intensité: %s)", emotion, intensity
+                )
 
                 try:
                     from bbia_sim.bbia_emotions import BBIAEmotions
@@ -599,9 +601,7 @@ async def multi_layer_movements(
                         if head_pose_data
                         else None
                     )
-                    antennas = (
-                        np.array(antennas_data) if antennas_data else None
-                    )
+                    antennas = np.array(antennas_data) if antennas_data else None
 
                     await backend.goto_target(
                         head=head_pose,

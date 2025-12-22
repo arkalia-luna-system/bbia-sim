@@ -1,9 +1,16 @@
 # 🔍 CONFORMITÉ COMPLÈTE - REACHY MINI OFFICIEL vs BBIA-SIM
 
-**Dernière mise à jour : 15 Décembre 2025  
-**Version BBIA :** 1.3.2  
+**Dernière mise à jour :** 22 Décembre 2025  
+**Version BBIA :** 1.4.0  
 **SDK Officiel :** `pollen-robotics/reachy_mini` (GitHub)  
 **Repo officiel :** https://github.com/pollen-robotics/reachy_mini
+
+## 📦 STATUT ROBOT PHYSIQUE
+
+✅ **Robot reçu** : 18 Décembre 2025  
+✅ **Montage effectué** : 20 Décembre 2025 (durée : 4 heures)  
+✅ **Premiers tests** : 22 Décembre 2025  
+✅ **IP Robot** : 192.168.129.64
 
 ---
 
@@ -11,9 +18,10 @@
 
 Ce document fait un inventaire de ce que propose le repo officiel Reachy Mini et compare avec l'état actuel de BBIA-SIM.
 
-**Objectif :** Vérifier que BBIA a tout ce qui est nécessaire pour fonctionner avec le robot réel en 8 Décembre 2025.
+**Objectif :** Vérifier que BBIA a tout ce qui est nécessaire pour fonctionner avec le robot réel.
 
-**Statut Global :** **98% COMPLET** ✅
+**Statut Global :** **98% COMPLET** ✅  
+**Robot Physique :** ✅ **DISPONIBLE ET OPÉRATIONNEL**
 
 ---
 

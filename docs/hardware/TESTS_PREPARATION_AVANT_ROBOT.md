@@ -1,11 +1,12 @@
-# Tests de Préparation - Avant Arrivée Robot
+# Tests de Préparation et Diagnostic Robot
 
 **Dernière mise à jour** : 22 Décembre 2025  
 **Version BBIA** : 1.4.0  
-**Objectif** : Valider l'environnement local avant l'arrivée du robot Reachy Mini  
+**Statut** : ✅ Robot reçu le 18 décembre 2025, monté le 20 décembre 2025  
+**Objectif** : Valider l'environnement local et diagnostiquer le robot physique  
 **Durée estimée** : 30-60 minutes
 
-Ces tests peuvent être effectués sans robot physique pour valider que tout est prêt.
+> **✅ Robot physique disponible** : Ces tests peuvent maintenant être effectués avec le robot réel (IP: 192.168.129.64)
 
 ---
 

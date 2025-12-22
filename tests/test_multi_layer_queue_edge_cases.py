@@ -120,6 +120,7 @@ class TestMultiLayerQueueEdgeCases:
 
         async def add_many_movements():
             for i in range(10):
+
                 async def func(id_val: int = i):
                     await asyncio.sleep(0.01)
 
@@ -331,4 +332,3 @@ class TestMultiLayerQueueEdgeCases:
         assert stats["stats"]["total_queued"] == 3
         assert stats["stats"]["total_executed"] == 2
         assert stats["stats"]["total_failed"] == 1
-

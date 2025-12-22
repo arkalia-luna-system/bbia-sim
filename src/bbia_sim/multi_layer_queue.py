@@ -96,7 +96,9 @@ class MultiLayerQueue:
         Returns:
             Dictionnaire avec status et movement_id
         """
-        movement_id = movement_id or f"{movement_type}_{asyncio.get_event_loop().time()}"
+        movement_id = (
+            movement_id or f"{movement_type}_{asyncio.get_event_loop().time()}"
+        )
 
         movement_data = {
             "func": movement_func,
@@ -170,15 +172,16 @@ class MultiLayerQueue:
                     await asyncio.sleep(0.1)
                     # Vérifier si toutes les queues sont vides et aucune tâche en cours
                     async with self.running_lock:
-                        if all(q.empty() for q in self.queues.values()) and not self.running_tasks:
+                        if (
+                            all(q.empty() for q in self.queues.values())
+                            and not self.running_tasks
+                        ):
                             self.is_running = False
                             break
                     continue
 
                 # Exécuter le mouvement
-                task = asyncio.create_task(
-                    self._execute_movement(movement_data)
-                )
+                task = asyncio.create_task(self._execute_movement(movement_data))
                 async with self.running_lock:
                     self.running_tasks[movement_data["id"]] = task
 
@@ -341,8 +344,7 @@ class MultiLayerQueue:
         """Retourne les statistiques de la queue."""
         return {
             "queue_sizes": {
-                priority.name: queue.qsize()
-                for priority, queue in self.queues.items()
+                priority.name: queue.qsize() for priority, queue in self.queues.items()
             },
             "running_count": len(self.running_tasks),
             "max_parallel": self.max_parallel,
@@ -354,7 +356,9 @@ class MultiLayerQueue:
         # Attendre que toutes les tâches en cours se terminent
         async with self.running_lock:
             if self.running_tasks:
-                await asyncio.gather(*self.running_tasks.values(), return_exceptions=True)
+                await asyncio.gather(
+                    *self.running_tasks.values(), return_exceptions=True
+                )
 
         # Exécuter tous les mouvements restants
         while True:
@@ -384,4 +388,3 @@ def get_multi_layer_queue() -> MultiLayerQueue:
     if _global_multi_layer_queue is None:
         _global_multi_layer_queue = MultiLayerQueue()
     return _global_multi_layer_queue
-

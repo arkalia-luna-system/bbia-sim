@@ -1,12 +1,23 @@
 # 📋 REACHY UPDATES LOG
 
+**Dernière mise à jour** : 22 Décembre 2025
+
+## 📦 **STATUT ROBOT PHYSIQUE**
+
+- ✅ **Robot reçu** : 18 Décembre 2025
+- ✅ **Montage effectué** : 20 Décembre 2025 (durée : 4 heures)
+- ✅ **Premiers tests** : 22 Décembre 2025
+- ✅ **IP Robot** : 192.168.129.64 (WiFi configuré)
+- ✅ **Bug décembre 2025** : Reflash moteurs effectué le 22 déc 2025
+
 ## 🔍 **AUDIT NOUVEAUTÉS REACHY - Oct / Nov. 2025**
 
 ### **📊 ÉTAT ACTUEL**
 
-- **Reachy SDK** : Version installée via `reachy_mini` package
+- **Reachy SDK** : Version installée via `reachy_mini` package (v1.2.3)
 - **Modèle MJCF** : `reachy_mini.xml` officiel trouvé dans le package
 - **Joints identifiés** : 7 joints mobiles + 2 antennes + 7 passifs
+- **Robot physique** : ✅ Disponible et opérationnel
 
 ### **🔧 JOINTS OFFICIELS DÉTECTÉS**
 

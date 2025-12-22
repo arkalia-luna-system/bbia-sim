@@ -32,6 +32,25 @@
 
 ## 🆕 NOUVELLES INFORMATIONS - DÉCEMBRE 2025
 
+### 📦 Réception et Montage Robot Physique
+
+**✅ Robot reçu** : 18 Décembre 2025  
+**✅ Montage effectué** : 20 Décembre 2025 (durée : 4 heures)  
+**✅ Premiers tests** : 22 Décembre 2025  
+**✅ IP Robot** : 192.168.129.64 (WiFi configuré)
+
+**Problèmes rencontrés** :
+- ✅ Bug décembre 2025 (moteurs mal configurés) → **Reflash effectué** le 22 déc 2025
+- ⚠️ Tête penchée → Correction logicielle effectuée, vérification matérielle nécessaire
+- ⚠️ Moteur clignotant rouge → Diagnostic effectué, vérification câblage nécessaire
+
+**Scripts créés** :
+- `diagnostic_motor_errors_ssh.py` : Diagnostic complet moteurs + test mouvement
+- `fix_head_tilted.py` : Correction automatique tête penchée
+- `diagnostic_stewart.py` : Diagnostic joints Stewart platform
+- `REFLASH_GUIDE.md` : Guide reflash moteurs
+- `GUIDE_MOTEUR_CLIGNOTANT.md` : Guide résolution problèmes moteurs
+
 ### Versions SDK Récentes
 
 **Dernière version** : **v1.2.3** (vérifié 22 Dec 2025)

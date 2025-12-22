@@ -9,16 +9,16 @@
 
 ### Réception Robot
 
-- [ ] **Robot Reachy Mini reçu**
-  - Vérifier colis complet (robot + accessoires)
-  - Inspecter état physique (pas de dommages)
-  - Photographier déballage pour documentation
+- [x] **Robot Reachy Mini reçu** ✅ **18 Décembre 2025**
+  - Colis complet vérifié (robot + accessoires) ✅
+  - État physique inspecté (pas de dommages) ✅
+  - Déballage photographié pour documentation ✅
 
-- [ ] **Vérification hardware**
-  - Batterie chargée ou alimentation USB-C connectée
-  - LED d'alimentation allumée
-  - Wi-Fi accessible (vérifier SSID réseau)
-  - Robot répond au ping réseau
+- [x] **Vérification hardware** ✅
+  - Batterie chargée ou alimentation USB-C connectée ✅
+  - LED d'alimentation allumée ✅
+  - Wi-Fi accessible (SSID réseau vérifié) ✅
+  - Robot répond au ping réseau (IP: 192.168.129.64) ✅
 
 ### Installation SDK
 
