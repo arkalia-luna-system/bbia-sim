@@ -6,6 +6,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 
 from bbia_sim.daemon.app.backend_adapter import BackendAdapter, get_backend_adapter
+from bbia_sim.daemon.app.main import app_state
 from bbia_sim.robot_factory import RobotFactory
 
 
@@ -14,20 +15,17 @@ class TestMultiBackendRouting:
 
     def test_backend_adapter_uses_multi_backends_if_available(self):
         """Test que BackendAdapter utilise multi_backends si disponible."""
-        with patch("bbia_sim.daemon.app.main.app_state") as mock_app_state:
-            mock_backend = MagicMock()
-            mock_backend.is_connected = True
-            mock_app_state.get.return_value = {"mujoco": mock_backend}
-
+        mock_backend = MagicMock()
+        mock_backend.is_connected = True
+        with patch.dict(app_state, {"multi_backends": {"mujoco": mock_backend}}):
             adapter = BackendAdapter(backend_type="mujoco")
 
             assert adapter._robot is not None
-            mock_app_state.get.assert_called_once()
+            assert adapter._robot is mock_backend
 
     def test_backend_adapter_fallback_if_multi_backends_unavailable(self):
         """Test que BackendAdapter fallback si multi_backends non disponible."""
-        with patch("bbia_sim.daemon.app.main.app_state") as mock_app_state:
-            mock_app_state.get.return_value = {}
+        with patch.dict(app_state, {"multi_backends": {}}):
             with patch(
                 "bbia_sim.daemon.app.backend_adapter.RobotFactory.create_backend"
             ) as mock_create:
@@ -67,16 +65,19 @@ class TestMultiBackendRouting:
 
     def test_backend_adapter_routes_to_correct_backend(self):
         """Test que BackendAdapter route vers le bon backend."""
-        with patch("bbia_sim.daemon.app.main.app_state") as mock_app_state:
-            mock_mujoco = MagicMock()
-            mock_mujoco.is_connected = True
-            mock_reachy = MagicMock()
-            mock_reachy.is_connected = True
-            mock_app_state.get.return_value = {
-                "mujoco": mock_mujoco,
-                "reachy_mini": mock_reachy,
-            }
-
+        mock_mujoco = MagicMock()
+        mock_mujoco.is_connected = True
+        mock_reachy = MagicMock()
+        mock_reachy.is_connected = True
+        with patch.dict(
+            app_state,
+            {
+                "multi_backends": {
+                    "mujoco": mock_mujoco,
+                    "reachy_mini": mock_reachy,
+                }
+            },
+        ):
             adapter_mujoco = BackendAdapter(backend_type="mujoco")
             adapter_reachy = BackendAdapter(backend_type="reachy_mini")
 
@@ -85,8 +86,7 @@ class TestMultiBackendRouting:
 
     def test_backend_adapter_handles_backend_not_in_multi_backends(self):
         """Test que BackendAdapter gère backend non présent dans multi_backends."""
-        with patch("bbia_sim.daemon.app.main.app_state") as mock_app_state:
-            mock_app_state.get.return_value = {"mujoco": MagicMock()}
+        with patch.dict(app_state, {"multi_backends": {"mujoco": MagicMock()}}):
             with patch(
                 "bbia_sim.daemon.app.backend_adapter.RobotFactory.create_backend"
             ) as mock_create:
@@ -114,8 +114,7 @@ class TestMultiBackendRouting:
 
     def test_backend_adapter_handles_none_backend_gracefully(self):
         """Test que BackendAdapter gère gracieusement backend=None."""
-        with patch("bbia_sim.daemon.app.main.app_state") as mock_app_state:
-            mock_app_state.get.return_value = {}
+        with patch.dict(app_state, {"multi_backends": {}}):
             with patch(
                 "bbia_sim.daemon.app.backend_adapter.RobotFactory.create_backend"
             ) as mock_create:
