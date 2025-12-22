@@ -214,13 +214,17 @@ class TestSimulationIntegration:
             MuJoCoSimulator("invalid_model.xml")
 
     @patch("bbia_sim.sim.simulator.mujoco")
-    def test_simulation_step_control(self, mock_mujoco):
+    @patch("bbia_sim.sim.simulator.get_cached_mujoco_model")
+    @patch("bbia_sim.sim.simulator.apply_adaptive_timestep")
+    def test_simulation_step_control(
+        self, mock_apply_timestep, mock_get_cached, mock_mujoco
+    ):
         """Test contrôle step de simulation."""
         # Mock setup
         mock_model = Mock()
         mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
-        mock_mujoco.MjModel.from_xml_path.return_value = mock_model
+        mock_get_cached.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
 
         # Créer un modèle temporaire
@@ -244,20 +248,24 @@ class TestSimulationIntegration:
             # Test step manuel
             simulator._step_simulation()
 
-            # Vérifier que mj_step a été appelé
+            # Vérifier que mj_step a été appelé avec le modèle mocké
             mock_mujoco.mj_step.assert_called_once_with(mock_model, mock_data)
 
         finally:
             os.unlink(temp_model)
 
     @patch("bbia_sim.sim.simulator.mujoco")
-    def test_simulation_metrics(self, mock_mujoco):
+    @patch("bbia_sim.sim.simulator.get_cached_mujoco_model")
+    @patch("bbia_sim.sim.simulator.apply_adaptive_timestep")
+    def test_simulation_metrics(
+        self, mock_apply_timestep, mock_get_cached, mock_mujoco
+    ):
         """Test métriques de simulation."""
         # Mock setup
         mock_model = Mock()
         mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
-        mock_mujoco.MjModel.from_xml_path.return_value = mock_model
+        mock_get_cached.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
 
         # Mock des métriques
@@ -323,13 +331,17 @@ class TestSimulationIntegration:
             os.unlink(temp_model)
 
     @patch("bbia_sim.sim.simulator.mujoco")
-    def test_simulation_concurrent_access(self, mock_mujoco):
+    @patch("bbia_sim.sim.simulator.get_cached_mujoco_model")
+    @patch("bbia_sim.sim.simulator.apply_adaptive_timestep")
+    def test_simulation_concurrent_access(
+        self, mock_apply_timestep, mock_get_cached, mock_mujoco
+    ):
         """Test accès concurrent à la simulation."""
         # Mock setup
         mock_model = Mock()
         mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
-        mock_mujoco.MjModel.from_xml_path.return_value = mock_model
+        mock_get_cached.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
 
         # Mock des articulations
