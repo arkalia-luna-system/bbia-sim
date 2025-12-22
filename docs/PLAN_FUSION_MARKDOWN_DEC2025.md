@@ -156,17 +156,25 @@
 
 ---
 
-## ✅ STATUT - 22 Décembre 2025
+## ✅ STATUT FINAL - 22 Décembre 2025
 
 **Toutes les phases sont terminées** ✅
 
 - ✅ Phase 1 : SDK v1.2.4 fusionné → `REACHY_MINI_SDK_v1.2.4.md`
 - ✅ Phase 2 : "Ce qui manque" fusionné → `CE_QUI_MANQUE_BBIA_DEC2025.md`
-- ✅ Phase 3 : Résumés audit fusionnés → `RESUME_AUDIT_DEC2025_CONSOLIDE.md`
-- ✅ Phase 4 : Guides Procreate déjà fusionnés → `GUIDE_PROCREATE_COMPLET.md`
-- ✅ Phase 5 : Guides dépannage fusionnés → `GUIDE_DEPANNAGE_REACHY_MINI.md`
-- ✅ Références mises à jour dans INDEX et README
-- ✅ Anciens fichiers supprimés (la plupart déjà supprimés automatiquement)
+- ✅ Phase 3 : Résumés audit fusionnés → `RESUME_AUDIT_DEC2025.md`
+- ✅ Phase 4 : Guides Procreate fusionnés → `GUIDE_PROCREATE_COMPLET.md`
+- ✅ Phase 5 : Guides dépannage → `GUIDE_DEPANNAGE_REACHY_MINI.md` (déjà existant)
+- ✅ Références mises à jour dans tous les INDEX et README
+- ✅ Fichiers d'index mis à jour : `INDEX_AUDITS.md`, `INDEX_GUIDES_PROCREATE.md`
+- ✅ Aucune erreur de lint
 
 **Réduction finale** : ~16 fichiers → ~5 fichiers (-69%)
+
+**Fichiers créés/consolidés** :
+1. `docs/hardware/REACHY_MINI_SDK_v1.2.4.md`
+2. `docs/quality/audits/CE_QUI_MANQUE_BBIA_DEC2025.md`
+3. `docs/quality/RESUME_AUDIT_DEC2025.md`
+4. `docs/simulations/GUIDE_PROCREATE_COMPLET.md`
+5. `examples/reachy_mini/GUIDE_DEPANNAGE_REACHY_MINI.md`
 
