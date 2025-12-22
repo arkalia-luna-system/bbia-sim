@@ -37,7 +37,7 @@
 
 ### 5. Résumé Exécutif
 
-- **`RESUME_AUDIT_DEC2025_CONSOLIDE.md`** - Résumé exécutif consolidé
+- **`RESUME_AUDIT_DEC2025.md`** - Résumé exécutif consolidé
   - Audit complet 24 Novembre 2025
   - Audit Reachy Mini Décembre 2025
   - Résultats principaux
