@@ -512,6 +512,10 @@ class TestFaceDetector:
         """Test initialisation avec MediaPipe."""
         try:
             import mediapipe  # noqa: F401
+
+            # Vérifier que mediapipe a bien l'attribut solutions
+            if not hasattr(mediapipe, "solutions"):
+                pytest.skip("mediapipe.solutions non disponible (version incompatible)")
         except ImportError:
             pytest.skip("mediapipe non disponible")
         with (
