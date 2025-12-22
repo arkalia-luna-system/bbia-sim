@@ -7,6 +7,24 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+### 📦 **Réception et Montage Robot Physique** (22 Décembre 2025)
+
+- ✅ **Robot Reachy Mini Wireless reçu** : 18 Décembre 2025
+- ✅ **Montage effectué** : 20 Décembre 2025 (durée : 4 heures)
+- ✅ **Premiers tests et diagnostics** : 22 Décembre 2025
+- ✅ **IP Robot** : 192.168.129.64 (WiFi configuré)
+- ✅ **Bug décembre 2025 résolu** : Reflash moteurs effectué (tous les moteurs ID 10-18 reconfigurés)
+- ⚠️ **Problèmes identifiés** :
+  - Tête penchée : Correction logicielle effectuée, vérification câblage nécessaire
+  - Moteur clignotant rouge : Diagnostic effectué, tous les moteurs répondent logiciellement
+- ✅ **Scripts de diagnostic créés** :
+  - `diagnostic_motor_errors_ssh.py` : Diagnostic complet moteurs + test mouvement automatique
+  - `fix_head_tilted.py` : Correction automatique tête penchée (amélioré)
+  - `diagnostic_stewart.py` : Diagnostic joints Stewart platform
+  - `REFLASH_GUIDE.md` : Guide complet reflash moteurs
+  - `GUIDE_MOTEUR_CLIGNOTANT.md` : Guide résolution problèmes moteurs
+- ✅ **Documentation mise à jour** : Tous les fichiers MD principaux mis à jour avec statut robot
+
 ## [1.4.0] - 26 Novembre 2025
 
 ### 🎯 **OPTIMISATIONS ET ISSUES REACHY OFFICIEL** ✅ (26 Novembre 2025)

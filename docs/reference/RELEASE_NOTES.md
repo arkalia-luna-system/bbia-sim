@@ -1,6 +1,15 @@
 # Notes de version - BBIA-SIM
 
-**Dernière mise à jour : 15 Décembre 2025
+**Dernière mise à jour :** 22 Décembre 2025
+
+## 📦 Réception Robot Physique (22 Décembre 2025)
+
+- ✅ **Robot Reachy Mini Wireless reçu** : 18 Décembre 2025
+- ✅ **Montage effectué** : 20 Décembre 2025 (durée : 4 heures)
+- ✅ **Premiers tests** : 22 Décembre 2025
+- ✅ **IP Robot** : 192.168.129.64
+- ✅ **Bug décembre 2025 résolu** : Reflash moteurs effectué
+- ✅ **Scripts de diagnostic créés** : Voir `examples/reachy_mini/`
 
 ## Version 1.4.0 - 100% d'exploitation des capacités
 

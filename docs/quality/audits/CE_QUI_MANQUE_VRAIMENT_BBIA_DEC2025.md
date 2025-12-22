@@ -1,9 +1,16 @@
 # 🔍 CE QUI MANQUE VRAIMENT DANS BBIA - DÉCEMBRE 2025
 
-**Dernière mise à jour : 15 Décembre 2025  
+**Dernière mise à jour :** 22 Décembre 2025  
 **Version BBIA** : 1.4.0  
-**Version SDK Installée** : 1.1.3 ✅ **À JOUR**  
+**Version SDK Installée** : 1.2.3 ✅ **À JOUR**  
 **Version SDK Requise** : 1.1.1+ (Nov 25, 2025)
+
+## 📦 STATUT ROBOT PHYSIQUE
+
+✅ **Robot reçu** : 18 Décembre 2025  
+✅ **Montage effectué** : 20 Décembre 2025 (durée : 4 heures)  
+✅ **Premiers tests** : 22 Décembre 2025  
+✅ **IP Robot** : 192.168.129.64
 
 ---
 
@@ -26,7 +33,7 @@ pip install --upgrade "reachy-mini>=1.1.1"  # ✅ Mis à jour vers 1.1.3
 - Vérifier endpoints REST
 - Valider méthodes SDK
 
-**Priorité** : 🔴 **HAUTE** (avant réception robot)
+**Priorité** : ✅ **FAIT** (robot reçu et opérationnel)
 
 ---
 

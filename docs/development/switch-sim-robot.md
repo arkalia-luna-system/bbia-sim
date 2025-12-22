@@ -1,7 +1,8 @@
 # 🔄 Switch Sim → Robot
 
-**Dernière mise à jour : 15 Décembre 2025  
-**Version** : 1.0
+**Dernière mise à jour :** 22 Décembre 2025  
+**Version** : 1.1  
+**Statut Robot** : ✅ Reçu le 18 déc 2025, monté le 20 déc 2025, tests en cours
 
 > **Compatibilité Python** : Python 3.11+ requis. Voir [`docs/getting-started/INSTALLATION.md`](../getting-started/INSTALLATION.md) pour les détails d'installation.
 

@@ -1,8 +1,9 @@
 # 📱 Application Reachy Mini Control - Documentation
 
-**Date** : 15 Décembre 2025  
+**Dernière mise à jour** : 22 Décembre 2025  
 **App** : Reachy Mini Control (officielle Pollen Robotics)  
 **Version** : **0.7.18** (décembre 2025)  
+**Statut Robot** : ✅ Reçu le 18 déc 2025, monté le 20 déc 2025  
 **Bundle ID** : `com.pollen-robotics.reachy-mini`  
 **Emplacement** : `/Volumes/Reachy Mini Control/Reachy Mini Control.app`  
 **Système requis** : macOS 10.15+ (Catalina ou plus récent)
@@ -114,9 +115,11 @@ Le script `mjpython` dans l'app pointe vers un chemin de build (`/Users/runner/w
 
 ---
 
-## 📋 Utilisation de l'App (Avant Réception)
+## 📋 Utilisation de l'App
 
-### Préparation
+**✅ Robot reçu et monté** : 18-20 Décembre 2025
+
+### Configuration
 
 1. **Installer l'app** : Déjà fait ✅ (`/Volumes/Reachy Mini Control/Reachy Mini Control.app`)
 

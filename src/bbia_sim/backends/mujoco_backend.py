@@ -256,42 +256,70 @@ class MuJoCoBackend(RobotAPI):
                         self.model.njnt
                     )  # Convertir en int pour éviter erreurs avec mocks
                     for i in range(njnt):
-                        name = mujoco.mj_id2name(
-                            self.model, mujoco.mjtObj.mjOBJ_JOINT, i
-                        )
-                        if name:
-                            self.joint_name_to_id[name] = i
-                            # Charger les limites du joint
-                            if hasattr(self.model, "jnt_range"):
-                                try:
-                                    joint_range = self.model.jnt_range[i]
-                                    # Vérifier que joint_range est indexable
-                                    # Utiliser try/except pour len() car peut être un array numpy
+                        try:
+                            name = mujoco.mj_id2name(
+                                self.model, mujoco.mjtObj.mjOBJ_JOINT, i
+                            )
+                            if name:
+                                self.joint_name_to_id[name] = i
+                                # Charger les limites du joint
+                                if hasattr(self.model, "jnt_range"):
                                     try:
-                                        range_len = len(joint_range)
-                                    except (TypeError, AttributeError):
-                                        range_len = 2  # Par défaut, supposer 2 éléments
-                                    if (
-                                        hasattr(joint_range, "__getitem__")
-                                        and range_len >= 2
-                                    ):
-                                        self.joint_limits[name] = (
-                                            joint_range[0],
-                                            joint_range[1],
-                                        )
-                                except (IndexError, TypeError, AttributeError):
-                                    # Ignorer si joint_range n'est pas accessible (mock)
-                                    pass
-                except (TypeError, ValueError, AttributeError):
+                                        joint_range = self.model.jnt_range[i]
+                                        # Vérifier que joint_range est indexable
+                                        # Utiliser try/except pour len() car peut être un array numpy
+                                        try:
+                                            range_len = len(joint_range)
+                                        except (TypeError, AttributeError):
+                                            range_len = 2  # Par défaut, supposer 2 éléments
+                                        if (
+                                            hasattr(joint_range, "__getitem__")
+                                            and range_len >= 2
+                                        ):
+                                            self.joint_limits[name] = (
+                                                joint_range[0],
+                                                joint_range[1],
+                                            )
+                                    except (IndexError, TypeError, AttributeError):
+                                        # Ignorer si joint_range n'est pas accessible (mock)
+                                        pass
+                        except Exception as e:
+                            # Capturer toutes les exceptions lors de mj_id2name
+                            # (peut lever RuntimeError, ValueError, etc.)
+                            logger.debug(
+                                "Impossible de récupérer le nom du joint %d: %s", i, e
+                            )
+                            continue
+                except (TypeError, ValueError, AttributeError) as e:
                     # Si njnt n'est pas accessible ou convertible, ignorer (mode mock)
                     logger.debug(
-                        "Impossible de construire mapping joints (mode mock probable)"
+                        "Impossible de construire mapping joints (mode mock probable): %s",
+                        e,
                     )
+                except Exception as e:
+                    # Capturer toutes les autres exceptions possibles
+                    logger.warning(
+                        "Erreur lors de la construction du mapping des joints: %s", e
+                    )
+
+            # Vérifier que le mapping n'est pas vide après la construction
+            if not self.joint_name_to_id:
+                njnt_info = getattr(self.model, "njnt", "?")
+                logger.warning(
+                    "Aucun joint détecté dans le modèle (njnt=%s). "
+                    "Le modèle peut être invalide ou vide.",
+                    njnt_info,
+                )
 
             self.is_connected = True
             self.start_time = time.time()
             njnt_info = getattr(self.model, "njnt", "?")
-            logger.info("MuJoCo connecté: %s joints détectés", njnt_info)
+            n_joints_mapped = len(self.joint_name_to_id)
+            logger.info(
+                "MuJoCo connecté: %s joints détectés, %d joints mappés",
+                njnt_info,
+                n_joints_mapped,
+            )
             return True
         except (
             OSError,
