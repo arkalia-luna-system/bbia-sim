@@ -6,6 +6,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 
 from bbia_sim.daemon.app.backend_adapter import BackendAdapter, get_backend_adapter
+from bbia_sim.robot_api import RobotAPI
 from bbia_sim.robot_factory import RobotFactory
 
 
@@ -14,30 +15,41 @@ class TestMultiBackendRouting:
 
     def test_backend_adapter_uses_multi_backends_if_available(self):
         """Test que BackendAdapter utilise multi_backends si disponible."""
-        mock_backend = MagicMock()
+        from bbia_sim.daemon.app import main
+
+        # Créer un mock qui est reconnu comme instance de RobotAPI
+        mock_backend = MagicMock(spec=RobotAPI)
         mock_backend.is_connected = True
-        # Patcher le module importé dans backend_adapter
-        with patch("bbia_sim.daemon.app.backend_adapter.app_state") as mock_app_state:
-            mock_app_state.get.return_value = {"mujoco": mock_backend}
+        # Patcher app_state en modifiant directement le dictionnaire dans main
+        original_multi = main.app_state.get("multi_backends", {})
+        main.app_state["multi_backends"] = {"mujoco": mock_backend}
+        try:
             adapter = BackendAdapter(backend_type="mujoco")
 
             assert adapter._robot is not None
             assert adapter._robot is mock_backend
+        finally:
+            main.app_state["multi_backends"] = original_multi
 
     def test_backend_adapter_fallback_if_multi_backends_unavailable(self):
         """Test que BackendAdapter fallback si multi_backends non disponible."""
-        with patch("bbia_sim.daemon.app.backend_adapter.app_state") as mock_app_state:
-            mock_app_state.get.return_value = {}
+        from bbia_sim.daemon.app import main
+
+        original_multi = main.app_state.get("multi_backends", {})
+        main.app_state["multi_backends"] = {}
+        try:
             with patch(
                 "bbia_sim.daemon.app.backend_adapter.RobotFactory.create_backend"
             ) as mock_create:
-                mock_backend = MagicMock()
+                mock_backend = MagicMock(spec=RobotAPI)
                 mock_create.return_value = mock_backend
 
                 adapter = BackendAdapter(backend_type="mujoco")
 
                 assert adapter._robot is not None
                 mock_create.assert_called_once_with("mujoco")
+        finally:
+            main.app_state["multi_backends"] = original_multi
 
     def test_get_backend_adapter_accepts_backend_query_param(self):
         """Test que get_backend_adapter accepte paramètre backend."""
@@ -67,35 +79,47 @@ class TestMultiBackendRouting:
 
     def test_backend_adapter_routes_to_correct_backend(self):
         """Test que BackendAdapter route vers le bon backend."""
-        mock_mujoco = MagicMock()
+        from bbia_sim.daemon.app import main
+
+        mock_mujoco = MagicMock(spec=RobotAPI)
         mock_mujoco.is_connected = True
-        mock_reachy = MagicMock()
+        mock_reachy = MagicMock(spec=RobotAPI)
         mock_reachy.is_connected = True
-        with patch("bbia_sim.daemon.app.backend_adapter.app_state") as mock_app_state:
-            mock_app_state.get.return_value = {
-                "mujoco": mock_mujoco,
-                "reachy_mini": mock_reachy,
-            }
+        multi_backends = {
+            "mujoco": mock_mujoco,
+            "reachy_mini": mock_reachy,
+        }
+        original_multi = main.app_state.get("multi_backends", {})
+        main.app_state["multi_backends"] = multi_backends
+        try:
             adapter_mujoco = BackendAdapter(backend_type="mujoco")
             adapter_reachy = BackendAdapter(backend_type="reachy_mini")
 
             assert adapter_mujoco._robot is mock_mujoco
             assert adapter_reachy._robot is mock_reachy
+        finally:
+            main.app_state["multi_backends"] = original_multi
 
     def test_backend_adapter_handles_backend_not_in_multi_backends(self):
         """Test que BackendAdapter gère backend non présent dans multi_backends."""
-        with patch("bbia_sim.daemon.app.backend_adapter.app_state") as mock_app_state:
-            mock_app_state.get.return_value = {"mujoco": MagicMock()}
+        from bbia_sim.daemon.app import main
+
+        multi_backends = {"mujoco": MagicMock(spec=RobotAPI)}
+        original_multi = main.app_state.get("multi_backends", {})
+        main.app_state["multi_backends"] = multi_backends
+        try:
             with patch(
                 "bbia_sim.daemon.app.backend_adapter.RobotFactory.create_backend"
             ) as mock_create:
-                mock_backend = MagicMock()
+                mock_backend = MagicMock(spec=RobotAPI)
                 mock_create.return_value = mock_backend
 
                 adapter = BackendAdapter(backend_type="reachy_mini")
 
                 assert adapter._robot is not None
                 mock_create.assert_called_once_with("reachy_mini")
+        finally:
+            main.app_state["multi_backends"] = original_multi
 
     def test_multi_backends_initialized_in_lifespan(self):
         """Test que multi_backends sont initialisés dans lifespan."""
@@ -113,12 +137,15 @@ class TestMultiBackendRouting:
 
     def test_backend_adapter_handles_none_backend_gracefully(self):
         """Test que BackendAdapter gère gracieusement backend=None."""
-        with patch("bbia_sim.daemon.app.backend_adapter.app_state") as mock_app_state:
-            mock_app_state.get.return_value = {}
+        from bbia_sim.daemon.app import main
+
+        original_multi = main.app_state.get("multi_backends", {})
+        main.app_state["multi_backends"] = {}
+        try:
             with patch(
                 "bbia_sim.daemon.app.backend_adapter.RobotFactory.create_backend"
             ) as mock_create:
-                mock_backend = MagicMock()
+                mock_backend = MagicMock(spec=RobotAPI)
                 mock_create.return_value = mock_backend
 
                 adapter = BackendAdapter(backend_type=None)
@@ -126,6 +153,8 @@ class TestMultiBackendRouting:
                 assert adapter._robot is not None
                 # Devrait fallback vers mujoco ou reachy_mini
                 assert mock_create.call_count >= 1
+        finally:
+            main.app_state["multi_backends"] = original_multi
 
 
 if __name__ == "__main__":
