@@ -39,7 +39,7 @@ graph LR
 
 ```
 
-### Parcours Démarrage Complet
+### Parcours Démarrage
 
 ```mermaid
 flowchart TD
@@ -145,7 +145,7 @@ cd bbia-sim
 **Options disponibles** :
 - `--skip-install` : Vérification uniquement (sans installation)
 - `--skip-dashboard` : Installation sans lancer le dashboard
-- `--help` : Aide complète
+- `--help` : Aide
 
 #### Option C : Installation Manuelle
 
