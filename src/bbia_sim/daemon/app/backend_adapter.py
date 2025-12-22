@@ -614,6 +614,11 @@ class BackendAdapter:
         except Exception as e:
             logger.warning("Erreur lors de la fermeture: %s", e)
 
+    def get_available_joints(self) -> list[str]:
+        """Récupère la liste des joints disponibles (délègue à RobotAPI)."""
+        self.connect_if_needed()
+        return self._robot.get_available_joints()
+
     def get_status(self) -> RobotStatus | dict[str, Any]:
         """Récupère le statut du backend (conforme SDK)."""
         self.connect_if_needed()
