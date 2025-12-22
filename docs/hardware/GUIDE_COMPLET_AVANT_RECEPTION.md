@@ -1,8 +1,8 @@
 # Guide Complet - Réception et Utilisation Reachy Mini Wireless
 
-**Dernière mise à jour** : 22 Décembre 2025  
+**Dernière mise à jour** : Décembre 2025  
 **Version BBIA** : 1.4.0  
-**SDK Officiel** : v1.2.3 (Latest)
+**SDK Officiel** : v1.2.4 (Latest) - Voir `REACHY_MINI_SDK_v1.2.4_UPDATE.md` pour détails
 
 ## 📦 STATUT RÉCEPTION
 
