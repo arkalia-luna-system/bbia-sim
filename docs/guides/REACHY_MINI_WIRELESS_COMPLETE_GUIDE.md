@@ -1,4 +1,4 @@
-# 🤖 Guide Complet Reachy Mini Wireless - BBIA
+# 🤖 Guide Reachy Mini Wireless - BBIA
 
 **Dernière mise à jour** : 22 Décembre 2025  
 **Statut Robot** : ✅ Reçu le 18 déc 2025, monté le 20 déc 2025, tests en cours  
@@ -11,7 +11,7 @@
 ## 📋 Table des Matières
 
 1. [Vue d'ensemble](#-vue-densemble)
-2. [Spécifications Techniques](#-spécifications-techniques-complètes)
+2. [Spécifications Techniques](#-spécifications-techniques)
 3. [Préparation Immédiate](#-préparation-immédiate-maintenant)
 4. [Architecture BBIA](#-architecture-bbia-pour-reachy-mini)
 5. [Plan de Développement](#-plan-de-développement-bbia)
@@ -79,7 +79,7 @@
 
 ### 🌱 Open-Source & Communauté
 
-- **Licence** : 100% open-source (matériel + logiciel)
+- **Licence** : Open-source (matériel + logiciel)
 - **Hugging Face** : Intégration native (1,7M+ modèles IA)
 - **Communauté** : Discord, Spaces, GitHub actifs
 
@@ -545,7 +545,7 @@ Le **Reachy Mini Wireless** fournit une base solide pour BBIA :
 - Expressivité (6 DOF tête + antennes)
 - Capacités audio (4 microphones + haut‑parleur)
 - Vision (caméra grand angle)
-- Écosystème open‑source complet
+- Écosystème open‑source
 
 **Prochaines étapes :**
 

@@ -268,7 +268,7 @@ mjpython examples/demo_chat_bbia_3d.py
 ### Chat avec BBIA
 
 [![💬 Chat](https://img.shields.io/badge/💬-Chat-blue)](#-chat-avec-bbia)
-[![🧠 IA](https://img.shields.io/badge/🧠-Intelligence%20Artificielle-green)](#-chat-complet-avec-hugging-face)
+[![🧠 IA](https://img.shields.io/badge/🧠-Intelligence%20Artificielle-green)](#-chat-avec-hugging-face)
 
 </div>
 
@@ -281,7 +281,7 @@ mjpython examples/demo_chat_bbia_3d.py
 # Chat simple via terminal (déprécié, utiliser demo_chat_bbia_3d.py)
 # python examples/demo_chat_simple.py
 
-# Chat complet avec Hugging Face (déprécié, utiliser demo_chat_bbia_3d.py)
+# Chat avec Hugging Face (déprécié, utiliser demo_chat_bbia_3d.py)
 # python examples/demo_chat_bbia.py
 
 ```

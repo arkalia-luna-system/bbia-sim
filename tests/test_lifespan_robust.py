@@ -14,10 +14,13 @@ class TestLifespanRobust:
     @pytest.mark.asyncio
     async def test_lifespan_retries_on_startup_failure(self):
         """Test retry si startup échoue."""
-        with patch("bbia_sim.daemon.app.main.simulation_service") as mock_sim:
+        with patch("bbia_sim.daemon.app.main.simulation_service") as mock_sim, patch(
+            "bbia_sim.daemon.app.main.RobotFactory.create_multi_backend"
+        ) as mock_multi:
             # Simuler 2 échecs puis succès
             mock_sim.start_simulation = AsyncMock(side_effect=[False, False, True])
             mock_sim.stop_simulation = AsyncMock()
+            mock_multi.return_value = {"mujoco": mock_sim}
 
             async with lifespan(app):
                 # Vérifier que retry a été fait
@@ -27,10 +30,13 @@ class TestLifespanRobust:
     @pytest.mark.asyncio
     async def test_lifespan_fallback_if_sim_unavailable(self):
         """Test fallback si sim non disponible."""
-        with patch("bbia_sim.daemon.app.main.simulation_service") as mock_sim:
+        with patch("bbia_sim.daemon.app.main.simulation_service") as mock_sim, patch(
+            "bbia_sim.daemon.app.main.RobotFactory.create_multi_backend"
+        ) as mock_multi:
             # Simuler échec permanent
             mock_sim.start_simulation = AsyncMock(return_value=False)
             mock_sim.stop_simulation = AsyncMock()
+            mock_multi.return_value = {"mujoco": mock_sim}
 
             async with lifespan(app):
                 # App devrait démarrer même si sim échoue
@@ -41,9 +47,12 @@ class TestLifespanRobust:
     @pytest.mark.asyncio
     async def test_lifespan_continues_without_sim(self):
         """Test app démarre même sans sim."""
-        with patch("bbia_sim.daemon.app.main.simulation_service") as mock_sim:
+        with patch("bbia_sim.daemon.app.main.simulation_service") as mock_sim, patch(
+            "bbia_sim.daemon.app.main.RobotFactory.create_multi_backend"
+        ) as mock_multi:
             mock_sim.start_simulation = AsyncMock(return_value=False)
             mock_sim.stop_simulation = AsyncMock()
+            mock_multi.return_value = {"mujoco": mock_sim}
 
             async with lifespan(app):
                 # Vérifier que app_state est correct
@@ -53,12 +62,15 @@ class TestLifespanRobust:
     @pytest.mark.asyncio
     async def test_lifespan_handles_exception_during_startup(self):
         """Test gestion exception lors startup."""
-        with patch("bbia_sim.daemon.app.main.simulation_service") as mock_sim:
+        with patch("bbia_sim.daemon.app.main.simulation_service") as mock_sim, patch(
+            "bbia_sim.daemon.app.main.RobotFactory.create_multi_backend"
+        ) as mock_multi:
             # Simuler exception puis succès
             mock_sim.start_simulation = AsyncMock(
                 side_effect=[Exception("Erreur simulation"), True]
             )
             mock_sim.stop_simulation = AsyncMock()
+            mock_multi.return_value = {"mujoco": mock_sim}
 
             async with lifespan(app):
                 # Vérifier que retry a été fait après exception
@@ -68,11 +80,14 @@ class TestLifespanRobust:
     @pytest.mark.asyncio
     async def test_lifespan_retry_delay(self):
         """Test que retry attend avant nouvelle tentative."""
-        with patch("bbia_sim.daemon.app.main.simulation_service") as mock_sim:
+        with patch("bbia_sim.daemon.app.main.simulation_service") as mock_sim, patch(
+            "bbia_sim.daemon.app.main.RobotFactory.create_multi_backend"
+        ) as mock_multi:
             with patch("asyncio.sleep") as mock_sleep:
                 # Simuler 2 échecs puis succès
                 mock_sim.start_simulation = AsyncMock(side_effect=[False, False, True])
                 mock_sim.stop_simulation = AsyncMock()
+                mock_multi.return_value = {"mujoco": mock_sim}
 
                 async with lifespan(app):
                     # Vérifier que sleep a été appelé 2 fois (pour 2 retries)
@@ -81,10 +96,13 @@ class TestLifespanRobust:
     @pytest.mark.asyncio
     async def test_lifespan_max_retries(self):
         """Test que max retries est respecté."""
-        with patch("bbia_sim.daemon.app.main.simulation_service") as mock_sim:
+        with patch("bbia_sim.daemon.app.main.simulation_service") as mock_sim, patch(
+            "bbia_sim.daemon.app.main.RobotFactory.create_multi_backend"
+        ) as mock_multi:
             # Simuler échec permanent (3 tentatives)
             mock_sim.start_simulation = AsyncMock(return_value=False)
             mock_sim.stop_simulation = AsyncMock()
+            mock_multi.return_value = {"mujoco": mock_sim}
 
             async with lifespan(app):
                 # Vérifier que max_retries (3) a été respecté

@@ -1,7 +1,7 @@
-# ✅ CHECKLIST COMPLÈTE - RELEASE STABLE
+# ✅ CHECKLIST - RELEASE STABLE
 
 **Dernière mise à jour : 15 Décembre 2025  
-**Objectif** : Vérification complète avant merge sur `main` et release stable  
+**Objectif** : Vérification avant merge sur `main` et release stable  
 **Version cible** : v1.4.0
 
 ---
