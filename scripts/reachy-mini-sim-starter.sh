@@ -293,7 +293,7 @@ ${CYAN}Commandes utiles :${NC}
      python scripts/bbia_doctor.py
 
 ${CYAN}Documentation :${NC}
-  - Guide débutant : docs/guides/GUIDE_DEBUTANT.md
+  - Guide premiers pas : docs/guides/GUIDE_DEMARRAGE.md
   - README complet : README.md
 
 ${CYAN}Support :${NC}

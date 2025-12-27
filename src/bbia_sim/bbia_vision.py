@@ -94,9 +94,15 @@ except ImportError:
 try:
     import mediapipe as mp
 
-    MEDIAPIPE_AVAILABLE = True
+    # Vérifier que mp.solutions existe (peut être absent même si import réussit)
+    if hasattr(mp, "solutions"):
+        MEDIAPIPE_AVAILABLE = True
+    else:
+        MEDIAPIPE_AVAILABLE = False
+        mp = None
 except ImportError:
     MEDIAPIPE_AVAILABLE = False
+    mp = None
 
 # Import conditionnel DeepFace pour reconnaissance visage personnalisée
 create_face_recognition: Callable[[str, str], "BBIAPersonRecognition | None"] | None = (
@@ -117,10 +123,15 @@ except ImportError:
 create_pose_detector: Callable[..., "BBIAPoseDetection | None"] | None = None
 MEDIAPIPE_POSE_AVAILABLE = False
 try:
-    from .pose_detection import create_pose_detector as _create_pose_detector_imported
+    from .pose_detection import (
+        MEDIAPIPE_POSE_AVAILABLE as _mediapipe_pose_available,
+    )
+    from .pose_detection import (
+        create_pose_detector as _create_pose_detector_imported,
+    )
 
     create_pose_detector = _create_pose_detector_imported
-    MEDIAPIPE_POSE_AVAILABLE = True
+    MEDIAPIPE_POSE_AVAILABLE = _mediapipe_pose_available
 except ImportError:
     pass  # create_pose_detector reste None
 
@@ -368,6 +379,11 @@ class BBIAVision:
                             self.face_detector = None
                         else:
                             # Créer nouvelle instance et mettre en cache
+                            # Vérifier que mp a l'attribut solutions avant de l'utiliser
+                            if not hasattr(mp, "solutions"):
+                                raise AttributeError(
+                                    "mediapipe module has no attribute 'solutions'"
+                                )
                             self.face_detector = (
                                 mp.solutions.face_detection.FaceDetection(
                                     model_selection=0,
@@ -378,11 +394,17 @@ class BBIAVision:
                             logger.debug("✅ Détecteur MediaPipe Face initialisé")
                 except ImportError:
                     # Fallback si import cache échoue
-                    self.face_detector = mp.solutions.face_detection.FaceDetection(
-                        model_selection=0,
-                        min_detection_confidence=0.5,
-                    )
-                    logger.debug("✅ Détecteur MediaPipe Face initialisé")
+                    # Vérifier que mp a l'attribut solutions avant de l'utiliser
+                    if mp is not None and hasattr(mp, "solutions"):
+                        self.face_detector = mp.solutions.face_detection.FaceDetection(
+                            model_selection=0,
+                            min_detection_confidence=0.5,
+                        )
+                        logger.debug("✅ Détecteur MediaPipe Face initialisé")
+                    else:
+                        raise AttributeError(
+                            "mediapipe module has no attribute 'solutions'"
+                        ) from None
             except (ImportError, RuntimeError, AttributeError) as e:
                 logger.warning("⚠️ MediaPipe non disponible: %s", e)
             except Exception as e:  # noqa: BLE001 - Erreur inattendue mais critique

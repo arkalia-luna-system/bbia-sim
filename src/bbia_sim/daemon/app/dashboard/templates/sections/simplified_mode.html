@@ -1,0 +1,101 @@
+<section class="w-full">
+    <div class="app-section">
+        <div class="app-section-title">Mode Interface</div>
+
+        <div class="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <div class="font-semibold text-lg">Mode Simplifié</div>
+                    <div class="text-sm text-gray-600 mt-1">
+                        Affiche uniquement les contrôles essentiels pour une utilisation simple.
+                    </div>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="simplified-mode-toggle" class="sr-only peer"
+                        onchange="toggleSimplifiedMode(this.checked)" />
+                    <div
+                        class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-gray-100 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-400">
+                    </div>
+                    <span id="simplified-mode-label" class="ml-3 text-sm font-medium text-gray-700">OFF</span>
+                </label>
+            </div>
+
+            <div id="simplified-mode-info"
+                class="hidden mt-3 p-3 bg-blue-50 border border-blue-200 rounded text-sm text-blue-800">
+                <strong>ℹ️ Mode Simplifié Actif</strong>
+                <p class="mt-1">Seuls les contrôles essentiels sont affichés. Activez le mode avancé pour accéder à toutes les fonctionnalités.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Gestion du mode simplifié
+    let simplifiedModeActive = false;
+
+    function toggleSimplifiedMode(enabled) {
+        simplifiedModeActive = enabled;
+        const label = document.getElementById('simplified-mode-label');
+        const info = document.getElementById('simplified-mode-info');
+
+        if (label) {
+            label.textContent = enabled ? 'ON' : 'OFF';
+        }
+
+        if (info) {
+            info.classList.toggle('hidden', !enabled);
+        }
+
+        // Masquer/afficher sections avancées
+        toggleAdvancedSections(!enabled);
+
+        // Sauvegarder dans localStorage
+        localStorage.setItem('bbia_simplified_mode', enabled ? 'true' : 'false');
+
+        // Émettre événement pour autres composants
+        window.dispatchEvent(new CustomEvent('simplifiedmodechange', {
+            detail: { enabled: enabled }
+        }));
+
+        console.log(`Mode simplifié: ${enabled ? 'ACTIVÉ' : 'DÉSACTIVÉ'}`);
+    }
+
+    function toggleAdvancedSections(show) {
+        // Sections à masquer en mode simplifié
+        const advancedSections = [
+            'telemetry_charts',
+            'apps',
+            'appstore',
+            'move_player'
+        ];
+
+        advancedSections.forEach(sectionId => {
+            const section = document.querySelector(`[data-section="${sectionId}"]`) ||
+                           document.getElementById(sectionId) ||
+                           document.querySelector(`.${sectionId}`);
+            
+            if (section) {
+                section.style.display = show ? '' : 'none';
+            }
+        });
+
+        // Masquer aussi les sections par classe
+        const advancedByClass = document.querySelectorAll('.advanced-feature');
+        advancedByClass.forEach(el => {
+            el.style.display = show ? '' : 'none';
+        });
+    }
+
+    // Restaurer l'état au chargement
+    document.addEventListener('DOMContentLoaded', function () {
+        const saved = localStorage.getItem('bbia_simplified_mode');
+        if (saved === 'true') {
+            const toggle = document.getElementById('simplified-mode-toggle');
+            if (toggle) {
+                toggle.checked = true;
+                toggleSimplifiedMode(true);
+            }
+        }
+    });
+</script>
+

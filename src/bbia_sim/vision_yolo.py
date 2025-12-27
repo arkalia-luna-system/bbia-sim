@@ -16,7 +16,12 @@ import numpy.typing as npt
 try:
     import mediapipe as mp  # type: ignore[import-untyped]
 
-    MEDIAPIPE_AVAILABLE = True
+    # Vérifier que mp.solutions existe (peut être absent même si import réussit)
+    if hasattr(mp, "solutions"):
+        MEDIAPIPE_AVAILABLE = True
+    else:
+        MEDIAPIPE_AVAILABLE = False
+        mp = None  # type: ignore[assignment]
 except ImportError:
     MEDIAPIPE_AVAILABLE = False
     mp = None  # type: ignore[assignment]
@@ -548,6 +553,7 @@ class FaceDetector:
                 _mediapipe_face_detection_cache is not None
                 and MEDIAPIPE_AVAILABLE
                 and mp is not None
+                and hasattr(mp, "solutions")
             ):
                 logger.debug("♻️ Réutilisation détecteur MediaPipe depuis cache")
                 self.face_detection = _mediapipe_face_detection_cache
@@ -561,6 +567,11 @@ class FaceDetector:
 
         try:
             if MEDIAPIPE_AVAILABLE and mp is not None:
+                # Vérifier que mp a l'attribut solutions avant de l'utiliser
+                if not hasattr(mp, "solutions"):
+                    raise AttributeError(
+                        "mediapipe module has no attribute 'solutions'"
+                    )
                 self.mp_face_detection = mp.solutions.face_detection
                 self.mp_drawing = mp.solutions.drawing_utils
                 face_detection = self.mp_face_detection.FaceDetection(
@@ -574,8 +585,8 @@ class FaceDetector:
 
                 self.face_detection = face_detection
                 logger.debug("👤 Détecteur de visages MediaPipe initialisé")
-        except ImportError:
-            logger.warning("⚠️ MediaPipe non disponible")
+        except (ImportError, AttributeError) as e:
+            logger.warning("⚠️ MediaPipe non disponible: %s", e)
 
     def detect_faces(self, image: npt.NDArray[np.uint8]) -> list[dict[str, Any]]:
         """Détecte les visages dans une image.

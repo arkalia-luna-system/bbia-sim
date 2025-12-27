@@ -1,6 +1,6 @@
 # 🎬 Guide Vidéos de Démonstration BBIA-SIM
 
-**Date** : 8 Décembre 2025
+**Dernière mise à jour** : 15 Décembre 2025
 **Objectif** : Créer des vidéos courtes (30-60 secondes) pour démontrer chaque comportement et fonctionnalité
 
 ---
@@ -44,7 +44,7 @@
 #### 3. Emotional Response (Réponse Émotionnelle)
 - **Durée** : 40s
 - **Contenu** :
-  - Utilisateur dit "Tu es génial !"
+  - Utilisateur dit "Tu es bien !"
   - Robot passe à l'émotion "happy"
   - Animation correspondante
   - Réponse vocale positive
@@ -66,7 +66,7 @@
   - Robot génère réponse avec LLM
   - Réponse vocale
   - Animation conversationnelle
-- **Script** : "BBIA utilise Phi-2 ou TinyLlama pour des conversations intelligentes et contextuelles."
+- **Script** : "BBIA utilise Phi-2 ou TinyLlama pour des conversations contextuelles."
 
 #### 6. Antenna Animation (Animation Antennes)
 - **Durée** : 30s
@@ -87,7 +87,7 @@
 
 ---
 
-### Comportements Avancés (14)
+### Comportements (14)
 
 #### 8. Follow Face (Suivi Visage)
 - **Durée** : 40s
@@ -178,7 +178,7 @@
   - Alarme programmée
   - Réveil avec animation
   - Message vocal
-- **Script** : "BBIA peut servir de réveil intelligent avec animations."
+- **Script** : "BBIA peut servir de réveil avec animations."
 
 #### 19. Weather Report (Météo)
 - **Durée** : 45s
@@ -305,6 +305,5 @@
 
 ---
 
-**Date de création** : 8 Décembre 2025
-**Dernière mise à jour** : 8 Décembre 2025
+**Dernière mise à jour** : 15 Décembre 2025
 

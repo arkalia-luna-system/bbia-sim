@@ -1,6 +1,6 @@
 # 🤖 BBIA - Moteur Cognitif pour Robot Reachy Mini
 
-**Date** : 8 Décembre 2025
+**Dernière mise à jour : 15 Décembre 2025
 
 ## 📋 Résumé exécutif
 
@@ -10,7 +10,7 @@
 
 ## 🎯 Valeur proposée
 
-### 🔬 Innovation technique
+### 🔬 Technique
 
 - **RobotAPI unifié** : interface abstraite pour simulation (MuJoCo) et robot réel
 - **IA légère** : Whisper STT + YOLOv8n + MediaPipe pour interactions naturelles
@@ -237,14 +237,7 @@ python -m pytest tests/ -m "not e2e" -v
 
 > **Compatibilité Python et CI**
 >
-> - **Python** : 3.11+
-> - **CI** : `.github/workflows/ci.yml`
-> - **Setup rapide** :
-> ```bash
-> pyenv install 3.11.9 && pyenv local 3.11.9
-> python -m pip install --upgrade pip
-> pip install -e .
-> ```
+> **Installation** : Voir [`docs/getting-started/INSTALLATION.md`](../getting-started/INSTALLATION.md) pour les instructions complètes.
 
 - **Repository** : [github.com/arkalia-luna-system/bbia-sim](https://github.com/arkalia-luna-system/bbia-sim)
 - **Documentation** : Voir dossier `docs/`
@@ -259,6 +252,6 @@ python -m pytest tests/ -m "not e2e" -v
 **Voir aussi** : [Index Thématique](../reference/INDEX_THEMATIQUE.md)
 
 **Version** : 1.4.0
-**Date** : 8 Décembre 2025
-**Statut** : Production Ready • **100% d'exploitation des capacités** ✅
+**Dernière mise à jour : 15 Décembre 2025
+**Statut** : Production Ready • **Exploitation des capacités principales** ✅
 **Licence** : MIT

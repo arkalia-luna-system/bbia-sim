@@ -11,6 +11,7 @@ This exposes:
 import asyncio
 import logging
 from collections.abc import Coroutine
+from datetime import datetime
 from enum import Enum
 from typing import Annotated, Any
 from uuid import UUID, uuid4
@@ -27,12 +28,24 @@ except ImportError:
 
 import contextlib
 
+from fastapi import Query
+
 from bbia_sim.daemon.app.backend_adapter import (
     BackendAdapter,
     get_backend_adapter,
     ws_get_backend_adapter,
 )
-from bbia_sim.daemon.models import AnyPose, FullBodyTarget, MoveUUID
+from bbia_sim.daemon.models import (
+    AnyPose,
+    BatchMovementRequest,
+    FullBodyTarget,
+    MoveUUID,
+)
+from bbia_sim.movement_batch_processor import get_batch_processor
+from bbia_sim.multi_layer_queue import (
+    MovementPriority,
+    get_multi_layer_queue,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -40,7 +53,9 @@ router = APIRouter(prefix="/move")
 
 # État global pour les tâches de mouvement
 move_tasks: dict[UUID, asyncio.Task[None]] = {}
+# OPTIMISATION RAM: Limiter nombre de listeners WebSocket (max 20)
 move_listeners: list[WebSocket] = []
+_MAX_MOVE_LISTENERS = 20
 
 
 class InterpolationMode(str, Enum):
@@ -91,6 +106,23 @@ def get_backend_dependency() -> BackendAdapter:
     return get_backend_adapter()
 
 
+def get_backend_adapter_for_move(
+    backend: str | None = Query(
+        None,
+        description="Type de backend à utiliser ('mujoco', 'reachy_mini', etc.). Si None, utilise le backend par défaut.",
+    ),
+) -> BackendAdapter:
+    """Dependency pour obtenir un BackendAdapter pour les mouvements avec routing multi-backends.
+
+    Args:
+        backend: Type de backend à utiliser (optionnel, depuis query param)
+
+    Returns:
+        Instance de BackendAdapter configurée pour le backend spécifié
+    """
+    return get_backend_adapter(backend=backend)
+
+
 def create_move_task(coro: Coroutine[Any, Any, None]) -> MoveUUID:
     """Crée une nouvelle tâche de mouvement avec UUID (conforme SDK)."""
     uuid = uuid4()
@@ -107,10 +139,11 @@ def create_move_task(coro: Coroutine[Any, Any, None]) -> MoveUUID:
                         "details": details,
                     },
                 )
-            except (RuntimeError, WebSocketDisconnect):
+            except (RuntimeError, WebSocketDisconnect, Exception):
+                # OPTIMISATION RAM: Capturer toutes les exceptions pour nettoyage robuste
                 disconnected.append(ws)
 
-        # Nettoyer les connexions fermées
+        # OPTIMISATION RAM: Nettoyer les connexions fermées
         for ws in disconnected:
             if ws in move_listeners:
                 move_listeners.remove(ws)
@@ -161,7 +194,7 @@ async def get_running_moves() -> list[MoveUUID]:
 @router.post("/goto")
 async def goto(
     goto_req: GotoModelRequest,
-    backend: Annotated[BackendAdapter, Depends(get_backend_adapter)],
+    backend: Annotated[BackendAdapter, Depends(get_backend_adapter_for_move)],
 ) -> MoveUUID:
     """Demande un mouvement vers une cible spécifique (conforme SDK)."""
     # Conforme SDK officiel: ne pas passer interpolation/method à goto_target
@@ -177,7 +210,7 @@ async def goto(
 
 @router.post("/play/wake_up")
 async def play_wake_up(
-    backend: Annotated[BackendAdapter, Depends(get_backend_adapter)],
+    backend: Annotated[BackendAdapter, Depends(get_backend_adapter_for_move)],
 ) -> MoveUUID:
     """Demande au robot de se réveiller (conforme SDK)."""
     return create_move_task(backend.wake_up())
@@ -185,7 +218,7 @@ async def play_wake_up(
 
 @router.post("/play/goto_sleep")
 async def play_goto_sleep(
-    backend: Annotated[BackendAdapter, Depends(get_backend_adapter)],
+    backend: Annotated[BackendAdapter, Depends(get_backend_adapter_for_move)],
 ) -> MoveUUID:
     """Demande au robot de se mettre en veille (conforme SDK)."""
     return create_move_task(backend.goto_sleep())
@@ -271,7 +304,7 @@ async def list_recorded_move_dataset(dataset_name: str) -> list[str]:
 async def play_recorded_move_dataset(
     dataset_name: str,
     move_name: str,
-    backend: Annotated[BackendAdapter, Depends(get_backend_adapter)],
+    backend: Annotated[BackendAdapter, Depends(get_backend_adapter_for_move)],
 ) -> MoveUUID:
     """Demande au robot de jouer un mouvement enregistré depuis un dataset (conforme SDK officiel)."""
     if RecordedMoves is None:
@@ -303,19 +336,33 @@ async def stop_move(uuid: MoveUUID) -> dict[str, str]:
 @router.websocket("/ws/updates")
 async def ws_move_updates(websocket: WebSocket) -> None:
     """WebSocket pour streamer les mises à jour de mouvements."""
+    # OPTIMISATION RAM: Limiter nombre de connexions simultanées
+    if len(move_listeners) >= _MAX_MOVE_LISTENERS:
+        logger.warning(
+            "Limite de listeners atteinte (%d), rejet de nouvelle connexion",
+            _MAX_MOVE_LISTENERS,
+        )
+        await websocket.close(code=1008, reason="Too many connections")
+        return
+
     await websocket.accept()
     try:
         move_listeners.append(websocket)
         while True:
             _ = await websocket.receive_text()
-    except WebSocketDisconnect:
-        move_listeners.remove(websocket)
+    except (WebSocketDisconnect, Exception):
+        # OPTIMISATION RAM: Nettoyer dans finally pour garantir suppression
+        pass
+    finally:
+        # OPTIMISATION RAM: Nettoyage garanti même en cas d'exception
+        if websocket in move_listeners:
+            move_listeners.remove(websocket)
 
 
 @router.post("/set_target")
 async def set_target(
     target: FullBodyTarget,
-    backend: Annotated[BackendAdapter, Depends(get_backend_adapter)],
+    backend: Annotated[BackendAdapter, Depends(get_backend_adapter_for_move)],
 ) -> dict[str, str]:
     """Définit un target directement (sans mouvement) - conforme SDK."""
     # Conforme SDK officiel: utiliser to_pose_array() directement
@@ -349,3 +396,284 @@ async def ws_set_target(websocket: WebSocket) -> None:
                 )
     except WebSocketDisconnect:
         pass
+
+
+@router.post("/batch")
+async def batch_movements(
+    batch_req: BatchMovementRequest,
+    backend: Annotated[BackendAdapter, Depends(get_backend_adapter_for_move)],
+) -> dict[str, Any]:
+    """Exécute plusieurs mouvements en batch (optimisation performance).
+
+    Args:
+        batch_req: Requête contenant la liste de mouvements
+        backend: Backend adapter pour exécuter les mouvements
+
+    Returns:
+        Dictionnaire avec statut et UUIDs des mouvements créés
+    """
+    batch_processor = get_batch_processor()
+    movement_uuids: list[str] = []
+
+    for movement_data in batch_req.movements:
+        # Capturer les variables dans la closure pour éviter warnings
+        move_type = movement_data.get("type", "goto")
+        m_data = movement_data.copy()  # Copie pour éviter référence mutée
+
+        async def create_movement_func(
+            m_type: str = move_type, m_d: dict[str, Any] = m_data
+        ) -> None:
+            """Crée une fonction async pour exécuter le mouvement."""
+            if m_type == "goto":
+                head_pose_data = m_d.get("head_pose")
+                antennas_data = m_d.get("antennas")
+                duration = m_d.get("duration", 1.0)
+
+                head_pose = AnyPose(**head_pose_data) if head_pose_data else None
+                antennas = tuple(antennas_data) if antennas_data else None
+
+                await backend.goto_target(
+                    head=head_pose.to_pose_array() if head_pose else None,
+                    antennas=np.array(antennas) if antennas else None,
+                    duration=duration,
+                )
+            elif m_type == "wake_up":
+                await backend.wake_up()
+            elif m_type == "goto_sleep":
+                await backend.goto_sleep()
+            elif m_type == "set_target":
+                target_data = m_d.get("target", {})
+                target = FullBodyTarget(**target_data)
+                backend.set_target(
+                    head=(
+                        target.target_head_pose.to_pose_array()
+                        if target.target_head_pose
+                        else None
+                    ),
+                    antennas=(
+                        np.array(target.target_antennas)
+                        if target.target_antennas
+                        else None
+                    ),
+                )
+            else:
+                logger.warning("Type de mouvement inconnu: %s", m_type)
+
+        result = await batch_processor.add_movement(create_movement_func)
+        movement_uuids.append(result["movement_id"])
+
+    return {
+        "status": "queued",
+        "movement_count": len(movement_uuids),
+        "movement_ids": movement_uuids,
+        "batch_size": batch_processor.get_queue_size(),
+    }
+
+
+@router.post("/multi-layer")
+async def multi_layer_movements(
+    movements: list[dict[str, Any]],
+    backend: Annotated[BackendAdapter, Depends(get_backend_adapter_for_move)],
+) -> dict[str, Any]:
+    """Exécute plusieurs mouvements avec file d'attente multicouche.
+
+    Support pour danses, émotions, poses simultanées avec priorités.
+
+    Args:
+        movements: Liste de mouvements avec type et priorité
+        backend: Backend adapter pour exécuter les mouvements
+
+    Returns:
+        Dictionnaire avec statut et IDs des mouvements créés
+
+    Exemple de requête:
+    ```json
+    {
+        "movements": [
+            {
+                "type": "dance",
+                "priority": "DANCE",
+                "func": "dance_happy",
+                "metadata": {}
+            },
+            {
+                "type": "emotion",
+                "priority": "EMOTION",
+                "emotion": "happy",
+                "intensity": 0.8
+            },
+            {
+                "type": "pose",
+                "priority": "POSE",
+                "head_pose": {...},
+                "duration": 2.0
+            }
+        ]
+    }
+    ```
+    """
+    multi_queue = get_multi_layer_queue()
+    movement_ids: list[str] = []
+
+    for movement_data in movements:
+        move_type = movement_data.get("type", "pose").lower()
+        priority_str = movement_data.get("priority", "POSE").upper()
+
+        # Mapper la priorité
+        priority_map = {
+            "EMERGENCY": MovementPriority.EMERGENCY,
+            "DANCE": MovementPriority.DANCE,
+            "EMOTION": MovementPriority.EMOTION,
+            "POSE": MovementPriority.POSE,
+            "BACKGROUND": MovementPriority.BACKGROUND,
+        }
+        priority = priority_map.get(priority_str, MovementPriority.POSE)
+
+        # Créer la fonction async selon le type
+        async def create_movement_func(
+            m_type: str = move_type,
+            m_data: dict[str, Any] = movement_data.copy(),
+        ) -> None:
+            """Crée une fonction async pour exécuter le mouvement."""
+            if m_type == "dance":
+                # Exécuter une danse via BBIA
+                dance_name = m_data.get("func", "dance_happy")
+                dataset = m_data.get(
+                    "dataset", "pollen-robotics/reachy-mini-dances-library"
+                )
+                logger.info("Exécution danse: %s (dataset: %s)", dance_name, dataset)
+
+                try:
+                    # Utiliser RecordedMoves pour jouer la danse
+                    from reachy_mini.motion.recorded_move import RecordedMoves
+
+                    recorded_moves = RecordedMoves(dataset)
+                    move = recorded_moves.get(dance_name)
+
+                    # Jouer le mouvement via backend (BackendAdapter a play_move async)
+                    if hasattr(backend, "play_move"):
+                        # BackendAdapter.play_move est async
+                        await backend.play_move(move)
+                    else:
+                        logger.warning("play_move non disponible sur backend")
+                except ImportError:
+                    logger.warning("SDK officiel reachy_mini requis pour danses")
+                except ValueError as e:
+                    logger.warning("Mouvement non trouvé: %s", e)
+                except Exception as e:
+                    logger.exception("Erreur exécution danse: %s", e)
+
+            elif m_type == "emotion":
+                # Appliquer une émotion via BBIAEmotions
+                emotion = m_data.get("emotion", "neutral")
+                intensity = m_data.get("intensity", 0.5)
+                logger.info(
+                    "Application émotion: %s (intensité: %s)", emotion, intensity
+                )
+
+                try:
+                    from bbia_sim.bbia_emotions import BBIAEmotions
+
+                    # Utiliser BBIAEmotions pour gérer l'émotion
+                    emotions_module = BBIAEmotions()
+                    success = emotions_module.set_emotion(emotion, intensity)
+
+                    # Appliquer aussi via robot sous-jacent si disponible
+                    if success and hasattr(backend, "_robot"):
+                        robot = backend._robot
+                        if hasattr(robot, "set_emotion"):
+                            robot.set_emotion(emotion, intensity)
+                            logger.debug("Émotion appliquée via robot: %s", emotion)
+                except ImportError:
+                    logger.warning("BBIAEmotions non disponible")
+                except Exception as e:
+                    logger.exception("Erreur application émotion: %s", e)
+
+            elif m_type == "pose":
+                # Exécuter une pose
+                head_pose_data = m_data.get("head_pose")
+                antennas_data = m_data.get("antennas")
+                duration = m_data.get("duration", 1.0)
+
+                if head_pose_data or antennas_data:
+                    head_pose = (
+                        AnyPose(**head_pose_data).to_pose_array()
+                        if head_pose_data
+                        else None
+                    )
+                    antennas = np.array(antennas_data) if antennas_data else None
+
+                    await backend.goto_target(
+                        head=head_pose,
+                        antennas=antennas,
+                        duration=duration,
+                    )
+            else:
+                logger.warning("Type de mouvement inconnu: %s", m_type)
+
+        # Ajouter à la queue selon le type
+        if move_type == "dance":
+            result = await multi_queue.add_dance(
+                create_movement_func,
+                dance_id=movement_data.get("id"),
+                metadata=movement_data.get("metadata", {}),
+            )
+        elif move_type == "emotion":
+            result = await multi_queue.add_emotion(
+                create_movement_func,
+                emotion_id=movement_data.get("id"),
+                metadata=movement_data.get("metadata", {}),
+            )
+        elif move_type == "pose":
+            result = await multi_queue.add_pose(
+                create_movement_func,
+                pose_id=movement_data.get("id"),
+                metadata=movement_data.get("metadata", {}),
+            )
+        else:
+            result = await multi_queue.add_movement(
+                create_movement_func,
+                priority=priority,
+                movement_type=move_type,
+                movement_id=movement_data.get("id"),
+                metadata=movement_data.get("metadata", {}),
+            )
+
+        movement_ids.append(result["movement_id"])
+
+    stats = multi_queue.get_stats()
+
+    return {
+        "status": "queued",
+        "movement_count": len(movement_ids),
+        "movement_ids": movement_ids,
+        "queue_stats": stats,
+    }
+
+
+@router.get("/multi-layer/stats")
+async def get_multi_layer_stats() -> dict[str, Any]:
+    """Retourne les statistiques de la file d'attente multicouche.
+
+    Returns:
+        Statistiques détaillées de la queue
+    """
+    multi_queue = get_multi_layer_queue()
+    stats: dict[str, Any] = multi_queue.get_stats()
+    return stats
+
+
+@router.post("/multi-layer/emergency-stop")
+async def emergency_stop_multi_layer() -> dict[str, Any]:
+    """Arrêt d'urgence - vide toutes les queues et arrête les mouvements.
+
+    Returns:
+        Confirmation de l'arrêt d'urgence
+    """
+    multi_queue = get_multi_layer_queue()
+    await multi_queue.emergency_stop()
+    return {
+        "status": "stopped",
+        "message": "Toutes les queues ont été vidées et les mouvements arrêtés",
+        "timestamp": datetime.now().isoformat(),
+    }

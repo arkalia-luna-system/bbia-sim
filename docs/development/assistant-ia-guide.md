@@ -3,7 +3,7 @@
 > **⚠️ ATTENTION : Ce guide est destiné aux ASSISTANTS IA, pas aux utilisateurs !**  
 > **👤 Si vous êtes un utilisateur, commencez par :** [Guide de Démarrage](../guides/GUIDE_DEMARRAGE.md)
 
-> **Date de mise à jour :** 8 Décembre 2025  
+> **Dernière mise à jour : 15 Décembre 2025  
 > **Version :** 1.4.0
 
 ## 📋 Vue d'ensemble
@@ -12,7 +12,7 @@ Ce guide est destiné aux **assistants IA** (Claude, GPT, Cursor AI, etc.) pour 
 
 > **💡 Pour les humains** : Si vous cherchez à apprendre à utiliser BBIA-SIM, consultez plutôt :
 > - 🟢 **[Guide de Démarrage](../guides/GUIDE_DEMARRAGE.md)** - Pour commencer
-> - 🟡 **[Guide Avancé](../guides/GUIDE_AVANCE.md)** - Pour développeurs
+> - 🟡 **[Guide Technique](../guides/GUIDE_AVANCE.md)** - Pour développeurs
 > - 📚 **[README Documentation](../README.md)** - Navigation complète
 
 ---
@@ -24,7 +24,7 @@ Ce guide est destiné aux **assistants IA** (Claude, GPT, Cursor AI, etc.) pour 
 - **Version :** 1.4.0
 - **Documentation :** **131 fichiers MD** dans `docs/` (après nettoyage)
 - **Tests :** **1362 tests sélectionnés** (1418 collectés, 56 deselected)
-- **Coverage :** **68.86%** global (excellent)
+- **Coverage :** **68.86%** global
 - **Conformité SDK :** 100% validée
 
 ### 📊 Qualité documentation
@@ -125,7 +125,7 @@ pytest tests/ --cov=src/bbia_sim --cov-report=html
 
 ### Dates standardisées
 
-- **Date de mise à jour :** Toujours utiliser `8 Décembre 2025`
+- **Dernière mise à jour : 15 Décembre 2025`
 - **Date de création :** Date du premier commit Git (immutable)
 
 ### Formatage Markdown
@@ -208,7 +208,7 @@ docs/
 1. `scripts/verify_docs_complete.py`
    - Script optimisé et testé
    - Modifications nécessitent tests approfondis
-   - Mode intelligent avec détection contextuelle
+   - Mode avec détection contextuelle
 
 2. `scripts/bbia_doctor.py`
    - Diagnostic environnement critique
@@ -265,7 +265,7 @@ docs/
 
 - `docs/INDEX_FINAL.md` - Index complet documentation
 - `docs/guides/GUIDE_DEMARRAGE.md` - Guide de démarrage
-- `docs/guides/GUIDE_AVANCE.md` - Guide avancé
+- `docs/guides/GUIDE_AVANCE.md` - Guide technique
 - `docs/development/architecture/ARCHITECTURE_OVERVIEW.md` - Vue d'ensemble architecture
 - `docs/quality/audits/RESUME_ETAT_ACTUEL_BBIA.md` - État actuel détaillé
 

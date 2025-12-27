@@ -1,6 +1,15 @@
 # Notes de version - BBIA-SIM
 
-**Date** : 8 Décembre 2025
+**Dernière mise à jour :** 22 Décembre 2025
+
+## 📦 Réception Robot Physique (22 Décembre 2025)
+
+- ✅ **Robot Reachy Mini Wireless reçu** : 18 Décembre 2025
+- ✅ **Montage effectué** : 20 Décembre 2025 (durée : 4 heures)
+- ✅ **Premiers tests** : 22 Décembre 2025
+- ✅ **IP Robot** : 192.168.129.64
+- ✅ **Bug décembre 2025 résolu** : Reflash moteurs effectué
+- ✅ **Scripts de diagnostic créés** : Voir `examples/reachy_mini/`
 
 ## Version 1.4.0 - 100% d'exploitation des capacités
 
@@ -32,25 +41,18 @@ Cette version marque l'atteinte de **100% d'exploitation** de toutes les capacit
 
 > Compatibilité Python et CI
 >
-> - Version Python supportée: 3.11+
-> - CI: GitHub Actions (`.github/workflows/ci.yml`)
-> - Setup rapide:
-> ```bash
-> pyenv install 3.11.9 && pyenv local 3.11.9
-> python -m pip install --upgrade pip
-> pip install -e .
-> ```
+> **Installation** : Voir [`docs/getting-started/INSTALLATION.md`](../getting-started/INSTALLATION.md) pour les instructions complètes.
 
 ## Version 1.3.2 - Alignement complet et release stable
 
 ### Résumé
 
-Alignement intégral des branches (future → develop → main), création du tag v1.3.2 et branche de sauvegarde `backup-v1.3.2-stable`. Extension importante des tests (performance, watchdog, conformité avancée), documentation réorganisée et CI Python 3.11+ homogénéisée.
+Alignement intégral des branches (future → develop → main), création du tag v1.3.2 et branche de sauvegarde `backup-v1.3.2-stable`. Extension importante des tests (performance, watchdog, conformité), documentation réorganisée et CI Python 3.11+ homogénéisée.
 
 ### Points principaux
 
 - Branches: fusion contrôlée future → develop, puis develop → main (CI verte), tag v1.3.2
-- Tests: suites élargies (audio/vision/perf/watchdog), conformité avancée
+- Tests: suites élargies (audio/vision/perf/watchdog), conformité
 - CI/Qualité: Python 3.11+, Black/Ruff/MyPy/Bandit propres, seuils documentés
 - Docs: guides et références enrichis, notes de release consolidées, historique à jour
 
@@ -97,7 +99,7 @@ Mise à niveau centrée sur la robustesse (watchdog, arrêt d’urgence), le ren
 ### Documentation
 
 - README: badges de tests (**1362 tests sélectionnés** en CI), couverture **68.86%** validée en CI, Quick Start API publique, variables d'environnement utiles.
-- Guides: Débutant et Tests simplifiés; Portfolio One-Pager mis à jour (métriques non figées, v1.3.1).
+- Guides: Essentiel et Tests simplifiés; Portfolio One-Pager mis à jour (métriques non figées, v1.3.1).
 - Index et statuts: versions/chemins cohérents.
 
 ### Qualité et CI

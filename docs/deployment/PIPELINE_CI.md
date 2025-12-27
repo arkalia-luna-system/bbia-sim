@@ -1,12 +1,12 @@
 # 🔄 Pipeline CI/CD
 
-**Date** : 8 Décembre 2025  
+**Dernière mise à jour : 15 Décembre 2025  
 **Version** : 1.4.0  
 **Compatibilité Python** : 3.11+ ✅ **Matrice 3.12 ajoutée** (24 Nov. 2025)
 
 > **Voir aussi** : [`docs/reference/INDEX_THEMATIQUE.md`](../reference/INDEX_THEMATIQUE.md) et [`docs/reference/project-status.md`](../reference/project-status.md)
 
-**📚 [Guide tests](../development/testing.md)** | **🔧 [Guide avancé](../guides/GUIDE_AVANCE.md)**
+**📚 [Guide tests](../development/testing.md)** | **🔧 [Guide technique](../guides/GUIDE_AVANCE.md)**
 
 ---
 

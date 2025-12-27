@@ -1,282 +1,7 @@
 {
-  "last_updated": "2025-12-08T09:41:08.879167",
+  "last_updated": "2025-12-22T16:06:21.981671",
   "conversation_count": 1000,
   "history": [
-    {
-      "user": "Message 10",
-      "bbia": "C'est vraiment formidable ! Je suis content que vous vous sentiez bien. Pourquoi cela vous rend-il heureux aujourd'hui ?",
-      "sentiment": {
-        "text": "Message 10",
-        "sentiment": "neutral",
-        "score": 0.8204999566078186,
-        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
-      },
-      "timestamp": "2025-11-03T23:47:24.095173"
-    },
-    {
-      "user": "Message 11",
-      "bbia": "Super nouvelle ! Continuez comme ça, vous allez très bien ! Racontez-moi ce qui vous motive, j'aimerais comprendre.",
-      "sentiment": {
-        "text": "Message 11",
-        "sentiment": "neutral",
-        "score": 0.8104287981987,
-        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
-      },
-      "timestamp": "2025-11-03T23:47:24.535556"
-    },
-    {
-      "user": "Message 12",
-      "bbia": "C'est excellent ! Votre bonne humeur est contagieuse ! Comment aimeriez-vous explorer cette dynamique positive ?",
-      "sentiment": {
-        "text": "Message 12",
-        "sentiment": "neutral",
-        "score": 0.7929601669311523,
-        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
-      },
-      "timestamp": "2025-11-03T23:47:24.969133"
-    },
-    {
-      "user": "Message 13",
-      "bbia": "Super nouvelle ! Continuez comme ça, vous allez très bien ! Racontez-moi ce qui vous motive, j'aimerais comprendre.",
-      "sentiment": {
-        "text": "Message 13",
-        "sentiment": "neutral",
-        "score": 0.7972954511642456,
-        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
-      },
-      "timestamp": "2025-11-03T23:47:25.409293"
-    },
-    {
-      "user": "Message 14",
-      "bbia": "Super nouvelle ! Continuez comme ça, vous allez très bien ! Racontez-moi ce qui vous motive, j'aimerais comprendre.",
-      "sentiment": {
-        "text": "Message 14",
-        "sentiment": "neutral",
-        "score": 0.7852283716201782,
-        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
-      },
-      "timestamp": "2025-11-03T23:47:25.853127"
-    },
-    {
-      "user": "Message 15",
-      "bbia": "Super nouvelle ! Continuez comme ça, vous allez très bien ! Racontez-moi ce qui vous motive, j'aimerais comprendre.",
-      "sentiment": {
-        "text": "Message 15",
-        "sentiment": "neutral",
-        "score": 0.8295515179634094,
-        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
-      },
-      "timestamp": "2025-11-03T23:47:26.313106"
-    },
-    {
-      "user": "Message 16",
-      "bbia": "C'est excellent ! Votre bonne humeur est contagieuse ! Comment aimeriez-vous explorer cette dynamique positive ?  Qu'attends-tu exactement comme aide ?",
-      "sentiment": {
-        "text": "Message 16",
-        "sentiment": "neutral",
-        "score": 0.8310736417770386,
-        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
-      },
-      "timestamp": "2025-11-03T23:47:26.752070"
-    },
-    {
-      "user": "Message 17",
-      "bbia": "C'est vraiment formidable ! Je suis content que vous vous sentiez bien. Pourquoi cela vous rend-il heureux aujourd'hui ?",
-      "sentiment": {
-        "text": "Message 17",
-        "sentiment": "neutral",
-        "score": 0.8299508690834045,
-        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
-      },
-      "timestamp": "2025-11-03T23:47:27.192003"
-    },
-    {
-      "user": "Message 18",
-      "bbia": "C'est vraiment formidable ! Je suis content que vous vous sentiez bien. Pourquoi cela vous rend-il heureux aujourd'hui ?",
-      "sentiment": {
-        "text": "Message 18",
-        "sentiment": "neutral",
-        "score": 0.8094419836997986,
-        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
-      },
-      "timestamp": "2025-11-03T23:47:27.633655"
-    },
-    {
-      "user": "Message 19",
-      "bbia": "Super nouvelle ! Continuez comme ça, vous allez très bien ! Racontez-moi ce qui vous motive, j'aimerais comprendre.",
-      "sentiment": {
-        "text": "Message 19",
-        "sentiment": "neutral",
-        "score": 0.7976750731468201,
-        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
-      },
-      "timestamp": "2025-11-03T23:47:28.074000"
-    },
-    {
-      "user": "Message 20",
-      "bbia": "Super nouvelle ! Continuez comme ça, vous allez très bien ! Racontez-moi ce qui vous motive, j'aimerais comprendre.",
-      "sentiment": {
-        "text": "Message 20",
-        "sentiment": "neutral",
-        "score": 0.8196433782577515,
-        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
-      },
-      "timestamp": "2025-11-03T23:47:28.537502"
-    },
-    {
-      "user": "Message 21",
-      "bbia": "C'est excellent ! Votre bonne humeur est contagieuse ! Comment aimeriez-vous explorer cette dynamique positive ?",
-      "sentiment": {
-        "text": "Message 21",
-        "sentiment": "neutral",
-        "score": 0.7703215479850769,
-        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
-      },
-      "timestamp": "2025-11-03T23:47:28.983535"
-    },
-    {
-      "user": "Message 22",
-      "bbia": "C'est vraiment formidable ! Je suis content que vous vous sentiez bien. Pourquoi cela vous rend-il heureux aujourd'hui ?",
-      "sentiment": {
-        "text": "Message 22",
-        "sentiment": "neutral",
-        "score": 0.7903145551681519,
-        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
-      },
-      "timestamp": "2025-11-03T23:47:29.420641"
-    },
-    {
-      "user": "Message 23",
-      "bbia": "C'est vraiment formidable ! Je suis content que vous vous sentiez bien. Pourquoi cela vous rend-il heureux aujourd'hui ?",
-      "sentiment": {
-        "text": "Message 23",
-        "sentiment": "neutral",
-        "score": 0.821895956993103,
-        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
-      },
-      "timestamp": "2025-11-03T23:47:29.911653"
-    },
-    {
-      "user": "Message 24",
-      "bbia": "Super nouvelle ! Continuez comme ça, vous allez très bien ! Racontez-moi ce qui vous motive, j'aimerais comprendre.",
-      "sentiment": {
-        "text": "Message 24",
-        "sentiment": "neutral",
-        "score": 0.7832841873168945,
-        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
-      },
-      "timestamp": "2025-11-03T23:47:30.392449"
-    },
-    {
-      "user": "Message 25",
-      "bbia": "C'est excellent ! Votre bonne humeur est contagieuse ! Comment aimeriez-vous explorer cette dynamique positive ?  Peux-tu préciser un peu ta demande ?",
-      "sentiment": {
-        "text": "Message 25",
-        "sentiment": "neutral",
-        "score": 0.7803555130958557,
-        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
-      },
-      "timestamp": "2025-11-03T23:47:30.831895"
-    },
-    {
-      "user": "Message 26",
-      "bbia": "Super nouvelle ! Continuez comme ça, vous allez très bien ! Racontez-moi ce qui vous motive, j'aimerais comprendre.",
-      "sentiment": {
-        "text": "Message 26",
-        "sentiment": "neutral",
-        "score": 0.794393002986908,
-        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
-      },
-      "timestamp": "2025-11-03T23:47:31.267451"
-    },
-    {
-      "user": "Message 27",
-      "bbia": "Super nouvelle ! Continuez comme ça, vous allez très bien ! Racontez-moi ce qui vous motive, j'aimerais comprendre.",
-      "sentiment": {
-        "text": "Message 27",
-        "sentiment": "neutral",
-        "score": 0.791921854019165,
-        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
-      },
-      "timestamp": "2025-11-03T23:47:31.722009"
-    },
-    {
-      "user": "Message 28",
-      "bbia": "C'est excellent ! Votre bonne humeur est contagieuse ! Comment aimeriez-vous explorer cette dynamique positive ?",
-      "sentiment": {
-        "text": "Message 28",
-        "sentiment": "neutral",
-        "score": 0.7968664765357971,
-        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
-      },
-      "timestamp": "2025-11-03T23:47:32.348821"
-    },
-    {
-      "user": "Message 29",
-      "bbia": "Super nouvelle ! Continuez comme ça, vous allez très bien ! Racontez-moi ce qui vous motive, j'aimerais comprendre.",
-      "sentiment": {
-        "text": "Message 29",
-        "sentiment": "neutral",
-        "score": 0.8032798171043396,
-        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
-      },
-      "timestamp": "2025-11-03T23:47:32.778341"
-    },
-    {
-      "user": "Message 30",
-      "bbia": "C'est vraiment formidable ! Je suis content que vous vous sentiez bien. Pourquoi cela vous rend-il heureux aujourd'hui ?",
-      "sentiment": {
-        "text": "Message 30",
-        "sentiment": "neutral",
-        "score": 0.8303703665733337,
-        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
-      },
-      "timestamp": "2025-11-03T23:47:33.245997"
-    },
-    {
-      "user": "Message 31",
-      "bbia": "C'est excellent ! Votre bonne humeur est contagieuse ! Comment aimeriez-vous explorer cette dynamique positive ?  Qu'attends-tu exactement comme aide ?",
-      "sentiment": {
-        "text": "Message 31",
-        "sentiment": "neutral",
-        "score": 0.8011675477027893,
-        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
-      },
-      "timestamp": "2025-11-03T23:47:33.864685"
-    },
-    {
-      "user": "Message 32",
-      "bbia": "Super nouvelle ! Continuez comme ça, vous allez très bien ! Racontez-moi ce qui vous motive, j'aimerais comprendre.",
-      "sentiment": {
-        "text": "Message 32",
-        "sentiment": "neutral",
-        "score": 0.8123560547828674,
-        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
-      },
-      "timestamp": "2025-11-03T23:47:34.321221"
-    },
-    {
-      "user": "Message 33",
-      "bbia": "Super nouvelle ! Continuez comme ça, vous allez très bien ! Racontez-moi ce qui vous motive, j'aimerais comprendre.",
-      "sentiment": {
-        "text": "Message 33",
-        "sentiment": "neutral",
-        "score": 0.802742063999176,
-        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
-      },
-      "timestamp": "2025-11-03T23:47:34.792390"
-    },
-    {
-      "user": "Message 34",
-      "bbia": "C'est vraiment formidable ! Je suis content que vous vous sentiez bien. Pourquoi cela vous rend-il heureux aujourd'hui ?",
-      "sentiment": {
-        "text": "Message 34",
-        "sentiment": "neutral",
-        "score": 0.7907254099845886,
-        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
-      },
-      "timestamp": "2025-11-03T23:47:35.247193"
-    },
     {
       "user": "Message 35",
       "bbia": "C'est excellent ! Votre bonne humeur est contagieuse ! Comment aimeriez-vous explorer cette dynamique positive ?",
@@ -10787,6 +10512,81 @@
       "bbia": "Salut ! Qu'est-ce qui vous amène aujourd'hui ?",
       "sentiment": "neutral",
       "timestamp": "2025-11-20T11:52:48.932775"
+    },
+    {
+      "test": "data"
+    },
+    {
+      "test": "data"
+    },
+    {
+      "test": "data"
+    },
+    {
+      "test": "data"
+    },
+    {
+      "test": "data"
+    },
+    {
+      "test": "data"
+    },
+    {
+      "test": "data"
+    },
+    {
+      "test": "data"
+    },
+    {
+      "test": "data"
+    },
+    {
+      "test": "data"
+    },
+    {
+      "test": "data"
+    },
+    {
+      "test": "data"
+    },
+    {
+      "test": "data"
+    },
+    {
+      "test": "data"
+    },
+    {
+      "test": "data"
+    },
+    {
+      "test": "data"
+    },
+    {
+      "test": "data"
+    },
+    {
+      "test": "data"
+    },
+    {
+      "test": "data"
+    },
+    {
+      "test": "data"
+    },
+    {
+      "test": "data"
+    },
+    {
+      "test": "data"
+    },
+    {
+      "test": "data"
+    },
+    {
+      "test": "data"
+    },
+    {
+      "test": "data"
     },
     {
       "test": "data"

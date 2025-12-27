@@ -70,7 +70,7 @@ class BBIAMemory:
                 json.dump(data, f, indent=2, ensure_ascii=False)
 
             logger.debug(
-                f"💾 Conversation sauvegardée ({len(conversation_history)} messages)",
+                "💾 Conversation sauvegardée (%s messages)", len(conversation_history)
             )
             return True
         except Exception:

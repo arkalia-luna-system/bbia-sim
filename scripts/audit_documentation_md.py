@@ -13,7 +13,7 @@ from typing import Any
 # Fichiers MD principaux à auditer
 MD_FILES = [
     "README.md",
-    "docs/guides/GUIDE_DEBUTANT.md",
+    "docs/guides/GUIDE_DEMARRAGE.md",
     "docs/guides/GUIDE_AVANCE.md",
     "docs/conformite/CONFORMITE_REACHY_MINI_COMPLETE.md",
     "docs/guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md",

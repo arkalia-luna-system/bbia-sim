@@ -209,8 +209,8 @@ logging.info(hex_to_mujoco_rgba("#87bcfa"))  # 0.529412 0.737255 0.980392 1.0
 4. **CSS Palette** : `presentation/palette_bbia.css`
    - Variables CSS pour utilisation web
 
-5. **Documentation** : `docs/simulations/CONSEILS_PROCREATE_ROBOT.md`
-   - Lignes 121-123 : Recommandations couleurs robot
+5. **Documentation** : `docs/simulations/GUIDE_PROCREATE_COMPLET.md`
+   - Section "Conseils Spécifiques Robot" : Recommandations couleurs robot
 
 ---
 

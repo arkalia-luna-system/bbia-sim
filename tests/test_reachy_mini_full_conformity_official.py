@@ -19,17 +19,16 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 # OPTIMISATION COVERAGE: Importer les modules au niveau module pour que coverage les détecte
 import bbia_sim.backends.reachy_mini_backend  # noqa: F401
+import bbia_sim.bbia_huggingface  # noqa: F401
 import bbia_sim.daemon.app.main  # noqa: F401
 import bbia_sim.mapping_reachy  # noqa: F401
 import bbia_sim.robot_api  # noqa: F401
-import bbia_sim.bbia_huggingface  # noqa: F401
-
 from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
 from bbia_sim.robot_api import RobotAPI
 
 # Importer les autres classes pour les tests
 try:
-    from bbia_sim.bbia_huggingface import BBIAHuggingFace, HF_AVAILABLE  # noqa: F401
+    from bbia_sim.bbia_huggingface import HF_AVAILABLE, BBIAHuggingFace  # noqa: F401
 except (ImportError, AttributeError):
     BBIAHuggingFace = None  # type: ignore[assignment,misc]
     HF_AVAILABLE = False  # type: ignore[assignment,misc]
@@ -127,7 +126,17 @@ class TestReachyMiniFullConformity:
     def setup_method(self):
         """Configuration avant chaque test."""
         self.backend: ReachyMiniBackend = ReachyMiniBackend()
-        self.backend.connect()
+        try:
+            connected = self.backend.connect()
+            if not connected:
+                pytest.skip(
+                    "Robot Reachy Mini non disponible (daemon Zenoh non accessible)"
+                )
+        except Exception as e:
+            # Si erreur de connexion (Zenoh, etc.), skip le test
+            if "zenoh" in str(e).lower() or "connect" in str(e).lower():
+                pytest.skip(f"Robot Reachy Mini non disponible: {e}")
+            raise
 
     def teardown_method(self):
         """Nettoyage après chaque test."""

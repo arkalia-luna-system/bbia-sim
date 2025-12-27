@@ -6,7 +6,7 @@
 
 > **Liens utiles** : [`docs/reference/INDEX_THEMATIQUE.md`](../reference/INDEX_THEMATIQUE.md), [`docs/reference/project-status.md`](../reference/project-status.md)
 
-**📊 [CI/CD Pipeline](../deployment/PIPELINE_CI.md)** | **📚 [Guide avancé](../guides/GUIDE_AVANCE.md)**
+**📊 [CI/CD Pipeline](../deployment/PIPELINE_CI.md)** | **📚 [Guide technique](../guides/GUIDE_AVANCE.md)**
 
 ---
 

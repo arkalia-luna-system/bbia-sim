@@ -1,10 +1,11 @@
 # 📚 Documentation BBIA-SIM — Navigation Rapide
 
-**Date** : 8 Décembre 2025
-**Version** : v1.4.0
+**Dernière mise à jour :** 22 Décembre 2025  
+**Version** : v1.4.0  
+**Statut Robot** : ✅ Reçu le 18 déc 2025, monté le 20 déc 2025, tests en cours
 
 > **Moteur cognitif Python pour robot Reachy Mini**
-> *Simulation fidèle • IA avancée • SDK conforme*
+> *Simulation • IA • SDK conforme*
 
 ---
 
@@ -23,7 +24,7 @@ flowchart TB
 
     DEBUT --> INSTALL[📦 Installation]
     INSTALL --> FIRST[🤖 Premier Robot]
-    FIRST --> GUIDE[➡️ Guide Avancé]
+    FIRST --> GUIDE[➡️ Guide Technique]
 
     AVANCE --> ARCH[🏗️ Architecture]
     ARCH --> API[🔌 API & SDK]
@@ -72,13 +73,13 @@ flowchart TB
 ### Par Niveau
 
 - 🟢 **[Guide de Démarrage](guides/GUIDE_DEMARRAGE.md)** — Installation et premiers pas en 5 minutes
-- 🟡 **[Guide Avancé](guides/GUIDE_AVANCE.md)** — Fonctionnalités avancées et architecture
+- 🟡 **[Guide Technique](guides/GUIDE_AVANCE.md)** — Fonctionnalités techniques et architecture
 - 🔴 **[Guides Techniques](development/)** — Intégration, tests, migration
 
 ### Par Sujet
 
 - 🤖 **[Reachy Mini Wireless](guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md)** — Guide complet du robot physique
-- 💬 **[Chat BBIA](guides/GUIDE_CHAT_BBIA.md)** — Système de chat intelligent
+- 💬 **[Chat BBIA](guides/GUIDE_CHAT_BBIA.md)** — Système de chat
 - 🧠 **[NLP & SmolVLM2](guides/GUIDE_NLP_SMOLVLM.md)** — Intelligence artificielle
 
 ---
@@ -111,7 +112,7 @@ flowchart TB
 
 ## 📁 Navigation Complète
 
-- **[Guide de Navigation](getting-started/NAVIGATION.md)** — Guide simple pour trouver rapidement ce dont vous avez besoin
+- **[Guide de Navigation](getting-started/NAVIGATION.md)** — Guide pour trouver rapidement ce dont vous avez besoin
 - **[INDEX_FINAL.md](INDEX_FINAL.md)** — Index complet avec navigation par profil et catégorie
 
 ---

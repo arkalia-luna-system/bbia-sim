@@ -1,15 +1,15 @@
 # 🗺️ Roadmap Dashboard / UX
 
-**Date** : 8 Décembre 2025
+**Dernière mise à jour : 15 Décembre 2025
 **Version** : 1.4.0
 
 > **Voir aussi** : [`docs/reference/INDEX_THEMATIQUE.md`](../reference/INDEX_THEMATIQUE.md) et [`docs/reference/project-status.md`](../reference/project-status.md)
 
-**📊 [CI/CD Pipeline](../deployment/PIPELINE_CI.md)** | **🔧 [Guide avancé](../guides/GUIDE_AVANCE.md)**
+**📊 [CI/CD Pipeline](../deployment/PIPELINE_CI.md)** | **🔧 [Guide technique](../guides/GUIDE_AVANCE.md)**
 
 ---
 
-## Architecture Dashboard Proposée
+## Architecture Dashboard
 
 ```mermaid 📊
 graph TB
@@ -146,7 +146,7 @@ mindmap
    - Installation apps communauté
    - Partage apps via HF Spaces
 
-### 📱 Recommandations Expert pour Apps Mobiles
+### 📱 Recommandations pour Apps Mobiles
 
 #### **1. Progressive Web App (PWA) - PRIORITÉ HAUTE** ⭐
 
@@ -301,7 +301,7 @@ BBIAiOS/
 **Option B : Flutter**
 
 **Pourquoi :**
-- ✅ Performance excellente
+- ✅ Performance élevée
 - ✅ UI native
 - ✅ Dart (nouveau langage)
 
@@ -532,7 +532,7 @@ headers: {
 ---
 
 **Dernière mise à jour** : 8 Décembre 2025
-**Expert Review** : Recommandations cross-platform et mobile ajoutées
+**Note** : Recommandations cross-platform et mobile ajoutées
 **Implémentation** : ✅ **100% TERMINÉ** - Toutes les phases complétées (24 Nov 2025)
 - ✅ Phase 1: Core (100%)
 - ✅ Phase 2: UI (100% - Graphiques, Sliders, Presets)

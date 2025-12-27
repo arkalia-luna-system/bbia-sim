@@ -1,51 +1,29 @@
 # 📚 Index - Guides Procreate pour Scènes MuJoCo
 
-**Date** : 8 Décembre 2025
+**Dernière mise à jour : 15 Décembre 2025
 
 > **Navigation rapide** : Tous les guides disponibles
 
 ---
 
-## 🎯 Guides par Besoin
+## 🎯 Guide Complet Fusionné
 
-### **🚀 Démarrage Rapide (2 minutes)**
+### **📖 Guide Complet Procreate**
 
-**👉 `RESUME_RAPIDE_PROCREATE.md`**
+**👉 `GUIDE_PROCREATE_COMPLET.md`**
 
-- Configuration basique
-- Structure calques (5 calques)
-- Export rapide
-- Checklist express
+Ce guide unique contient toutes les sections :
 
-**Quand l'utiliser** : Pour un aperçu ultra-rapide
+- ⚡ **Résumé Rapide** (2 minutes) - Configuration basique, structure calques, export rapide
+- 🎨 **Configuration Procreate** - Paramètres détaillés, espace couleur
+- 🗂️ **Organisation des Calques** - Structure recommandée, nombre optimal
+- 🖌️ **Créer les Textures** - Mur, sol, plafond (étapes détaillées)
+- 💡 **Conseils Professionnels** - Tiling, couleurs, pinceaux, modes de fusion
+- 📤 **Export et Optimisation** - PNG, optimisation, nommage
+- 🔄 **Intégration dans MuJoCo** - XML, visualisation
+- 🤖 **Conseils Spécifiques Robot** - Robot 3D vs texture, dessin robot optionnel
 
----
-
-### **📖 Guide Complet (Référence)**
-
-**👉 `GUIDE_PROCREATE_SCENE_COMPLET.md`**
-
-- Configuration détaillée Procreate
-- Organisation calques professionnelle
-- Création textures (mur, sol, plafond)
-- Conseils pro (tiling, couleurs, pinceaux)
-- Export et optimisation
-- Intégration MuJoCo complète
-
-**Quand l'utiliser** : Pour créer vos textures avec toutes les techniques
-
----
-
-### **🤖 Robot dans la Scène**
-
-**👉 `CONSEILS_PROCREATE_ROBOT.md`**
-
-- Robot en texture OU 3D ?
-- Dessiner robot (si optionnel)
-- Intégration dans scène
-- Recommandations
-
-**Quand l'utiliser** : Si vous voulez ajouter robot en texture (décor)
+**Quand l'utiliser** : Guide de référence complet pour créer vos textures Procreate
 
 ---
 
@@ -64,10 +42,10 @@
 
 ## ✅ Parcours Recommandé
 
-### **Pour Créer Votre Première Scène** :
+### **Pour Créer Votre Première Scène**
 
-1. **Lire** : `RESUME_RAPIDE_PROCREATE.md` (2 min)
-2. **Suivre** : `GUIDE_PROCREATE_SCENE_COMPLET.md` (étape par étape)
+1. **Lire** : Section "Résumé Rapide" dans `GUIDE_PROCREATE_COMPLET.md` (2 min)
+2. **Suivre** : `GUIDE_PROCREATE_COMPLET.md` (étape par étape)
 3. **Créer** : Vos textures (mur.png, sol.png, plafond.png)
 4. **Intégrer** : `GUIDE_IMPORT_IMAGES_MUJOCO.md` (créer XML)
 5. **Visualiser** : `python examples/view_scene_piece.py votre_scene.xml`
@@ -76,13 +54,13 @@
 
 ## 📋 Résumé des Essentiels
 
-### **Configuration Procreate** :
+### **Configuration Procreate**
 
 - Taille : **4096 x 4096 px**
 - Format : **RGB, sRGB**
 - Fond : **Transparent** ou **Blanc**
 
-### **Structure Calques (Par Texture)** :
+### **Structure Calques (Par Texture)**
 
 - **5 calques** = Équilibre optimal
   1. Base (100%)
@@ -91,18 +69,18 @@
   4. Lumières (20%, Screen)
   5. Détails (15%, Normal)
 
-### **Textures à Créer** :
+### **Textures à Créer**
 
 - `mur.png` (4096x4096px)
 - `sol.png` (4096x4096px)
 - `plafond.png` (4096x4096px, optionnel)
 
-### **Export** :
+### **Export**
 
 - PNG maximum qualité
 - Placer dans `assets/textures/`
 
-### **Robot** :
+### **Robot**
 
 - ✅ Utiliser modèle 3D MuJoCo (recommandé)
 - ✅ Texture robot optionnelle (pour décor)
@@ -124,5 +102,3 @@
 **Voir aussi** : [Guide MuJoCo](MUJOCO_SIMULATION_GUIDE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
 
 ---
-
-*Index Guides Procreate - BBIA-SIM - 8 Décembre 2025*

@@ -1,6 +1,6 @@
 # 🔍 Audits Techniques - Documentation BBIA-SIM
 
-**Date** : 8 Décembre 2025
+**Dernière mise à jour : 15 Décembre 2025
 **Objectif** : Vue d'ensemble des audits techniques et analyses de conformité.
 
 ---

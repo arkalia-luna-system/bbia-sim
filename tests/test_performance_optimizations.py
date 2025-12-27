@@ -77,7 +77,17 @@ class TestPerformanceOptimizations:
             pytest.skip("ReachyMiniBackend non disponible")
 
         backend = ReachyMiniBackend()
-        backend.connect()
+        try:
+            connected = backend.connect()
+            if not connected:
+                pytest.skip(
+                    "Robot Reachy Mini non disponible (daemon Zenoh non accessible)"
+                )
+        except Exception as e:
+            # Si erreur de connexion (Zenoh, etc.), skip le test
+            if "zenoh" in str(e).lower() or "connect" in str(e).lower():
+                pytest.skip(f"Robot Reachy Mini non disponible: {e}")
+            raise
 
         # Vérifier que robot.media et robot.io sont accessibles si robot réel disponible
         if backend.is_connected and backend.robot:
@@ -104,7 +114,17 @@ class TestPerformanceOptimizations:
 
         # ReachyMiniBackend est déjà importé au niveau module
         backend = ReachyMiniBackend()
-        backend.connect()
+        try:
+            connected = backend.connect()
+            if not connected:
+                pytest.skip(
+                    "Robot Reachy Mini non disponible (daemon Zenoh non accessible)"
+                )
+        except Exception as e:
+            # Si erreur de connexion (Zenoh, etc.), skip le test
+            if "zenoh" in str(e).lower() or "connect" in str(e).lower():
+                pytest.skip(f"Robot Reachy Mini non disponible: {e}")
+            raise
 
         # Vérifier que goto_target accepte method=
         if hasattr(backend, "goto_target"):
@@ -180,7 +200,17 @@ class TestPerformanceOptimizations:
         print("=" * 60)
 
         backend = ReachyMiniBackend()
-        backend.connect()
+        try:
+            connected = backend.connect()
+            if not connected:
+                pytest.skip(
+                    "Robot Reachy Mini non disponible (daemon Zenoh non accessible)"
+                )
+        except Exception as e:
+            # Si erreur de connexion (Zenoh, etc.), skip le test
+            if "zenoh" in str(e).lower() or "connect" in str(e).lower():
+                pytest.skip(f"Robot Reachy Mini non disponible: {e}")
+            raise
 
         if hasattr(backend, "goto_target"):
             try:
@@ -234,7 +264,17 @@ class TestPerformanceOptimizations:
 
         # ReachyMiniBackend est déjà importé au niveau module
         backend = ReachyMiniBackend()
-        backend.connect()
+        try:
+            connected = backend.connect()
+            if not connected:
+                pytest.skip(
+                    "Robot Reachy Mini non disponible (daemon Zenoh non accessible)"
+                )
+        except Exception as e:
+            # Si erreur de connexion (Zenoh, etc.), skip le test
+            if "zenoh" in str(e).lower() or "connect" in str(e).lower():
+                pytest.skip(f"Robot Reachy Mini non disponible: {e}")
+            raise
 
         # Tester que set_emotion accepte l'intensité
         test_emotions = [

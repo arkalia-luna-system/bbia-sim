@@ -140,7 +140,7 @@ python scripts/start_public_api.py
 
 Les animations SVG pour le daemon sont optionnelles. Si absentes, le dashboard fonctionne mais sans animations visuelles.
 
-### Fichiers SVG attendus (optionnels) :
+### Fichiers SVG attendus (optionnels)
 
 - `awake-cartoon.svg` - Animation réveil
 - `awake-cartoon-static.svg` - Robot éveillé (statique)
@@ -154,21 +154,21 @@ Les animations SVG pour le daemon sont optionnelles. Si absentes, le dashboard f
 
 ## ✅ Conformité avec SDK Officiel
 
-### Structure identique :
+### Structure identique
 
 - ✅ Templates Jinja2 modulaires
 - ✅ Sections séparées (daemon, apps, appstore)
 - ✅ Static files montés sur `/static`
 - ✅ Route `GET /` qui rend le dashboard
 
-### API conforme :
+### API conforme
 
 - ✅ Endpoints `/development/api/daemon/*` pour contrôle daemon
 - ✅ Endpoints `/development/api/apps/*` pour gestion apps
 - ✅ Endpoints `/development/api/move/*` pour mouvements
 - ✅ WebSocket pour temps réel
 
-### JavaScript identique :
+### JavaScript identique
 
 - ✅ Même logique de gestion daemon
 - ✅ Même structure apps/appstore
@@ -176,11 +176,11 @@ Les animations SVG pour le daemon sont optionnelles. Si absentes, le dashboard f
 
 ---
 
-## 🎯 Différences avec Dashboard BBIA Avancé
+## 🎯 Différences avec Dashboard BBIA
 
-Ce dashboard **officiel-like** est différent du dashboard avancé BBIA (`dashboard_advanced.py`) :
+Ce dashboard **officiel-like** est différent du dashboard BBIA (`dashboard_advanced.py`) :
 
-| Aspect | Dashboard Officiel-Like | Dashboard Avancé BBIA |
+| Aspect | Dashboard Officiel-Like | Dashboard BBIA |
 |--------|------------------------|----------------------|
 | **Design** | Minimaliste, épuré | Plus riche, métriques |
 | **Focus** | Reachy Mini uniquement | BBIA + Reachy Mini |
@@ -194,7 +194,7 @@ Ce dashboard **officiel-like** est différent du dashboard avancé BBIA (`dashbo
 
 ## 🔍 Vérification
 
-### Checklist de vérification :
+### Checklist de vérification
 
 ```bash
 # 1. Vérifier structure
@@ -219,7 +219,7 @@ python -c "from bbia_sim.daemon.app.main import app; import logging; logging.inf
 
 - **SDK Officiel** : <https://github.com/pollen-robotics/reachy_mini>
 - **Documentation BBIA** : `docs/quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md`
-- **Comparaison** : `docs/quality/audits/COMPARAISON_DOCUMENTATION_OFFICIELLE.md`
+- **Comparaison** : `docs/quality/audits/COMPARAISON_OFFICIELLE.md`
 - **Dashboard avancé** : [`docs/development/dashboard-advanced.md`](../development/dashboard-advanced.md) - Dashboard BBIA avec métriques temps réel, chat et vision
 - **Captures d'écran** : 4 captures du dashboard avancé disponibles dans `assets/images/` (Nov 2025) - Voir [`assets/MEDIAS_INVENTAIRE.md`](../../assets/MEDIAS_INVENTAIRE.md)
 

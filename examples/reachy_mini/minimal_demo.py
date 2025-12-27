@@ -35,9 +35,14 @@ def main() -> None:
         print("✅ Utilisation SDK officiel")
         from reachy_mini.utils import create_head_pose
 
-        with ReachyMini(media_backend="no_media", use_sim=True) as mini:
-            mini.goto_target(create_head_pose(), antennas=[0.0, 0.0], duration=1.0)
-            print("🎯 Mouvement initial vers position neutre")
+        with ReachyMini(
+            media_backend="no_media", use_sim=False, localhost_only=False
+        ) as mini:
+            # Position initiale: matrice identité 4x4 (tête droite, comme dans simulation Reachy)
+            initial_pose = np.eye(4, dtype=np.float64)
+            mini.goto_target(initial_pose, antennas=[0.0, 0.0], duration=2.0)
+            print("🎯 Mouvement initial vers position neutre (tête droite)")
+            time.sleep(2.5)  # Attendre que le mouvement se termine
 
             try:
                 print("📡 Démarrage animation antennes et tête...")
@@ -70,15 +75,15 @@ def main() -> None:
     else:
         # Utilisation backend BBIA
         print("✅ Utilisation backend BBIA")
-        backend = ReachyMiniBackend(use_sim=True)
+        backend = ReachyMiniBackend(use_sim=False, localhost_only=False)
         backend.connect()
 
         try:
-            # Position initiale
-            from reachy_mini.utils import create_head_pose
-
-            backend.goto_target(create_head_pose(), antennas=[0.0, 0.0], duration=1.0)
-            print("🎯 Mouvement initial vers position neutre")
+            # Position initiale: matrice identité 4x4 (tête droite, comme dans simulation Reachy)
+            initial_pose = np.eye(4, dtype=np.float64)
+            backend.goto_target(initial_pose, antennas=[0.0, 0.0], duration=2.0)
+            print("🎯 Mouvement initial vers position neutre (tête droite)")
+            time.sleep(2.5)  # Attendre que le mouvement se termine
 
             print("📡 Démarrage animation antennes et tête...")
             print("   (Appuyez sur Ctrl+C pour arrêter)")

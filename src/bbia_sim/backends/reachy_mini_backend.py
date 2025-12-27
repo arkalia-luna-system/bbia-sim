@@ -252,6 +252,10 @@ class ReachyMiniBackend(RobotAPI):
     def _try_connect_robot(self) -> bool:
         """Tente de se connecter au robot physique.
 
+        Note: Avec SDK v1.2.4+, le reflash automatique des moteurs se fait
+        lors de la connexion et du démarrage du robot. Cela protège les futurs
+        moteurs contre le problème de batch QC 2544 (moteurs non flashés à l'usine).
+
         Returns:
             True si connexion réussie, False sinon
 
@@ -272,6 +276,11 @@ class ReachyMiniBackend(RobotAPI):
             if not self.use_sim:
                 self._start_watchdog()
             logger.info("✅ Connecté au robot Reachy-Mini officiel")
+            # Note: SDK v1.2.4+ reflash automatique des moteurs lors de la connexion
+            # Cela protège les futurs moteurs contre le problème batch QC 2544
+            logger.debug(
+                "SDK v1.2.4+ : Reflash automatique des moteurs activé (protection batch QC 2544)"
+            )
             return True
         except (
             OSError,
@@ -467,9 +476,77 @@ class ReachyMiniBackend(RobotAPI):
 
         Note: OPTIMISATION - Utilise un cache car le résultat ne change pas
         après l'initialisation.
+
+        NOUVEAU: Détecte les moteurs manquants en vérifiant les positions.
         """
         if self._cached_available_joints is None:
             self._cached_available_joints = list(self.joint_mapping.keys())
+
+        # Vérifier les moteurs réellement disponibles si connecté
+        if self.is_connected and self.robot is not None:
+            try:
+                head_positions, antenna_positions = (
+                    self.robot.get_current_joint_positions()
+                )
+
+                # Détecter les joints manquants basés sur les positions disponibles
+                available = []
+
+                # Vérifier yaw_body
+                try:
+                    self._get_yaw_body_position()
+                    available.append("yaw_body")
+                except Exception:
+                    logger.warning("yaw_body non disponible")
+
+                # Vérifier les joints stewart (doivent être 6)
+                expected_stewart_count = 6
+                if len(head_positions) >= expected_stewart_count:
+                    # Format standard: 6 éléments directement
+                    for i in range(1, 7):
+                        joint_name = f"stewart_{i}"
+                        try:
+                            pos = self._get_stewart_joint_position(
+                                joint_name, head_positions
+                            )
+                            if pos is not None:
+                                available.append(joint_name)
+                        except (IndexError, ValueError, AttributeError):
+                            logger.warning(
+                                "Joint %s non disponible (position invalide)",
+                                joint_name,
+                            )
+                elif len(head_positions) < expected_stewart_count:
+                    # Moins de 6 joints détectés → certains moteurs manquants
+                    logger.warning(
+                        "⚠️  MOTEURS MANQUANTS DÉTECTÉS: "
+                        "Seulement %d/%d joints stewart détectés. "
+                        "Possible cause: mauvais baudrate (57,600 au lieu de 1,000,000) "
+                        "ou paramètres d'usine (ID=1 au lieu de ID correct). "
+                        "Solution: python examples/reachy_mini/scan_motors_baudrate.py",
+                        len(head_positions),
+                        expected_stewart_count,
+                    )
+                    # Ajouter seulement les joints détectés
+                    for i in range(1, len(head_positions) + 1):
+                        joint_name = f"stewart_{i}"
+                        available.append(joint_name)
+
+                # Vérifier les antennes
+                if len(antenna_positions) >= 2:
+                    available.extend(["left_antenna", "right_antenna"])
+                elif len(antenna_positions) == 1:
+                    available.append("left_antenna")
+
+                # Mettre à jour le cache avec les joints réellement disponibles
+                self._cached_available_joints = available
+
+            except (AttributeError, RuntimeError, OSError, ValueError, TypeError) as e:
+                logger.debug("Impossible de vérifier les joints disponibles: %s", e)
+                # Fallback: utiliser la liste complète
+                if self._cached_available_joints is None:
+                    self._cached_available_joints = list(self.joint_mapping.keys())
+
         return self._cached_available_joints
 
     def _get_yaw_body_position(self) -> float:
@@ -1360,6 +1437,9 @@ class ReachyMiniBackend(RobotAPI):
         """Active les moteurs.
 
         Issue #323: S'assure que enable_motors définit le mode position controlled.
+
+        Note: Avec SDK v1.2.4+, le SDK gère automatiquement le mode position.
+        Ce workaround est conservé pour compatibilité avec anciennes versions SDK (< v1.2.4).
         """
         if not self.is_connected or not self.robot:
             logger.debug("Mode simulation: enable_motors")
@@ -1368,18 +1448,21 @@ class ReachyMiniBackend(RobotAPI):
         try:
             self.robot.enable_motors()
             # Issue #323: S'assurer que le mode est position controlled après enable
+            # NOTE: SDK v1.2.4+ gère automatiquement, mais on garde ce code pour
+            # compatibilité avec anciennes versions (< v1.2.4) où le bug existait
             if hasattr(self.robot, "set_operating_mode"):
                 try:
                     # Essayer de définir explicitement le mode position
+                    # (workaround pour SDK < v1.2.4, mais inoffensif pour v1.2.4+)
                     self.robot.set_operating_mode("position")
                     logger.debug(
                         "✅ Mode position controlled défini après enable_motors",
                     )
                 except (AttributeError, ValueError, TypeError):
                     # Si set_operating_mode n'existe pas, c'est OK
-                    # (SDK gère automatiquement)
+                    # (SDK v1.2.4+ gère automatiquement)
                     logger.debug(
-                        "set_operating_mode non disponible (SDK gère automatiquement)",
+                        "set_operating_mode non disponible (SDK v1.2.4+ gère automatiquement)",
                     )
         except Exception:
             logger.exception("Erreur enable_motors")

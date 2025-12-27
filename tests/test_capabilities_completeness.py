@@ -335,11 +335,11 @@ class TestDaemonModels:
         from bbia_sim.daemon.models import FullState
 
         state = FullState(
-            head_pose=None,
-            antennas_position=[0.0, 0.0],
-            body_yaw=0.0,
+            present_head_pose=None,
+            present_antenna_joint_positions=(0.0, 0.0),
+            present_body_yaw=0.0,
         )
-        assert state.body_yaw == 0.0
+        assert state.present_body_yaw == 0.0
 
     def test_goto_model_request(self) -> None:
         """Test GotoModelRequest."""
@@ -393,23 +393,23 @@ class TestDaemonModels:
         # Créer matrice 4x4 (forme attendue par from_pose_array)
         pose_array = np.eye(4, dtype=np.float64)
         pose_array[:3, 3] = [0.0, 0.0, 0.0]  # Position xyz
-        pose = as_any_pose(pose_array, use_matrix=False)
+        pose = as_any_pose(pose_array)
         assert pose is not None
         assert hasattr(pose, "x")
         assert hasattr(pose, "y")
         assert hasattr(pose, "z")
 
     def test_xyzrpy_pose_from_array(self) -> None:
-        """Test XYZRPYPose.from_pose_array."""
+        """Test conversion matrice 4x4 en AnyPose (XYZRPY)."""
         # OPTIMISATION RAM: Import lazy uniquement dans le test
         import numpy as np
 
-        from bbia_sim.daemon.models import XYZRPYPose
+        from bbia_sim.daemon.models import as_any_pose
 
-        # Créer matrice 4x4 (forme attendue par from_pose_array)
+        # Créer matrice 4x4 (forme attendue par as_any_pose)
         pose_array = np.eye(4, dtype=np.float64)
         pose_array[:3, 3] = [0.0, 0.0, 0.0]  # Position xyz
-        pose = XYZRPYPose.from_pose_array(pose_array)
+        pose = as_any_pose(pose_array)
         assert pose is not None
         assert pose.x == 0.0
         assert pose.y == 0.0
@@ -661,8 +661,8 @@ class TestAdditionalCapabilities:
     def test_create_pose_detector(self) -> None:
         """Test create_pose_detector."""
         from bbia_sim.pose_detection import (
-            create_pose_detector,
             MEDIAPIPE_POSE_AVAILABLE,
+            create_pose_detector,
         )
 
         detector = create_pose_detector()

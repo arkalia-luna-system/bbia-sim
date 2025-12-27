@@ -4,6 +4,7 @@
 import logging
 import os
 import time
+from collections import deque
 from typing import Any
 
 try:
@@ -177,9 +178,10 @@ else:
     latency_p99 = None
 
 # Métriques système en mémoire (fallback si Prometheus non disponible)
-# Historique des latences pour calcul p50/p95/p99 (garder dernières 1000 mesures)
-_latency_history: list[float] = []
+# OPTIMISATION RAM: Utiliser deque avec maxlen pour limiter historique latences
+# (évite pop(0) coûteux et accumulation illimitée)
 _MAX_LATENCY_HISTORY = 1000
+_latency_history: deque[float] = deque(maxlen=_MAX_LATENCY_HISTORY)
 
 _metrics_cache: dict[str, Any] = {
     "requests": {"total": 0, "by_endpoint": {}},
@@ -208,10 +210,8 @@ def _calculate_percentiles(latencies: list[float]) -> dict[str, float]:
 
 def _record_latency(latency_ms: float) -> None:
     """Enregistre une latence dans l'historique."""
+    # OPTIMISATION RAM: deque avec maxlen gère automatiquement la limite
     _latency_history.append(latency_ms)
-    # Garder seulement les dernières N mesures
-    if len(_latency_history) > _MAX_LATENCY_HISTORY:
-        _latency_history.pop(0)
 
 
 @router.get("/prometheus")
@@ -290,7 +290,7 @@ async def get_prometheus_metrics() -> Response:
 
         # Métriques latence percentiles (p50/p95/p99)
         if latency_p50 or latency_p95 or latency_p99:
-            percentiles = _calculate_percentiles(_latency_history)
+            percentiles = _calculate_percentiles(list(_latency_history))
             if latency_p50:
                 latency_p50.set(percentiles["p50"])
             if latency_p95:
@@ -313,7 +313,7 @@ async def get_performance_metrics() -> dict[str, Any]:
 
     """
     # Calculer percentiles depuis historique
-    percentiles = _calculate_percentiles(_latency_history)
+    percentiles = _calculate_percentiles(list(_latency_history))
 
     # Mettre à jour cache
     _metrics_cache["latency"] = percentiles

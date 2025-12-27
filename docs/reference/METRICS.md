@@ -97,7 +97,7 @@ Voir `docs/observabilite/OBSERVABILITE.md` pour plus de détails.
 ## 🔄 Version
 
 - **Version actuelle** : 1.4.0
-- **Date release** : 8 Décembre 2025
+- **Dernière mise à jour : 15 Décembre 2025
 
 ---
 

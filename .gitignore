@@ -84,3 +84,9 @@ artifacts/golden/*_long.jsonl
 DS_Store
 .coverage.*
 .pytest.lock
+
+# Apps installées depuis HF Spaces
+installed_apps/
+
+# Archive de documentation (fichiers redondants/obsolètes)
+docs/_archive/

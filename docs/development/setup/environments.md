@@ -1,6 +1,6 @@
 # 📦 Profils d'Environnement (venv) et Caméra – Guide Rapide
 
-**Date** : 8 Décembre 2025
+**Dernière mise à jour : 15 Décembre 2025
 
 ## Objectif
 

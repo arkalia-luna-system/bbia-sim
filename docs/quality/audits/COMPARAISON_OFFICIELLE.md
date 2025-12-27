@@ -1,6 +1,6 @@
 # 📊 COMPARAISON OFFICIELLE - Documentation et Application Conversation
 
-**Date :** 8 Décembre 2025  
+**Dernière mise à jour : 15 Décembre 2025  
 **Source :** Documentation officielle `pollen-robotics/reachy_mini`  
 **Version BBIA :** 1.3.2  
 **Objectif :** Comparer BBIA-SIM avec la documentation officielle et l'application conversation officielle
@@ -87,7 +87,7 @@ with ReachyMini() as reachy_mini:
 - ✅ **3 Dashboards disponibles** :
   1. **Dashboard officiel-like** (route `/`) - **PRINCIPAL** ✅
   2. `dashboard.py` - Dashboard minimal (HTML inline)
-  3. `dashboard_advanced.py` - Dashboard avancé avec métriques temps réel
+  3. `dashboard_advanced.py` - Dashboard avec métriques temps réel
   4. `dashboard_gradio.py` - Interface Gradio no-code (vision + chat)
 
 **Status:** ✅ **PRÉSENT ET CONFORME (même mieux)**
@@ -231,17 +231,17 @@ with ReachyMini() as reachy_mini:
 
 ## 📊 RÉSUMÉ GLOBAL
 
-### Score Global : **~85-90%** ✅
+### Comparaison fonctionnalités
 
-| Catégorie | Score | Détails |
-|-----------|-------|---------|
-| **Vision** | 95% | ✅ YOLO + MediaPipe + SmolVLM2 (parité complète) |
-| **Contrôle Robot** | 90% | ✅ API complète |
-| **Extraction Paramètres** | 90% | ✅ NER (angles, intensités) |
-| **Conversation** | 85% | ✅ Outils LLM intégrés, NLP, VAD, Streaming |
-| **Animations** | 85% | ✅ Danses API, Idle animations, Tremblement vocal |
-| **Émotions** | 70% | ✅ 12 émotions (format différent) |
-| **UI** | 60% | ✅ Dashboard (différent de Gradio) |
+| Catégorie | Statut | Détails |
+|-----------|--------|---------|
+| **Vision** | ✅ | YOLO + MediaPipe + SmolVLM2 (parité complète) |
+| **Contrôle Robot** | ✅ | API complète |
+| **Extraction Paramètres** | ✅ | NER (angles, intensités) |
+| **Conversation** | ✅ | Outils LLM intégrés, NLP, VAD, Streaming |
+| **Animations** | ✅ | Danses API, Idle animations, Tremblement vocal |
+| **Émotions** | ✅ | 12 émotions (format différent) |
+| **UI** | ✅ | Dashboard (différent de Gradio) |
 
 ---
 

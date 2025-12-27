@@ -1,8 +1,8 @@
 # Intelligence conversationnelle LLM - guide complet
 
-**Date :** 8 Décembre 2025  
+**Dernière mise à jour : 15 Décembre 2025  
 **Dernière mise à jour :** 8 Décembre 2025  
-**Objectif :** LLM conversationnel léger (Phi-2/TinyLlama) pour conversations intelligentes
+**Objectif :** LLM conversationnel léger (Phi-2/TinyLlama) pour conversations
 
 ---
 
@@ -204,8 +204,8 @@ Avantages LLM :
 ### Modèles disponibles dans BBIAChat
 
 1. **Phi-2 2.7B** (recommandé - BBIAChat)
-   - Qualité : excellente
-   - Français : très bon
+   - Qualité : élevée
+   - Français : bon
    - Taille : ~5GB RAM (compatible RPi 5)
    - Support MPS/CUDA : oui
    - Vitesse : ~1-2 secondes/réponse
@@ -218,8 +218,8 @@ Avantages LLM :
    - Vitesse : <1 seconde/réponse
 
 3. **Mistral 7B Instruct** (optionnel - BBIAHuggingFace)
-   - Qualité : excellente
-   - Français : très bon
+   - Qualité : élevée
+   - Français : bon
    - Taille : ~14GB RAM
    - Support MPS : oui
    - Vitesse : ~1-3 secondes/réponse
@@ -327,7 +327,7 @@ else:
    - Génération : 1-3 secondes/réponse (CPU) ou <1s (MPS/CUDA)
 
 3. **Qualité :**
-   - Excellent français mais parfois génère en anglais
+   - Français de qualité mais parfois génère en anglais
    - Réponses parfois trop longues (limité à 150 tokens)
 
 4. **Fallback :**

@@ -1,17 +1,8 @@
 # Simulation BBIA complète - tous les modes
 
-**Date** : 8 Décembre 2025
+**Dernière mise à jour** : 15 Décembre 2025
 
-> Compatibilité Python et CI
->
-> - Python requis: 3.11+
-> - CI: `.github/workflows/ci.yml`
-> - Setup rapide:
-> ```bash
-> pyenv install 3.11.9 && pyenv local 3.11.9
-> python -m pip install --upgrade pip
-> pip install -e .
-> ```
+> **Compatibilité Python** : Python 3.11+ requis. Voir [`docs/getting-started/INSTALLATION.md`](../getting-started/INSTALLATION.md) pour les détails d'installation.
 
 ## État actuel - Phase 1 terminée
 
@@ -34,7 +25,7 @@
 graph TB
     subgraph "Modes de Simulation"
         BASIC[Simulation BBIA de Base<br/>Émotions + Mouvements]
-        ADVANCED[Simulation Avancée<br/>Vision + Audio + IA]
+        ADVANCED[Simulation<br/>Vision + Audio + IA]
         UNITY[Simulation Unity<br/>3D Interactive]
         MUJOCO[Simulation MuJoCo<br/>Physique réaliste]
     end
@@ -263,7 +254,7 @@ ls -la
 🤖============================================================🤖
 🌟 BBIA - Brain-Based Interactive Agent
 🤖 Robot: Reachy Mini Wireless
-📅 Date: 8 Décembre 2025
+📅 Dernière mise à jour : 15 Décembre 2025
 💻 Système: darwin
 🤖============================================================🤖
 
@@ -288,7 +279,7 @@ ls -la
   Microphone 4: ✅ Actif
 
 📷 Caméra grand angle: Active
-  👁️ Reconnaissance d'objets: En cours...
+  👁️ Reconnaissance d'objets: Disponible
   🎯 Objets détectés: fenêtre
 
 🎭 Test des émotions:
@@ -421,7 +412,7 @@ ls -la
 
 ## Résumé
 
-### Phase 1 terminée
+### Dépôts disponibles
 
 - Tous les dépôts GitHub installés
 - `pollen-vision` testé et fonctionnel
@@ -446,12 +437,12 @@ Vous pouvez maintenant commencer l'intégration des composants dans BBIA !
 **BBIA** - Brain-Based Interactive Agent
 *Guide de simulation complet* 🎮✨
 
-**Phase 1** : ✅ TERMINÉE
+**Dépôts** : ✅ Disponibles
 **Phase 2** : �� PRÊT À COMMENCER
 
 ## 🤖 Séquence de Réveil Réaliste BBIA
 
-La simulation BBIA intègre désormais une séquence de réveil immersive, fidèle au robot Reachy Mini Wireless :
+La simulation BBIA intègre désormais une séquence de réveil immersive, pour le robot Reachy Mini Wireless :
 
 - Lumière progressive, halo bleu, respiration simulée
 - Son de démarrage, mouvements de tête et bras, expression, parole

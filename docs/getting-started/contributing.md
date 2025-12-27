@@ -1,6 +1,6 @@
 # 🎯 Good First Issues - Suggestions pour Nouveaux Contributeurs
 
-**Date**: 8 Décembre 2025  
+**Dernière mise à jour : 15 Décembre 2025  
 **Pour nouveaux contributeurs** : Idéal pour débuter avec le projet
 
 ---
@@ -17,7 +17,7 @@
 
 - ⚠️ **Issue GitHub #4** : ✅ **CLARIFICATION AJOUTÉE** (8 Décembre 2025)
 - ⚠️ La fonction `_capture_audio_chunk()` mentionnée dans l'issue **n'existe pas** dans le code actuel
-- ✅ Coverage actuel : **87.76%** (excellent ✅)
+- ✅ Coverage actuel : **87.76%**
 - Tests existants : `test_bbia_audio_coverage_high.py`, `test_bbia_audio_improved.py`
 
 **Statut** : ⚠️ **OUVERTE** - Issue gardée ouverte car l'objectif d'améliorer la couverture reste valide
@@ -70,7 +70,7 @@
 
 **Description** :
 
-- ✅ Coverage actuel : **81.71%** (déjà excellent ✅)
+- ✅ Coverage actuel : **81.71%**
 - **Issue GitHub #6** : ✅ **TESTS IMPLÉMENTÉS** (8 Décembre 2025)
   - ✅ Séquences rapides (happy → sad → excited en < 1 seconde)
   - ✅ Transitions avec durées différentes
@@ -101,7 +101,7 @@
 ### 4. ✅ Ajouter Tests Vision Structure Bbox - **Issue #7** - **TERMINÉ**
 
 **Priorité** : ✅ Complété  
-**Difficulté** : Très Facile  
+**Difficulté** : Facile  
 **Temps estimé** : 1-2 heures
 
 **Description** :
@@ -248,7 +248,7 @@
 ### 9. 📖 Documentation Tests Spécifiques
 
 **Priorité** : Faible  
-**Difficulté** : Très Facile  
+**Difficulté** : Facile  
 **Temps estimé** : 1-2 heures par module
 
 **Description** :

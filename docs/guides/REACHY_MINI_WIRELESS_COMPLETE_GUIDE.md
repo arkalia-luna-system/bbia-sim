@@ -1,25 +1,17 @@
-# 🤖 Guide Complet Reachy Mini Wireless - Préparation BBIA
+# 🤖 Guide Reachy Mini Wireless - BBIA
 
-**Date** : 8 Décembre 2025
-**Version** : 1.4.0
+**Dernière mise à jour** : 22 Décembre 2025  
+**Statut Robot** : ✅ Reçu le 18 déc 2025, monté le 20 déc 2025, tests en cours  
+**IP Robot** : 192.168.129.64
 
-> **Compatibilité Python et CI**
->
-> - **Version requise** : Python 3.11+
-> - **CI** : `.github/workflows/ci.yml`
-> - **Setup rapide** :
-> ```bash
-> pyenv install 3.11.9 && pyenv local 3.11.9
-> python -m pip install --upgrade pip
-> pip install -e .
-> ```
+> **Compatibilité Python** : Python 3.11+ requis. Voir [`docs/getting-started/INSTALLATION.md`](../getting-started/INSTALLATION.md) pour les détails d'installation.
 
 ---
 
 ## 📋 Table des Matières
 
 1. [Vue d'ensemble](#-vue-densemble)
-2. [Spécifications Techniques](#-spécifications-techniques-complètes)
+2. [Spécifications Techniques](#-spécifications-techniques)
 3. [Préparation Immédiate](#-préparation-immédiate-maintenant)
 4. [Architecture BBIA](#-architecture-bbia-pour-reachy-mini)
 5. [Plan de Développement](#-plan-de-développement-bbia)
@@ -32,10 +24,7 @@
 
 ## 🎯 Vue d'ensemble
 
-**Reachy Mini Wireless** - Votre robot compagnon IA pour BBIA
-**Prix** : 449$ (~500€)
-**Livraison** : Fin 2025 - Début 2025
-**Statut** : Commandé
+**Reachy Mini Wireless** - Robot compagnon IA pour BBIA
 
 ---
 
@@ -90,7 +79,7 @@
 
 ### 🌱 Open-Source & Communauté
 
-- **Licence** : 100% open-source (matériel + logiciel)
+- **Licence** : Open-source (matériel + logiciel)
 - **Hugging Face** : Intégration native (1,7M+ modèles IA)
 - **Communauté** : Discord, Spaces, GitHub actifs
 
@@ -556,7 +545,7 @@ Le **Reachy Mini Wireless** fournit une base solide pour BBIA :
 - Expressivité (6 DOF tête + antennes)
 - Capacités audio (4 microphones + haut‑parleur)
 - Vision (caméra grand angle)
-- Écosystème open‑source complet
+- Écosystème open‑source
 
 **Prochaines étapes :**
 
@@ -571,10 +560,10 @@ Le **Reachy Mini Wireless** fournit une base solide pour BBIA :
 ## 🎯 Navigation
 
 **Retour à** : [README Documentation](../README.md)
-**Voir aussi** : [Guide de Démarrage](GUIDE_DEMARRAGE.md) • [Guide Avancé](GUIDE_AVANCE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
+**Voir aussi** : [Guide de Démarrage](GUIDE_DEMARRAGE.md) • [Guide Technique](GUIDE_AVANCE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
 
 ---
 
 **Version** : 1.0
-**Date** : 8 Décembre 2025
+**Dernière mise à jour : 15 Décembre 2025
 **Statut** : Guide Reachy Mini Wireless

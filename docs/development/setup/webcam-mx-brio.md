@@ -1,6 +1,6 @@
 # 📹 Guide Webcam Logitech MX Brio - Démarrage Rapide
 
-**Date** : 8 Décembre 2025
+**Dernière mise à jour : 15 Décembre 2025
 **Webcam** : Logitech MX Brio
 
 ---
@@ -186,7 +186,7 @@ logging.info(f"Postures détectées: {result.get('poses')}")
 
 ---
 
-## 🔧 Configuration avancée
+## 🔧 Configuration
 
 ### Améliorer la détection
 

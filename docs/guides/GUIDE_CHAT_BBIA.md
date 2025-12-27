@@ -1,13 +1,13 @@
-# 💬 Guide du Chat Intelligent BBIA
+# 💬 Guide du Chat BBIA
 
 <div align="center">
 
-**🤖 Conversations naturelles avec votre robot Reachy Mini**
-* IA avancée • Réponses contextuelles • Personnalités multiples*
+**Chat avec robot Reachy Mini**
+* IA conversationnelle • Réponses contextuelles • Personnalités configurables*
 
-**Version** : 1.4.0 • **Date** : 8 Décembre 2025
+**Dernière mise à jour** : 15 Décembre 2025
 
-[📚 FAQ](../getting-started/troubleshooting.md) • [🧠 Guide NLP](../guides/GUIDE_NLP_SMOLVLM.md) • [📊 État actuel](../quality/audits/archives/obsoletes_decembre_2025/RESUME_ETAT_ACTUEL_BBIA.md)
+[📚 FAQ](../getting-started/troubleshooting.md) • [🧠 Guide NLP](../guides/GUIDE_NLP_SMOLVLM.md) • [📊 État du projet](../reference/project-status.md)
 
 </div>
 
@@ -20,7 +20,7 @@
 3. [Personnalités BBIA](#-personnalités-bbia)
 4. [Référence API](#référence-api)
 5. [Cas d'usage](#cas-dusage)
-6. [Configuration Avancée](#configuration-avancée)
+6. [Configuration](#configuration)
 7. [Dépannage](#dépannage)
 8. [Navigation](#-navigation)
 
@@ -28,9 +28,9 @@
 
 ## 🎯 Vue d'ensemble
 
-> **💡 Fonctionnalité clé**
-> Le chat intelligent BBIA permet d'avoir une conversation naturelle avec votre robot Reachy Mini.
-> BBIA analyse le sentiment de vos messages et répond selon sa personnalité configurée.
+> **Fonctionnalité**
+> Le chat BBIA permet une conversation avec le robot Reachy Mini.
+> BBIA analyse le sentiment des messages et répond selon la personnalité configurée.
 
 ### 🎨 Ce que vous pouvez faire
 
@@ -164,7 +164,7 @@ logging.info(bbia.chat("Comment ça va ?")) # 🤔 Comment ça va ?
 
 ```python
 bbia.bbia_personality = "enthusiastic"
-logging.info(bbia.chat("Super projet !")) # 🎉 Super projet !
+logging.info(bbia.chat("Bon projet !")) # 🎉 Bon projet !
 
 ```
 
@@ -185,7 +185,7 @@ logging.info(bbia.chat("Je suis stressé")) # 😌 Respirez, tout va bien...
 
 ### `chat(user_message: str, use_context: bool = True) -> str`
 
-**Description :** Chat intelligent avec BBIA
+**Description :** Chat avec BBIA
 
 **Paramètres :**
 - `user_message` : Message utilisateur
@@ -206,7 +206,7 @@ bbia.chat("Comment tu te portes ?")
 # 🤖 Ça va bien, merci ! Et vous ?
 
 bbia.chat("Je suis très content aujourd'hui")
-# 🤖 C'est super ! Je suis content pour vous. Continuez comme ça !
+# 🤖 C'est bien ! Je suis content pour vous. Continuez comme ça !
 
 ```
 
@@ -264,7 +264,7 @@ logging.info(bbia.chat("Au revoir"))         # 🤖 Au revoir ! À bientôt !
 ```python
 # BBIA analyse automatiquement le sentiment
 bbia.chat("Je suis très heureux !")
-# 🤖 C'est super ! Je suis content pour vous. Continuez comme ça !
+# 🤖 C'est bien ! Je suis content pour vous. Continuez comme ça !
 
 bbia.chat("Je suis triste")
 # 🤖 Je comprends. Parlez-moi de ce qui ne va pas.
@@ -277,7 +277,7 @@ bbia.chat("Je suis triste")
 # Enthousiaste
 bbia.bbia_personality = "enthusiastic"
 logging.info(bbia.chat("Salut !"))
-# 🎉 Salut ! C'est génial de te voir !
+# 🎉 Salut ! Content de te voir !
 
 # Curieux
 bbia.bbia_personality = "curious"
@@ -357,7 +357,7 @@ def test_chat():
 
 ---
 
-## Configuration avancée
+## Configuration
 
 ### Modifier le comportement des réponses
 
@@ -426,7 +426,7 @@ Voir `examples/demo_chat_bbia_3d.py` ⭐ (RECOMMANDÉ) pour un exemple complet :
 mjpython examples/demo_chat_bbia_3d.py
 ```
 
-⚠️ **Note** : `demo_chat_bbia.py` est déprécié, utiliser `demo_chat_bbia_3d.py` à la place.
+**Important** : `demo_chat_bbia.py` est déprécié, utiliser `demo_chat_bbia_3d.py` à la place.
 
 ---
 
@@ -452,7 +452,7 @@ mjpython examples/demo_chat_bbia_3d.py
 ### Analyse Sentiment
 
 BBIA utilise le modèle `cardiffnlp/twitter-roberta-base-sentiment-latest` :
-- **POSITIVE** : Messages positifs → "C'est super !"
+- **POSITIVE** : Messages positifs → "C'est bien !"
 - **NEGATIVE** : Messages négatifs → "Je comprends..."
 - **NEUTRAL** : Messages neutres → Réponse contextuelle
 

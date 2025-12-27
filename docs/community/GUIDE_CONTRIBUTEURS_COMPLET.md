@@ -1,6 +1,6 @@
 # 🤝 Guide Contributeurs Complet - BBIA-SIM
 
-**Date** : 8 Décembre 2025  
+**Dernière mise à jour : 15 Décembre 2025  
 **Version** : 1.4.0  
 **Objectif** : Guide complet pour contribuer à BBIA-SIM
 
@@ -8,14 +8,14 @@
 
 ## 🎯 Pourquoi Contribuer à BBIA-SIM ?
 
-**BBIA-SIM** est un projet open source innovant qui apporte :
+**BBIA-SIM** est un projet open source qui apporte :
 
-- ✅ **RobotAPI Unifié** : Innovation unique (même code sim/robot réel)
-- ✅ **Solution 100% Gratuite** : Whisper, SmolVLM2, LLM local (vs solutions payantes)
-- ✅ **IA Avancée** : 15+ modules, 21 comportements, 12 émotions
-- ✅ **Qualité Exceptionnelle** : 1,743 tests, 68.86% coverage, 219 fichiers MD
+- ✅ **RobotAPI Unifié** : Même code sim/robot réel
+- ✅ **Solution 100% Gratuite** : Whisper, SmolVLM2, LLM local
+- ✅ **IA** : 15+ modules, 15 comportements, 12 émotions
+- ✅ **Qualité** : 1,743 tests, 68.86% coverage, documentation complète
 
-**Votre contribution** aide à maintenir et améliorer cette excellence !
+**Votre contribution** aide à maintenir et améliorer le projet.
 
 ---
 
@@ -85,7 +85,7 @@ git checkout -b feature/nom-de-votre-contribution
 3. **Tests** : Améliorer la couverture de tests
 4. **Performance** : Optimiser les hot-paths
 
-### 🔴 Avancées (Niveau expert)
+### 🔴 Avancées (Niveau technique)
 
 1. **Architecture** : Améliorer la structure modulaire
 2. **Robot** : Améliorer l'intégration Reachy Mini
@@ -305,7 +305,7 @@ git push origin feature/votre-contribution
 ### Documentation
 
 - **Guide de Démarrage** : `docs/guides/GUIDE_DEMARRAGE.md`
-- **Guide Avancé** : `docs/guides/GUIDE_AVANCE.md`
+- **Guide Technique** : `docs/guides/GUIDE_AVANCE.md`
 - **Architecture** : `docs/development/architecture/ARCHITECTURE_DETAILED.md`
 - **Conformité SDK** : `docs/quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md`
 
@@ -332,7 +332,7 @@ Si vous avez des questions :
 3. 💬 Créez une issue avec le label `question`
 4. 🤝 Contactez les maintainers
 
-**Merci de contribuer à BBIA-SIM !** 🚀
+**Contributions bienvenues**
 
 ---
 

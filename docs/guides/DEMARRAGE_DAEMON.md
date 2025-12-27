@@ -1,7 +1,7 @@
 # 🚀 Guide de Démarrage du Daemon BBIA-SIM
 
-**Date:** 8 Décembre 2025
-**Note importante:** ✅ Fonctionne en mode simulation (MuJoCo) **sans robot physique**
+**Dernière mise à jour** : 15 Décembre 2025
+**Important** : Fonctionne en mode simulation (MuJoCo) sans robot physique
 
 ---
 
@@ -46,7 +46,7 @@ python scripts/start_public_api.py --log-level debug
 
 ## 🎯 Mode Simulation (Sans Robot Physique)
 
-**✅ Le daemon fonctionne parfaitement en mode simulation sans robot physique !**
+**Le daemon fonctionne en mode simulation sans robot physique.**
 
 ### Ce qui se passe au démarrage :
 
@@ -130,7 +130,7 @@ open http://127.0.0.1:8000/
 
 ## 🎯 Conclusion
 
-**Le daemon BBIA-SIM fonctionne parfaitement en mode simulation sans robot physique !**
+**Le daemon BBIA-SIM fonctionne en mode simulation sans robot physique.**
 
 Toutes les fonctionnalités sont disponibles :
 
@@ -153,4 +153,4 @@ Toutes les fonctionnalités sont disponibles :
 ## 🎯 Navigation
 
 **Retour à** : [README Documentation](../README.md)
-**Voir aussi** : [Guide de Démarrage](GUIDE_DEMARRAGE.md) • [Guide Avancé](GUIDE_AVANCE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
+**Voir aussi** : [Guide de Démarrage](GUIDE_DEMARRAGE.md) • [Guide Technique](GUIDE_AVANCE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)

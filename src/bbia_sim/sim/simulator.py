@@ -14,6 +14,9 @@ from typing import Any, NoReturn
 import mujoco
 import mujoco.viewer
 
+from bbia_sim.adaptive_timestep import apply_adaptive_timestep
+from bbia_sim.mujoco_model_cache import get_cached_mujoco_model
+
 logger = logging.getLogger(__name__)
 
 
@@ -42,10 +45,15 @@ class MuJoCoSimulator:
             raise FileNotFoundError(msg)
 
         try:
-            self.model = mujoco.MjModel.from_xml_path(str(self.model_path))
+            # Utiliser cache LRU pour modèles MuJoCo
+            self.model = get_cached_mujoco_model(self.model_path)
             self.data = mujoco.MjData(self.model)
             self.viewer: mujoco.viewer.MjViewer | None = None
             self.target_positions: dict[str, float] = {}  # Positions cibles à maintenir
+
+            # Appliquer timestep adaptatif selon complexité scène
+            apply_adaptive_timestep(self.model)
+
             logger.info("Simulateur MuJoCo initialisé avec %s", self.model_path)
         except Exception as e:
             # Log en debug en CI (erreurs attendues dans les tests avec mocks)
@@ -230,7 +238,8 @@ class MuJoCoSimulator:
 
         logger.info("Chargement de la scène/modèle : %s", new_model_path)
         try:
-            self.model = mujoco.MjModel.from_xml_path(str(new_model_path))
+            # Utiliser cache LRU pour modèles MuJoCo
+            self.model = get_cached_mujoco_model(new_model_path)
             self.data = mujoco.MjData(self.model)
             if self.viewer:
                 self.viewer.update_model(self.model, self.data)

@@ -203,7 +203,7 @@ graph LR
 
 **Statut** : ✅ **TERMINÉ** (Oct / Nov. 2025) - Code prêt pour robot réel
 
-> **💡 Note** : Le code bascule automatiquement en mode simulation si le robot n'est pas disponible.
+Le code bascule automatiquement en mode simulation si le robot n'est pas disponible.
 
 #### 🔄 Architecture Robot Réel
 
@@ -298,7 +298,7 @@ mindmap
 
 ```
 
-- ✅ **Coverage excellent** : 4 modules critiques (54-99% coverage)
+- ✅ **Coverage élevé** : 4 modules critiques (54-99% coverage)
 - ✅ **TODOs terminés** : Auth WebSocket, migration imports, metrics, robot réel
 - ✅ **Documentation complète** : Guides, FAQ, tests README à jour
 - ✅ **Qualité code** : Black, Ruff, MyPy, Bandit ✅

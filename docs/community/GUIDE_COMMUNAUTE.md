@@ -1,7 +1,7 @@
 # 🌐 Guide Communauté BBIA-SIM
 
-**Date** : 8 Décembre 2025  
-**Objectif** : Maximiser la visibilité et l'engagement communautaire pour BBIA-SIM
+**Dernière mise à jour : 15 Décembre 2025  
+**Objectif** : Visibilité et engagement communautaire pour BBIA-SIM
 
 ---
 
@@ -9,7 +9,7 @@
 
 ### Objectifs
 
-1. **Visibilité** : Faire connaître BBIA-SIM à la communauté robotique/IA
+1. **Visibilité** : Faire connaître BBIA-SIM à la communauté
 2. **Engagement** : Attirer contributeurs et utilisateurs
 3. **Feedback** : Collecter retours pour améliorer le projet
 4. **Réseau** : Construire une communauté active
@@ -37,12 +37,12 @@
 3. **Intégration IA** (400 mots)
    - YOLO, Whisper, Transformers
    - 12 émotions robotiques
-   - 21 comportements intelligents
+   - 21 comportements
 
 4. **Qualité et Tests** (300 mots)
    - 1,743 tests automatisés
    - Coverage 68.86%
-   - CI/CD professionnel
+   - CI/CD
 
 5. **Démonstration** (200 mots)
    - Exemples de code
@@ -93,7 +93,7 @@
    - Simulation 3D MuJoCo
    - Dashboard web
    - Comportements en action
-   - Chat intelligent LLM
+   - Chat LLM
    - Détection objets temps réel
 
 3. **Architecture Technique** (2-3 min)
@@ -118,7 +118,7 @@
 🤖 BBIA-SIM: Cognitive Robot Engine for Reachy Mini
 
 ✅ 12 robotic emotions (6 official + 6 extended)
-✅ 21 intelligent behaviors
+✅ 21 comportements
 ✅ Advanced AI: YOLO, Whisper, Transformers
 ✅ 100% SDK compliant with Pollen Robotics
 ✅ 1,743 automated tests, 68.86% coverage
@@ -167,7 +167,7 @@ I've been working on BBIA-SIM, a cognitive engine for the Reachy Mini robot.
 
 Key features:
 - 12 robotic emotions (6 official SDK + 6 extended)
-- 21 intelligent behaviors
+- 21 comportements
 - Advanced AI: YOLO (object detection), Whisper (speech), Transformers (LLM)
 - 100% compliant with Pollen Robotics official SDK
 - Unified backend: same code for simulation and real hardware
@@ -346,7 +346,7 @@ Good for learning advanced Python!
 
 ---
 
-**Date de création** : 8 Décembre 2025  
+**Dernière mise à jour : 15 Décembre 2025  
 **Dernière mise à jour** : 8 Décembre 2025
 
 ---
@@ -367,5 +367,5 @@ Good for learning advanced Python!
 ### Pour Comprendre
 
 - **[Audit Stratégique Valeur](../../quality/audits/AUDIT_STRATEGIQUE_VALEUR_26NOV2025.md)** : Analyse valeur et recommandations
-- **[Ce qui Manque](../../quality/audits/CE_QUI_MANQUE_DANS_BBIA_26NOV2025.md)** : Analyse fonctionnalités manquantes
+- **[Ce qui Manque](../../quality/audits/CE_QUI_MANQUE_BBIA_DEC2025.md)** : Analyse fonctionnalités manquantes
 

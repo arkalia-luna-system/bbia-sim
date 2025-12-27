@@ -1,6 +1,6 @@
 # ✅ CORRECTIONS APPLIQUÉES - Audit BBIA → Reachy Integration
 
-**Date** : 8 Décembre 2025  
+**Dernière mise à jour : 15 Décembre 2025  
 **Référentiel** : pollen-robotics/reachy_mini@84c40c3
 
 > **Référence état global** : Voir `docs/reference/project-status.md` → "État par axe" pour l'état consolidé post‑corrections et axes restants.
@@ -190,7 +190,7 @@ Toutes les corrections prioritaires sont **complètes et testées** ✅
 
 ### 3. **test_face_recognition.py** ✅
 
-**Statut** : ✅ **Excellent**
+**Statut** : ✅ **Bon**
 - ✅ Import au niveau module (ligne 11)
 - ✅ Coverage : **82.01%** (114 lignes sur 139 couvertes) 🎉
 - ✅ 21 tests passent
@@ -359,7 +359,7 @@ class TestClass:
 
 ### 3. **test_face_recognition.py** ✅
 
-**Statut** : ✅ **Excellent**
+**Statut** : ✅ **Bon**
 - ✅ Import au niveau module (ligne 11)
 - ✅ Coverage : **82.01%** (114 lignes sur 139 couvertes) 🎉
 - ✅ 21 tests passent

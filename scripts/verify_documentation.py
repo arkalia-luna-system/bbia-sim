@@ -467,7 +467,7 @@ def improve_md_files():
     # Fichiers principaux à améliorer
     priority_files = [
         "README.md",
-        "docs/guides/GUIDE_DEBUTANT.md",
+        "docs/guides/GUIDE_DEMARRAGE.md",
     ]
 
     for file_path in priority_files:

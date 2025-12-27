@@ -1,8 +1,7 @@
-# ✅ Checklist Validation Hardware - 8 Décembre 2025
+# Checklist Validation Hardware
 
-**Objectif :** Valider BBIA-SIM sur robot Reachy Mini physique  
-**Date cible :** 8 Décembre 2025  
-**Durée estimée :** 2-3 semaines à plein temps
+**Objectif** : Valider BBIA-SIM sur robot Reachy Mini physique  
+**Durée estimée** : 2-3 semaines
 
 ---
 
@@ -10,37 +9,36 @@
 
 ### Réception Robot
 
-- [ ] **Robot Reachy Mini reçu**
-  - Vérifier colis complet (robot + accessoires)
-  - Inspecter état physique (pas de dommages)
-  - Photographier déballage pour documentation
+- [x] **Robot Reachy Mini reçu** ✅ **18 Décembre 2025**
+  - Colis complet vérifié (robot + accessoires) ✅
+  - État physique inspecté (pas de dommages) ✅
+  - Déballage photographié pour documentation ✅
 
-- [ ] **Vérification hardware**
-  - Batterie chargée ou alimentation USB-C connectée
-  - LED d'alimentation allumée
-  - Wi-Fi accessible (vérifier SSID réseau)
-  - Robot répond au ping réseau
+- [x] **Vérification hardware** ✅
+  - Batterie chargée ou alimentation USB-C connectée ✅
+  - LED d'alimentation allumée ✅
+  - Wi-Fi accessible (SSID réseau vérifié) ✅
+  - Robot répond au ping réseau (IP: 192.168.129.64) ✅
 
 ### Installation SDK
 
 - [ ] **SDK Reachy Mini installé**
 
   ```bash
-  pip install reachy-mini-motor-controller
-  # ou selon version SDK officielle
+  pip install reachy-mini
   ```
 
 - [ ] **Vérification connexion SDK**
 
   ```bash
-  python -c "from reachy_mini_motor_controller import ReachyMini; import logging; robot = ReachyMini(); logging.info(robot.is_connected)"
+  python -c "from reachy_mini import ReachyMini; robot = ReachyMini(); print('SDK OK')"
   ```
 
 - [ ] **Test basique SDK**
 
   ```bash
   python examples/reachy_mini/minimal_demo.py
-  # ⚠️ Note: demo_reachy_mini_corrigee.py est déprécié, utiliser reachy_mini/* (SDK officiel)
+  # Important: demo_reachy_mini_corrigee.py est déprécié, utiliser reachy_mini/* (SDK officiel)
   ```
 
 ### Configuration Réseau
@@ -112,7 +110,7 @@
   ```bash
   python examples/demo_voice_ok.py --backend reachy_mini
   mjpython examples/demo_chat_bbia_3d.py
-  # ⚠️ Note: demo_chat_bbia.py est déprécié, utiliser demo_chat_bbia_3d.py
+  # Important: demo_chat_bbia.py est déprécié, utiliser demo_chat_bbia_3d.py
   ```
 
 - [ ] **Mouvements (articulations)**
@@ -399,6 +397,5 @@
 
 ---
 
-**Date création :** Oct / Nov. 2025  
-**Date validation cible :** Fin Oct / Nov. 2025  
+**Dernière mise à jour** : 15 Décembre 2025  
 **Status :** ⏳ En attente réception robot

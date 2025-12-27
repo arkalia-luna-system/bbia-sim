@@ -1,19 +1,11 @@
 # 📘 Guide d'Intégration BBIA-SIM - Phase 3
 
-**Date** : 8 Décembre 2025  
+**Dernière mise à jour : 15 Décembre 2025  
 **Version** : 1.4.0
 
-> **Compatibilité Python et CI** :
-> - Python requis : 3.11+
-> - CI : `.github/workflows/ci.yml`
-> - Setup rapide :
-> ```bash
-> pyenv install 3.11.9 && pyenv local 3.11.9
-> python -m pip install --upgrade pip
-> pip install -e .
-> ```
+> **Compatibilité Python** : Python 3.11+ requis. Voir [`docs/getting-started/INSTALLATION.md`](../getting-started/INSTALLATION.md) pour les détails d'installation.
 **Public** : développeurs, chercheurs, communauté technique  
-**📚 [Guide de démarrage](../guides/GUIDE_DEMARRAGE.md)** | **🔧 [Guide avancé](../guides/GUIDE_AVANCE.md)** | **🧪 [Guide tests](testing.md)**
+**📚 [Guide de démarrage](../guides/GUIDE_DEMARRAGE.md)** | **🔧 [Guide technique](../guides/GUIDE_AVANCE.md)** | **🧪 [Guide tests](testing.md)**
 
 ## 📋 Table des Matières
 
@@ -24,7 +16,7 @@
 5. [Intégration robot](#intégration-robot)
 6. [Modes de démonstration](#modes-de-démonstration)
 7. [Exemples d'intégration](#exemples-dintégration)
-8. [Configuration avancée](#configuration-avancée)
+8. [Configuration](#configuration)
 
 ---
 
@@ -1042,7 +1034,7 @@ self.addEventListener('fetch', (event) => {
 #### **2. React Native - ⭐⭐ Court Terme**
 
 **Avantages :**
-- ✅ Codebase unique (Android + iOS)
+- ✅ Codebase unifié (Android + iOS)
 - ✅ Écosystème riche
 - ✅ Performance native
 - ✅ Distribution stores
@@ -1210,16 +1202,16 @@ class BBIAWebSocket {
 
 ---
 
-Vous avez intégré BBIA-SIM dans votre projet. Bienvenue dans l'écosystème BBIA-SIM.
+Vous avez intégré BBIA-SIM dans votre projet. Écosystème BBIA-SIM prêt à l'emploi.
 
 ---
 
 **Dernière mise à jour** : 8 Décembre 2025  
-**Expert Review** : Sections apps mobiles et PWA ajoutées
+**Note** : Sections apps mobiles et PWA ajoutées
 
 ---
 
 ## 🎯 Navigation
 
 **Retour à** : [README Documentation](../README.md)  
-**Voir aussi** : [Guide Avancé](../guides/GUIDE_AVANCE.md) • [Architecture](../development/architecture/ARCHITECTURE_OVERVIEW.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md) • [Roadmap Dashboard](../dashboard/ROADMAP_DASHBOARD.md)
+**Voir aussi** : [Guide Technique](../guides/GUIDE_AVANCE.md) • [Architecture](../development/architecture/ARCHITECTURE_OVERVIEW.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md) • [Roadmap Dashboard](../dashboard/ROADMAP_DASHBOARD.md)

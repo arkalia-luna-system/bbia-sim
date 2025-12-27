@@ -1,10 +1,12 @@
-# 🧪 Tests de Préparation - Avant Arrivée Robot
+# Tests de Préparation et Diagnostic Robot
 
-**Date** : 8 Décembre 2025  
-**Objectif** : Tester l'environnement local avant l'arrivée du robot Reachy Mini  
+**Dernière mise à jour** : 22 Décembre 2025  
+**Version BBIA** : 1.4.0  
+**Statut** : ✅ Robot reçu le 18 décembre 2025, monté le 20 décembre 2025  
+**Objectif** : Valider l'environnement local et diagnostiquer le robot physique  
 **Durée estimée** : 30-60 minutes
 
-> **Note** : Ces tests peuvent être effectués **MAINTENANT** (sans robot physique) pour valider que tout est prêt.
+> **✅ Robot physique disponible** : Ces tests peuvent maintenant être effectués avec le robot réel (IP: 192.168.129.64)
 
 ---
 
@@ -497,7 +499,7 @@ python scripts/test_preparation_robot.py
 - [ ] 🔍 IP robot identifiée (scan réseau ou configurée)
 - [ ] 🟣 Daemon lancé sur robot (ou PC selon configuration)
 - [ ] ✅ Test connexion: `curl http://<robot_ip>:8000/api/state/full`
-- [ ] ✅ Test BBIA-SIM: `python examples/reachy_mini/minimal_demo.py` (⚠️ `demo_reachy_mini_corrigee.py` est déprécié)
+- [ ] Test BBIA-SIM: `python examples/reachy_mini/minimal_demo.py`
 
 ---
 
@@ -542,7 +544,5 @@ python scripts/demo_bridge_zenoh.py
 
 ---
 
-**Date création :** Oct / Nov. 2025  
-**Statut :** ✅ Prêt pour tests locaux (sans robot physique)  
-**Dernière mise à jour :** Oct / Nov. 2025 (ajout tests Zenoh/daemon/WiFi dans bbia_doctor)
+**Dernière mise à jour** : 22 Décembre 2025
 

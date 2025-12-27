@@ -14,16 +14,25 @@ LINK_FIXES = [
     (r"\[([^\]]+)\]\(docs/INDEX\.md\)", r"[\1](../INDEX_FINAL.md)"),
     (r"\[([^\]]+)\]\(INDEX\.md\)", r"[\1](INDEX_FINAL.md)"),
     (r"\[([^\]]+)\]\(INDEX_FINAL\.md\)", r"[\1](INDEX_FINAL.md)"),
-    # Corrections GUIDE_DEBUTANT
+    # Corrections GUIDE_DEMARRAGE (anciennement GUIDE_DEBUTANT)
     (
         r"\[([^\]]+)\]\(\.\./guides/GUIDE_DEBUTANT\.md\)",
-        r"[\1](../guides/GUIDE_DEBUTANT.md)",
+        r"[\1](../guides/GUIDE_DEMARRAGE.md)",
     ),
     (
         r"\[([^\]]+)\]\(docs/guides/GUIDE_DEBUTANT\.md\)",
-        r"[\1](../guides/GUIDE_DEBUTANT.md)",
+        r"[\1](../guides/GUIDE_DEMARRAGE.md)",
     ),
-    (r"\[([^\]]+)\]\(GUIDE_DEBUTANT\.md\)", r"[\1](../guides/GUIDE_DEBUTANT.md)"),
+    (r"\[([^\]]+)\]\(GUIDE_DEBUTANT\.md\)", r"[\1](../guides/GUIDE_DEMARRAGE.md)"),
+    (
+        r"\[([^\]]+)\]\(\.\./guides/GUIDE_DEMARRAGE\.md\)",
+        r"[\1](../guides/GUIDE_DEMARRAGE.md)",
+    ),
+    (
+        r"\[([^\]]+)\]\(docs/guides/GUIDE_DEMARRAGE\.md\)",
+        r"[\1](../guides/GUIDE_DEMARRAGE.md)",
+    ),
+    (r"\[([^\]]+)\]\(GUIDE_DEMARRAGE\.md\)", r"[\1](../guides/GUIDE_DEMARRAGE.md)"),
     # Corrections STATUT_PROJET
     (
         r"\[([^\]]+)\]\(docs/STATUT_PROJET\.md\)",
@@ -64,7 +73,11 @@ LINK_FIXES = [
     # Corrections guides/
     (
         r"\[([^\]]+)\]\(guides/GUIDE_DEBUTANT\.md\)",
-        r"[\1](../guides/GUIDE_DEBUTANT.md)",
+        r"[\1](../guides/GUIDE_DEMARRAGE.md)",
+    ),
+    (
+        r"\[([^\]]+)\]\(guides/GUIDE_DEMARRAGE\.md\)",
+        r"[\1](../guides/GUIDE_DEMARRAGE.md)",
     ),
 ]
 

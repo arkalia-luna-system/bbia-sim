@@ -517,16 +517,30 @@ class TestSimpleMove:
         from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
 
         backend = ReachyMiniBackend()
-        backend.connect()
+        # Gérer le cas où le robot n'est pas disponible
         try:
+            connected = backend.connect()
+            if not connected:
+                pytest.skip(
+                    "Robot Reachy Mini non disponible (daemon Zenoh non accessible)"
+                )
+
             # Test via create_move_from_positions (SimpleMove est interne)
             positions = [{"yaw_body": 0.0}, {"yaw_body": 0.5}]
             _move = backend.create_move_from_positions(positions, duration=1.0)
             # _move peut être None si reachy_mini n'est pas disponible
             # C'est normal, on teste juste que la méthode existe
             assert backend.create_move_from_positions is not None
+        except Exception as e:
+            # Si erreur de connexion (Zenoh, etc.), skip le test
+            if "zenoh" in str(e).lower() or "connect" in str(e).lower():
+                pytest.skip(f"Robot Reachy Mini non disponible: {e}")
+            raise
         finally:
-            backend.disconnect()
+            try:
+                backend.disconnect()
+            except Exception:
+                pass
 
 
 class TestBackendAdapterMethods:

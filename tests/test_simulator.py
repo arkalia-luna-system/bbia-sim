@@ -14,13 +14,17 @@ class TestMuJoCoSimulator:
     """Tests pour la classe MuJoCoSimulator."""
 
     @patch("bbia_sim.sim.simulator.mujoco")
-    def test_init_with_valid_model(self, mock_mujoco):
+    @patch("bbia_sim.sim.simulator.get_cached_mujoco_model")
+    @patch("bbia_sim.sim.simulator.apply_adaptive_timestep")
+    def test_init_with_valid_model(
+        self, mock_apply_timestep, mock_get_cached, mock_mujoco
+    ):
         """Test initialisation avec modèle valide."""
         # Mock des objets MuJoCo
         mock_model = Mock()
         mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
-        mock_mujoco.MjModel.from_xml_path.return_value = mock_model
+        mock_get_cached.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
 
         # Créer un modèle MJCF temporaire valide
@@ -52,9 +56,13 @@ class TestMuJoCoSimulator:
             MuJoCoSimulator("nonexistent_model.xml")
 
     @patch("bbia_sim.sim.simulator.mujoco")
-    def test_init_with_invalid_model(self, mock_mujoco):
+    @patch("bbia_sim.sim.simulator.get_cached_mujoco_model")
+    @patch("bbia_sim.sim.simulator.apply_adaptive_timestep")
+    def test_init_with_invalid_model(
+        self, mock_apply_timestep, mock_get_cached, mock_mujoco
+    ):
         """Test initialisation avec modèle invalide."""
-        mock_mujoco.MjModel.from_xml_path.side_effect = RuntimeError("Invalid MJCF")
+        mock_get_cached.side_effect = RuntimeError("Invalid MJCF")
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
             f.write("invalid xml content")
@@ -68,13 +76,17 @@ class TestMuJoCoSimulator:
             os.unlink(temp_model)
 
     @patch("bbia_sim.sim.simulator.mujoco")
-    def test_launch_simulation_headless(self, mock_mujoco):
+    @patch("bbia_sim.sim.simulator.get_cached_mujoco_model")
+    @patch("bbia_sim.sim.simulator.apply_adaptive_timestep")
+    def test_launch_simulation_headless(
+        self, mock_apply_timestep, mock_get_cached, mock_mujoco
+    ):
         """Test lancement simulation headless."""
         # Mock setup
         mock_model = Mock()
         mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
-        mock_mujoco.MjModel.from_xml_path.return_value = mock_model
+        mock_get_cached.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
 
         # Créer modèle temporaire
@@ -131,13 +143,17 @@ class TestMuJoCoSimulator:
             os.unlink(temp_model)
 
     @patch("bbia_sim.sim.simulator.mujoco")
-    def test_launch_simulation_graphical_macos_error(self, mock_mujoco):
+    @patch("bbia_sim.sim.simulator.get_cached_mujoco_model")
+    @patch("bbia_sim.sim.simulator.apply_adaptive_timestep")
+    def test_launch_simulation_graphical_macos_error(
+        self, mock_apply_timestep, mock_get_cached, mock_mujoco
+    ):
         """Test gestion erreur macOS pour simulation graphique."""
         # Mock setup
         mock_model = Mock()
         mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
-        mock_mujoco.MjModel.from_xml_path.return_value = mock_model
+        mock_get_cached.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
@@ -171,13 +187,17 @@ class TestMuJoCoSimulator:
             os.unlink(temp_model)
 
     @patch("bbia_sim.sim.simulator.mujoco")
-    def test_launch_simulation_graphical_other_error(self, mock_mujoco):
+    @patch("bbia_sim.sim.simulator.get_cached_mujoco_model")
+    @patch("bbia_sim.sim.simulator.apply_adaptive_timestep")
+    def test_launch_simulation_graphical_other_error(
+        self, mock_apply_timestep, mock_get_cached, mock_mujoco
+    ):
         """Test gestion autres erreurs pour simulation graphique."""
         # Mock setup
         mock_model = Mock()
         mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
-        mock_mujoco.MjModel.from_xml_path.return_value = mock_model
+        mock_get_cached.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
@@ -209,13 +229,17 @@ class TestMuJoCoSimulator:
             os.unlink(temp_model)
 
     @patch("bbia_sim.sim.simulator.mujoco")
-    def test_run_graphical_simulation(self, mock_mujoco):
+    @patch("bbia_sim.sim.simulator.get_cached_mujoco_model")
+    @patch("bbia_sim.sim.simulator.apply_adaptive_timestep")
+    def test_run_graphical_simulation(
+        self, mock_apply_timestep, mock_get_cached, mock_mujoco
+    ):
         """Test simulation graphique."""
         # Mock setup
         mock_model = Mock()
         mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
-        mock_mujoco.MjModel.from_xml_path.return_value = mock_model
+        mock_get_cached.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
 
         # Mock viewer - permettre au moins un appel
@@ -257,13 +281,17 @@ class TestMuJoCoSimulator:
             os.unlink(temp_model)
 
     @patch("bbia_sim.sim.simulator.mujoco")
-    def test_run_graphical_simulation_no_viewer(self, mock_mujoco):
+    @patch("bbia_sim.sim.simulator.get_cached_mujoco_model")
+    @patch("bbia_sim.sim.simulator.apply_adaptive_timestep")
+    def test_run_graphical_simulation_no_viewer(
+        self, mock_apply_timestep, mock_get_cached, mock_mujoco
+    ):
         """Test simulation graphique sans viewer."""
         # Mock setup
         mock_model = Mock()
         mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
-        mock_mujoco.MjModel.from_xml_path.return_value = mock_model
+        mock_get_cached.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
@@ -291,13 +319,17 @@ class TestMuJoCoSimulator:
             os.unlink(temp_model)
 
     @patch("bbia_sim.sim.simulator.mujoco")
-    def test_load_scene_success(self, mock_mujoco):
+    @patch("bbia_sim.sim.simulator.get_cached_mujoco_model")
+    @patch("bbia_sim.sim.simulator.apply_adaptive_timestep")
+    def test_load_scene_success(
+        self, mock_apply_timestep, mock_get_cached, mock_mujoco
+    ):
         """Test chargement de scène réussi."""
         # Mock setup
         mock_model = Mock()
         mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
-        mock_mujoco.MjModel.from_xml_path.return_value = mock_model
+        mock_get_cached.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
 
         # Mock viewer
@@ -337,8 +369,9 @@ class TestMuJoCoSimulator:
                 # Test chargement de scène
                 simulator.load_scene(scene_path)
 
-                # Vérifier que le modèle a été rechargé
-                assert mock_mujoco.MjModel.from_xml_path.call_count == 2
+                # Vérifier que get_cached_mujoco_model a été appelé 2 fois
+                # (une fois pour l'init, une fois pour load_scene)
+                assert mock_get_cached.call_count == 2
                 mock_viewer.update_model.assert_called_once()
 
             finally:
@@ -348,13 +381,17 @@ class TestMuJoCoSimulator:
             os.unlink(temp_model)
 
     @patch("bbia_sim.sim.simulator.mujoco")
-    def test_load_scene_not_found(self, mock_mujoco):
+    @patch("bbia_sim.sim.simulator.get_cached_mujoco_model")
+    @patch("bbia_sim.sim.simulator.apply_adaptive_timestep")
+    def test_load_scene_not_found(
+        self, mock_apply_timestep, mock_get_cached, mock_mujoco
+    ):
         """Test chargement de scène inexistante."""
         # Mock setup
         mock_model = Mock()
         mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
-        mock_mujoco.MjModel.from_xml_path.return_value = mock_model
+        mock_get_cached.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
@@ -375,13 +412,17 @@ class TestMuJoCoSimulator:
             simulator.load_scene("nonexistent_scene.xml")
 
             # Devrait recharger le modèle par défaut (2 appels au total)
-            assert mock_mujoco.MjModel.from_xml_path.call_count == 2
+            assert mock_get_cached.call_count == 2
 
         finally:
             os.unlink(temp_model)
 
     @patch("bbia_sim.sim.simulator.mujoco")
-    def test_load_scene_fatal_error(self, mock_mujoco):
+    @patch("bbia_sim.sim.simulator.get_cached_mujoco_model")
+    @patch("bbia_sim.sim.simulator.apply_adaptive_timestep")
+    def test_load_scene_fatal_error(
+        self, mock_apply_timestep, mock_get_cached, mock_mujoco
+    ):
         """Test chargement de scène avec erreur fatale."""
         # Mock setup
         mock_model = Mock()
@@ -393,7 +434,7 @@ class TestMuJoCoSimulator:
             pass
 
         mock_mujoco.FatalError = FatalError
-        mock_mujoco.MjModel.from_xml_path.return_value = mock_model
+        mock_get_cached.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
@@ -420,9 +461,7 @@ class TestMuJoCoSimulator:
 
             try:
                 # Mock l'erreur fatale directement
-                mock_mujoco.MjModel.from_xml_path.side_effect = FatalError(
-                    "Invalid MJCF"
-                )
+                mock_get_cached.side_effect = FatalError("Invalid MJCF")
 
                 with pytest.raises(FatalError):
                     simulator.load_scene("invalid_scene.xml")
@@ -436,13 +475,15 @@ class TestMuJoCoSimulator:
             os.unlink(temp_model)
 
     @patch("bbia_sim.sim.simulator.mujoco")
-    def test_get_robot_state(self, mock_mujoco):
+    @patch("bbia_sim.sim.simulator.get_cached_mujoco_model")
+    @patch("bbia_sim.sim.simulator.apply_adaptive_timestep")
+    def test_get_robot_state(self, mock_apply_timestep, mock_get_cached, mock_mujoco):
         """Test récupération état robot."""
         # Mock setup
         mock_model = Mock()
         mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
-        mock_mujoco.MjModel.from_xml_path.return_value = mock_model
+        mock_get_cached.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
 
         # Mock des articulations
@@ -505,13 +546,17 @@ class TestMuJoCoSimulator:
             os.unlink(temp_model)
 
     @patch("bbia_sim.sim.simulator.mujoco")
-    def test_set_joint_position(self, mock_mujoco):
+    @patch("bbia_sim.sim.simulator.get_cached_mujoco_model")
+    @patch("bbia_sim.sim.simulator.apply_adaptive_timestep")
+    def test_set_joint_position(
+        self, mock_apply_timestep, mock_get_cached, mock_mujoco
+    ):
         """Test définition position articulation."""
         # Mock setup
         mock_model = Mock()
         mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
-        mock_mujoco.MjModel.from_xml_path.return_value = mock_model
+        mock_get_cached.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
 
         # Mock joint
@@ -555,13 +600,17 @@ class TestMuJoCoSimulator:
             os.unlink(temp_model)
 
     @patch("bbia_sim.sim.simulator.mujoco")
-    def test_set_joint_position_clamping(self, mock_mujoco):
+    @patch("bbia_sim.sim.simulator.get_cached_mujoco_model")
+    @patch("bbia_sim.sim.simulator.apply_adaptive_timestep")
+    def test_set_joint_position_clamping(
+        self, mock_apply_timestep, mock_get_cached, mock_mujoco
+    ):
         """Test clamp des angles hors limites."""
         # Mock setup
         mock_model = Mock()
         mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
-        mock_mujoco.MjModel.from_xml_path.return_value = mock_model
+        mock_get_cached.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
 
         # Mock joint
@@ -611,13 +660,17 @@ class TestMuJoCoSimulator:
             os.unlink(temp_model)
 
     @patch("bbia_sim.sim.simulator.mujoco")
-    def test_set_joint_position_invalid_joint(self, mock_mujoco):
+    @patch("bbia_sim.sim.simulator.get_cached_mujoco_model")
+    @patch("bbia_sim.sim.simulator.apply_adaptive_timestep")
+    def test_set_joint_position_invalid_joint(
+        self, mock_apply_timestep, mock_get_cached, mock_mujoco
+    ):
         """Test définition position avec joint inexistant."""
         # Mock setup
         mock_model = Mock()
         mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
-        mock_mujoco.MjModel.from_xml_path.return_value = mock_model
+        mock_get_cached.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
 
         # Mock joint qui lève KeyError
@@ -645,13 +698,17 @@ class TestMuJoCoSimulator:
             os.unlink(temp_model)
 
     @patch("bbia_sim.sim.simulator.mujoco")
-    def test_get_joint_position(self, mock_mujoco):
+    @patch("bbia_sim.sim.simulator.get_cached_mujoco_model")
+    @patch("bbia_sim.sim.simulator.apply_adaptive_timestep")
+    def test_get_joint_position(
+        self, mock_apply_timestep, mock_get_cached, mock_mujoco
+    ):
         """Test récupération position articulation."""
         # Mock setup
         mock_model = Mock()
         mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
-        mock_mujoco.MjModel.from_xml_path.return_value = mock_model
+        mock_get_cached.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
 
         # Mock joint
@@ -686,13 +743,17 @@ class TestMuJoCoSimulator:
             os.unlink(temp_model)
 
     @patch("bbia_sim.sim.simulator.mujoco")
-    def test_get_joint_position_invalid_joint(self, mock_mujoco):
+    @patch("bbia_sim.sim.simulator.get_cached_mujoco_model")
+    @patch("bbia_sim.sim.simulator.apply_adaptive_timestep")
+    def test_get_joint_position_invalid_joint(
+        self, mock_apply_timestep, mock_get_cached, mock_mujoco
+    ):
         """Test récupération position avec joint inexistant."""
         # Mock setup
         mock_model = Mock()
         mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
-        mock_mujoco.MjModel.from_xml_path.return_value = mock_model
+        mock_get_cached.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
 
         # Mock joint qui lève KeyError
@@ -720,13 +781,17 @@ class TestMuJoCoSimulator:
             os.unlink(temp_model)
 
     @patch("bbia_sim.sim.simulator.mujoco")
-    def test_get_available_joints(self, mock_mujoco):
+    @patch("bbia_sim.sim.simulator.get_cached_mujoco_model")
+    @patch("bbia_sim.sim.simulator.apply_adaptive_timestep")
+    def test_get_available_joints(
+        self, mock_apply_timestep, mock_get_cached, mock_mujoco
+    ):
         """Test récupération articulations disponibles."""
         # Mock setup
         mock_model = Mock()
         mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
-        mock_mujoco.MjModel.from_xml_path.return_value = mock_model
+        mock_get_cached.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
 
         # Mock joints
@@ -773,12 +838,14 @@ class TestMuJoCoSimulator:
             os.unlink(temp_model)
 
     @patch("bbia_sim.sim.simulator.mujoco")
-    def test_step_simulation(self, mock_mujoco):
+    @patch("bbia_sim.sim.simulator.get_cached_mujoco_model")
+    @patch("bbia_sim.sim.simulator.apply_adaptive_timestep")
+    def test_step_simulation(self, mock_apply_timestep, mock_get_cached, mock_mujoco):
         """Test step simulation."""
         mock_model = Mock()
         mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
-        mock_mujoco.MjModel.from_xml_path.return_value = mock_model
+        mock_get_cached.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
@@ -805,13 +872,15 @@ class TestMuJoCoSimulator:
             os.unlink(temp_model)
 
     @patch("bbia_sim.sim.simulator.mujoco")
-    def test_close_with_viewer(self, mock_mujoco):
+    @patch("bbia_sim.sim.simulator.get_cached_mujoco_model")
+    @patch("bbia_sim.sim.simulator.apply_adaptive_timestep")
+    def test_close_with_viewer(self, mock_apply_timestep, mock_get_cached, mock_mujoco):
         """Test fermeture avec viewer actif."""
         # Mock setup
         mock_model = Mock()
         mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
-        mock_mujoco.MjModel.from_xml_path.return_value = mock_model
+        mock_get_cached.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
 
         # Mock viewer
@@ -844,13 +913,17 @@ class TestMuJoCoSimulator:
             os.unlink(temp_model)
 
     @patch("bbia_sim.sim.simulator.mujoco")
-    def test_close_without_viewer(self, mock_mujoco):
+    @patch("bbia_sim.sim.simulator.get_cached_mujoco_model")
+    @patch("bbia_sim.sim.simulator.apply_adaptive_timestep")
+    def test_close_without_viewer(
+        self, mock_apply_timestep, mock_get_cached, mock_mujoco
+    ):
         """Test fermeture sans viewer."""
         # Mock setup
         mock_model = Mock()
         mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
-        mock_mujoco.MjModel.from_xml_path.return_value = mock_model
+        mock_get_cached.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:

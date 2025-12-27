@@ -22,7 +22,8 @@ class TestBBIAEmotionsExtended:
         assert self.emotions.current_emotion == "neutral"
         assert self.emotions.emotion_intensity == 0.5
         assert self.emotions.transition_duration == 1.0
-        assert self.emotions.emotion_history == []
+        # emotion_history est un deque, pas une liste
+        assert len(self.emotions.emotion_history) == 0
 
     def test_init_emotions_structure(self):
         """Test structure des émotions."""

@@ -86,18 +86,21 @@ def check_zenoh() -> dict[str, Any]:
     """Vérifie connexion Zenoh locale."""
     results: dict[str, Any] = {}
     try:
-        import zenoh
+        import zenoh  # type: ignore[import-untyped]
 
         results["zenoh_imported"] = True
         results["zenoh_version"] = getattr(zenoh, "__version__", "inconnue")
 
         # Tester création session locale
         try:
-            from zenoh import Config
+            from zenoh import Config  # type: ignore[import-untyped]
 
             config = Config()
+            # Mode client pour connexion locale
             config.insert_json5("mode", '"client"')
-            config.insert_json5("connect", '["tcp://localhost:7447"]')
+            # Format Zenoh correct: utiliser tcp/ au lieu de tcp://
+            # Note: En mode client sans connect, Zenoh utilise localhost par défaut
+            # On peut omettre connect pour test local
             session = zenoh.open(config)
             session.close()
             results["zenoh_session"] = True

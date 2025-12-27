@@ -1,7 +1,7 @@
-# 📚 Index Complet — Documentation BBIA-SIM
+# 📚 Index — Documentation BBIA-SIM
 
-> **Documentation complète du moteur cognitif BBIA-SIM**
-> *Organisée par usage • Navigation intuitive • Contenu exhaustif*
+> **Documentation du moteur cognitif BBIA-SIM**
+> *Organisée par usage • Navigation intuitive*
 
 ---
 
@@ -15,7 +15,7 @@
 | **Dashboard** | `python src/bbia_sim/dashboard_advanced.py` | Instant | [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) |
 | **Premier robot** | Voir guide | 5 min | [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) ⭐ |
 
-**Configuration :** Python 3.11+ requis • **Version** : v1.4.0 • **Date** : 8 Décembre 2025
+**Configuration :** Python 3.11+ requis • **Version** : v1.4.0 • **Dernière mise à jour : 15 Décembre 2025
 
 **Mise à jour 8 Décembre 2025** :
 - 44 exemples disponibles
@@ -35,21 +35,21 @@
 
 ### 💻 Développeur
 
-1. [Guide Avancé](guides/GUIDE_AVANCE.md) — Fonctionnalités avancées
+1. [Guide Technique](guides/GUIDE_AVANCE.md) — Fonctionnalités techniques
 2. [Architecture Vue d'Ensemble](development/architecture/ARCHITECTURE_OVERVIEW.md) — Structure du projet
 3. [Guide d'Intégration](development/integration.md) — Intégrer BBIA-SIM
 4. [Guide de Test](development/testing.md) — Tests et qualité
 
 ### 🤖 Utilisateur Robotique
 
-1. [Guide Reachy Mini](guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md) — Guide complet
+1. [Guide Reachy Mini](guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md) — Guide
 2. [Mouvements Reachy Mini](hardware/MOUVEMENTS_REACHY_MINI.md) — Contrôle des mouvements
 3. [Sécurité Robot](hardware/SECURITE_ROBOT.md) — DO/DON'T
 4. [Simulation MuJoCo](simulations/MUJOCO_SIMULATION_GUIDE.md) — Simulation 3D
 
 ### ✅ QA / Tests
 
-1. [Guide de Test](development/testing.md) — Guide complet
+1. [Guide de Test](development/testing.md) — Guide
 2. [Index Audits](quality/INDEX_AUDITS.md) — Tous les audits
 3. [Corrections Appliquées](quality/corrections/applied.md) — Corrections
 4. [Validation Qualité](quality/validation/VALIDATION_FINALE_QUALITE_2025.md) — Rapports
@@ -68,9 +68,9 @@
 ### 🚀 Démarrage & Guides
 
 - [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) — Installation et premiers pas
-- [Guide Avancé](guides/GUIDE_AVANCE.md) — Fonctionnalités avancées
-- [Guide Chat BBIA](guides/GUIDE_CHAT_BBIA.md) — Système de chat intelligent
-- [Guide Reachy Mini Wireless](guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md) — Guide complet
+- [Guide Technique](guides/GUIDE_AVANCE.md) — Fonctionnalités techniques
+- [Guide Chat BBIA](guides/GUIDE_CHAT_BBIA.md) — Système de chat
+- [Guide Reachy Mini Wireless](guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md) — Guide
 - [FAQ Troubleshooting](development/troubleshooting.md) — Dépannage
 
 ### 🏗️ Architecture & Design
@@ -117,14 +117,14 @@
 
 ### 🎯 Simulation
 
-- [Simulation BBIA Complète](simulations/SIMULATION_BBIA_COMPLETE.md) — Simulation complète
+- [Simulation BBIA](simulations/SIMULATION_BBIA_COMPLETE.md) — Simulation
 - [Guide MuJoCo](simulations/MUJOCO_SIMULATION_GUIDE.md) — Simulation 3D
 - [Observabilité](observabilite/OBSERVABILITE.md) — Logs, metrics, santé
 
 ### 📊 Analyses & Rapports
 
 - [Analyse Modules Non Prioritaires](quality/audits/modules-non-prioritaires.md) — Analyse modules
-- [Analyse Coverage](quality/audits/_archived/coverage-details.md) — Analyse code coverage (archivé)
+- [Analyse Coverage](quality/audits/AUDIT_COVERAGE_IMPORTS.md) — Analyse code coverage
 - [Analyse Unity AR](quality/audits/unity-ar.md) — Évaluation Unity AR
 - [Roadmap Dashboard](dashboard/ROADMAP_DASHBOARD.md) — Roadmap UX
 
@@ -132,16 +132,16 @@
 
 - [Corrections Appliquées](quality/corrections/applied.md) — Corrections démos et modules
 - [Améliorations SDK Futures](quality/improvements/sdk-future.md) — Features SDK avancées
-- [Améliorations Intelligence BBIA](quality/improvements/_archived/intelligence-bbia.md) — Intelligence conversationnelle (archivé)
-- [Améliorations Intelligence Contexte](quality/improvements/_archived/intelligence-context.md) — Intelligence contextuelle (archivé)
+- [Améliorations Intelligence BBIA](quality/improvements/intelligence-bbia.md) — Intelligence conversationnelle
+- [Améliorations Intelligence Contexte](quality/improvements/intelligence-context.md) — Intelligence contextuelle
 - [Améliorations Gratuites](quality/improvements/free-improvements.md) — Solutions gratuites
 
 ### 📋 Références
 
-- [Statut du Projet](reference/project-status.md) — État opérationnel et tableau de bord complet
+- [Statut du Projet](reference/project-status.md) — État opérationnel et tableau de bord
 - [Release Notes](reference/RELEASE_NOTES.md) — Notes de version
-- [Historique](reference/PROJECT_HISTORY.md) — Historique complet
-- [Résumé Final](reference/summaries/final-summary.md) — Résumé complet
+- [Historique](reference/PROJECT_HISTORY.md) — Historique
+- [Résumé Final](reference/summaries/final-summary.md) — Résumé
 
 ### 🎮 Unity & Jeux
 
@@ -155,7 +155,7 @@
 1. **Nouveau sur le projet ?** → [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md)
 2. **Installer le projet ?** → [Installation Audio](installation/AUDIO_SETUP.md)
 3. **Utiliser le robot ?** → [Guide Reachy Mini](guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md)
-4. **Développer ?** → [Guide Avancé](guides/GUIDE_AVANCE.md)
+4. **Développer ?** → [Guide Technique](guides/GUIDE_AVANCE.md)
 5. **Tester ?** → [Guide de Test](development/testing.md)
 
 ---
@@ -192,7 +192,7 @@ export BBIA_TELEMETRY_TIMEOUT=1.0
 La documentation a été réorganisée le **8 Décembre 2025** pour une meilleure navigation :
 
 - ✅ **Dossiers vides supprimés** : `rapports/`, `semaines/`
-- ✅ **Fichiers obsolètes archivés** : Voir `quality/audits/archives/`
+- ✅ **Fichiers obsolètes archivés** : Voir `docs/_archive/`
 - ✅ **Doublons fusionnés** : Style guides, tâches restantes
 - ✅ **README créés** : Tous les dossiers principaux ont maintenant un README
 

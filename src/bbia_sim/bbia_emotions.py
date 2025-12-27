@@ -6,6 +6,7 @@
 
 import logging
 import secrets
+from collections import deque
 from datetime import datetime
 from typing import Any
 
@@ -19,7 +20,9 @@ class BBIAEmotions:
         self.current_emotion = "neutral"
         self.emotion_intensity = 0.5  # 0.0 à 1.0
         self.transition_duration = 1.0  # secondes
-        self.emotion_history: list[dict[str, Any]] = []
+        # OPTIMISATION RAM: Utiliser deque avec maxlen pour limiter historique
+        # Limiter à 100 entrées pour éviter accumulation excessive
+        self.emotion_history: deque[dict[str, Any]] = deque(maxlen=100)
 
         # Définition des émotions basées sur la référence visuelle
         self.emotions = {
@@ -160,7 +163,11 @@ class BBIAEmotions:
 
     def get_emotion_history(self, limit: int = 10) -> list[dict[str, Any]]:
         """Retourne l'historique des émotions."""
-        return self.emotion_history[-limit:] if limit > 0 else self.emotion_history
+        # OPTIMISATION RAM: Convertir deque en liste pour retour
+        history_list = list(self.emotion_history)
+        if limit > 0:
+            return history_list[-limit:]
+        return history_list
 
     def random_emotion(self) -> str:
         """Change vers une émotion aléatoire."""

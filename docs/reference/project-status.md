@@ -5,19 +5,19 @@
 **🎯 Vue d'ensemble de l'état du projet par axe**
 *Fiabilité • Performance • Sécurité • CI/CD • Plus*
 
-**Version** : 1.4.0 • **Date** : 8 Décembre 2025
+**Version** : 1.4.0 • **Dernière mise à jour** : 15 Décembre 2025
 **Prêt pour arrivée robot** 🤖
 
-**🎉 Mise à jour 8 Décembre 2025** : **100% d'exploitation des capacités** ✅
-- ✅ 44 exemples disponibles (39 existants + 5 nouveaux créés 22 Nov. 2025)
-- ✅ Tous les comportements, endpoints et modules ont des exemples dédiés
+**Mise à jour 8 Décembre 2025** : 100% d'exploitation des capacités
+- 44 exemples disponibles (39 existants + 5 nouveaux créés 22 Nov. 2025)
+- Tous les comportements, endpoints et modules ont des exemples dédiés
 
-**🎉 Mise à jour 8 Décembre 2025** : **Améliorations Phase 1 Quick Wins terminées** ✅
-- ✅ Python 3.12 dans CI (matrice lint)
-- ✅ Pre-commit hooks améliorés (gitleaks, check-json, check-toml)
-- ✅ Scan secrets automatisé (gitleaks dans CI)
-- ✅ Métriques Prometheus complétées (watchdog, robot_connected, latence p50/p95/p99)
-- ✅ ffmpeg ajouté dans dépendances CI
+**Mise à jour 8 Décembre 2025** : Améliorations Phase 1 Quick Wins terminées
+- Python 3.12 dans CI (matrice lint)
+- Pre-commit hooks améliorés (gitleaks, check-json, check-toml)
+- Scan secrets automatisé (gitleaks dans CI)
+- Métriques Prometheus complétées (watchdog, robot_connected, latence p50/p95/p99)
+- ffmpeg ajouté dans dépendances CI
 
 [📚 Navigation rapide](INDEX_THEMATIQUE.md) • [🏠 README](../README.md)
 
@@ -27,15 +27,7 @@
 
 ## ⚡ Configuration Rapide
 
-> **🔧 Setup en 3 commandes**
-
-```bash
-# Python 3.11+ requis
-pyenv install 3.11.9 && pyenv local 3.11.9
-python -m pip install --upgrade pip
-pip install -e .
-
-```
+> **🔧 Setup** : Voir [`docs/getting-started/INSTALLATION.md`](../getting-started/INSTALLATION.md) pour les instructions complètes d'installation.
 
 <div align="center">
 
@@ -52,8 +44,7 @@ pip install -e .
 
 ## 🖥️ État Opérationnel
 
-> **💡 Note** : Cette section décrit l'état opérationnel actuel du système (dashboard, commandes, tests).  
-> Pour les métriques détaillées, voir [METRICS.md](METRICS.md). Pour l'installation, voir [INSTALLATION.md](../getting-started/INSTALLATION.md).
+Cette section décrit l'état opérationnel actuel du système (dashboard, commandes, tests). Pour les métriques détaillées, voir [METRICS.md](METRICS.md). Pour l'installation, voir [INSTALLATION.md](../getting-started/INSTALLATION.md).
 
 ### Dashboard Web
 
@@ -90,7 +81,7 @@ pip install -e .
 
 # Via terminal (RECOMMANDÉ)
 mjpython examples/demo_chat_bbia_3d.py
-# ⚠️ Note: demo_chat_simple.py est déprécié
+**Important** : `demo_chat_simple.py` est déprécié
 ```
 
 ### Commandes Principales
@@ -478,7 +469,7 @@ Le SDK Reachy Mini expose une API médias via `MediaManager`:
 
 **Recommandations performance :**
 
-- [x] ✅ **Actuel** : Captures périodiques fonctionnent parfaitement
+- [x] **Actuel** : Captures périodiques fonctionnelles
 - [ ] ⚠️ Streaming audio temps réel via `robot.io.get_audio_stream()` (optionnel, refactor nécessaire pour bénéfice marginal) - **Recommandation** : Ne pas implémenter maintenant, attendre réception robot pour tester et décider si nécessaire
 - [ ] Cache validation sample rate (éviter re-lire fichier)
 - [ ] Batch détection son (fichiers multiples)
@@ -670,7 +661,7 @@ bandit -r src/bbia_sim/backends/reachy_mini_backend.py -ll
 | Docs/UX | 8/10 | 10% |
 | **TOTAL** | **8.9/10** | 100% |
 
-**Recommandation :** Module très conforme SDK (audit Oct / Nov. 2025). Watchdog fonctionnel (timeout 2s vs 1s SDK acceptable, plus conservateur). Tests robustes (91 passed). Qualité code excellente (ruff OK, black OK, bandit OK, lignes ≤100). Prêt production. Reste à mesurer benchmarks latence emergency_stop (p50/p95) et jitter boucle 50Hz selon backlog pour compléter métriques performance.
+**Recommandation :** Module conforme SDK (audit Oct / Nov. 2025). Watchdog fonctionnel (timeout 2s vs 1s SDK acceptable, plus conservateur). Tests robustes (91 passed). Qualité code validée (ruff OK, black OK, bandit OK, lignes ≤100). Prêt production. Reste à mesurer benchmarks latence emergency_stop (p50/p95) et jitter boucle 50Hz selon backlog pour compléter métriques performance.
 
 ---
 
@@ -784,7 +775,7 @@ Le SDK Reachy Mini expose une API médias via `MediaManager`:
 
 **Recommandations performance :**
 
-- [x] ✅ **Actuel** : Synthèse vocale via `robot.media.speaker` fonctionne parfaitement
+- [x] **Actuel** : Synthèse vocale via `robot.media.speaker` fonctionnelle
 - [ ] ⚠️ Streaming audio temps réel via `robot.io.get_audio_stream()` (optionnel, refactor nécessaire) - **Recommandation** : Ne pas implémenter maintenant, attendre réception robot pour tester et décider si nécessaire
 - [ ] Pool threads pour conversions numpy/bytes multiples
 - [ ] Cache réponses TTS fréquentes (LRU)

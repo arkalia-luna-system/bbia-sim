@@ -2,6 +2,9 @@
 
 > **Image de référence pour BBIA - Brain-Based Interactive Agent**
 
+**Dernière mise à jour** : 22 Décembre 2025  
+**Statut Robot** : ✅ Reçu le 18 déc 2025, monté le 20 déc 2025
+
 ## Description de l'image de référence
 
 ### Source de l'image
@@ -9,6 +12,7 @@
 - **Date** : Oct / Nov. 2025
 - **Source** : Résultats Google Images pour "Reachy Mini"
 - **Contexte** : Recherche d'images récentes du robot
+- **Statut actuel** : ✅ Robot physique disponible depuis le 18 décembre 2025
 
 ---
 

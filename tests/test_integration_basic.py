@@ -25,10 +25,12 @@ class TestBasicIntegration:
     def test_backend_joint_operations(self):
         """Test opérations sur les joints."""
         backend = MuJoCoBackend()
-        backend.connect()
+        connected = backend.connect()
+        assert connected is True, "La connexion au backend doit réussir"
+        assert backend.is_connected is True
 
         joints = backend.get_available_joints()
-        assert len(joints) > 0
+        assert len(joints) > 0, "Le backend doit avoir au moins un joint disponible"
 
         # Test set/get joint position
         if joints:

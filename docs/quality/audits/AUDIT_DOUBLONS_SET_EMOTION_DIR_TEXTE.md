@@ -1,6 +1,6 @@
 # 🔍 AUDIT DOUBLONS set_emotion() et dire_texte()
 
-**Date audit** : 8 Décembre 2025  
+**Dernière mise à jour : 15 Décembre 2025  
 **Objectif** : Identifier les redondances et doublons dans les implémentations de `set_emotion()` et `dire_texte()`
 
 ---
@@ -48,7 +48,7 @@
    - **Statut** : ✅ **CORE** - Implémentation principale
 
 2. **`src/bbia_sim/bbia_voice_advanced.py`** - Fonctions `dire_texte()` et `dire_texte_advanced()`
-   - **Rôle** : TTS avancé avec Coqui TTS
+   - **Rôle** : TTS avec Coqui TTS
    - **Statut** : ⚠️ **À VÉRIFIER** - Peut être redondant avec `bbia_voice.py`
 
 ---

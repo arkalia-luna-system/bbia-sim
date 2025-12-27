@@ -2,7 +2,7 @@
 
 <div align="center">
 
-**Date** : 8 Décembre 2025
+**Dernière mise à jour** : 15 Décembre 2025
 [![Version](https://img.shields.io/badge/version-1.4.0-blue.svg)](https://github.com/arkalia-luna-system/bbia-sim)
 [![Temps](https://img.shields.io/badge/temps-5%20min-orange.svg)](#votre-premier-robot-bbia-en-5-minutes)
 
@@ -10,30 +10,21 @@
 
 > Liens utiles: `docs/reference/INDEX_THEMATIQUE.md` · `docs/reference/project-status.md`
 
-> Compatibilité Python et CI
->
-> - Python: 3.11+
-> - CI: `.github/workflows/ci.yml`
-> - Setup rapide:
-> ```bash
-> pyenv install 3.11.9 && pyenv local 3.11.9
-> python -m pip install --upgrade pip
-> pip install -e .
-> ```
+> **Compatibilité Python** : Python 3.11+ requis. Voir [`docs/getting-started/INSTALLATION.md`](../getting-started/INSTALLATION.md) pour les détails d'installation.
 
-## 🎯 Votre Premier Robot BBIA en 5 Minutes
+## 🎯 Démarrage Rapide
 
 <div align="center">
 
-### 🌟 De zéro à robot intelligent en quelques clics !
+### Démarrage rapide
 
 [![🚀 Quick Start](https://img.shields.io/badge/🚀-Quick%20Start-green)](#-installation)
-[![🤖 Robot](https://img.shields.io/badge/🤖-Robot%20Intelligent-blue)](#-premier-programme-python)
-[![💬 Chat](https://img.shields.io/badge/💬-Chat%20Intelligent-purple)](#-chat-intelligent-avec-bbia)
+[![🤖 Robot](https://img.shields.io/badge/🤖-Robot-blue)](#-exemple-de-code-python)
+[![💬 Chat](https://img.shields.io/badge/💬-Chat-purple)](#-chat-avec-bbia)
 
 </div>
 
-### Architecture simple
+### Architecture
 
 ```mermaid
 graph LR
@@ -48,7 +39,7 @@ graph LR
 
 ```
 
-### Parcours Démarrage Complet
+### Parcours Démarrage
 
 ```mermaid
 flowchart TD
@@ -71,7 +62,7 @@ flowchart TD
     SCRIPT --> EMOTION[😊 Émotions<br/>set_emotion]
     MUJOCO --> VISUAL[👁️ Visualisation 3D<br/>Robot Animé]
 
-    CHAT --> NEXT1[➡️ Guide Avancé]
+    CHAT --> NEXT1[➡️ Guide Technique]
     EMOTION --> NEXT2[➡️ Comportements]
     VISUAL --> NEXT3[➡️ Simulation Complète]
 
@@ -85,9 +76,11 @@ flowchart TD
 
 ### 1. 📦 Installation
 
+> **Guide d'installation** : Pour les détails d'installation, consultez [`docs/getting-started/INSTALLATION.md`](../getting-started/INSTALLATION.md)
+
 <div align="center">
 
-### 🔧 Trois méthodes simples pour démarrer
+### Méthodes d'installation
 
 [![🐳 Docker](https://img.shields.io/badge/🐳-Docker-blue)](#option-a--docker-compose-recommandé-pour-environnement-isolé-)
 [![⚡ Automatique](https://img.shields.io/badge/⚡-Automatique-green)](#option-b--script-all-in-one-)
@@ -129,16 +122,16 @@ docker-compose down
 
 Voir aussi : [Docker Compose Documentation](https://docs.docker.com/compose/)
 
-#### Option B : Script All-in-One ⚡
+#### Option B : Script All-in-One
 
-> **🚀 Installation automatique complète en une commande**
+> **Installation automatique en une commande**
 
 ```bash
 # Cloner le projet
 git clone https://github.com/arkalia-luna-system/bbia-sim.git
 cd bbia-sim
 
-# Lancer le script all-in-one (fait tout automatiquement)
+# Lancer le script all-in-one
 ./scripts/reachy-mini-sim-starter.sh
 
 # Le script :
@@ -152,7 +145,7 @@ cd bbia-sim
 **Options disponibles** :
 - `--skip-install` : Vérification uniquement (sans installation)
 - `--skip-dashboard` : Installation sans lancer le dashboard
-- `--help` : Aide complète
+- `--help` : Aide
 
 #### Option C : Installation Manuelle
 
@@ -179,14 +172,14 @@ pip install -e .[dev]
 
 <div align="center">
 
-### 🌐 Interface Web Complète en Un Clic
+### Dashboard Web
 
 [![🌐 Dashboard](https://img.shields.io/badge/🌐-Dashboard%20Web-blue)](#-lancer-le-dashboard-fastapi--websocket)
 [![📸 Visual](https://img.shields.io/badge/📸-Visual%20Interface-orange)](#-captures-décran-disponibles)
 
 </div>
 
-> **🚀 Interface web complète en un clic**
+> **Dashboard Web**
 
 ```bash
 # Lancer le dashboard (FastAPI + WebSocket)
@@ -210,11 +203,11 @@ python src/bbia_sim/dashboard_advanced.py
 
 </div>
 
-### 3. 🤖 Premier Programme Python
+### 3. 🤖 Exemple de Code Python
 
 <div align="center">
 
-### 🐍 Votre premier code robot en 10 lignes !
+### Exemple de code Python
 
 [![🐍 Python](https://img.shields.io/badge/🐍-Python%20Code-green)](#-exemple-complet)
 [![🎯 Action](https://img.shields.io/badge/🎯-Action%20Immédiate-blue)](#-tester-le-code)
@@ -239,11 +232,13 @@ robot.disconnect()
 
 ```
 
+> **💡 Astuce** : Utilisez `RobotFactory.create_backend('auto')` pour détection automatique d'un robot réel, avec fallback vers simulation si absent.
+
 ### 4. 🎮 Tester en Simulation 3D
 
 <div align="center">
 
-### 🎯 Voir votre robot prendre vie en 3D !
+### Simulation 3D MuJoCo
 
 [![🎮 3D](https://img.shields.io/badge/🎮-Simulation%203D-purple)](#-démos-principales)
 [![👁️ Visual](https://img.shields.io/badge/👁️-Visualisation-orange)](#-animations-émotions)
@@ -266,14 +261,14 @@ mjpython examples/demo_chat_bbia_3d.py
 > `mjpython` est installé automatiquement avec MuJoCo et permet d'afficher la fenêtre 3D.
 > Si `mjpython` n'est pas disponible, utilisez `python` (le viewer peut ne pas s'ouvrir en mode headless).
 
-### 5. 💬 Chat Intelligent avec BBIA
+### 5. 💬 Chat avec BBIA
 
 <div align="center">
 
-### 🤖 Discutez avec votre robot intelligent !
+### Chat avec BBIA
 
-[![💬 Chat](https://img.shields.io/badge/💬-Chat%20Intelligent-blue)](#-chat-simple-via-terminal)
-[![🧠 IA](https://img.shields.io/badge/🧠-Intelligence%20Artificielle-green)](#-chat-complet-avec-hugging-face)
+[![💬 Chat](https://img.shields.io/badge/💬-Chat-blue)](#-chat-avec-bbia)
+[![🧠 IA](https://img.shields.io/badge/🧠-Intelligence%20Artificielle-green)](#-chat-avec-hugging-face)
 
 </div>
 
@@ -286,7 +281,7 @@ mjpython examples/demo_chat_bbia_3d.py
 # Chat simple via terminal (déprécié, utiliser demo_chat_bbia_3d.py)
 # python examples/demo_chat_simple.py
 
-# Chat complet avec Hugging Face (déprécié, utiliser demo_chat_bbia_3d.py)
+# Chat avec Hugging Face (déprécié, utiliser demo_chat_bbia_3d.py)
 # python examples/demo_chat_bbia.py
 
 ```
@@ -331,7 +326,7 @@ export BBIA_LLM_BACKEND=llama.cpp    # ou qwen
 
 ## ❓ Questions fréquentes
 
-### Q : Je n'ai pas de robot Reachy Mini, ça marche ?
+### Q : Je n'ai pas de robot Reachy Mini, est-ce que cela fonctionne ?
 
 R : Oui, le mode simulation est inclus. Vous pouvez développer maintenant et tester sur robot plus tard.
 
@@ -351,7 +346,7 @@ R : Oui, le système est extensible. Voir `examples/demo_emotion_ok.py`
 1. **Découvrir** : [Architecture (vue d'ensemble)](../development/architecture/ARCHITECTURE_OVERVIEW.md)
 2. **Créer** : vos propres comportements avec `examples/demo_*`
 3. **Comprendre** : [Architecture détaillée](../development/architecture/ARCHITECTURE_DETAILED.md)
-4. **Avancer** : [Guide Avancé](GUIDE_AVANCE.md)
+4. **Avancer** : [Guide Technique](GUIDE_AVANCE.md)
 5. **Index thématique** : [Index Thématique](../reference/INDEX_THEMATIQUE.md)
 
 ---

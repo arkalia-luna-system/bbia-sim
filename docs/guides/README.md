@@ -6,7 +6,7 @@ Ce dossier contient tous les guides pratiques pour utiliser BBIA-SIM.
 
 ### 🚀 Démarrage
 - **`GUIDE_DEMARRAGE.md`** - Guide de démarrage rapide (5 min)
-- **`GUIDE_AVANCE.md`** - Guide avancé (15 min)
+- **`GUIDE_AVANCE.md`** - Guide technique (15 min)
 - **`DEMARRAGE_DAEMON.md`** - Guide pour démarrer le daemon
 
 ### 💬 Intelligence & Conversation

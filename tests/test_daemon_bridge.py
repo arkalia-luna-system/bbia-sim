@@ -352,7 +352,7 @@ class TestDaemonBridge:
         # Bridge connecté avec publisher mocké
         bridge.connected = True
         bridge.publishers["commands"] = MagicMock()
-        bridge.publishers["commands"].put = MagicMock(return_value=None)
+        bridge.publishers["commands"].put = AsyncMock(return_value=None)
 
         async def test():
             result = await bridge.send_command(cmd)
@@ -481,7 +481,7 @@ class TestDaemonBridge:
 
         bridge = ZenohBridge()
         bridge.command_queue = MagicMock()
-        bridge.command_queue.put = MagicMock()
+        bridge.command_queue.put = AsyncMock()
 
         mock_sample = MagicMock()
         mock_sample.payload.decode.return_value = json.dumps(
@@ -569,7 +569,7 @@ class TestDaemonBridge:
         """Test publication état."""
         bridge = ZenohBridge()
         bridge.publishers["state"] = MagicMock()
-        bridge.publishers["state"].put = MagicMock()
+        bridge.publishers["state"].put = AsyncMock()
 
         await bridge._publish_state()
         bridge.publishers["state"].put.assert_called_once()
@@ -584,7 +584,7 @@ class TestDaemonBridge:
         """Test publication erreur."""
         bridge = ZenohBridge()
         bridge.publishers["errors"] = MagicMock()
-        bridge.publishers["errors"].put = MagicMock()
+        bridge.publishers["errors"].put = AsyncMock()
 
         await bridge._publish_error("Test error")
         bridge.publishers["errors"].put.assert_called_once()

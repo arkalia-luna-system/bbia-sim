@@ -1,6 +1,6 @@
 # 🏗️ BBIA-SIM v1.4.0 - Architecture Overview
 
-**Date** : 8 Décembre 2025  
+**Dernière mise à jour : 15 Décembre 2025  
 **Version** : 1.4.0
 
 > **Liens utiles** : [`docs/reference/INDEX_THEMATIQUE.md`](../reference/INDEX_THEMATIQUE.md) · [`docs/reference/project-status.md`](../reference/project-status.md)
@@ -44,16 +44,7 @@
 - Outils qualité : Black, Ruff, MyPy, Bandit
 - CI/CD : GitHub Actions avec artefacts
 
-> **Compatibilité Python et CI**
->
-> - **Python requis** : 3.11+
-> - **Workflow** : `.github/workflows/ci.yml`
-> - **Installation locale** :
-> ```bash
-> pyenv install 3.11.9 && pyenv local 3.11.9
-> python -m pip install --upgrade pip
-> pip install -e .
-> ```
+> **Compatibilité Python** : Python 3.11+ requis. Voir [`docs/getting-started/INSTALLATION.md`](../../getting-started/INSTALLATION.md) pour les détails d'installation.
 
 - Documentation : complète et à jour
 

@@ -34,7 +34,7 @@ def verify_md_claims(md_file: Path) -> dict[str, Any]:
     content = md_file.read_text(encoding="utf-8")
 
     # Vérifier affirmations communes
-    claims = {
+    claims: dict[str, dict[str, Any]] = {
         "tests": {
             "patterns": [
                 r"(\d+)\+?\s*tests?",
@@ -54,11 +54,15 @@ def verify_md_claims(md_file: Path) -> dict[str, Any]:
     }
 
     for claim_type, config in claims.items():
-        for pattern in config["patterns"]:
+        patterns: list[str] = config.get("patterns", [])
+        verify_func = config.get("verify")
+        if not verify_func:
+            continue
+        for pattern in patterns:
             matches = re.finditer(pattern, content, re.IGNORECASE)
             for match in matches:
                 number = match.group(1)
-                if not config["verify"](number):
+                if not verify_func(number):
                     issues.append(
                         {
                             "type": claim_type,
@@ -163,7 +167,7 @@ def main():
     priority_files = [
         "README.md",
         "PROJECTS.md",
-        "docs/guides/GUIDE_DEBUTANT.md",
+        "docs/guides/GUIDE_DEMARRAGE.md",
         "docs/guides/GUIDE_AVANCE.md",
     ]
 

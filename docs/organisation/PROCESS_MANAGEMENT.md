@@ -2,16 +2,7 @@
 
 **Date** : Oct / Nov. 2025
 
-> Compatibilité Python et CI
->
-> - Python requis: 3.11+
-> - CI: `.github/workflows/ci.yml`
-> - Setup local:
-> ```bash
-> pyenv install 3.11.9 && pyenv local 3.11.9
-> python -m pip install --upgrade pip
-> pip install -e .
-> ```
+> **Compatibilité Python** : Python 3.11+ requis. Voir [`docs/getting-started/INSTALLATION.md`](../getting-started/INSTALLATION.md) pour les détails d'installation.
 
 ## Problème résolu
 
@@ -134,7 +125,7 @@ sequenceDiagram
 - mode `--force` pour les scripts automatisés
 - affichage détaillé des processus avant arrêt
 
-#### 4. Monitoring intelligent
+#### 4. Monitoring
 - surveillance CPU et mémoire en temps réel
 - détection automatique des processus BBIA
 - statut détaillé avec PID et ressources

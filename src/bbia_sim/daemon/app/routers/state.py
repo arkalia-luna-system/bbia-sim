@@ -4,6 +4,11 @@ import asyncio
 import logging
 import os
 from datetime import datetime, timezone
+
+try:
+    from datetime import UTC  # Python 3.11+
+except ImportError:
+    UTC = timezone.utc  # Fallback Python 3.10  # noqa: UP035, UP017
 from typing import Annotated, Any, cast
 
 from fastapi import APIRouter, Depends, WebSocket, WebSocketDisconnect
@@ -17,6 +22,7 @@ from bbia_sim.daemon.app.backend_adapter import (
 from bbia_sim.daemon.models import FullState, as_any_pose
 from bbia_sim.daemon.simulation_service import simulation_service
 from bbia_sim.robot_factory import RobotFactory
+from bbia_sim.robot_registry import RobotRegistry
 
 logger = logging.getLogger(__name__)
 
@@ -175,6 +181,8 @@ class BatteryInfo(BaseModel):
 
 @router.get("/full")
 async def get_full_state(
+    backend: Annotated[BackendAdapter, Depends(get_backend_adapter)],
+    *,
     with_control_mode: bool = True,
     with_head_pose: bool = True,
     with_target_head_pose: bool = False,
@@ -186,7 +194,6 @@ async def get_full_state(
     with_target_antenna_positions: bool = False,
     with_passive_joints: bool = False,
     use_pose_matrix: bool = False,
-    backend: BackendAdapter = Depends(get_backend_adapter),
 ) -> FullState:
     """Récupère l'état complet du robot avec paramètres optionnels (conforme SDK).
 
@@ -216,7 +223,7 @@ async def get_full_state(
 
     if with_head_pose:
         pose = backend.get_present_head_pose()
-        result["head_pose"] = as_any_pose(pose, use_pose_matrix)
+        result["present_head_pose"] = as_any_pose(pose)
 
     if with_target_head_pose:
         target_pose = backend.target_head_pose
@@ -225,20 +232,24 @@ async def get_full_state(
             raise ValueError(
                 msg,
             )
-        result["target_head_pose"] = as_any_pose(target_pose, use_pose_matrix)
+        result["target_head_pose"] = as_any_pose(target_pose)
     if with_head_joints:
         result["head_joints"] = backend.get_present_head_joint_positions()
     if with_target_head_joints:
         result["target_head_joints"] = backend.target_head_joint_positions
     if with_body_yaw:
-        result["body_yaw"] = backend.get_present_body_yaw()
+        result["present_body_yaw"] = backend.get_present_body_yaw()
     if with_target_body_yaw:
         result["target_body_yaw"] = backend.target_body_yaw
 
     if with_antenna_positions:
-        result["antennas_position"] = backend.get_present_antenna_joint_positions()
+        result["present_antenna_joint_positions"] = (
+            backend.get_present_antenna_joint_positions()
+        )
     if with_target_antenna_positions:
-        result["target_antennas_position"] = backend.target_antenna_joint_positions
+        result["target_antenna_joint_positions"] = (
+            backend.target_antenna_joint_positions
+        )
 
     if with_passive_joints:
         joints = backend.get_present_passive_joint_positions()
@@ -452,8 +463,8 @@ async def get_joint_states() -> dict[str, Any]:
 
 @router.get("/present_head_pose")
 async def get_present_head_pose(
+    backend: Annotated[BackendAdapter, Depends(get_backend_adapter)],
     use_pose_matrix: bool = False,
-    backend: BackendAdapter = Depends(get_backend_adapter),
 ) -> dict[str, Any]:
     """Récupère la pose actuelle de la tête (conforme SDK).
 
@@ -466,13 +477,25 @@ async def get_present_head_pose(
 
     """
     pose = backend.get_present_head_pose()
-    pose_data = as_any_pose(pose, use_pose_matrix)
-    # Wrapper dans dict pour conformité avec les tests
-    return {
-        "head_pose": (
-            pose_data.model_dump() if hasattr(pose_data, "model_dump") else pose_data
-        ),
-    }
+
+    if use_pose_matrix:
+        # Convertir en matrice 4x4
+        pose_data = as_any_pose(pose)
+        pose_array = pose_data.to_pose_array()
+        from bbia_sim.daemon.models import Matrix4x4Pose
+
+        matrix_pose = Matrix4x4Pose.from_pose_array(pose_array)
+        return {"head_pose": matrix_pose.model_dump()}
+    else:
+        # Format XYZRPY par défaut
+        pose_data = as_any_pose(pose)
+        return {
+            "head_pose": (
+                pose_data.model_dump()
+                if hasattr(pose_data, "model_dump")
+                else pose_data
+            ),
+        }
 
 
 @router.get("/present_body_yaw")
@@ -648,3 +671,105 @@ async def get_imu_endpoint() -> dict[str, Any]:
         Données de l'IMU (accélération, gyroscope, magnétomètre)
     """
     return get_imu()
+
+
+@router.get("/robots/list")
+async def list_robots() -> dict[str, Any]:
+    """NOUVEAU: Liste les robots découverts automatiquement.
+
+    Returns:
+        Liste des robots disponibles avec leurs informations
+    """
+    try:
+        registry = RobotRegistry()
+        robots = registry.discover_robots(timeout=2.0)
+        return {
+            "robots": robots,
+            "count": len(robots),
+            "timestamp": datetime.now(UTC).isoformat(),
+        }
+    except Exception as e:
+        logger.exception("Erreur lors de la découverte des robots: %s", e)
+        return {
+            "robots": [],
+            "count": 0,
+            "error": str(e),
+            "timestamp": datetime.now(UTC).isoformat(),
+        }
+
+
+@router.get("/backends/list")
+async def list_multi_backends() -> dict[str, Any]:
+    """NOUVEAU: Liste les backends multi-backends disponibles.
+
+    Returns:
+        Liste des backends disponibles avec leurs statuts
+    """
+    try:
+        from bbia_sim.daemon.app.main import app_state
+
+        multi_backends = app_state.get("multi_backends", {})
+        backends_info = []
+        for backend_type, backend_instance in multi_backends.items():
+            backends_info.append(
+                {
+                    "type": backend_type,
+                    "available": backend_instance is not None,
+                    "connected": (
+                        backend_instance.is_connected
+                        if backend_instance
+                        and hasattr(backend_instance, "is_connected")
+                        else False
+                    ),
+                }
+            )
+        return {
+            "backends": backends_info,
+            "count": len(backends_info),
+            "timestamp": datetime.now(UTC).isoformat(),
+        }
+    except Exception as e:
+        logger.exception("Erreur lors de la liste des backends: %s", e)
+        return {
+            "backends": [],
+            "count": 0,
+            "error": str(e),
+            "timestamp": datetime.now(UTC).isoformat(),
+        }
+
+
+@router.post("/backends/init")
+async def init_multi_backends(
+    backends: list[str] | None = None,
+) -> dict[str, Any]:
+    """NOUVEAU: Initialise les multi-backends pour support simultané sim/robot.
+
+    Args:
+        backends: Liste des types de backends à initialiser. Si None, initialise tous disponibles.
+
+    Returns:
+        Statut de l'initialisation avec liste des backends créés
+    """
+    try:
+        from bbia_sim.daemon.app.main import app_state
+
+        multi_backends = RobotFactory.create_multi_backend(backends=backends)
+        app_state["multi_backends"] = multi_backends
+
+        created = [bt for bt, be in multi_backends.items() if be is not None]
+        failed = [bt for bt, be in multi_backends.items() if be is None]
+
+        return {
+            "status": "success",
+            "backends_created": created,
+            "backends_failed": failed,
+            "count": len(created),
+            "timestamp": datetime.now(UTC).isoformat(),
+        }
+    except Exception as e:
+        logger.exception("Erreur lors de l'initialisation des multi-backends: %s", e)
+        return {
+            "status": "error",
+            "error": str(e),
+            "timestamp": datetime.now(UTC).isoformat(),
+        }

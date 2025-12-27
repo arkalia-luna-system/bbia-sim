@@ -1,7 +1,4 @@
-# Mouvements Reachy Mini - analyse et améliorations
-
-**Date:** 8 Décembre 2025
-**Statut:** améliorations appliquées
+# Mouvements Reachy Mini - Analyse et Améliorations
 
 ## État actuel des joints
 
@@ -163,4 +160,4 @@ yaw_body: -0.15 rad (rotation lente)
 - Mouvements expressifs implémentés
 - Amplitudes sécurisées selon limites officielles
 
-Prêt pour production avec robot physique.
+**Dernière mise à jour** : 15 Décembre 2025

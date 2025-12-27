@@ -99,9 +99,9 @@ body {
           <span class="nav-icon">📖</span>
           <span class="nav-label">README</span>
         </a>
-        <a href="${depth}guides/guide_debutant.html" class="nav-item">
+        <a href="${depth}guides/guide_demarrage.html" class="nav-item">
           <span class="nav-icon">🚀</span>
-          <span class="nav-label">Guide Débutant</span>
+          <span class="nav-label">Guide Premiers Pas</span>
         </a>
       </div>
       
@@ -873,9 +873,9 @@ echo "[build] ✅ README.html"
 
 # Guides principaux
 mkdir -p "$OUT_DIR/guides"
-if [ -f "$DOCS_DIR/guides/GUIDE_DEBUTANT.md" ]; then
-    convert_md_to_html "$DOCS_DIR/guides/GUIDE_DEBUTANT.md" "$OUT_DIR/guides/guide_debutant.html"
-    echo "[build] ✅ guides/guide_debutant.html"
+if [ -f "$DOCS_DIR/guides/GUIDE_DEMARRAGE.md" ]; then
+    convert_md_to_html "$DOCS_DIR/guides/GUIDE_DEMARRAGE.md" "$OUT_DIR/guides/guide_demarrage.html"
+    echo "[build] ✅ guides/guide_demarrage.html"
 fi
 
 # Architecture

@@ -150,19 +150,19 @@ class TestSimulationIntegration:
     <light pos="0 0 1" diffuse="0.5 0.5 0.5"/>
      <geom name="floor" type="plane" size="1 1 0.1"/>
 
-     <body name="torso" mass="1.0">
-      <inertia ixx="0.01" iyy="0.01" izz="0.01"/>
+     <body name="torso">
+      <inertial pos="0 0 0" mass="1.0" diaginertia="0.01 0.01 0.01"/>
       <geom name="torso_geom" type="box" size="0.05 0.05 0.1"/>
-      <joint name="neck_yaw" type="hinge" axis="0 0 1" range="-1.57 1.57"/>
-      <body name="head" mass="0.5">
-        <inertia ixx="0.005" iyy="0.005" izz="0.005"/>
-        <joint name="head_pitch" type="hinge" axis="0 1 0" range="-0.5 0.5"/>
+      <joint name="yaw_body" type="hinge" axis="0 0 1" range="-1.57 1.57"/>
+      <body name="head">
+        <inertial pos="0 0 0" mass="0.5" diaginertia="0.005 0.005 0.005"/>
+        <joint name="stewart_1" type="hinge" axis="0 1 0" range="-0.5 0.5"/>
         <geom name="head" type="box" size="0.1 0.1 0.1"/>
       </body>
 
-      <body name="right_arm" mass="0.3">
-        <inertia ixx="0.003" iyy="0.003" izz="0.003"/>
-        <joint name="right_shoulder_pitch" type="hinge" axis="0 1 0" range="-1.57 1.57"/>
+      <body name="right_arm">
+        <inertial pos="0 0 0" mass="0.3" diaginertia="0.003 0.003 0.003"/>
+        <joint name="passive_1" type="hinge" axis="0 1 0" range="-1.57 1.57"/>
         <geom name="right_arm" type="box" size="0.05 0.05 0.2"/>
       </body>
     </body>
@@ -214,13 +214,17 @@ class TestSimulationIntegration:
             MuJoCoSimulator("invalid_model.xml")
 
     @patch("bbia_sim.sim.simulator.mujoco")
-    def test_simulation_step_control(self, mock_mujoco):
+    @patch("bbia_sim.sim.simulator.get_cached_mujoco_model")
+    @patch("bbia_sim.sim.simulator.apply_adaptive_timestep")
+    def test_simulation_step_control(
+        self, mock_apply_timestep, mock_get_cached, mock_mujoco
+    ):
         """Test contrôle step de simulation."""
         # Mock setup
         mock_model = Mock()
         mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
-        mock_mujoco.MjModel.from_xml_path.return_value = mock_model
+        mock_get_cached.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
 
         # Créer un modèle temporaire
@@ -244,20 +248,24 @@ class TestSimulationIntegration:
             # Test step manuel
             simulator._step_simulation()
 
-            # Vérifier que mj_step a été appelé
+            # Vérifier que mj_step a été appelé avec le modèle mocké
             mock_mujoco.mj_step.assert_called_once_with(mock_model, mock_data)
 
         finally:
             os.unlink(temp_model)
 
     @patch("bbia_sim.sim.simulator.mujoco")
-    def test_simulation_metrics(self, mock_mujoco):
+    @patch("bbia_sim.sim.simulator.get_cached_mujoco_model")
+    @patch("bbia_sim.sim.simulator.apply_adaptive_timestep")
+    def test_simulation_metrics(
+        self, mock_apply_timestep, mock_get_cached, mock_mujoco
+    ):
         """Test métriques de simulation."""
         # Mock setup
         mock_model = Mock()
         mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
-        mock_mujoco.MjModel.from_xml_path.return_value = mock_model
+        mock_get_cached.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
 
         # Mock des métriques
@@ -323,13 +331,17 @@ class TestSimulationIntegration:
             os.unlink(temp_model)
 
     @patch("bbia_sim.sim.simulator.mujoco")
-    def test_simulation_concurrent_access(self, mock_mujoco):
+    @patch("bbia_sim.sim.simulator.get_cached_mujoco_model")
+    @patch("bbia_sim.sim.simulator.apply_adaptive_timestep")
+    def test_simulation_concurrent_access(
+        self, mock_apply_timestep, mock_get_cached, mock_mujoco
+    ):
         """Test accès concurrent à la simulation."""
         # Mock setup
         mock_model = Mock()
         mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
-        mock_mujoco.MjModel.from_xml_path.return_value = mock_model
+        mock_get_cached.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
 
         # Mock des articulations

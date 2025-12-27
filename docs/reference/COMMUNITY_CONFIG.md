@@ -5,7 +5,7 @@
 > Voir `docs/reference/project-status.md` → "Communauté" pour les templates d’issues/discussions, roadmap publique et "good first issues".
 
 **Version** : 1.4.0 "100% d'Exploitation"
-**Date** : 8 Décembre 2025
+**Dernière mise à jour : 15 Décembre 2025
 **Public** : Communauté Technique
 
 ## 🎯 **Configuration recommandée**
@@ -399,4 +399,4 @@ rm -rf __pycache__/
 
 Configuration terminée. BBIA‑SIM est prêt pour la communauté.
 
-Bienvenue dans l’écosystème BBIA‑SIM.
+Écosystème BBIA‑SIM.

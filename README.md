@@ -27,7 +27,7 @@
 
 ## 🧠 Moteur Cognitif Python pour Robot Reachy Mini
 
-### Simulation Fidèle • IA Avancée • SDK Conforme • Production Ready
+### Simulation • IA • SDK Conforme
 
 [![🚀 Quick Start](https://img.shields.io/badge/🚀-Quick%20Start-green)](#-démarrage-rapide)
 [![📚 Documentation](https://img.shields.io/badge/📚-Documentation-blue)](docs/)
@@ -52,7 +52,7 @@
 
 ### 🎯 BBIA-SIM : Moteur Cognitif Python pour Reachy Mini
 
-**12 émotions robotiques** (6 SDK officiel + 6 étendues) • **Simulation 3D fidèle** • **IA avancée**
+**12 émotions robotiques** (6 SDK officiel + 6 étendues) • **Simulation 3D** • **IA**
 
 **🎨 [Voir tous les logos BBIA →](http://localhost:8000/test-logos)** *(Lancez le dashboard d'abord)*
 
@@ -71,14 +71,14 @@
 | 🧪 **Tests Automatisés** | 1362 tests (unitaires + E2E) |
 | 📚 **Documentation** | 128 fichiers Markdown |
 | ⚡ **Performance** | Caches IA optimisés |
-| 🔒 **CI/CD Pro** | Black, Ruff, MyPy, Bandit |
+| 🔒 **CI/CD** | Black, Ruff, MyPy, Bandit |
 | 🌟 **Open Source** | License MIT |
 
 </div>
 
 ## 🧠 Stack IA : Pourquoi ces Dépendances ?
 
-BBIA utilise une stack IA lourde pour permettre des interactions naturelles et une perception avancée. Voici pourquoi chaque dépendance majeure est nécessaire :
+BBIA utilise une stack IA pour permettre des interactions naturelles. Voici pourquoi chaque dépendance majeure est nécessaire :
 
 | Dépendance | Rôle | Poids approximatif | Justification |
 |------------|------|-------------------|---------------|
@@ -100,7 +100,7 @@ BBIA utilise une stack IA lourde pour permettre des interactions naturelles et u
 - **Coverage global**: 68.86% ([Codecov](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim))
 - **Coverage modules core**: ~50%
 - **Modules BBIA**: 15+ modules spécialisés
-- **Comportements**: 21 comportements intelligents (7 de base + 14 avancés)
+- **Comportements**: 21 comportements (7 de base + 14 étendus)
 - **Exemples**: 44 exemples disponibles
 - **Documentation**: 219 fichiers Markdown (dans `docs/`)
 - **Identité visuelle**: 10 variantes émotionnelles, 3 formats de logos, interface live interactive
@@ -129,7 +129,7 @@ BBIA-SIM suit des standards de qualité:
 - **Sécurité**: Analyse statique avec Bandit + scan secrets (gitleaks)
 - **Performance**: Optimisations continues et monitoring (métriques Prometheus)
 
-**[🚀 Quick Start](#-démarrage-rapide)** | **[📚 Guide de Démarrage](docs/guides/GUIDE_DEMARRAGE.md)** | **[🔬 Docs Avancé](docs/guides/GUIDE_AVANCE.md)** | **[🌐 English README](README_EN.md)** | **[🎬 Vidéos Démo](docs/guides/GUIDE_VIDEOS_DEMONSTRATION.md)** | **[🌍 Guide Communauté](docs/community/GUIDE_COMMUNAUTE.md)** | **[🤝 Contribuer](docs/community/GUIDE_CONTRIBUTEURS_COMPLET.md)** | **[🚀 Innovations](docs/community/INNOVATIONS_BBIA.md)**
+**[🚀 Quick Start](#-démarrage-rapide)** | **[📚 Guide de Démarrage](docs/guides/GUIDE_DEMARRAGE.md)** | **[🔬 Documentation](docs/guides/GUIDE_AVANCE.md)** | **[🌐 English README](README_EN.md)** | **[🎬 Vidéos Démo](docs/guides/GUIDE_VIDEOS_DEMONSTRATION.md)** | **[🌍 Guide Communauté](docs/community/GUIDE_COMMUNAUTE.md)** | **[🤝 Contribuer](docs/community/GUIDE_CONTRIBUTEURS_COMPLET.md)**
 
 ---
 
@@ -142,7 +142,7 @@ Version 1.4.0 – Simulation complète avec exemples fonctionnels, tests et docu
 - 44 exemples disponibles
 - Qualité code vérifiée (Black, Ruff, MyPy, Bandit)
 
-Ce projet fournit une simulation fidèle du robot Reachy Mini dans MuJoCo, avec une intégration des modules BBIA (Bio-Inspired Artificial Intelligence) et une conformité validée avec le SDK officiel de Pollen Robotics (Oct / Nov. 2025).
+Ce projet fournit une simulation du robot Reachy Mini dans MuJoCo, avec une intégration des modules BBIA (Bio-Inspired Artificial Intelligence) et une conformité avec le SDK officiel de Pollen Robotics (Oct / Nov. 2025).
 
 ## 🚀 Quick Start
 
@@ -451,7 +451,7 @@ sequenceDiagram
 |:--------:|:------:|:-----:|
 | **Modèle officiel** | `reachy_mini_REAL_OFFICIAL.xml` | ✅ |
 | **Articulations** | 16 total (9 contrôlables) | ✅ |
-| **Intégration BBIA** | 12 émotions + IA avancée | ✅ |
+| **Intégration BBIA** | 12 émotions + IA | ✅ |
 | **Coverage modules core** | ~50% | ✅ [📊 Rapport](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim) |
 | **API** | FastAPI + WebSocket | ✅ |
 
@@ -557,7 +557,7 @@ python -c "from bbia_sim.robot_factory import RobotFactory; robot = RobotFactory
 python scripts/hardware_dry_run_reachy_mini.py --duration 30
 ```
 
-### 🧠 IA Avancée
+### 🧠 IA
 
 ```bash
 # Démonstration complète Phase 2
@@ -654,8 +654,7 @@ La documentation HTML offre :
 **Guides principaux :**
 
 - **[Guide de Démarrage](docs/guides/GUIDE_DEMARRAGE.md)** : Guide pour démarrer
-- **[Guide Avancé](docs/guides/GUIDE_AVANCE.md)** : Guide avancé
-- **[Vertical Slices](docs/quality/audits/archives/obsoletes_decembre_2025/VERTICAL_SLICES_ACCOMPLIS.md)** : Documentation des vertical slices
+- **[Guide Technique](docs/guides/GUIDE_AVANCE.md)** : Documentation technique
 - **[Index thématique (par profils)](docs/INDEX_FINAL.md)**
 - **[FAQ Troubleshooting](docs/development/troubleshooting.md)**
 - **[Observabilité (logs/metrics/santé)](docs/observabilite/OBSERVABILITE.md)**
@@ -839,7 +838,7 @@ python scripts/stt_demo.py --command "salue" --backend mujoco
 python src/bbia_sim/dashboard_advanced.py --port 8000
 ```
 
-### Scripts de Démo Avancés
+### Scripts de Démo
 
 ```bash
 # Enregistrer une démo complète
@@ -873,7 +872,7 @@ Télécharge automatiquement les 41 fichiers STL depuis le repo officiel.
 python scripts/process_manager.py --cleanup
 ```
 
-Nettoie les processus gourmands tout en préservant les applications importantes.
+Nettoie les processus consommateurs de ressources tout en préservant les applications importantes.
 
 ## 🔧 Résolution de problèmes
 

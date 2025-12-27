@@ -5,7 +5,7 @@
 > Voir `docs/reference/project-status.md` → "État par axe" pour l’état actuel et les axes futurs (observabilité, perf, sécurité, CI/CD, etc.).
 
 **Version Actuelle** : 1.4.0  
-**Date** : 8 Décembre 2025
+**Dernière mise à jour : 15 Décembre 2025
 
 ---
 

@@ -2,7 +2,7 @@
 
 <div align="center">
 
-**Date** : 8 Décembre 2025  
+**Dernière mise à jour : 15 Décembre 2025  
 **Hardware** : ReSpeaker 4 microphones directionnels (Reachy Mini)
 
 [![🎤 Audio](https://img.shields.io/badge/🎤-Audio%20Hardware-blue.svg)](#-vue-densemble)

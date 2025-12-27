@@ -1,8 +1,15 @@
 # Audit Consolidé BBIA-SIM - Décembre 2025
 
-**Date** : 8 Décembre 2025  
+**Dernière mise à jour :** 22 Décembre 2025  
 **Version BBIA** : 1.4.0  
-**Version SDK** : 1.1.3 ✅
+**Version SDK** : 1.2.3 ✅
+
+## 📦 STATUT ROBOT PHYSIQUE
+
+✅ **Robot reçu** : 18 Décembre 2025  
+✅ **Montage effectué** : 20 Décembre 2025 (durée : 4 heures)  
+✅ **Premiers tests** : 22 Décembre 2025  
+✅ **IP Robot** : 192.168.129.64
 
 ---
 
@@ -46,7 +53,7 @@
 
 ### MCP (Model Context Protocol)
 - **Statut** : Optionnel
-- **Raison** : BBIA a déjà API REST complète + WebSocket (supérieur)
+- **Raison** : BBIA a déjà API REST complète + WebSocket
 - **Action** : Aucune nécessaire
 
 ### DoA Audio (Direction of Arrival)
@@ -62,16 +69,16 @@
 2. **12 Émotions** vs 6 officielles
 3. **Whisper STT Gratuit** vs OpenAI Realtime API payant
 4. **WebSocket <10ms** vs WebRTC (équivalent ou meilleur)
-5. **API REST Complète** : 50+ endpoints vs MCP (supérieur)
+5. **API REST Complète** : 50+ endpoints vs MCP
 
 ---
 
 ## Documents de Référence
 
 - `TACHES_RESTANTES_CONSOLIDEES.md` - Tâches restantes
-- `CE_QUI_MANQUE_VRAIMENT_BBIA_DEC2025.md` - Détails fonctionnalités manquantes
+- `CE_QUI_MANQUE_BBIA_DEC2025.md` - Détails fonctionnalités manquantes (document consolidé)
 - `AUDIT_REACHY_MINI_DECEMBRE_2025.md` - Audit complet Reachy Mini
-- `RESUME_AUDIT_DECEMBRE_2025.md` - Résumé exécutif
+- `RESUME_AUDIT_DEC2025_CONSOLIDE.md` - Résumé exécutif consolidé
 
 ---
 

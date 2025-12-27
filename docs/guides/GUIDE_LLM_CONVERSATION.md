@@ -1,6 +1,6 @@
 # 🧠 Guide LLM Conversationnel BBIA
 
-**Date** : 8 Décembre 2025
+**Dernière mise à jour** : 15 Décembre 2025
 **Version BBIA** : 1.4.0
 **Objectif** : Guide complet pour utiliser l'intelligence conversationnelle de BBIA
 
@@ -8,7 +8,7 @@
 
 ## 🎯 Introduction
 
-BBIA utilise un **LLM conversationnel** (Phi-2 ou TinyLlama) pour remplacer les règles basiques par une vraie compréhension contextuelle et des réponses intelligentes.
+BBIA utilise un **LLM conversationnel** (Phi-2 ou TinyLlama) pour remplacer les règles par une compréhension contextuelle et des réponses adaptées.
 
 ### Fonctionnalités
 
@@ -141,7 +141,7 @@ response = chat.chat("Explique-moi comment fonctionne le robot")
 
 ---
 
-## 🔧 Configuration Avancée
+## 🔧 Configuration
 
 ### Historique Conversation
 
@@ -318,7 +318,7 @@ chat.chat("Raconte-moi une blague")
 
 ### Introduction
 
-BBIA intègre **Hugging Face Chat** via le module `BBIAHuggingFace` pour des conversations intelligentes avec LLM. Ce guide explique comment utiliser cette fonctionnalité.
+BBIA intègre **Hugging Face Chat** via le module `BBIAHuggingFace` pour des conversations avec LLM. Ce guide explique comment utiliser cette fonctionnalité.
 
 ### Activation du Chat HF
 
@@ -361,7 +361,7 @@ hf.disable_llm_chat()
 hf.enable_llm_chat("phi2")
 ```
 
-### Utilisation Avancée
+### Utilisation
 
 ```python
 # Chat avec contexte

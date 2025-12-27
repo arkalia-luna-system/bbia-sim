@@ -1,6 +1,6 @@
 # 🎨 Guide Dashboard Moderne BBIA
 
-**Date** : 8 Décembre 2025
+**Dernière mise à jour : 15 Décembre 2025
 **Version BBIA** : 1.3.2
 **Objectif** : Guide complet pour utiliser le dashboard moderne BBIA
 

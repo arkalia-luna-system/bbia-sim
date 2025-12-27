@@ -1,10 +1,10 @@
 # 📹 Roadmap Démo Vidéo - BBIA-SIM
 
-**Date de création** : 8 Décembre 2025
-**Date de mise à jour** : 8 Décembre 2025
-**Statut** : ✅ **Vidéos disponibles** - 3 vidéos de démonstration créées
+**Dernière mise à jour** : 22 Décembre 2025  
+**Statut** : ✅ **Vidéos disponibles** - 3 vidéos de démonstration créées  
+**Statut Robot** : ✅ Reçu le 18 déc 2025, monté le 20 déc 2025, tests en cours
 
-> **Note** : Des vidéos de démonstration sont maintenant disponibles dans `assets/videos/`. Voir [`assets/MEDIAS_INVENTAIRE.md`](../../assets/MEDIAS_INVENTAIRE.md) pour la liste complète.
+Des vidéos de démonstration sont disponibles dans `assets/videos/`. Voir [`assets/MEDIAS_INVENTAIRE.md`](../../assets/MEDIAS_INVENTAIRE.md) pour la liste complète.
 
 ---
 
@@ -164,7 +164,7 @@
 Une fois les vidéos créées, elles seront intégrées dans :
 
 - ✅ `README.md` - Section "Démo Vidéo" (déjà préparée)
-- ✅ `docs/guides/GUIDE_DEMARRAGE.md` - Références ajoutées (en attente liens)
+- ✅ `docs/guides/GUIDE_DEMARRAGE.md` - Références ajoutées
 - ✅ `docs/reference/project-status.md` - Mise à jour quand disponible
 
 ---
