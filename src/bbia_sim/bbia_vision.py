@@ -123,10 +123,13 @@ except ImportError:
 create_pose_detector: Callable[..., "BBIAPoseDetection | None"] | None = None
 MEDIAPIPE_POSE_AVAILABLE = False
 try:
-    from .pose_detection import create_pose_detector as _create_pose_detector_imported
+    from .pose_detection import (
+        MEDIAPIPE_POSE_AVAILABLE as _mediapipe_pose_available,
+        create_pose_detector as _create_pose_detector_imported,
+    )
 
     create_pose_detector = _create_pose_detector_imported
-    MEDIAPIPE_POSE_AVAILABLE = True
+    MEDIAPIPE_POSE_AVAILABLE = _mediapipe_pose_available
 except ImportError:
     pass  # create_pose_detector reste None
 
