@@ -655,7 +655,6 @@ La documentation HTML offre :
 
 - **[Guide de Démarrage](docs/guides/GUIDE_DEMARRAGE.md)** : Guide pour démarrer
 - **[Guide Technique](docs/guides/GUIDE_AVANCE.md)** : Documentation technique
-- **[Vertical Slices](docs/quality/audits/archives/obsoletes_decembre_2025/VERTICAL_SLICES_ACCOMPLIS.md)** : Documentation des vertical slices
 - **[Index thématique (par profils)](docs/INDEX_FINAL.md)**
 - **[FAQ Troubleshooting](docs/development/troubleshooting.md)**
 - **[Observabilité (logs/metrics/santé)](docs/observabilite/OBSERVABILITE.md)**

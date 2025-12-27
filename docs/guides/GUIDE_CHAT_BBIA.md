@@ -7,7 +7,7 @@
 
 **Dernière mise à jour** : 15 Décembre 2025
 
-[📚 FAQ](../getting-started/troubleshooting.md) • [🧠 Guide NLP](../guides/GUIDE_NLP_SMOLVLM.md) • [📊 État actuel](../quality/audits/archives/obsoletes_decembre_2025/RESUME_ETAT_ACTUEL_BBIA.md)
+[📚 FAQ](../getting-started/troubleshooting.md) • [🧠 Guide NLP](../guides/GUIDE_NLP_SMOLVLM.md) • [📊 État du projet](../reference/project-status.md)
 
 </div>
 
