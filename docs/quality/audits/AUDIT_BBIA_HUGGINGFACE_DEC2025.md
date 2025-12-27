@@ -44,7 +44,7 @@
 - ⚠️ ~20 appels logging restants à convertir (priorité moyenne)
 - Fichiers concernés : lignes 588, 615, 619, 625, 987, 989, 994, 996, 1225, 1462, 1470, 1742, 1863, 2004, 2007
 
-**Résultat** : Performance améliorée de ~15% sur les appels corrigés
+**Résultat** : Performance optimisée sur les appels corrigés
 
 ---
 

@@ -87,3 +87,6 @@ DS_Store
 
 # Apps installées depuis HF Spaces
 installed_apps/
+
+# Archive de documentation (fichiers redondants/obsolètes)
+docs/_archive/

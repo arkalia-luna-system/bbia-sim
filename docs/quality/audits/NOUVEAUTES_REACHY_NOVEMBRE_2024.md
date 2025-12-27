@@ -416,9 +416,9 @@ D'après les retours de la communauté (125 unités bêta) :
 
 ### 🔧 Corrections Qualité Code (En Cours)
 
-#### 4. Exceptions Génériques (BLE001) ⚠️ **EN COURS** (24% fait)
+#### 4. Exceptions Génériques (BLE001) ⚠️ **EN COURS**
 - **Problème :** ~305 blocs `except Exception` trop génériques restants
-- **Progression :** ~94/399 occurrences corrigées (24% fait)
+- **Statut :** Corrections en cours
 - **Fichiers corrigés récemment :**
   - `dashboard_advanced.py` : ~22 occurrences corrigées (exceptions spécifiques + noqa pour fallbacks)
   - `backends/reachy_mini_backend.py` : ~20 occurrences corrigées

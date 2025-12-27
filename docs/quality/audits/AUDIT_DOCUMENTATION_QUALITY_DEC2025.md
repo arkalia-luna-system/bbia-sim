@@ -180,7 +180,7 @@
 
 - ✅ `quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md`
 - ✅ `quality/validation/VALIDATION_FINALE_QUALITE_2025.md`
-- ✅ `quality/audits/INDEX_AUDITS_CONSOLIDES.md` (obsolète, devrait pointer vers `INDEX_AUDITS.md`)
+- ✅ `quality/INDEX_AUDITS.md` (référence corrigée)
 
 **Statut** : ⚠️ **CORRIGER** référence obsolète dans INDEX_FINAL.md
 

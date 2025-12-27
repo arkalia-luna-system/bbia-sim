@@ -8,7 +8,7 @@
 
 ## ✅ Optimisations Appliquées
 
-### 1. Simulation : 1000Hz → 60Hz (-93% CPU)
+### 1. Simulation : 1000Hz → 60Hz
 
 **Fichier** : `src/bbia_sim/daemon/simulation_service.py`
 
@@ -28,13 +28,13 @@ await asyncio.sleep(0.016)  # ~60 Hz (suffisant pour simulation fluide, moins de
 
 ```
 
-**Gain** : **-93% CPU** sur simulation headless
+**Résultat** : Consommation CPU réduite sur simulation headless
 
 **Statut** : ✅ Complété et testé
 
 ---
 
-### 2. `get_bbia_voice()` : 10 boucles → 1 seule passe (-90% temps)
+### 2. `get_bbia_voice()` : 10 boucles → 1 seule passe
 
 **Fichier** : `src/bbia_sim/bbia_voice.py`
 
@@ -51,13 +51,13 @@ await asyncio.sleep(0.016)  # ~60 Hz (suffisant pour simulation fluide, moins de
 **Avant** : 10 boucles `for v in voices` successives
 **Après** : 1 seule boucle avec dictionnaire de priorité
 
-**Gain** : **-90% temps d'exécution**
+**Résultat** : Temps d'exécution réduit
 
 **Statut** : ✅ Complété et testé
 
 ---
 
-### 3. Regex Compilées en Cache (-30 à -50% latence)
+### 3. Regex Compilées en Cache
 
 **Fichier** : `src/bbia_sim/bbia_huggingface.py`
 
@@ -88,7 +88,7 @@ def _get_compiled_regex(pattern: str, flags: int = 0) -> re.Pattern[str]:
 
 ```
 
-**Gain** : **-30 à -50% latence** sur opérations regex
+**Résultat** : Latence réduite sur opérations regex
 
 **Statut** : ✅ Complété et testé
 
@@ -131,7 +131,7 @@ if original_width > 640 or original_height > 480:
     # Convertir bbox vers résolution originale après détection
 ```
 
-**Gain estimé** : **-40 à -60% latence** sur détection YOLO
+**Résultat** : Latence réduite sur détection YOLO
 
 **Statut** : ✅ Complété le 19/11/2025
 
@@ -150,7 +150,7 @@ if original_width > 640 or original_height > 480:
 - Modèle "tiny" par défaut (plus rapide que "base")
 - Cache automatique géré par `WhisperSTT`
 
-**Gain** : Réutilisation modèle Whisper sans rechargement
+**Résultat** : Réutilisation modèle Whisper sans rechargement
 
 **Statut** : ✅ Complété le 19/11/2025
 
@@ -191,7 +191,7 @@ def _create_cached_head_pose(pitch, yaw, roll=0.0, degrees=False):
     return create_head_pose(pitch=pitch, yaw=yaw, roll=roll, degrees=degrees)
 ```
 
-**Gain estimé** : **-10 à -20% latence** sur poses répétées (émotions, mouvements fréquents)
+**Résultat** : Latence réduite sur poses répétées (émotions, mouvements fréquents)
 
 **Statut** : ✅ Complété le 19/11/2025
 
@@ -221,7 +221,7 @@ result = vision.scan_environment_async(timeout=None)  # Dernier résultat
 result = vision.scan_environment_async(timeout=0.5)   # Attendre max 0.5s
 ```
 
-**Gain** : **Latence perçue réduite** (non-bloquant, résultats en temps réel)
+**Résultat** : Latence perçue réduite (non-bloquant, résultats en temps réel)
 
 **Statut** : ✅ Complété le 19/11/2025
 
@@ -255,22 +255,20 @@ stop_async_transcription()
 
 ---
 
-## 📊 Gains Totaux
+## 📊 Optimisations Appliquées
 
-| Optimisation | Gain | Impact | Date |
-|--------------|------|--------|------|
-| Simulation 60Hz | -93% CPU | 🔴 Critique | Oct 2025 |
-| get_bbia_voice() | -90% temps | 🔴 Critique | Oct 2025 |
-| Regex compilées | -30 à -50% latence | 🟡 Important | Oct 2025 |
-| Résolution YOLO 640x480 | -40 à -60% latence | 🟡 Important | 19/11/2025 |
-| transcribe_audio() cache | Réutilisation modèle | 🟢 Optimisation | 19/11/2025 |
-| Cache poses LRU | -10 à -20% latence | 🟡 Important | 19/11/2025 |
-| Threading asynchrone vision | Latence perçue réduite | 🟡 Important | 19/11/2025 |
-| Threading asynchrone audio | Latence perçue réduite | 🟡 Important | Déjà fait |
-| Tests benchmarks | Baseline performance | 🟢 Mesure | 19/11/2025 |
-| Safeguards | Protection | 🟢 Sécurité | Oct 2025 |
-
-**Impact global** : Mac beaucoup plus léger et performant ! 🚀
+| Optimisation | Impact | Date |
+|--------------|--------|------|
+| Simulation 60Hz | Réduction CPU | Oct 2025 |
+| get_bbia_voice() | Temps d'exécution réduit | Oct 2025 |
+| Regex compilées | Latence réduite | Oct 2025 |
+| Résolution YOLO 640x480 | Latence réduite | 19/11/2025 |
+| transcribe_audio() cache | Réutilisation modèle | 19/11/2025 |
+| Cache poses LRU | Latence réduite | 19/11/2025 |
+| Threading asynchrone vision | Latence perçue réduite | 19/11/2025 |
+| Threading asynchrone audio | Latence perçue réduite | Déjà fait |
+| Tests benchmarks | Baseline performance | 19/11/2025 |
+| Safeguards | Protection | Oct 2025 |
 
 ---
 

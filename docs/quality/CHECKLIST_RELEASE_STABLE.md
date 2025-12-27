@@ -111,8 +111,8 @@
 ### 🟢 OPTIONNEL - Améliorations futures
 
 #### 16. Améliorations Qualité Code
-- [ ] F-strings logging : Conversion progressive (73% fait)
-- [ ] Exceptions spécifiques : Remplacer `Exception` générique (24% fait)
+- [ ] F-strings logging : Conversion progressive
+- [ ] Exceptions spécifiques : Remplacer `Exception` générique
 - [ ] Type hints complets : MyPy strict sur tous les modules
 
 #### 17. Tests Additionnels

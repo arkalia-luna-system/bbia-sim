@@ -1,4 +1,4 @@
-# 📚 Index Complet — Documentation BBIA-SIM
+# 📚 Index — Documentation BBIA-SIM
 
 > **Documentation du moteur cognitif BBIA-SIM**
 > *Organisée par usage • Navigation intuitive*
@@ -42,14 +42,14 @@
 
 ### 🤖 Utilisateur Robotique
 
-1. [Guide Reachy Mini](guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md) — Guide complet
+1. [Guide Reachy Mini](guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md) — Guide
 2. [Mouvements Reachy Mini](hardware/MOUVEMENTS_REACHY_MINI.md) — Contrôle des mouvements
 3. [Sécurité Robot](hardware/SECURITE_ROBOT.md) — DO/DON'T
 4. [Simulation MuJoCo](simulations/MUJOCO_SIMULATION_GUIDE.md) — Simulation 3D
 
 ### ✅ QA / Tests
 
-1. [Guide de Test](development/testing.md) — Guide complet
+1. [Guide de Test](development/testing.md) — Guide
 2. [Index Audits](quality/INDEX_AUDITS.md) — Tous les audits
 3. [Corrections Appliquées](quality/corrections/applied.md) — Corrections
 4. [Validation Qualité](quality/validation/VALIDATION_FINALE_QUALITE_2025.md) — Rapports
@@ -70,7 +70,7 @@
 - [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) — Installation et premiers pas
 - [Guide Technique](guides/GUIDE_AVANCE.md) — Fonctionnalités techniques
 - [Guide Chat BBIA](guides/GUIDE_CHAT_BBIA.md) — Système de chat
-- [Guide Reachy Mini Wireless](guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md) — Guide complet
+- [Guide Reachy Mini Wireless](guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md) — Guide
 - [FAQ Troubleshooting](development/troubleshooting.md) — Dépannage
 
 ### 🏗️ Architecture & Design
@@ -117,14 +117,14 @@
 
 ### 🎯 Simulation
 
-- [Simulation BBIA Complète](simulations/SIMULATION_BBIA_COMPLETE.md) — Simulation complète
+- [Simulation BBIA](simulations/SIMULATION_BBIA_COMPLETE.md) — Simulation
 - [Guide MuJoCo](simulations/MUJOCO_SIMULATION_GUIDE.md) — Simulation 3D
 - [Observabilité](observabilite/OBSERVABILITE.md) — Logs, metrics, santé
 
 ### 📊 Analyses & Rapports
 
 - [Analyse Modules Non Prioritaires](quality/audits/modules-non-prioritaires.md) — Analyse modules
-- [Analyse Coverage](quality/audits/_archived/coverage-details.md) — Analyse code coverage (archivé)
+- [Analyse Coverage](quality/audits/AUDIT_COVERAGE_IMPORTS.md) — Analyse code coverage
 - [Analyse Unity AR](quality/audits/unity-ar.md) — Évaluation Unity AR
 - [Roadmap Dashboard](dashboard/ROADMAP_DASHBOARD.md) — Roadmap UX
 
@@ -132,16 +132,16 @@
 
 - [Corrections Appliquées](quality/corrections/applied.md) — Corrections démos et modules
 - [Améliorations SDK Futures](quality/improvements/sdk-future.md) — Features SDK avancées
-- [Améliorations Intelligence BBIA](quality/improvements/_archived/intelligence-bbia.md) — Intelligence conversationnelle (archivé)
-- [Améliorations Intelligence Contexte](quality/improvements/_archived/intelligence-context.md) — Intelligence contextuelle (archivé)
+- [Améliorations Intelligence BBIA](quality/improvements/intelligence-bbia.md) — Intelligence conversationnelle
+- [Améliorations Intelligence Contexte](quality/improvements/intelligence-context.md) — Intelligence contextuelle
 - [Améliorations Gratuites](quality/improvements/free-improvements.md) — Solutions gratuites
 
 ### 📋 Références
 
-- [Statut du Projet](reference/project-status.md) — État opérationnel et tableau de bord complet
+- [Statut du Projet](reference/project-status.md) — État opérationnel et tableau de bord
 - [Release Notes](reference/RELEASE_NOTES.md) — Notes de version
-- [Historique](reference/PROJECT_HISTORY.md) — Historique complet
-- [Résumé Final](reference/summaries/final-summary.md) — Résumé complet
+- [Historique](reference/PROJECT_HISTORY.md) — Historique
+- [Résumé Final](reference/summaries/final-summary.md) — Résumé
 
 ### 🎮 Unity & Jeux
 
@@ -192,7 +192,7 @@ export BBIA_TELEMETRY_TIMEOUT=1.0
 La documentation a été réorganisée le **8 Décembre 2025** pour une meilleure navigation :
 
 - ✅ **Dossiers vides supprimés** : `rapports/`, `semaines/`
-- ✅ **Fichiers obsolètes archivés** : Voir `quality/audits/archives/`
+- ✅ **Fichiers obsolètes archivés** : Voir `docs/_archive/`
 - ✅ **Doublons fusionnés** : Style guides, tâches restantes
 - ✅ **README créés** : Tous les dossiers principaux ont maintenant un README
 
