@@ -16,7 +16,12 @@ import numpy.typing as npt
 try:
     import mediapipe as mp  # type: ignore[import-untyped]
 
-    MEDIAPIPE_AVAILABLE = True
+    # Vérifier que mp.solutions existe (peut être absent même si import réussit)
+    if hasattr(mp, "solutions"):
+        MEDIAPIPE_AVAILABLE = True
+    else:
+        MEDIAPIPE_AVAILABLE = False
+        mp = None  # type: ignore[assignment]
 except ImportError:
     MEDIAPIPE_AVAILABLE = False
     mp = None  # type: ignore[assignment]

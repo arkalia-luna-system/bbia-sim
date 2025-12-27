@@ -21,7 +21,16 @@ MEDIAPIPE_POSE_AVAILABLE = False
 try:
     import mediapipe as mp
 
-    MEDIAPIPE_POSE_AVAILABLE = True
+    # Vérifier que mp.solutions existe (peut être absent même si import réussit)
+    if hasattr(mp, "solutions"):
+        MEDIAPIPE_POSE_AVAILABLE = True
+    else:
+        MEDIAPIPE_POSE_AVAILABLE = False
+        mp = None
+        logger.debug(
+            "MediaPipe importé mais solutions non disponible. "
+            "Installer avec: pip install mediapipe"
+        )
 except ImportError:
     mp = None
     logger.debug("MediaPipe non disponible. Installer avec: pip install mediapipe")

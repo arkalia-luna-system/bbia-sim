@@ -94,9 +94,15 @@ except ImportError:
 try:
     import mediapipe as mp
 
-    MEDIAPIPE_AVAILABLE = True
+    # Vérifier que mp.solutions existe (peut être absent même si import réussit)
+    if hasattr(mp, "solutions"):
+        MEDIAPIPE_AVAILABLE = True
+    else:
+        MEDIAPIPE_AVAILABLE = False
+        mp = None
 except ImportError:
     MEDIAPIPE_AVAILABLE = False
+    mp = None
 
 # Import conditionnel DeepFace pour reconnaissance visage personnalisée
 create_face_recognition: Callable[[str, str], "BBIAPersonRecognition | None"] | None = (
