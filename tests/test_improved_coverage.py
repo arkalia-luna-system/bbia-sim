@@ -185,7 +185,8 @@ class TestSimulatorCoverage(unittest.TestCase):
 
         # Mock joint() pour retourner les joints mockés
         mock_model.joint.side_effect = lambda i: (
-            mock_joints[i] if isinstance(i, int) and 0 <= i < len(mock_joints)
+            mock_joints[i]
+            if isinstance(i, int) and 0 <= i < len(mock_joints)
             else next((j for j in mock_joints if j.name == i), mock_joint1)
         )
 

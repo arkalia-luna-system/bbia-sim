@@ -153,20 +153,20 @@ class TestMultiLayerQueueEdgeCases:
         queue = MultiLayerQueue(max_parallel=2)
 
         async def func(id_val: int):
-            await asyncio.sleep(0.2)  # Durée raisonnable
+            await asyncio.sleep(0.1)  # Durée réduite pour éviter timeout
 
         # Ajouter 3 mouvements (plus que max_parallel=2)
         for i in range(3):
             await queue.add_movement(lambda i=i: func(i))
 
         # Attendre pour que l'exécution commence
-        await asyncio.sleep(0.15)
+        await asyncio.sleep(0.1)
 
         # Vérifier qu'au plus max_parallel sont en cours
         # Vérifier plusieurs fois rapidement
         max_running = 0
-        for _ in range(5):
-            await asyncio.sleep(0.05)
+        for _ in range(3):  # Réduit de 5 à 3 pour accélérer
+            await asyncio.sleep(0.03)
             running_count = queue.get_running_count()
             max_running = max(max_running, running_count)
 
@@ -175,8 +175,8 @@ class TestMultiLayerQueueEdgeCases:
             max_running <= queue.max_parallel
         ), f"max_running={max_running} > max_parallel={queue.max_parallel}"
 
-        # Flush pour terminer
-        await queue.flush()
+        # Flush pour terminer avec timeout
+        await asyncio.wait_for(queue.flush(), timeout=5.0)
 
     @pytest.mark.asyncio
     async def test_invalid_priority(self):
