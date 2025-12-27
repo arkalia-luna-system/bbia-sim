@@ -159,10 +159,13 @@ class TestSimulatorCoverage(unittest.TestCase):
         self.assertIsNotNone(simulator.model)
 
     @pytest.mark.slow  # OPTIMISATION: Marquer comme slow car utilise mocks complexes
-    @patch("bbia_sim.sim.simulator.mujoco.MjModel")
+    @patch("bbia_sim.sim.simulator.apply_adaptive_timestep")
+    @patch("bbia_sim.sim.simulator.get_cached_mujoco_model")
     @patch("bbia_sim.sim.simulator.mujoco.MjData")
     @patch("bbia_sim.sim.simulator.Path.exists")
-    def test_get_available_joints(self, mock_exists, mock_mjdata, mock_mjmodel):
+    def test_get_available_joints(
+        self, mock_exists, mock_mjdata, mock_get_cached, mock_apply_timestep
+    ):
         """Test récupération des joints disponibles (optimisé, pas de chargement XML réel)."""
         from bbia_sim.sim.simulator import MuJoCoSimulator
 
@@ -178,9 +181,20 @@ class TestSimulatorCoverage(unittest.TestCase):
         mock_joint2.name = "joint2"
         mock_joint3 = MagicMock()
         mock_joint3.name = "joint3"
-        mock_model.jnt = [mock_joint1, mock_joint2, mock_joint3]
-        mock_mjmodel.from_xml_path.return_value = mock_model
+        mock_joints = [mock_joint1, mock_joint2, mock_joint3]
+
+        # Mock joint() pour retourner les joints mockés
+        mock_model.joint.side_effect = lambda i: (
+            mock_joints[i] if isinstance(i, int) and 0 <= i < len(mock_joints)
+            else next((j for j in mock_joints if j.name == i), mock_joint1)
+        )
+
+        # Mock get_cached_mujoco_model pour retourner le modèle mocké
+        mock_get_cached.return_value = mock_model
         mock_mjdata.return_value = MagicMock()
+
+        # Mock apply_adaptive_timestep pour éviter comparaisons avec MagicMock
+        mock_apply_timestep.return_value = None
 
         # Utiliser un chemin minimal (ne sera pas réellement chargé grâce au mock)
         simulator = MuJoCoSimulator(
