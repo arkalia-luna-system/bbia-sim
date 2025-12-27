@@ -125,6 +125,8 @@ MEDIAPIPE_POSE_AVAILABLE = False
 try:
     from .pose_detection import (
         MEDIAPIPE_POSE_AVAILABLE as _mediapipe_pose_available,
+    )
+    from .pose_detection import (
         create_pose_detector as _create_pose_detector_imported,
     )
 
