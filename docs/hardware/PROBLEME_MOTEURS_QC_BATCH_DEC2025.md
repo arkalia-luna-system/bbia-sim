@@ -109,6 +109,16 @@ Le SDK v1.2.4 va **automatiquement reflasher** les moteurs lors de :
   - Moteur 6 (stewart_6) - remplacement préventif (optionnel, QC 2542)
 - Informations de commande incluses : REACHYMINI-2213 (14 juillet 2025)
 
+**Email envoyé avec succès le 6 janvier 2026, 15h08** :
+- ✅ Email envoyé à **sales@pollen-robotics.com**
+- ✅ Demande complète pour les 6 moteurs (1, 2, 3, 4, 5, 6)
+- ✅ Documentation fournie (QC batches, SDK v1.2.4, reflash effectué)
+- ⏳ **En attente de réponse** de Pollen Robotics
+
+**Autres utilisateurs en attente aussi** :
+- **Hala** attend toujours sa résolution depuis le 2-3 janvier (problème motor 4)
+- **Plusieurs utilisateurs** sur Discord ont des problèmes similaires (batches QC 2542, 2543, 2544)
+
 **En attente** : Réponse de Pollen Robotics et réception des moteurs de remplacement
 
 ### **3. Remplacement préventif (recommandé)**
@@ -171,10 +181,11 @@ Si vous avez des moteurs QC 2542 (moteurs 5 et 6) :
 - **22 Décembre 2025** : Reflash effectué (tous les moteurs détectés)
 - **Décembre 2025** : Formulaires de remplacement remplis (moteurs 1, 2, 4) - **Aucune confirmation reçue**
 - **Décembre 2025** : SDK v1.2.4 annoncé avec reflash automatique
-- **6 Janvier 2026** : Email envoyé directement à Pollen Robotics (pas de réponse aux formulaires)
+- **6 Janvier 2026, 15h08** : Email envoyé avec succès à sales@pollen-robotics.com
   - Demande de remplacement pour moteurs 1, 2, 3, 4 (et 5, 6 en préventif)
   - Informations de commande : REACHYMINI-2213 (14 juillet 2025)
-  - **En attente de réponse**
+  - Email professionnel et complet avec tous les détails
+  - **En attente de réponse** (délai attendu : 24-48h)
 
 ---
 
