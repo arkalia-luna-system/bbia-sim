@@ -91,12 +91,25 @@ Le SDK v1.2.4 va **automatiquement reflasher** les moteurs lors de :
 
 ### **2. Remplacement des moteurs défectueux**
 
-**Formulaires remplis** :
+**Formulaires remplis** (Décembre 2025) :
 - ✅ Moteur 1 (QC 2543 - raide)
 - ✅ Moteur 2 (QC 2544 - raide + clignotement rouge)
 - ✅ Moteur 4 (QC 2544 - raide)
 
-**En attente** : Réception des moteurs de remplacement
+**⚠️ PROBLÈME** : Aucun email de confirmation reçu après les formulaires
+
+**Email envoyé le 6 janvier 2026** :
+- Contact direct avec Pollen Robotics
+- Demande de remplacement pour :
+  - Moteur 1 (stewart_1) - nouveau batch sain
+  - Moteur 2 (stewart_2) - nouveau batch sain
+  - Moteur 3 (stewart_3) - remplacement préventif (pour éviter de redémonter la tête)
+  - Moteur 4 (stewart_4) - nouveau batch sain
+  - Moteur 5 (stewart_5) - remplacement préventif (optionnel, QC 2542)
+  - Moteur 6 (stewart_6) - remplacement préventif (optionnel, QC 2542)
+- Informations de commande incluses : REACHYMINI-2213 (14 juillet 2025)
+
+**En attente** : Réponse de Pollen Robotics et réception des moteurs de remplacement
 
 ### **3. Remplacement préventif (recommandé)**
 
@@ -132,10 +145,23 @@ Si vous avez des moteurs QC 2542 (moteurs 5 et 6) :
 
 ## 🔗 **RESSOURCES**
 
-- **Formulaire de remplacement** : Google Form "Dynamixel motor replacement request"
+- **Formulaire de remplacement** : Google Form "Dynamixel motor replacement request" (https://forms.gle/JdhMzadeCnbynw7Q6)
+  - ⚠️ **Note** : Aucune confirmation automatique reçue après soumission
 - **SDK v1.2.4** : Mise à jour automatique via dashboard
-- **Support Pollen** : Contact via Discord #support
+- **Support Pollen** : 
+  - Contact via Discord #support
+  - Email direct (recommandé si pas de réponse aux formulaires)
 - **Documentation BBIA** : `docs/hardware/REACHY_MINI_SDK_v1.2.4.md`
+
+## 📧 **INFORMATIONS DE COMMANDE (pour référence)**
+
+- **Facture** : REACHYMINI-2213
+- **Date** : 14 juillet 2025
+- **Email** : siwekathalia@gmail.com
+- **Nom** : Siwek
+- **Adresse** : Rue Dieudonné Randaxhe 1, 4602 Cheratte, Belgique
+- **Téléphone** : +32 472 87 56 94
+- **Modèle** : Reachy Mini (with Onboard Compute and battery)
 
 ---
 
@@ -143,8 +169,12 @@ Si vous avez des moteurs QC 2542 (moteurs 5 et 6) :
 
 - **Décembre 2025** : Problème identifié par Pollen Robotics
 - **22 Décembre 2025** : Reflash effectué (tous les moteurs détectés)
-- **Décembre 2025** : Formulaires de remplacement remplis (moteurs 1, 2, 4)
+- **Décembre 2025** : Formulaires de remplacement remplis (moteurs 1, 2, 4) - **Aucune confirmation reçue**
 - **Décembre 2025** : SDK v1.2.4 annoncé avec reflash automatique
+- **6 Janvier 2026** : Email envoyé directement à Pollen Robotics (pas de réponse aux formulaires)
+  - Demande de remplacement pour moteurs 1, 2, 3, 4 (et 5, 6 en préventif)
+  - Informations de commande : REACHYMINI-2213 (14 juillet 2025)
+  - **En attente de réponse**
 
 ---
 
