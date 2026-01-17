@@ -17,6 +17,7 @@ import importlib.util
 import sys
 import time
 from pathlib import Path
+from typing import Any, cast
 
 # Ajouter le répertoire racine au path
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
@@ -35,13 +36,15 @@ try:
 except ImportError:
     try:
         # Fallback: import depuis le répertoire parent
-        import importlib.util
         scan_path = Path(__file__).parent / "scan_motors_baudrate.py"
         if scan_path.exists():
             spec = importlib.util.spec_from_file_location("scan_motors_baudrate", scan_path)
-            scan_module = importlib.util.module_from_spec(spec)
-            spec.loader.exec_module(scan_module)
-            diagnose_motors_baudrate = scan_module.diagnose_motors_baudrate
+            if spec is not None and spec.loader is not None:
+                scan_module = importlib.util.module_from_spec(spec)
+                spec.loader.exec_module(scan_module)
+                diagnose_motors_baudrate = scan_module.diagnose_motors_baudrate
+            else:
+                diagnose_motors_baudrate = None
         else:
             diagnose_motors_baudrate = None
     except Exception:
@@ -119,20 +122,30 @@ def check_connection() -> ReachyMini | None:
         return None
 
 
-def scan_motors() -> dict:
+def scan_motors() -> dict[str, Any]:
     """Scanne les moteurs pour détecter les problèmes de baudrate."""
     print_header("2️⃣ SCAN DES MOTEURS (BAUDRATE ET ID)")
 
     if diagnose_motors_baudrate:
         try:
             results = diagnose_motors_baudrate()
-            return results
+            return cast(dict[str, Any], results)
         except Exception as e:
             print(f"⚠️  Erreur lors du scan: {e}")
-            return {}
+            return {
+                "motors_1m": [],
+                "motors_57k": [],
+                "missing_motors": [],
+                "wrong_baudrate_motors": [],
+            }
 
     print("⚠️  Script de scan non disponible, utilisation de la méthode SDK")
-    return {}
+    return {
+        "motors_1m": [],
+        "motors_57k": [],
+        "missing_motors": [],
+        "wrong_baudrate_motors": [],
+    }
 
 
 def test_motor(robot: ReachyMini, motor_id: int, joint_name: str) -> MotorValidationResult:
@@ -150,7 +163,7 @@ def test_motor(robot: ReachyMini, motor_id: int, joint_name: str) -> MotorValida
 
         # Vérifier que le moteur répond
         try:
-            current_pos = joint.present_position
+            _ = joint.present_position  # Vérification que le moteur répond
             result.responds = True
         except Exception as e:
             result.errors.append(f"Le moteur ne répond pas: {e}")
@@ -248,7 +261,7 @@ def check_reflash_status(robot: ReachyMini) -> bool:
     return True
 
 
-def generate_report(results: dict[str, MotorValidationResult], scan_results: dict) -> None:
+def generate_report(results: dict[str, MotorValidationResult], scan_results: dict[str, Any]) -> None:
     """Génère un rapport complet."""
     print_header("📊 RAPPORT DE VALIDATION")
 
@@ -256,7 +269,7 @@ def generate_report(results: dict[str, MotorValidationResult], scan_results: dic
     print("-" * 70)
 
     all_valid = True
-    for joint_name, result in results.items():
+    for result in results.values():
         status = "✅" if result.is_valid() else "❌"
         print(f"{status} {result}")
         if not result.is_valid() and result.errors:
