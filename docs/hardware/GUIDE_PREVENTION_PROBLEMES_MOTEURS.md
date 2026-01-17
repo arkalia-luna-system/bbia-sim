@@ -270,8 +270,8 @@ Ce guide fournit une **checklist complète** et des **procédures de prévention
 
 ## 🔗 **RESSOURCES**
 
-- **Formulaire de remplacement** : https://forms.gle/JdhMzadeCnbynw7Q6
-- **Support Pollen** : sales@pollen-robotics.com
+- **Formulaire de remplacement** : <https://forms.gle/JdhMzadeCnbynw7Q6>
+- **Support Pollen** : <mailto:sales@pollen-robotics.com>
 - **Discord Pollen** : #support
 - **Documentation BBIA** :
   - `PROBLEME_MOTEURS_QC_BATCH_DEC2025.md`

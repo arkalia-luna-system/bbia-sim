@@ -1,8 +1,9 @@
 # Guide Complet - Réception et Utilisation Reachy Mini Wireless
 
-**Dernière mise à jour** : Décembre 2025  
+**Dernière mise à jour** : 17 Janvier 2026  
 **Version BBIA** : 1.4.0  
-**SDK Officiel** : v1.2.4 (Latest) - Voir `REACHY_MINI_SDK_v1.2.4.md` pour détails
+**SDK Officiel** : v1.2.11 (Latest - 14 janvier 2026) - Voir `ANALYSE_REPO_OFFICIEL_JANVIER_2026.md`  
+**SDK Actuel BBIA** : v1.2.4 - Voir `REACHY_MINI_SDK_v1.2.4.md` pour détails
 
 ## 📦 STATUT RÉCEPTION
 
@@ -16,11 +17,11 @@
 - ✅ **Bug décembre 2025** : Moteurs avec paramètres d'usine incorrects (ID=1, baudrate 57,600) → **Reflash effectué** le 22 déc 2025
 - ⚠️ **Tête penchée** : Correction logicielle effectuée, vérification câblage nécessaire
 - 🔴 **Moteurs défectueux (batch QC 2544/2543)** : **Problème matériel identifié par Pollen** → Voir `PROBLEME_MOTEURS_QC_BATCH_DEC2025.md` et `REACHY_MINI_SDK_v1.2.4.md`
-  - Moteur 1 (QC 2543) : Raide mécaniquement → **Remplacement en attente**
-  - Moteur 2 (QC 2544) : Raide + clignotement rouge → **Remplacement en attente**
-  - Moteur 4 (QC 2544) : Raide mécaniquement → **Remplacement en attente**
-  - **Cause** : Moteurs non flashés correctement à l'usine (SDK v1.2.4 va reflasher automatiquement)
-  - **Statut** : Formulaires de remplacement remplis, en attente des nouveaux moteurs
+  - Moteur 1 (QC 2543) : Raide mécaniquement → ✅ **3 moteurs reçus le 17 janvier 2026**
+  - Moteur 2 (QC 2544) : Raide + clignotement rouge → ✅ **En attente d'installation**
+  - Moteur 4 (QC 2544) : Raide mécaniquement → ✅ **Voir GUIDE_PREVENTION_PROBLEMES_MOTEURS.md**
+  - **Cause** : Moteurs non flashés correctement à l'usine (SDK v1.2.4+ va reflasher automatiquement)
+  - **Statut** : ✅ Moteurs reçus, installation à prévoir selon guide de prévention
 
 ---
 
@@ -78,7 +79,7 @@
 **SDK Reachy Mini** :
 - [x] ✅ Installé v1.2.3 : `pip install --upgrade "reachy-mini>=1.2.0"`
 - [x] ✅ Compatibilité BBIA vérifiée et validée
-- [ ] Vérifier changelog : https://github.com/pollen-robotics/reachy_mini/releases
+- [ ] Vérifier changelog : <https://github.com/pollen-robotics/reachy_mini/releases>
 
 **BBIA-SIM** :
 - [ ] Vérifier installation : `pip install -e .`
@@ -97,16 +98,16 @@
 ## Documentation
 
 **Guides officiels Pollen** :
-- Guide d'assemblage : https://github.com/pollen-robotics/reachy_mini/blob/develop/docs/platforms/reachy_mini/get_started.md
-- Guide interactif : https://huggingface.co/spaces/pollen-robotics/Reachy_Mini_Assembly_Guide
-- Documentation SDK : https://docs.pollen-robotics.com/
+- Guide d'assemblage : <https://github.com/pollen-robotics/reachy_mini/blob/develop/docs/platforms/reachy_mini/get_started.md>
+- Guide interactif : <https://huggingface.co/spaces/pollen-robotics/Reachy_Mini_Assembly_Guide>
+- Documentation SDK : <https://docs.pollen-robotics.com/>
 
 **Guides BBIA** :
 - `docs/guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md`
 - `docs/hardware/CHECKLIST_VALIDATION_HARDWARE_DECEMBRE_2025.md`
 - `docs/hardware/APP_REACHY_MINI_CONTROL.md`
 
-**Communauté** : https://discord.gg/pollen-robotics
+**Communauté** : <https://discord.gg/pollen-robotics>
 
 ---
 
@@ -356,10 +357,10 @@ python -c "import zenoh; s = zenoh.open(); s.close(); print('Zenoh OK')"
 
 ## Références
 
-- GitHub : https://github.com/pollen-robotics/reachy_mini
-- Documentation : https://docs.pollen-robotics.com/
-- Guide d'assemblage : https://huggingface.co/spaces/pollen-robotics/Reachy_Mini_Assembly_Guide
-- Discord : https://discord.gg/pollen-robotics
+- GitHub : <https://github.com/pollen-robotics/reachy_mini>
+- Documentation : <https://docs.pollen-robotics.com/>
+- Guide d'assemblage : <https://huggingface.co/spaces/pollen-robotics/Reachy_Mini_Assembly_Guide>
+- Discord : <https://discord.gg/pollen-robotics>
 
 ---
 

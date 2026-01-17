@@ -1,8 +1,10 @@
 # SDK Reachy Mini v1.2.4 - Documentation Complète
 
+**Dernière mise à jour** : 17 Janvier 2026  
 **Date** : Décembre 2025  
 **Version SDK** : v1.2.4  
-**Version précédente** : v1.2.3
+**Version précédente** : v1.2.3  
+**Dernière version disponible** : v1.2.11 (14 janvier 2026) - Voir `ANALYSE_REPO_OFFICIEL_JANVIER_2026.md`
 
 ---
 
