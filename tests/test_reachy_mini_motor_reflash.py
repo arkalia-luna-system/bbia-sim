@@ -20,11 +20,11 @@ class TestMotorReflash:
     def test_reflash_automatic_on_connection(self):
         """Test que le reflash automatique est documenté dans les logs."""
         backend = ReachyMiniBackend(use_sim=True)
-        
+
         # En mode simulation, le reflash ne se fait pas vraiment
         # mais on vérifie que le code est prêt
         backend.connect()
-        
+
         # Vérifier que le backend est en mode simulation
         assert backend.use_sim is True
         # En mode simulation, is_connected peut être True ou False selon l'implémentation
