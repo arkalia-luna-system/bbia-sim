@@ -119,7 +119,10 @@ Le SDK v1.2.4 va **automatiquement reflasher** les moteurs lors de :
 - **Hala** attend toujours sa résolution depuis le 2-3 janvier (problème motor 4)
 - **Plusieurs utilisateurs** sur Discord ont des problèmes similaires (batches QC 2542, 2543, 2544)
 
-**En attente** : Réponse de Pollen Robotics et réception des moteurs de remplacement
+**✅ MOTEURS REÇUS** : **17 Janvier 2026**
+- ✅ **3 moteurs reçus** (moteurs 1, 2, 4)
+- 📦 **Statut** : Moteurs reçus, en attente d'installation et de tests
+- ⏳ **Prochaines étapes** : Installation des moteurs, tests unitaires, tests globaux
 
 ### **3. Remplacement préventif (recommandé)**
 
@@ -185,7 +188,9 @@ Si vous avez des moteurs QC 2542 (moteurs 5 et 6) :
   - Demande de remplacement pour moteurs 1, 2, 3, 4 (et 5, 6 en préventif)
   - Informations de commande : REACHYMINI-2213 (14 juillet 2025)
   - Email professionnel et complet avec tous les détails
-  - **En attente de réponse** (délai attendu : 24-48h)
+- **17 Janvier 2026** : ✅ **3 moteurs reçus** (moteurs 1, 2, 4)
+  - Moteurs de remplacement livrés
+  - En attente d'installation et de tests
 
 ---
 

@@ -1,6 +1,6 @@
 # 📧 Suivi Communication avec Pollen Robotics
 
-**Dernière mise à jour** : 6 Janvier 2026, 15h08
+**Dernière mise à jour** : 17 Janvier 2026
 
 ---
 
@@ -71,8 +71,10 @@
 
 - **6 Janvier 2026, 15h08** : ✅ Email envoyé à sales@pollen-robotics.com
 - **7-8 Janvier 2026** : Réponse attendue de Pollen (délai habituel : 24-48h)
-- **Si réponse positive** : Expédition des moteurs sous 1-2 semaines
-- **Livraison en Belgique** : Généralement 3-5 jours ouvrés depuis la France
+- **17 Janvier 2026** : ✅ **3 MOTEURS REÇUS** (moteurs 1, 2, 4)
+  - Livraison effectuée en Belgique
+  - Délai total : 11 jours (6 janvier → 17 janvier)
+  - **Prochaines étapes** : Installation et tests
 
 ---
 
@@ -132,7 +134,8 @@
 ✅ **Email envoyé** à sales@pollen-robotics.com (15h08)  
 ✅ **Demande complète** pour les 6 moteurs (1, 2, 3, 4, 5, 6)  
 ✅ **Documentation fournie** (QC batches, SDK v1.2.4, reflash effectué)  
-⏳ **En attente** de réponse de Pollen
+✅ **3 MOTEURS REÇUS** le 17 janvier 2026 (moteurs 1, 2, 4)  
+⏳ **En attente** : Installation et tests des nouveaux moteurs
 
 **Autres utilisateurs en attente aussi** :
 - **Hala** attend toujours sa résolution depuis le 2-3 janvier (problème motor 4)
