@@ -74,7 +74,7 @@
 ### **Commits liés aux moteurs (décembre 2025 - janvier 2026)**
 
 | Commit | Description | Statut |
-|--------|-------------|--------|
+| ------ | ----------- | ------ |
 | `1c09b712` | Update motors_diagnosis.md | ✅ Intégré |
 | `bd6fb83a` | Add pictures to motors_diagnosis.md | ✅ Intégré |
 | `26c71ee0` | Motor diagnosis page using testbench app | ✅ Intégré |
@@ -98,17 +98,20 @@
 ### **1. Scripts de diagnostic**
 
 #### **`examples/reachy_mini/scan_motors_baudrate.py`**
+
 - ✅ **Disponible** dans le repo officiel
 - Scan automatique des moteurs (baudrate et ID)
 - Détection des moteurs mal configurés
 - **Statut** : Déjà documenté dans `ANALYSE_REPO_OFFICIEL_JANVIER_2026.md`
 
 #### **`examples/reachy_mini/diagnose_and_fix_motor_ssh.py`**
+
 - ✅ **Disponible** dans le repo officiel
 - Diagnostic et correction via SSH
 - **Statut** : Déjà documenté
 
 #### **`tools/setup_motor.py`**
+
 - ✅ **Disponible** dans le repo officiel
 - Configuration manuelle d'un moteur
 - Support des paramètres d'usine (ID=1, baudrate=57600)
@@ -117,6 +120,7 @@
 ### **2. Outils de reflash**
 
 #### **`tools/reflash_motor_id.py`** (si existe)
+
 - ✅ **Disponible** via commande `reachy-mini-reflash-motors`
 - Reflash d'un moteur spécifique par ID
 - **Statut** : Déjà documenté
@@ -124,6 +128,7 @@
 ### **3. API de diagnostic**
 
 #### **`src/reachy_mini/daemon/app/routers/motors.py`**
+
 - ✅ **Disponible** dans SDK v1.2.4+
 - Endpoints `/api/motors/status` et `/api/motors/set_mode/{mode}`
 - **Statut** : Déjà intégré dans BBIA (voir `src/bbia_sim/daemon/app/routers/motors.py`)
@@ -135,6 +140,7 @@
 ### **1. Page de diagnostic moteurs**
 
 #### **`docs/platforms/reachy_mini/motors_diagnosis.md`**
+
 - ✅ **Disponible** dans develop
 - ⚠️ **Supprimée** dans main (mais toujours dans develop)
 - Page de diagnostic avec images
@@ -144,6 +150,7 @@
 ### **2. Documentation troubleshooting**
 
 #### **`docs/troubleshooting.md`**
+
 - ✅ **Disponible** et mise à jour
 - Section sur les moteurs
 - Références aux scripts de scan
@@ -152,6 +159,7 @@
 ### **3. Guide de reflash RPi**
 
 #### **`docs/platforms/reachy_mini/reflash_the_rpi_ISO.md`**
+
 - ✅ **Disponible** et mis à jour
 - Support macOS ajouté
 - **Statut** : Déjà documenté
@@ -163,6 +171,7 @@
 ### **develop vs main**
 
 **Différences trouvées** :
+
 - `docs/platforms/reachy_mini/motors_diagnosis.md` : **Supprimée dans main** mais **disponible dans develop**
 - Autres fichiers : Identiques
 
@@ -183,14 +192,17 @@
 ### **Ce qui est disponible dans SDK v1.2.11 mais pas encore utilisé**
 
 - [ ] ⏳ **Page de diagnostic moteurs** dans le dashboard (app testbench)
+
   - **Action** : Utiliser après mise à jour SDK v1.2.11
   - **Priorité** : Faible (déjà des outils de diagnostic dans BBIA)
 
 - [ ] ⏳ **Scripts de scan automatique** améliorés
+
   - **Action** : Tester après mise à jour SDK v1.2.11
   - **Priorité** : Faible (déjà des scripts équivalents dans BBIA)
 
 - [ ] ⏳ **Documentation troubleshooting** mise à jour
+
   - **Action** : Consulter après mise à jour SDK v1.2.11
   - **Priorité** : Faible (déjà consultée)
 
@@ -246,11 +258,13 @@
 ### **Rien n'a été loupé !** 🎉
 
 **Tout ce qui est important est déjà** :
+
 - ✅ **Documenté** dans vos fichiers MD
 - ✅ **Intégré** dans BBIA (reflash, diagnostic, tests)
 - ✅ **Disponible** dans SDK v1.2.4+ (que vous avez)
 
 **Les seules choses "nouvelles" dans v1.2.11 sont** :
+
 - ⏳ Page de diagnostic moteurs dans dashboard (nice-to-have, pas critique)
 - ⏳ Scripts de scan améliorés (déjà équivalents dans BBIA)
 - ⏳ Documentation troubleshooting mise à jour (déjà consultée)

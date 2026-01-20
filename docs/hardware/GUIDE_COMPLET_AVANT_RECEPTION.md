@@ -29,6 +29,7 @@
 ## Spécificités Version Wireless
 
 **Avantages** :
+
 - Connexion Wi-Fi (pas de câble USB)
 - Batterie intégrée
 - Raspberry Pi 5 intégré
@@ -37,18 +38,20 @@
 **Différences vs Version Lite** :
 
 | Aspect | Wireless | Lite |
-|--------|----------|------|
+| ------ | -------- | ---- |
 | Connexion | Wi-Fi | USB |
 | Alimentation | Batterie + USB-C | USB uniquement |
 | Processeur | Raspberry Pi 5 intégré | Externe |
 | Configuration | Wi-Fi requise | Plug & Play |
 
 **Configuration Wi-Fi requise** :
+
 - Robot et ordinateur sur le même réseau Wi-Fi
 - Ports 8080 et 8081 accessibles (firewall)
 - Adresse IP du robot à noter lors du premier démarrage
 
 **À faire lors de la réception** :
+
 - [ ] Configurer Wi-Fi (guide d'assemblage)
 - [ ] Noter l'adresse IP
 - [ ] Tester : `ping <IP_ROBOT>`
@@ -58,6 +61,7 @@
 ## Matériel et Outils
 
 **Inclus dans le kit** :
+
 - Robot Reachy Mini (composants mécaniques)
 - Raspberry Pi 5 (intégré, OS pré-installé)
 - Carte SD 64GB+ (OS pré-installé) - voir `CARTE_SD_REACHY_MINI.md`
@@ -67,7 +71,7 @@
 **À vérifier/prévoir** :
 
 | Matériel | Statut | Si non inclus | Prix |
-|----------|--------|---------------|------|
+| -------- | ------ | ------------- | ---- |
 | Carte SD | Incluse | Voir `CARTE_SD_REACHY_MINI.md` | - |
 | Chargeur USB-C (5V/3A) | À vérifier | Amazon, Fnac | 10-15€ |
 | Tournevis (petite taille) | Obligatoire | Quincaillerie, Amazon | 5-15€ |
@@ -78,16 +82,19 @@
 ## Logiciel
 
 **SDK Reachy Mini** :
+
 - [x] ✅ Installé v1.2.4 : `pip install --upgrade "reachy-mini>=1.2.0"`
 - [x] ✅ Compatibilité BBIA vérifiée et validée
 - [ ] Vérifier changelog : <https://github.com/pollen-robotics/reachy_mini/releases>
 - **Note** : Pour les fonctionnalités IA avancées (vision, LLM), utiliser `pip install "reachy-mini[full]"` (inclut transformers, tqdm, etc.)
 
 **BBIA-SIM** :
+
 - [ ] Vérifier installation : `pip install -e .`
 - [ ] Tester simulation : `python examples/reachy_mini/minimal_demo.py`
 
 **Configuration réseau (Wireless)** :
+
 - [ ] Wi-Fi actif, SSID/mot de passe notés
 - [ ] Ports 8080 et 8081 ouverts (firewall)
 - [ ] Configuration BBIA : `localhost_only=False` (crucial pour Wireless)
@@ -100,11 +107,13 @@
 ## Documentation
 
 **Guides officiels Pollen** :
+
 - Guide d'assemblage : <https://github.com/pollen-robotics/reachy_mini/blob/develop/docs/platforms/reachy_mini/get_started.md>
 - Guide interactif : <https://huggingface.co/spaces/pollen-robotics/Reachy_Mini_Assembly_Guide>
 - Documentation SDK : <https://docs.pollen-robotics.com/>
 
 **Guides BBIA** :
+
 - `docs/guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md`
 - `docs/hardware/CHECKLIST_VALIDATION_HARDWARE_DECEMBRE_2025.md`
 - `docs/hardware/APP_REACHY_MINI_CONTROL.md`
@@ -127,12 +136,14 @@
 **BBIA utilise** : v1.2.4 ⚠️ (7 versions de retard, mise à jour recommandée après installation moteurs)
 
 **Statut** :
+
 - [x] ✅ Version installée : v1.2.4
 - [x] ✅ Compatibilité : Testée et validée
 - [x] ✅ Toutes les fonctionnalités SDK disponibles
 - [ ] ⏳ Mise à jour vers v1.2.11 recommandée après installation des nouveaux moteurs
 
 **Nouvelles fonctionnalités v1.2.5 → v1.2.11** :
+
 - Intégration Hugging Face pour applications IA
 - Applications : Hand Tracking, LLM Companion, Dance Dance Mini
 - Firmware moteurs basé sur Rust (meilleure précision)
@@ -145,20 +156,24 @@
 ## Plan (15-18 Décembre)
 
 **15 Décembre** :
+
 - [ ] Commander chargeur USB-C si nécessaire
 - [ ] Lire guide d'assemblage
 
 **16 Décembre** :
+
 - [ ] Installer SDK v1.2.0
 - [ ] Tester compatibilité BBIA
 - [ ] Rejoindre Discord Pollen
 
 **17 Décembre** :
+
 - [ ] Tester simulation BBIA
 - [ ] Vérifier configuration Wi-Fi
 - [ ] Préparer espace de travail
 
 **18 Décembre - Réception** :
+
 - [ ] Réception colis (vérifier contenu, photographier)
 - [ ] Assemblage (2-3 heures, suivre guide)
 - [ ] Premier démarrage (voir section détaillée ci-dessous)
@@ -170,6 +185,7 @@
 ### Checklist de Connexion
 
 **Avant de commencer** :
+
 - [ ] Robot assemblé et allumé (LED verte)
 - [ ] Robot connecté au WiFi (même réseau que votre ordinateur)
 - [ ] IP du robot identifiée (voir méthodes ci-dessous)
@@ -178,6 +194,7 @@
 ### Étape 1 : Identifier l'IP du Robot
 
 **Méthode 1 : Via Dashboard Robot**
+
 ```bash
 # Le robot expose un hotspot WiFi temporaire au démarrage
 # Connectez-vous au réseau "Reachy-Mini-XXXX"
@@ -186,6 +203,7 @@
 ```
 
 **Méthode 2 : Scan Réseau**
+
 ```bash
 # Sur macOS/Linux
 nmap -sn 192.168.1.0/24 | grep -B 2 "Reachy"
@@ -194,6 +212,7 @@ nmap -sn 192.168.1.0/24 | grep -B 2 "Reachy"
 ```
 
 **Méthode 3 : Via Router**
+
 - Accédez à l'interface de votre routeur
 - Cherchez l'appareil "Reachy-Mini" ou "pollen"
 - Notez l'IP assignée
@@ -214,6 +233,7 @@ curl http://<IP_ROBOT>:8000/api/state/full
 ### Étape 3 : Lancer le Backend Zenoh
 
 **Option A : Via Dashboard (Recommandé)**
+
 ```bash
 # Ouvrir dans navigateur
 http://<IP_ROBOT>:8000
@@ -222,6 +242,7 @@ http://<IP_ROBOT>:8000
 ```
 
 **Option B : Via SSH (si accès disponible)**
+
 ```bash
 # Se connecter au robot
 ssh pollen@<IP_ROBOT>
@@ -231,6 +252,7 @@ reachy-mini-daemon
 ```
 
 **Option C : Depuis votre Mac (si configuré)**
+
 ```bash
 # Le daemon peut tourner sur votre Mac et se connecter au robot
 # Voir docs/guides/DEMARRAGE_DAEMON.md
@@ -238,7 +260,8 @@ reachy-mini-daemon
 
 ### Étape 4 : Test Connexion SDK
 
-**Test SDK Officiel** :
+**Test SDK Officiel**
+
 ```python
 from reachy_mini import ReachyMini
 from reachy_mini.utils import create_head_pose
@@ -262,7 +285,8 @@ with robot:
     )
 ```
 
-**Test BBIA-SIM** :
+**Test BBIA-SIM**
+
 ```python
 from bbia_sim.robot_factory import RobotFactory
 
@@ -316,6 +340,7 @@ print("✅ Tests complets réussis")
 ### Troubleshooting Commun
 
 **Problème : Timeout de connexion**
+
 ```python
 # Solution 1: Augmenter timeout
 robot = ReachyMini(localhost_only=False, timeout=60.0)
@@ -328,6 +353,7 @@ robot = ReachyMini(localhost_only=False, timeout=60.0)
 ```
 
 **Problème : Robot non trouvé**
+
 ```python
 # Utiliser mode auto avec fallback
 robot = RobotFactory.create_backend('auto')
@@ -335,6 +361,7 @@ robot = RobotFactory.create_backend('auto')
 ```
 
 **Problème : Erreur Zenoh**
+
 ```bash
 # Vérifier que Zenoh est installé
 pip show eclipse-zenoh
@@ -373,5 +400,5 @@ python -c "import zenoh; s = zenoh.open(); s.close(); print('Zenoh OK')"
 
 ---
 
-**Dernière mise à jour** : 22 Décembre 2025
+**Dernière mise à jour** : 20 Janvier 2026
 
