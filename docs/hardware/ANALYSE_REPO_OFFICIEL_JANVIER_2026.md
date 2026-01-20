@@ -1,8 +1,10 @@
 # 🔍 Analyse Complète du Repo Officiel Reachy Mini - Janvier 2026
 
-**Date d'analyse** : 17 Janvier 2026  
+**Date d'analyse** : 20 Janvier 2026  
+**Dernière vérification** : 20 Janvier 2026  
 **Repo analysé** : https://github.com/pollen-robotics/reachy_mini  
-**Dernière version** : v1.2.11 (14 janvier 2026)
+**Dernière version** : v1.2.11 (14 janvier 2026)  
+**Note** : Aucune nouvelle version depuis le 17 janvier 2026
 
 ---
 
@@ -229,3 +231,29 @@
 ---
 
 **En résumé** : Vous avez 7 versions de retard. La dernière version (v1.2.11) contient de nombreuses améliorations pour les moteurs. Mise à jour recommandée après installation des nouveaux moteurs ! 🚀
+
+---
+
+## 📅 **MISE À JOUR 20 JANVIER 2026**
+
+**Vérification complète effectuée** : 20 Janvier 2026
+
+### **Résultat de la vérification**
+
+✅ **Aucune nouvelle version SDK** depuis le 17 janvier 2026  
+✅ **Aucun commit majeur** lié aux moteurs depuis le 17 janvier 2026  
+✅ **Toutes les branches analysées** : develop, main, et branches liées aux moteurs  
+✅ **Toutes les releases vérifiées** : v1.2.11 reste la dernière version stable
+
+### **Nouvelles informations identifiées (non liées aux moteurs)**
+
+**Applications et IA** :
+- Intégration Hugging Face Spaces pour déploiement d'applications
+- Nouvelles applications : Hand Tracking, LLM Companion, Dance Dance Mini
+- Installation complète : `pip install "reachy-mini[full]"` pour dépendances IA (transformers, tqdm, etc.)
+
+**Firmware** :
+- Firmware moteurs basé sur Rust (meilleure précision pour plateforme Stewart 6-DDL)
+- Gestion temps réel améliorée
+
+**Note** : Ces informations sont déjà intégrées dans le SDK v1.2.11 et n'affectent pas directement les moteurs ou leur installation.

@@ -1,9 +1,10 @@
 # Guide Complet - Réception et Utilisation Reachy Mini Wireless
 
-**Dernière mise à jour** : 17 Janvier 2026  
+**Dernière mise à jour** : 20 Janvier 2026  
 **Version BBIA** : 1.4.0  
 **SDK Officiel** : v1.2.11 (Latest - 14 janvier 2026) - Voir `ANALYSE_REPO_OFFICIEL_JANVIER_2026.md`  
-**SDK Actuel BBIA** : v1.2.4 - Voir `REACHY_MINI_SDK_v1.2.4.md` pour détails
+**SDK Actuel BBIA** : v1.2.4 - Voir `REACHY_MINI_SDK_v1.2.4.md` pour détails  
+**Note** : Aucune nouvelle version SDK depuis le 17 janvier 2026
 
 ## 📦 STATUT RÉCEPTION
 
@@ -77,9 +78,10 @@
 ## Logiciel
 
 **SDK Reachy Mini** :
-- [x] ✅ Installé v1.2.3 : `pip install --upgrade "reachy-mini>=1.2.0"`
+- [x] ✅ Installé v1.2.4 : `pip install --upgrade "reachy-mini>=1.2.0"`
 - [x] ✅ Compatibilité BBIA vérifiée et validée
 - [ ] Vérifier changelog : <https://github.com/pollen-robotics/reachy_mini/releases>
+- **Note** : Pour les fonctionnalités IA avancées (vision, LLM), utiliser `pip install "reachy-mini[full]"` (inclut transformers, tqdm, etc.)
 
 **BBIA-SIM** :
 - [ ] Vérifier installation : `pip install -e .`
@@ -121,13 +123,20 @@
 
 ## SDK Officiel
 
-**Dernière version** : v1.2.3 (Latest - 22 Décembre 2025)  
-**BBIA utilise** : v1.2.3 ✅ (à jour)
+**Dernière version** : v1.2.11 (Latest - 14 janvier 2026)  
+**BBIA utilise** : v1.2.4 ⚠️ (7 versions de retard, mise à jour recommandée après installation moteurs)
 
 **Statut** :
-- [x] ✅ Version installée : v1.2.3 (dernière version disponible)
+- [x] ✅ Version installée : v1.2.4
 - [x] ✅ Compatibilité : Testée et validée
 - [x] ✅ Toutes les fonctionnalités SDK disponibles
+- [ ] ⏳ Mise à jour vers v1.2.11 recommandée après installation des nouveaux moteurs
+
+**Nouvelles fonctionnalités v1.2.5 → v1.2.11** :
+- Intégration Hugging Face pour applications IA
+- Applications : Hand Tracking, LLM Companion, Dance Dance Mini
+- Firmware moteurs basé sur Rust (meilleure précision)
+- Installation complète : `pip install "reachy-mini[full]"` pour dépendances IA
 
 **Comparaison** : BBIA ~90-95% de parité + innovations (12 émotions vs 6, vision/audio avancés, RobotAPI unifié)
 
