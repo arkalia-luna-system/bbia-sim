@@ -205,7 +205,7 @@ Ce guide fournit une **checklist complète** et des **procédures de prévention
 5. **Contacter Pollen** :
    - Remplir le formulaire de remplacement
    - Envoyer un email avec toutes les informations
-   - Mentionner le numéro de facture (REACHYMINI-2213)
+   - Mentionner le numéro de facture (REACHYMINI-XXXX)
 
 ### **2. Diagnostic**
 

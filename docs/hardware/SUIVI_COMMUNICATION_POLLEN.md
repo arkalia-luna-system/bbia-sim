@@ -11,11 +11,11 @@
 **Date** : 6 Janvier 2026, 15h08  
 **Destinataire** : sales@pollen-robotics.com  
 **Statut** : ✅ Envoyé avec succès  
-**Objet** : Demande de remplacement moteurs - REACHYMINI-2213
+**Objet** : Demande de remplacement moteurs - REACHYMINI-XXXX
 
 **Contenu de l'email** :
 - Situation complète (formulaires remplis sans confirmation)
-- Informations de commande (REACHYMINI-2213, 14 juillet 2025)
+- Informations de commande (REACHYMINI-XXXX, [Date])
 - Liste détaillée des moteurs défectueux (1, 2, 4)
 - Demande de remplacement pour 6 moteurs (1, 2, 3, 4, 5, 6)
 - Justification remplacement préventif (moteurs 3, 5, 6)
@@ -83,12 +83,14 @@
 
 ## 📧 **INFORMATIONS DE COMMANDE**
 
-- **Facture** : REACHYMINI-2213
-- **Date** : 14 juillet 2025
-- **Email** : siwekathalia@gmail.com
-- **Nom** : Siwek
-- **Adresse** : Rue Dieudonné Randaxhe 1, 4602 Cheratte, Belgique
-- **Téléphone** : +32 472 87 56 94
+> ⚠️ **Note de sécurité** : Les informations personnelles ont été anonymisées pour la version publique.
+
+- **Facture** : REACHYMINI-XXXX (anonymisé)
+- **Date** : [Date de commande]
+- **Email** : [email@example.com] (anonymisé)
+- **Nom** : [Nom] (anonymisé)
+- **Adresse** : [Ville, Pays] (anonymisé)
+- **Téléphone** : [Numéro] (anonymisé)
 - **Modèle** : Reachy Mini (with Onboard Compute and battery)
 
 ---
@@ -120,7 +122,7 @@
 ### **Si pas de réponse sous 48h**
 
 1. **Poster sur Discord #support** en mentionnant :
-   - Numéro de facture REACHYMINI-2213
+   - Numéro de facture REACHYMINI-XXXX
    - Que vous avez envoyé un email sans réponse
    - Mentionner @Pollen Team ou @Caroline
 

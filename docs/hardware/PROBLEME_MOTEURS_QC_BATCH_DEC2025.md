@@ -107,7 +107,7 @@ Le SDK v1.2.4 va **automatiquement reflasher** les moteurs lors de :
   - Moteur 4 (stewart_4) - nouveau batch sain
   - Moteur 5 (stewart_5) - remplacement préventif (optionnel, QC 2542)
   - Moteur 6 (stewart_6) - remplacement préventif (optionnel, QC 2542)
-- Informations de commande incluses : REACHYMINI-2213 (14 juillet 2025)
+- Informations de commande incluses : REACHYMINI-XXXX ([Date])
 
 **Email envoyé avec succès le 6 janvier 2026, 15h08** :
 - ✅ Email envoyé à **sales@pollen-robotics.com**
@@ -171,12 +171,14 @@ Si vous avez des moteurs QC 2542 (moteurs 5 et 6) :
 
 ## 📧 **INFORMATIONS DE COMMANDE (pour référence)**
 
-- **Facture** : REACHYMINI-2213
-- **Date** : 14 juillet 2025
-- **Email** : siwekathalia@gmail.com
-- **Nom** : Siwek
-- **Adresse** : Rue Dieudonné Randaxhe 1, 4602 Cheratte, Belgique
-- **Téléphone** : +32 472 87 56 94
+> ⚠️ **Note de sécurité** : Les informations personnelles ont été anonymisées pour la version publique.
+
+- **Facture** : REACHYMINI-XXXX (anonymisé)
+- **Date** : [Date de commande]
+- **Email** : [email@example.com] (anonymisé)
+- **Nom** : [Nom] (anonymisé)
+- **Adresse** : [Ville, Pays] (anonymisé)
+- **Téléphone** : [Numéro] (anonymisé)
 - **Modèle** : Reachy Mini (with Onboard Compute and battery)
 
 ---
@@ -189,7 +191,7 @@ Si vous avez des moteurs QC 2542 (moteurs 5 et 6) :
 - **Décembre 2025** : SDK v1.2.4 annoncé avec reflash automatique
 - **6 Janvier 2026, 15h08** : Email envoyé avec succès à sales@pollen-robotics.com
   - Demande de remplacement pour moteurs 1, 2, 3, 4 (et 5, 6 en préventif)
-  - Informations de commande : REACHYMINI-2213 (14 juillet 2025)
+  - Informations de commande : REACHYMINI-XXXX ([Date])
   - Email professionnel et complet avec tous les détails
 - **17 Janvier 2026** : ✅ **3 moteurs reçus** (moteurs 1, 2, 4)
   - Moteurs de remplacement livrés
