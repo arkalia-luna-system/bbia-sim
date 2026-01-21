@@ -12,11 +12,11 @@
 ### ✅ Améliorations Appliquées
 
 1. **Messages de Réveil (WakeUpBehavior)** - ✅ COMPLÉTÉ
-   - **Avant :** "Je suis là, Athalia." (message unique, robotique)
+   - **Avant :** "Je suis là, [Nom utilisateur]." (message unique, robotique)
    - **Après :** 8 variantes personnelles et expressives :
-     - "Bonjour Athalia ! Je suis là, prêt à interagir avec vous."
+     - "Bonjour [Nom utilisateur] ! Je suis là, prêt à interagir avec vous."
      - "Salut ! BBIA est réveillé et prêt à discuter !"
-     - "Coucou Athalia ! Content de me réveiller à vos côtés."
+     - "Coucou [Nom utilisateur] ! Content de me réveiller à vos côtés."
      - Et 5 autres variantes...
    - **Impact :** Réponses plus naturelles, moins répétitives
 
