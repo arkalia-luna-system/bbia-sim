@@ -28,7 +28,8 @@ class TestHeadlessDuration:
         mock_mujoco.mj_step.side_effect = lambda m, d: time.sleep(0.0001)
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
-            f.write("""<?xml version="1.0"?>
+            f.write(
+                """<?xml version="1.0"?>
 <mujoco model="minimal">
   <worldbody>
     <geom name="floor" type="plane" size="1 1 0.1"/>
@@ -36,7 +37,8 @@ class TestHeadlessDuration:
       <geom name="box" type="box" size="0.1 0.1 0.1"/>
     </body>
   </worldbody>
-</mujoco>""")
+</mujoco>"""
+            )
             temp_model = f.name
 
         try:
@@ -68,12 +70,14 @@ class TestHeadlessDuration:
         )  # Pas de sleep pour test rapide
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
-            f.write("""<?xml version="1.0"?>
+            f.write(
+                """<?xml version="1.0"?>
 <mujoco model="minimal">
   <worldbody>
     <geom name="floor" type="plane" size="1 1 0.1"/>
   </worldbody>
-</mujoco>""")
+</mujoco>"""
+            )
             temp_model = f.name
 
         try:
@@ -104,12 +108,14 @@ class TestHeadlessDuration:
         )  # Pas de sleep pour test rapide
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
-            f.write("""<?xml version="1.0"?>
+            f.write(
+                """<?xml version="1.0"?>
 <mujoco model="minimal">
   <worldbody>
     <geom name="floor" type="plane" size="1 1 0.1"/>
   </worldbody>
-</mujoco>""")
+</mujoco>"""
+            )
             temp_model = f.name
 
         try:

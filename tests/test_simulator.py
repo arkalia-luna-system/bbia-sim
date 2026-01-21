@@ -29,13 +29,15 @@ class TestMuJoCoSimulator:
 
         # Créer un modèle MJCF temporaire valide
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
-            f.write("""<?xml version="1.0"?>
+            f.write(
+                """<?xml version="1.0"?>
 <mujoco model="test">
   <worldbody>
     <light pos="0 0 1" diffuse="0.5 0.5 0.5"/>
     <geom name="floor" type="plane" size="1 1 0.1"/>
   </worldbody>
-</mujoco>""")
+</mujoco>"""
+            )
             temp_model = f.name
 
         try:
@@ -89,13 +91,15 @@ class TestMuJoCoSimulator:
 
         # Créer modèle temporaire
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
-            f.write("""<?xml version="1.0"?>
+            f.write(
+                """<?xml version="1.0"?>
 <mujoco model="test">
   <worldbody>
     <light pos="0 0 1" diffuse="0.5 0.5 0.5"/>
     <geom name="floor" type="plane" size="1 1 0.1"/>
   </worldbody>
-</mujoco>""")
+</mujoco>"""
+            )
             temp_model = f.name
 
         try:
@@ -153,12 +157,14 @@ class TestMuJoCoSimulator:
         mock_mujoco.MjData.return_value = mock_data
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
-            f.write("""<?xml version="1.0"?>
+            f.write(
+                """<?xml version="1.0"?>
 <mujoco model="test">
   <worldbody>
     <geom name="floor" type="plane" size="1 1 0.1"/>
   </worldbody>
-</mujoco>""")
+</mujoco>"""
+            )
             temp_model = f.name
 
         try:
@@ -195,12 +201,14 @@ class TestMuJoCoSimulator:
         mock_mujoco.MjData.return_value = mock_data
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
-            f.write("""<?xml version="1.0"?>
+            f.write(
+                """<?xml version="1.0"?>
 <mujoco model="test">
   <worldbody>
     <geom name="floor" type="plane" size="1 1 0.1"/>
   </worldbody>
-</mujoco>""")
+</mujoco>"""
+            )
             temp_model = f.name
 
         try:
@@ -247,12 +255,14 @@ class TestMuJoCoSimulator:
         mock_viewer.close = Mock()
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
-            f.write("""<?xml version="1.0"?>
+            f.write(
+                """<?xml version="1.0"?>
 <mujoco model="test">
   <worldbody>
     <geom name="floor" type="plane" size="1 1 0.1"/>
   </worldbody>
-</mujoco>""")
+</mujoco>"""
+            )
             temp_model = f.name
 
         try:
@@ -285,12 +295,14 @@ class TestMuJoCoSimulator:
         mock_mujoco.MjData.return_value = mock_data
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
-            f.write("""<?xml version="1.0"?>
+            f.write(
+                """<?xml version="1.0"?>
 <mujoco model="test">
   <worldbody>
     <geom name="floor" type="plane" size="1 1 0.1"/>
   </worldbody>
-</mujoco>""")
+</mujoco>"""
+            )
             temp_model = f.name
 
         try:
@@ -325,12 +337,14 @@ class TestMuJoCoSimulator:
         mock_viewer.update_model = Mock()
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
-            f.write("""<?xml version="1.0"?>
+            f.write(
+                """<?xml version="1.0"?>
 <mujoco model="test">
   <worldbody>
     <geom name="floor" type="plane" size="1 1 0.1"/>
   </worldbody>
-</mujoco>""")
+</mujoco>"""
+            )
             temp_model = f.name
 
         try:
@@ -341,12 +355,14 @@ class TestMuJoCoSimulator:
             with tempfile.NamedTemporaryFile(
                 mode="w", suffix=".xml", delete=False
             ) as scene_f:
-                scene_f.write("""<?xml version="1.0"?>
+                scene_f.write(
+                    """<?xml version="1.0"?>
 <mujoco model="scene">
   <worldbody>
     <geom name="floor" type="plane" size="2 2 0.1"/>
   </worldbody>
-</mujoco>""")
+</mujoco>"""
+                )
                 scene_path = scene_f.name
 
             try:
@@ -379,12 +395,14 @@ class TestMuJoCoSimulator:
         mock_mujoco.MjData.return_value = mock_data
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
-            f.write("""<?xml version="1.0"?>
+            f.write(
+                """<?xml version="1.0"?>
 <mujoco model="test">
   <worldbody>
     <geom name="floor" type="plane" size="1 1 0.1"/>
   </worldbody>
-</mujoco>""")
+</mujoco>"""
+            )
             temp_model = f.name
 
         try:
@@ -420,12 +438,14 @@ class TestMuJoCoSimulator:
         mock_mujoco.MjData.return_value = mock_data
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
-            f.write("""<?xml version="1.0"?>
+            f.write(
+                """<?xml version="1.0"?>
 <mujoco model="test">
   <worldbody>
     <geom name="floor" type="plane" size="1 1 0.1"/>
   </worldbody>
-</mujoco>""")
+</mujoco>"""
+            )
             temp_model = f.name
 
         try:
@@ -496,7 +516,8 @@ class TestMuJoCoSimulator:
         )
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
-            f.write("""<?xml version="1.0"?>
+            f.write(
+                """<?xml version="1.0"?>
 <mujoco model="test">
   <worldbody>
     <body name="body1">
@@ -505,7 +526,8 @@ class TestMuJoCoSimulator:
       <joint name="joint3" type="hinge"/>
     </body>
   </worldbody>
-</mujoco>""")
+</mujoco>"""
+            )
             temp_model = f.name
 
         try:
@@ -552,7 +574,8 @@ class TestMuJoCoSimulator:
         mock_model.joint_range = [[-1.57, 1.57]]  # Limites pour le joint
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
-            f.write("""<?xml version="1.0"?>
+            f.write(
+                """<?xml version="1.0"?>
 <mujoco model="test">
     <worldbody>
     <body name="body1" mass="1.0">
@@ -561,7 +584,8 @@ class TestMuJoCoSimulator:
       <geom name="body1_geom" type="box" size="0.05 0.05 0.05"/>
     </body>
   </worldbody>
-</mujoco>""")
+</mujoco>"""
+            )
             temp_model = f.name
 
         try:
@@ -604,7 +628,8 @@ class TestMuJoCoSimulator:
         mock_model.joint_range = [[-1.0, 1.0]]  # Limites étroites
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
-            f.write("""<?xml version="1.0"?>
+            f.write(
+                """<?xml version="1.0"?>
 <mujoco model="test">
     <worldbody>
     <body name="body1" mass="1.0">
@@ -613,7 +638,8 @@ class TestMuJoCoSimulator:
       <geom name="body1_geom" type="box" size="0.05 0.05 0.05"/>
     </body>
   </worldbody>
-</mujoco>""")
+</mujoco>"""
+            )
             temp_model = f.name
 
         try:
@@ -651,12 +677,14 @@ class TestMuJoCoSimulator:
         mock_model.joint.side_effect = KeyError("Joint not found")
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
-            f.write("""<?xml version="1.0"?>
+            f.write(
+                """<?xml version="1.0"?>
 <mujoco model="test">
   <worldbody>
     <geom name="floor" type="plane" size="1 1 0.1"/>
   </worldbody>
-</mujoco>""")
+</mujoco>"""
+            )
             temp_model = f.name
 
         try:
@@ -690,7 +718,8 @@ class TestMuJoCoSimulator:
         mock_data.qpos = [0.5]
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
-            f.write("""<?xml version="1.0"?>
+            f.write(
+                """<?xml version="1.0"?>
 <mujoco model="test">
     <worldbody>
     <body name="body1" mass="1.0">
@@ -699,7 +728,8 @@ class TestMuJoCoSimulator:
       <geom name="body1_geom" type="box" size="0.05 0.05 0.05"/>
     </body>
   </worldbody>
-</mujoco>""")
+</mujoco>"""
+            )
             temp_model = f.name
 
         try:
@@ -730,12 +760,14 @@ class TestMuJoCoSimulator:
         mock_model.joint.side_effect = KeyError("Joint not found")
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
-            f.write("""<?xml version="1.0"?>
+            f.write(
+                """<?xml version="1.0"?>
 <mujoco model="test">
   <worldbody>
     <geom name="floor" type="plane" size="1 1 0.1"/>
   </worldbody>
-</mujoco>""")
+</mujoco>"""
+            )
             temp_model = f.name
 
         try:
@@ -778,7 +810,8 @@ class TestMuJoCoSimulator:
         )
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
-            f.write("""<?xml version="1.0"?>
+            f.write(
+                """<?xml version="1.0"?>
 <mujoco model="test">
   <worldbody>
     <body name="body1">
@@ -787,7 +820,8 @@ class TestMuJoCoSimulator:
       <joint name="joint3" type="hinge"/>
     </body>
   </worldbody>
-</mujoco>""")
+</mujoco>"""
+            )
             temp_model = f.name
 
         try:
@@ -815,12 +849,14 @@ class TestMuJoCoSimulator:
         mock_mujoco.MjData.return_value = mock_data
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
-            f.write("""<?xml version="1.0"?>
+            f.write(
+                """<?xml version="1.0"?>
 <mujoco model="test">
   <worldbody>
     <geom name="floor" type="plane" size="1 1 0.1"/>
   </worldbody>
-</mujoco>""")
+</mujoco>"""
+            )
             temp_model = f.name
 
         try:
@@ -852,12 +888,14 @@ class TestMuJoCoSimulator:
         mock_viewer.close = Mock()
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
-            f.write("""<?xml version="1.0"?>
+            f.write(
+                """<?xml version="1.0"?>
 <mujoco model="test">
   <worldbody>
     <geom name="floor" type="plane" size="1 1 0.1"/>
   </worldbody>
-</mujoco>""")
+</mujoco>"""
+            )
             temp_model = f.name
 
         try:
@@ -889,12 +927,14 @@ class TestMuJoCoSimulator:
         mock_mujoco.MjData.return_value = mock_data
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
-            f.write("""<?xml version="1.0"?>
+            f.write(
+                """<?xml version="1.0"?>
 <mujoco model="test">
   <worldbody>
     <geom name="floor" type="plane" size="1 1 0.1"/>
   </worldbody>
-</mujoco>""")
+</mujoco>"""
+            )
             temp_model = f.name
 
         try:
