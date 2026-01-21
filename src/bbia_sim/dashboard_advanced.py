@@ -424,7 +424,9 @@ class BBIAAdvancedWebSocketManager:
             heartbeat_data = {
                 "type": "heartbeat",
                 "timestamp": datetime.now().isoformat(),
-                "interval": self._heartbeat_interval,  # NOUVEAU: Inclure intervalle adaptatif
+                "interval": (
+                    self._heartbeat_interval
+                ),  # NOUVEAU: Inclure intervalle adaptatif
             }
             # Envoyer directement aux connexions pour éviter récursion avec broadcast()
             message = json.dumps(heartbeat_data)

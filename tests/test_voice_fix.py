@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Test rapide pour vérifier que les corrections de voix fonctionnent."""
+
 import os
 import sys
 import tempfile

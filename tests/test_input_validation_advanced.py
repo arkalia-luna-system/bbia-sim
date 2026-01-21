@@ -4,7 +4,6 @@ Tests avancés de validation des entrées utilisateur.
 Protection contre injection, validation longueur, format, etc.
 """
 
-
 import pytest
 
 from bbia_sim.robot_factory import RobotFactory
