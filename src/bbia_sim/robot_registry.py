@@ -116,7 +116,9 @@ class RobotRegistry:
                     discovered_robots.append(
                         {
                             "id": robot_id_str,
-                            "hostname": "localhost",  # À améliorer avec vraie découverte
+                            "hostname": (
+                                "localhost"
+                            ),  # À améliorer avec vraie découverte
                             "port": 7447,  # Port Zenoh par défaut
                             "status": "available",
                             "discovery_method": "zenoh",
@@ -137,7 +139,9 @@ class RobotRegistry:
                         "hostname": os.environ.get("BBIA_HOSTNAME", "localhost"),
                         "port": int(os.environ.get("BBIA_PORT", "8080")),
                         "status": "available",
-                        "discovery_method": "environment",  # NOUVEAU: Indiquer méthode découverte
+                        "discovery_method": (
+                            "environment"
+                        ),  # NOUVEAU: Indiquer méthode découverte
                     }
                 )
 

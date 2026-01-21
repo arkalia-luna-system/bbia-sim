@@ -198,7 +198,9 @@ class RobotFactory:
             },
             "auto": {
                 "name": "Auto-Détection",
-                "description": "Détecte automatiquement robot réel, fallback vers simulation",
+                "description": (
+                    "Détecte automatiquement robot réel, fallback vers simulation"
+                ),
                 "supports_viewer": True,
                 "supports_headless": True,
                 "real_robot": False,  # Peut être robot réel ou sim

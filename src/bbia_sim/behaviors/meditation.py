@@ -91,7 +91,9 @@ class MeditationBehavior(BBIABehavior):
         """Guide la séance de méditation."""
         phases = [
             {
-                "text": "Bienvenue dans cette séance de méditation. Asseyez-vous confortablement.",
+                "text": (
+                    "Bienvenue dans cette séance de méditation. Asseyez-vous confortablement."
+                ),
                 "emotion": "calm",
                 "movement": {"yaw": 0.0, "pitch": 0.0},
                 "duration": 3.0,

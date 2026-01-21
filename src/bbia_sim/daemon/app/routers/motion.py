@@ -363,7 +363,9 @@ async def set_emotion(emotion_request: EmotionRequest) -> dict[str, Any]:
                         "status": "success",
                         "emotion": emotion,
                         "intensity": intensity,
-                        "message": f"Émotion '{emotion}' définie avec intensité {intensity}",
+                        "message": (
+                            f"Émotion '{emotion}' définie avec intensité {intensity}"
+                        ),
                         "timestamp": datetime.now().isoformat(),
                     }
             robot.disconnect()

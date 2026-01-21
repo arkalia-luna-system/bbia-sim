@@ -896,5 +896,5 @@ class MuJoCoBackend(RobotAPI):
             "current_qpos": self.data.qpos.copy() if self.data else [],
             "model_path": str(self.model_path),
             "latency_ms": 0.0,  # Simulation
-            "fps": (self.step_count / elapsed_time if elapsed_time > 0 else 0),
+            "fps": self.step_count / elapsed_time if elapsed_time > 0 else 0,
         }

@@ -110,7 +110,9 @@ class StorytellingBehavior(BBIABehavior):
         """
         scenes = [
             {
-                "text": "Il était une fois une petite fille qui s'appelait le Petit Chaperon Rouge.",
+                "text": (
+                    "Il était une fois une petite fille qui s'appelait le Petit Chaperon Rouge."
+                ),
                 "emotion": "happy",
                 "movement": {"yaw": 0.0, "pitch": 0.1},
             },
@@ -151,7 +153,9 @@ class StorytellingBehavior(BBIABehavior):
         """
         scenes = [
             {
-                "text": "Il était une fois trois petits cochons qui décidèrent de construire leurs maisons.",
+                "text": (
+                    "Il était une fois trois petits cochons qui décidèrent de construire leurs maisons."
+                ),
                 "emotion": "excited",
                 "movement": {"yaw": 0.0, "pitch": 0.1},
             },
@@ -166,7 +170,9 @@ class StorytellingBehavior(BBIABehavior):
                 "movement": {"yaw": -0.3, "pitch": -0.1},
             },
             {
-                "text": "Mais la maison en briques résista, et les cochons furent sauvés !",
+                "text": (
+                    "Mais la maison en briques résista, et les cochons furent sauvés !"
+                ),
                 "emotion": "happy",
                 "movement": {"yaw": 0.0, "pitch": 0.1},
             },
@@ -191,7 +197,9 @@ class StorytellingBehavior(BBIABehavior):
         """
         scenes = [
             {
-                "text": "Il était une fois une princesse nommée Blanche-Neige, la plus belle du royaume.",
+                "text": (
+                    "Il était une fois une princesse nommée Blanche-Neige, la plus belle du royaume."
+                ),
                 "emotion": "happy",
                 "movement": {"yaw": 0.0, "pitch": 0.1},
             },
@@ -201,12 +209,16 @@ class StorytellingBehavior(BBIABehavior):
                 "movement": {"yaw": -0.2, "pitch": -0.05},
             },
             {
-                "text": "Blanche-Neige s'enfuit dans la forêt et rencontra les sept nains.",
+                "text": (
+                    "Blanche-Neige s'enfuit dans la forêt et rencontra les sept nains."
+                ),
                 "emotion": "curious",
                 "movement": {"yaw": 0.2, "pitch": 0.0},
             },
             {
-                "text": "Le prince charmant la réveilla d'un baiser, et ils vécurent heureux.",
+                "text": (
+                    "Le prince charmant la réveilla d'un baiser, et ils vécurent heureux."
+                ),
                 "emotion": "happy",
                 "movement": {"yaw": 0.0, "pitch": 0.1},
             },
