@@ -127,6 +127,73 @@ def _get_cached_voice_id() -> str:
     return _bbia_voice_id_cache
 
 
+# Constantes pour la sélection de voix
+_MALE_VOICE_INDICATORS = frozenset([
+    "thomas", "jacques", "reed", "rocko", "eddy", "grandpa", "daniel"
+])
+_FEMALE_FR_VOICES = frozenset([
+    "audrey", "virginie", "julie", "flo", "sandy", "shelley"
+])
+_VOICE_PRIORITY_KEYS = [
+    "aurelie_enhanced_fr", "amelie_enhanced_fr",
+    "aurelie_fr_FR", "aurelie_fr_CA",
+    "amelie_fr_FR", "amelie_fr_CA",
+    "aurelie_any", "amelie_any", "femme_fr"
+]
+
+
+def _normalize_voice_name(s: str) -> str:
+    """Normalise un nom de voix pour comparaison."""
+    return (
+        unicodedata.normalize("NFKD", s)
+        .encode("ASCII", "ignore")
+        .decode("ASCII")
+        .lower()
+    )
+
+
+def _categorize_voice(v: Any) -> tuple[str | None, str]:
+    """Catégorise une voix selon la priorité.
+
+    Returns:
+        Tuple (catégorie, voice_id) ou (None, "") si non catégorisée
+
+    """
+    v_id = str(v.id)
+    v_id_lower = v_id.lower()
+    v_name_lower = _normalize_voice_name(v.name)
+
+    is_aurelie = "aurelie" in v_name_lower or "aurélie" in v_name_lower
+    is_amelie = "amelie" in v_name_lower
+    has_enhanced = "enhanced" in v_id_lower
+    is_fr = "fr" in v_id_lower
+    is_fr_FR = "fr_FR" in v_id or "fr-FR" in v_id
+    is_fr_CA = "fr_CA" in v_id or "fr-CA" in v_id
+    is_male = any(ind in v_name_lower for ind in _MALE_VOICE_INDICATORS)
+
+    if is_aurelie and has_enhanced and is_fr:
+        return "aurelie_enhanced_fr", v_id
+    if is_amelie and has_enhanced and is_fr:
+        return "amelie_enhanced_fr", v_id
+    if is_aurelie and is_fr_FR:
+        return "aurelie_fr_FR", v_id
+    if is_aurelie and is_fr_CA:
+        return "aurelie_fr_CA", v_id
+    if is_amelie and is_fr_FR:
+        return "amelie_fr_FR", v_id
+    if is_amelie and is_fr_CA:
+        return "amelie_fr_CA", v_id
+    if is_aurelie:
+        return "aurelie_any", v_id
+    if is_amelie:
+        return "amelie_any", v_id
+    if not is_male and is_fr:
+        if any(nom in v_name_lower for nom in _FEMALE_FR_VOICES):
+            return "femme_fr", v_id
+
+    return None, ""
+
+
 def get_bbia_voice(engine: Any) -> str:
     """Force l'utilisation d'une voix féminine française de qualité sur macOS.
 
@@ -140,136 +207,264 @@ def get_bbia_voice(engine: Any) -> str:
     Si aucune voix féminine française n'est trouvée, lève une erreur explicite.
     """
     if engine is None:
-        # Fallback si engine non disponible
         return "com.apple.speech.voice.Amelie.fr-FR"
+
     voices = engine.getProperty("voices")
-
-    def normalize(s: str) -> str:
-        return (
-            unicodedata.normalize("NFKD", s)
-            .encode("ASCII", "ignore")
-            .decode("ASCII")
-            .lower()
-        )
-
-    # Voix à éviter (masculines)
-    male_indicators = [
-        "thomas",
-        "jacques",
-        "reed",
-        "rocko",
-        "eddy",
-        "grandpa",
-        "daniel",
-    ]
-
-    # OPTIMISATION PERFORMANCE: Une seule passe au lieu de 10 boucles for
-    # Préparer structures de recherche une seule fois
-    femmes_fr = ["audrey", "virginie", "julie", "flo", "sandy", "shelley"]
-
-    # Catégories de priorité (du plus spécifique au plus général)
-    candidates: dict[str, str | None] = {
-        "aurelie_enhanced_fr": None,
-        "amelie_enhanced_fr": None,
-        "aurelie_fr_FR": None,
-        "aurelie_fr_CA": None,
-        "amelie_fr_FR": None,
-        "amelie_fr_CA": None,
-        "aurelie_any": None,
-        "amelie_any": None,
-        "femme_fr": None,
-    }
+    candidates: dict[str, str | None] = {k: None for k in _VOICE_PRIORITY_KEYS}
 
     # Une seule passe sur toutes les voix
     for v in voices:
-        v_id_lower = str(v.id).lower()
-        v_name_lower = normalize(v.name)
-        is_aurelie = "aurelie" in v_name_lower or "aurélie" in v_name_lower
-        is_amelie = "amelie" in v_name_lower
-        has_enhanced = "enhanced" in v_id_lower
-        is_fr = "fr" in v_id_lower
-        is_fr_FR = "fr_FR" in v.id or "fr-FR" in v.id
-        is_fr_CA = "fr_CA" in v.id or "fr-CA" in v.id
-        is_male = any(indicator in v_name_lower for indicator in male_indicators)
+        category, voice_id = _categorize_voice(v)
+        if category and candidates[category] is None:
+            candidates[category] = voice_id
 
-        # Priorité 1: Aurelie Enhanced fr
-        if (
-            is_aurelie
-            and has_enhanced
-            and is_fr
-            and candidates["aurelie_enhanced_fr"] is None
-        ):
-            candidates["aurelie_enhanced_fr"] = str(v.id)
-            continue
+    # Retourner le premier candidat selon priorité
+    for key in _VOICE_PRIORITY_KEYS:
+        if candidates[key] is not None:
+            return candidates[key]  # type: ignore[return-value]
 
-        # Priorité 2: Amelie Enhanced fr
-        if (
-            is_amelie
-            and has_enhanced
-            and is_fr
-            and candidates["amelie_enhanced_fr"] is None
-        ):
-            candidates["amelie_enhanced_fr"] = str(v.id)
-            continue
-
-        # Priorité 3: Aurelie fr_FR
-        if is_aurelie and is_fr_FR and candidates["aurelie_fr_FR"] is None:
-            candidates["aurelie_fr_FR"] = str(v.id)
-            continue
-
-        # Priorité 4: Aurelie fr_CA
-        if is_aurelie and is_fr_CA and candidates["aurelie_fr_CA"] is None:
-            candidates["aurelie_fr_CA"] = str(v.id)
-            continue
-
-        # Priorité 5: Amelie fr_FR
-        if is_amelie and is_fr_FR and candidates["amelie_fr_FR"] is None:
-            candidates["amelie_fr_FR"] = str(v.id)
-            continue
-
-        # Priorité 6: Amelie fr_CA
-        if is_amelie and is_fr_CA and candidates["amelie_fr_CA"] is None:
-            candidates["amelie_fr_CA"] = str(v.id)
-            continue
-
-        # Priorité 7: Toute Aurelie
-        if is_aurelie and candidates["aurelie_any"] is None:
-            candidates["aurelie_any"] = str(v.id)
-            continue
-
-        # Priorité 8: Toute Amelie
-        if is_amelie and candidates["amelie_any"] is None:
-            candidates["amelie_any"] = str(v.id)
-            continue
-
-        # Priorité 9: Autres voix féminines françaises
-        if candidates["femme_fr"] is None and not is_male and is_fr:
-            for nom_femme in femmes_fr:
-                if nom_femme in v_name_lower:
-                    candidates["femme_fr"] = str(v.id)
-                    break
-
-    # Retourner le premier candidat trouvé selon priorité
-    for key in candidates:
-        value = candidates[key]
-        if value is not None:
-            return value
-
-    # 10. Sinon, message d'aide
     msg = (
         "Aucune voix française féminine n'est installée sur ce Mac. "
         "Va dans Préférences Système > Accessibilité > Parole > "
         "Voix du système et installe une voix française féminine "
         "(ex: Aurélie Enhanced, Amélie)."
     )
-    raise RuntimeError(
-        msg,
-    )
+    raise RuntimeError(msg)
+
+
+def _play_wav_via_sdk(
+    wav_path: str,
+    robot_api: Any | None,
+) -> bool:
+    """Tente de jouer un WAV via le SDK.
+
+    Returns:
+        True si succès, False sinon
+
+    """
+    if not robot_api or not hasattr(robot_api, "media") or not robot_api.media:
+        return False
+
+    try:
+        media = robot_api.media
+        with open(wav_path, "rb") as f:
+            audio_bytes = f.read()
+
+        if hasattr(media, "play_audio"):
+            try:
+                media.play_audio(audio_bytes, volume=1.0)
+            except TypeError:
+                media.play_audio(audio_bytes)
+            return True
+
+        speaker = getattr(media, "speaker", None)
+        if speaker is not None:
+            if hasattr(speaker, "play_file"):
+                speaker.play_file(wav_path)
+                return True
+            if hasattr(speaker, "play"):
+                speaker.play(audio_bytes)
+                return True
+    except (AttributeError, RuntimeError, OSError, TypeError) as e:
+        logger.debug("Erreur lecture audio via SDK speaker: %s", e)
+
+    return False
+
+
+def _play_wav_via_sounddevice(wav_path: str) -> bool:
+    """Tente de jouer un WAV via sounddevice.
+
+    Returns:
+        True si succès, False sinon
+
+    """
+    try:
+        import sounddevice as _sd
+
+        with wave.open(wav_path, "rb") as wf:
+            sr = wf.getframerate()
+            frames = wf.readframes(wf.getnframes())
+            data = np.frombuffer(frames, dtype=np.int16)
+            _sd.play(data, sr)
+            _sd.wait()
+        return True
+    except (OSError, RuntimeError, ImportError) as e:
+        logger.debug("Erreur lecture audio sounddevice: %s", e)
+    except (TypeError, IndexError, KeyError) as e:
+        logger.debug("Erreur lecture audio sounddevice (type/index/key): %s", e)
+    except Exception as e:  # noqa: BLE001
+        logger.debug("Erreur inattendue lecture audio sounddevice: %s", e)
+
+    return False
+
+
+def _synthesize_via_tts_backend(
+    texte: str,
+    robot_api: Any | None,
+) -> bool:
+    """Synthétise via backend TTS externe si configuré.
+
+    Returns:
+        True si succès, False sinon
+
+    """
+    tts_backend_name = os.environ.get("BBIA_TTS_BACKEND")
+    if not tts_backend_name or get_tts_backend is None:
+        return False
+
+    try:
+        backend = get_tts_backend()
+        with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmp:
+            wav_path = tmp.name
+
+        if not backend.synthesize_to_wav(texte, wav_path):
+            return False
+
+        # Essayer SDK puis sounddevice
+        if _play_wav_via_sdk(wav_path, robot_api):
+            return True
+        if _play_wav_via_sounddevice(wav_path):
+            return True
+
+    except (ImportError, RuntimeError, OSError) as e:
+        logger.debug("Erreur synthèse vocale avancée, fallback pyttsx3: %s", e)
+    except Exception as e:  # noqa: BLE001
+        import traceback
+
+        tb_str = "".join(traceback.format_exception(type(e), e, e.__traceback__))
+        if "_get_pyttsx3_engine" in tb_str:
+            logger.debug("Erreur _get_pyttsx3_engine, pas de fallback pyttsx3: %s", e)
+            raise
+        logger.debug("Erreur inattendue synthèse vocale avancée: %s", e)
+
+    return False
+
+
+def _generate_silence_wav() -> bytes:
+    """Génère un court WAV de silence (100ms).
+
+    Returns:
+        Bytes du fichier WAV ou bytes vide si erreur
+
+    """
+    import struct as _struct
+
+    try:
+        sr = 16000
+        num_samples = int(0.1 * sr)
+        silence = b"".join(_struct.pack("<h", 0) for _ in range(num_samples))
+
+        wav_buf = io.BytesIO()
+        with wave.open(wav_buf, "wb") as wf:
+            wf.setnchannels(1)
+            wf.setsampwidth(2)
+            wf.setframerate(sr)
+            wf.writeframes(silence)
+        return wav_buf.getvalue()
+    except (ValueError, RuntimeError, TypeError):
+        return b""
+
+
+def _play_via_sdk_media(robot_api: Any | None) -> bool:
+    """Tente de jouer via robot.media.* (SDK).
+
+    Returns:
+        True si succès, False sinon
+
+    """
+    if not robot_api or not hasattr(robot_api, "media") or not robot_api.media:
+        return False
+
+    media = robot_api.media
+    try:
+        sdk_audio_bytes = _generate_silence_wav()
+        if not sdk_audio_bytes:
+            return False
+
+        # Priorité 1: media.play_audio
+        if hasattr(media, "play_audio"):
+            try:
+                try:
+                    media.play_audio(sdk_audio_bytes, volume=1.0)
+                except TypeError:
+                    media.play_audio(sdk_audio_bytes)
+                return True
+            except (TypeError, IndexError, KeyError, OSError) as e:
+                logging.debug("media.play_audio a échoué: %s", e)
+            except Exception as e:  # noqa: BLE001
+                logging.debug("media.play_audio a échoué: %s", e)
+
+        # Priorité 2: media.speaker
+        speaker = getattr(media, "speaker", None)
+        if speaker is not None:
+            return _play_via_speaker(speaker, sdk_audio_bytes)
+
+    except (TypeError, ValueError, AttributeError) as e:
+        logging.debug("Erreur synthèse SDK: %s", e)
+    except Exception as e:  # noqa: BLE001
+        logging.debug("Erreur synthèse SDK (fallback pyttsx3): %s", e)
+
+    return False
+
+
+def _play_via_speaker(speaker: Any, audio_bytes: bytes) -> bool:
+    """Tente de jouer via speaker."""
+    try:
+        if hasattr(speaker, "play"):
+            speaker.play(audio_bytes)
+            return True
+    except (TypeError, IndexError, KeyError, OSError) as e:
+        logging.debug("speaker.play a échoué: %s", e)
+    except Exception as e:  # noqa: BLE001
+        logging.debug("speaker.play a échoué: %s", e)
+
+    # Essayer play_file
+    tmp_path = None
+    try:
+        with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmp:
+            tmp_path = tmp.name
+            with open(tmp_path, "wb") as f:
+                f.write(audio_bytes)
+        if hasattr(speaker, "play_file"):
+            speaker.play_file(tmp_path)
+            return True
+    finally:
+        if tmp_path:
+            try:
+                Path(tmp_path).unlink(missing_ok=True)
+            except (OSError, PermissionError) as e:
+                logger.debug("Erreur nettoyage fichier temporaire: %s", e)
+
+    return False
+
+
+def _play_via_pyttsx3(texte: str) -> None:
+    """Joue le texte via pyttsx3 (fallback)."""
+    logging.info("Synthèse vocale : %s", texte)
+
+    engine = _get_pyttsx3_engine()
+    if engine is None:
+        is_ci = os.environ.get("CI", "false").lower() == "true"
+        if is_ci:
+            logging.debug("pyttsx3 non disponible, synthèse vocale ignorée")
+        else:
+            logging.warning("⚠️ pyttsx3 non disponible, synthèse vocale ignorée")
+        return
+
+    voice_id = _get_cached_voice_id()
+    if engine is None:
+        logging.warning("⚠️ pyttsx3 non disponible après récupération voice_id")
+        return
+
+    engine.setProperty("voice", voice_id)
+    engine.setProperty("rate", 170)
+    engine.setProperty("volume", 1.0)
+    engine.say(texte)
+    engine.runAndWait()
 
 
 def dire_texte(texte: str, robot_api: Any | None = None) -> None:
-    """Lit un texte à voix haute (TTS) avec la voix la plus fidèle à Reachy
-    Mini Wireless.
+    """Lit un texte à voix haute (TTS) avec la voix la plus fidèle à Reachy Mini Wireless.
 
     Utilise robot.media.speaker si disponible (haut-parleur 5W optimisé SDK),
     sinon utilise pyttsx3 pour compatibilité.
@@ -279,225 +474,85 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
         robot_api: Interface RobotAPI (optionnel) pour accès robot.media.speaker
 
     """
-    # Vérifier flag d'environnement pour désactiver audio (CI/headless)
+    # Vérifier flag d'environnement
     if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1":
         logging.debug("Audio désactivé (BBIA_DISABLE_AUDIO=1): '%s' ignoré", texte)
         return
 
-    # Si un backend TTS est explicitement demandé (BBIA_TTS_BACKEND),
-    # synthétiser vers un WAV temporaire via le backend sélectionné, puis jouer via SDK ou fallback
-    tts_backend_name = os.environ.get("BBIA_TTS_BACKEND")
-    if tts_backend_name and get_tts_backend is not None:
-        try:
-            backend = get_tts_backend()
-            with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmp:
-                wav_path = tmp.name
-            if backend.synthesize_to_wav(texte, wav_path):
-                # Essayer de jouer via SDK sinon fallback local
-                try:
-                    if robot_api and hasattr(robot_api, "media") and robot_api.media:
-                        media = robot_api.media
-                        with open(wav_path, "rb") as f:
-                            audio_bytes = f.read()
-                        if hasattr(media, "play_audio"):
-                            try:
-                                media.play_audio(audio_bytes, volume=1.0)
-                            except TypeError:
-                                media.play_audio(audio_bytes)
-                            return
-                        speaker = getattr(media, "speaker", None)
-                        if speaker is not None:
-                            if hasattr(speaker, "play_file"):
-                                speaker.play_file(wav_path)
-                                return
-                            if hasattr(speaker, "play"):
-                                speaker.play(audio_bytes)
-                                return
-                except (AttributeError, RuntimeError, OSError, TypeError) as e:
-                    logger.debug(
-                        "Erreur lors de la lecture audio via SDK speaker: %s",
-                        e,
-                    )
-                try:
-                    # Fallback simple: lecture locale sans dépendance forte
-                    import sounddevice as _sd
+    # Essayer backend TTS externe
+    if _synthesize_via_tts_backend(texte, robot_api):
+        return
 
-                    with wave.open(wav_path, "rb") as wf:
-                        sr = wf.getframerate()
-                        frames = wf.readframes(wf.getnframes())
-                        data = np.frombuffer(frames, dtype=np.int16)
-                        _sd.play(data, sr)
-                        _sd.wait()
-                    return
-                except (OSError, RuntimeError, ImportError) as e:
-                    logger.debug(
-                        "Erreur lors de la lecture audio locale (fallback sounddevice): %s",
-                        e,
-                    )
-                except (TypeError, IndexError, KeyError) as e:
-                    logger.debug(
-                        "Erreur lecture audio locale (type/index/key): %s",
-                        e,
-                    )
-                except (
-                    Exception
-                ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
-                    logger.debug(
-                        "Erreur inattendue lecture audio locale (fallback normal): %s",
-                        e,
-                    )
-        except (ImportError, RuntimeError, OSError) as e:
-            # Fallback vers logique pyttsx3 plus bas
-            logger.debug(
-                "Erreur lors de la synthèse vocale avancée, fallback pyttsx3: %s",
-                e,
-            )
-        except Exception as e:  # noqa: BLE001 - Erreur synthèse vocale fallback
-            # Vérifier si l'erreur vient de _get_pyttsx3_engine()
-            # Si c'est le cas, la laisser remonter car le fallback pyttsx3 échouera aussi
-            import traceback
+    # Essayer SDK media
+    if _play_via_sdk_media(robot_api):
+        return
 
-            tb_str = "".join(traceback.format_exception(type(e), e, e.__traceback__))
-            if "_get_pyttsx3_engine" in tb_str:
-                logger.debug(
-                    "Erreur _get_pyttsx3_engine détectée, pas de fallback pyttsx3: %s",
-                    e,
-                )
-                raise
-            logger.debug(
-                "Erreur inattendue synthèse vocale avancée, fallback pyttsx3: %s",
-                e,
-            )
-
-    # OPTIMISATION SDK: Utiliser robot.media.* si disponible (toujours disponible via shim)
-    # Priorité stricte: media.play_audio(bytes[, volume]) puis media.speaker.*
-    if robot_api and hasattr(robot_api, "media"):
-        media = robot_api.media
-        # Media est maintenant toujours disponible (shim en simulation)
-        if media:
-            try:
-                # Générer un court WAV en mémoire (silence 100ms) pour garantir un flux audio
-                import struct as _struct
-
-                # io et wave déjà importés globalement
-
-                sr = 16000
-                num_samples = int(0.1 * sr)
-                silence = b"".join(_struct.pack("<h", 0) for _ in range(num_samples))
-
-                sdk_audio_bytes: bytes
-                wav_buf = io.BytesIO()
-                try:
-                    with wave.open(wav_buf, "wb") as wf:
-                        wf.setnchannels(1)
-                        wf.setsampwidth(2)
-                        wf.setframerate(sr)
-                        wf.writeframes(silence)
-                    sdk_audio_bytes = wav_buf.getvalue()
-                except (ValueError, RuntimeError, TypeError):
-                    sdk_audio_bytes = b""  # Fallback si création WAV échoue
-
-                # Priorité 1: media.play_audio(bytes[, volume])
-                if hasattr(media, "play_audio"):
-                    try:
-                        try:
-                            media.play_audio(sdk_audio_bytes, volume=1.0)
-                        except TypeError:
-                            media.play_audio(sdk_audio_bytes)
-                        return
-                    except (TypeError, IndexError, KeyError, OSError) as e:
-                        logging.debug(
-                            "media.play_audio a échoué (type/index/key/os): %s", e
-                        )
-                    except (
-                        Exception
-                    ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
-                        logging.debug(
-                            "media.play_audio a échoué (fallback normal): %s", e
-                        )
-
-                # Priorité 2: media.speaker.play_file/ play(bytes)
-                speaker = getattr(media, "speaker", None)
-                if speaker is not None:
-                    try:
-                        if hasattr(speaker, "play"):
-                            speaker.play(sdk_audio_bytes)
-                            return
-                    except (TypeError, IndexError, KeyError, OSError) as e:
-                        logging.debug(
-                            "speaker.play a échoué (type/index/key/os): %s", e
-                        )
-                    except (
-                        Exception
-                    ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
-                        logging.debug("speaker.play a échoué (fallback normal): %s", e)
-                    try:
-                        # Créer un fichier temporaire si play_file est préféré
-                        tmp_path = None
-                        with tempfile.NamedTemporaryFile(
-                            suffix=".wav",
-                            delete=False,
-                        ) as tmp:
-                            tmp_path = tmp.name
-                            with open(tmp_path, "wb") as f:
-                                f.write(sdk_audio_bytes)
-                        if hasattr(speaker, "play_file"):
-                            speaker.play_file(tmp_path)
-                            return
-                    finally:
-                        try:
-                            if tmp_path and Path(tmp_path).exists():
-                                Path(tmp_path).unlink()
-                        except (OSError, PermissionError) as cleanup_error:
-                            logger.debug(
-                                "Erreur lors du nettoyage du fichier temporaire %s: %s",
-                                tmp_path,
-                                cleanup_error,
-                            )
-
-            except (TypeError, ValueError, AttributeError) as e:
-                logging.debug("Erreur synthèse SDK (type/value/attr): %s", e)
-                # Fallback pyttsx3
-            except (
-                Exception
-            ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
-                logging.debug("Erreur synthèse SDK (fallback pyttsx3): %s", e)
-                # Fallback pyttsx3
-
-    # Fallback: pyttsx3 (compatibilité)
+    # Fallback pyttsx3
     try:
-        logging.info("Synthèse vocale : %s", texte)
-        # ⚡ OPTIMISATION PERFORMANCE: Utiliser moteur en cache (évite 0.8s d'init)
-        engine = _get_pyttsx3_engine()
-        if engine is None:
-            # Log en debug en CI (warning attendu sans eSpeak)
-            if os.environ.get("CI", "false").lower() == "true":
-                logging.debug("pyttsx3 non disponible, synthèse vocale ignorée")
-            else:
-                logging.warning("⚠️ pyttsx3 non disponible, synthèse vocale ignorée")
-            return
-        voice_id = _get_cached_voice_id()
-        # Vérification supplémentaire pour éviter AttributeError si engine est None
-        if engine is None:
-            logging.warning(
-                "⚠️ pyttsx3 non disponible après récupération voice_id, synthèse vocale ignorée"
-            )
-            return
-        engine.setProperty("voice", voice_id)
-        engine.setProperty("rate", 170)  # Vitesse normale
-        engine.setProperty("volume", 1.0)
-        # Pitch non supporté nativement par pyttsx3, dépend du moteur
-        engine.say(texte)
-        engine.runAndWait()
+        _play_via_pyttsx3(texte)
     except (RuntimeError, AttributeError, OSError) as e:
-        # Utiliser error au lieu de warning avec exc_info pour éviter traces complètes dans tests
         logging.error("Erreur de synthèse vocale (runtime/attr/os): %s", e)
-    except (
-        Exception
-    ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
-        # Utiliser error au lieu de warning avec exc_info pour éviter traces complètes dans tests
+    except Exception as e:  # noqa: BLE001
         logging.error("Erreur de synthèse vocale: %s", e)
         raise
+
+
+def _convert_audio_to_wav_bytes(
+    audio_data: bytes | np.ndarray | Any,
+    frequence: int,
+) -> io.BytesIO:
+    """Convertit les données audio en format WAV en mémoire."""
+    audio_io = io.BytesIO()
+    with wave.open(audio_io, "wb") as wf:
+        wf.setnchannels(1)
+        wf.setsampwidth(2)
+        wf.setframerate(frequence)
+        if isinstance(audio_data, bytes):
+            wf.writeframes(audio_data)
+        elif isinstance(audio_data, np.ndarray):
+            wf.writeframes((audio_data.astype(np.int16)).tobytes())
+        else:
+            wf.writeframes(bytes(audio_data))
+    audio_io.seek(0)
+    return audio_io
+
+
+def _recognize_from_sdk_microphone(
+    duree: int,
+    frequence: int,
+    robot_api: Any,
+) -> str | None:
+    """Reconnaissance vocale via SDK microphone."""
+    if not hasattr(robot_api.media, "record_audio"):
+        return None
+
+    logging.info(
+        "🎤 Enregistrement via SDK (4 microphones) (%ds) pour reconnaissance...",
+        duree,
+    )
+    audio_data = robot_api.media.record_audio(duration=duree, sample_rate=frequence)
+    audio_io = _convert_audio_to_wav_bytes(audio_data, frequence)
+
+    r = sr.Recognizer()
+    with sr.AudioFile(audio_io) as source:
+        audio = r.record(source)
+        texte = r.recognize_google(audio, language="fr-FR")
+        logging.info("✅ Texte reconnu (SDK 4 microphones) : %s", texte)
+        return str(texte)
+
+
+def _recognize_from_local_microphone(
+    duree: int,
+    frequence: int,
+) -> str | None:
+    """Reconnaissance vocale via microphone local (speech_recognition)."""
+    r = sr.Recognizer()
+    with sr.Microphone(sample_rate=frequence) as source:
+        logging.info("Écoute du micro pour la reconnaissance vocale...")
+        audio = r.listen(source, phrase_time_limit=duree)
+        texte = r.recognize_google(audio, language="fr-FR")
+        logging.info("Texte reconnu : %s", texte)
+        return str(texte)
 
 
 def reconnaitre_parole(
@@ -519,94 +574,27 @@ def reconnaitre_parole(
         Texte reconnu ou None
 
     """
-    # OPTIMISATION SDK: Utiliser robot.media.microphone si disponible
+    # Essayer SDK microphone
     if robot_api and hasattr(robot_api, "media") and robot_api.media:
         try:
-            # OPTIMISATION SDK: Enregistrement via robot.media.record_audio()
-            # Bénéfice: 4 microphones directionnels avec annulation de bruit automatique
-            if hasattr(robot_api.media, "record_audio"):
-                logging.info(
-                    "🎤 Enregistrement via SDK (4 microphones) (%ds) "
-                    "pour reconnaissance...",
-                    duree,
-                )
-                audio_data = robot_api.media.record_audio(
-                    duration=duree,
-                    sample_rate=frequence,
-                )
-
-                # Convertir audio_data en format pour speech_recognition
-                # Créer fichier WAV temporaire en mémoire
-                audio_io = io.BytesIO()
-                with wave.open(audio_io, "wb") as wf:
-                    wf.setnchannels(1)
-                    wf.setsampwidth(2)
-                    wf.setframerate(frequence)
-                    if isinstance(audio_data, bytes):
-                        wf.writeframes(audio_data)
-                    else:
-                        # Gérer numpy.ndarray ou autres types
-                        try:
-                            if isinstance(audio_data, np.ndarray):
-                                wf.writeframes(
-                                    (audio_data.astype(np.int16)).tobytes(),
-                                )
-                            else:
-                                wf.writeframes(bytes(audio_data))
-                        except ImportError:
-                            # Fallback si numpy non disponible
-                            wf.writeframes(bytes(audio_data))
-
-                audio_io.seek(0)
-
-                # Reconnaître avec speech_recognition
-                r = sr.Recognizer()
-                with sr.AudioFile(audio_io) as source:
-                    audio = r.record(source)
-                    texte = r.recognize_google(audio, language="fr-FR")
-                    logging.info("✅ Texte reconnu (SDK 4 microphones) : %s", texte)
-                    return str(texte)
+            result = _recognize_from_sdk_microphone(duree, frequence, robot_api)
+            if result is not None:
+                return result
         except (RuntimeError, AttributeError, OSError) as e:
-            logging.debug(
-                "Erreur reconnaissance SDK (runtime/attr/os): %s",
-                e,
-            )
-        except (
-            Exception
-        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
-            logging.debug(
-                "Erreur reconnaissance SDK (fallback speech_recognition): %s",
-                e,
-            )
-        # Fallback vers speech_recognition
+            logging.debug("Erreur reconnaissance SDK (runtime/attr/os): %s", e)
+        except Exception as e:  # noqa: BLE001
+            logging.debug("Erreur reconnaissance SDK (fallback speech_recognition): %s", e)
 
-    # Fallback: speech_recognition (compatibilité)
+    # Fallback: speech_recognition local
     try:
-        r = sr.Recognizer()
-        with sr.Microphone(sample_rate=frequence) as source:
-            try:
-                logging.info("Écoute du micro pour la reconnaissance vocale...")
-                audio = r.listen(source, phrase_time_limit=duree)
-                texte = r.recognize_google(audio, language="fr-FR")
-                logging.info("Texte reconnu : %s", texte)
-                return str(texte)
-            except sr.UnknownValueError:
-                logging.warning("Aucune parole reconnue.")
-                return None
-            except (RuntimeError, AttributeError, OSError) as e:
-                # Utiliser debug au lieu de error pour réduire bruit dans tests
-                logging.debug(
-                    "Erreur de reconnaissance vocale (runtime/attr/os): %s", e
-                )
-            except (
-                Exception
-            ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
-                # Utiliser debug au lieu de error pour réduire bruit dans tests
-                logging.debug("Erreur de reconnaissance vocale: %s", e)
-                return None
-    except Exception as e:
-        # Utiliser debug au lieu de error/warning pour réduire bruit dans tests
-        # Le comportement (retour None) est déjà validé par les tests
+        return _recognize_from_local_microphone(duree, frequence)
+    except sr.UnknownValueError:
+        logging.warning("Aucune parole reconnue.")
+        return None
+    except (RuntimeError, AttributeError, OSError) as e:
+        logging.debug("Erreur de reconnaissance vocale (runtime/attr/os): %s", e)
+        return None
+    except Exception as e:  # noqa: BLE001
         logging.debug("Erreur d'accès au microphone: %s", e)
         logging.debug(
             "La reconnaissance vocale nécessite pyaudio. "
