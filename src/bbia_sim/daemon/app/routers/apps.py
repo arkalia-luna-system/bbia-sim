@@ -240,9 +240,10 @@ async def list_all_available_apps() -> list[dict[str, Any]]:
                         "name": space.id,
                         "source_kind": "hf_space",
                         "description": (
-                            getattr(
-                                space, "cardData", {}
-                            ).get("description", "",)
+                            getattr(space, "cardData", {}).get(
+                                "description",
+                                "",
+                            )
                         ),
                         "author": "community",
                         "category": "community",
@@ -293,9 +294,10 @@ async def list_community_apps() -> list[dict[str, Any]]:
                         "name": space.id,
                         "source_kind": "hf_space",
                         "description": (
-                            getattr(
-                                space, "cardData", {}
-                            ).get("description", "",)
+                            getattr(space, "cardData", {}).get(
+                                "description",
+                                "",
+                            )
                         ),
                         "author": "community",
                         "category": "community",
