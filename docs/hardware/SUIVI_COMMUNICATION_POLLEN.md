@@ -1,6 +1,6 @@
 # 📧 Suivi Communication avec Pollen Robotics
 
-**Dernière mise à jour** : 17 Janvier 2026
+**Dernière mise à jour** : 21 Janvier 2026
 
 ---
 
@@ -75,6 +75,9 @@
   - Livraison effectuée en Belgique
   - Délai total : 11 jours (6 janvier → 17 janvier)
   - **Prochaines étapes** : Installation et tests
+- **21 Janvier 2026** : ✅ **NUMÉRO QC VÉRIFIÉ** : **QC 2549**
+  - ✅ **Excellent** : Batch QC 2549 n'est PAS dans les batches problématiques
+  - ✅ **Sécurisé** : Moteurs d'un batch sain, prêts pour installation
 
 ---
 
@@ -135,6 +138,7 @@
 ✅ **Demande complète** pour les 6 moteurs (1, 2, 3, 4, 5, 6)  
 ✅ **Documentation fournie** (QC batches, SDK v1.2.4, reflash effectué)  
 ✅ **3 MOTEURS REÇUS** le 17 janvier 2026 (moteurs 1, 2, 4)  
+✅ **NUMÉRO QC VÉRIFIÉ** : **QC 2549** (21 janvier 2026) - Batch sain ✅  
 ⏳ **En attente** : Installation et tests des nouveaux moteurs
 
 **Autres utilisateurs en attente aussi** :

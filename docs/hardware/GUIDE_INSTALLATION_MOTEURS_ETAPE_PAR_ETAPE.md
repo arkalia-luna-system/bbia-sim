@@ -22,8 +22,10 @@ Ce script vérifie :
 
 ### **2. Checklist de préparation**
 
-- [ ] **Nouveaux moteurs reçus** (3 moteurs : 1, 2, 4)
-- [ ] **Numéros QC vérifiés** (ne doivent PAS être QC 2542/2543/2544)
+- [x] ✅ **Nouveaux moteurs reçus** (3 moteurs : 1, 2, 4) - 17 janvier 2026
+- [x] ✅ **Numéros QC vérifiés** (21 janvier 2026) : **QC 2549** - Batch sain ✅
+  - ✅ Ne sont PAS QC 2542/2543/2544 (batches problématiques)
+  - ✅ Batch QC 2549 : aucun problème connu
 - [ ] **Test mécanique effectué** (chaque moteur doit tourner smooth)
 - [ ] **Outils préparés** (tournevis, documentation)
 - [ ] **Robot éteint** (éteindre avant de commencer)

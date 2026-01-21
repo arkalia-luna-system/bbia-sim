@@ -22,7 +22,7 @@
   - Moteur 2 (QC 2544) : Raide + clignotement rouge → ✅ **En attente d'installation**
   - Moteur 4 (QC 2544) : Raide mécaniquement → ✅ **Voir GUIDE_PREVENTION_PROBLEMES_MOTEURS.md**
   - **Cause** : Moteurs non flashés correctement à l'usine (SDK v1.2.4+ va reflasher automatiquement)
-  - **Statut** : ✅ Moteurs reçus, installation à prévoir selon guide de prévention
+  - **Statut** : ✅ Moteurs reçus (QC 2549 vérifié le 21 janvier 2026 - batch sain ✅), installation à prévoir selon guide de prévention
 
 ---
 

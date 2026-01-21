@@ -1,7 +1,9 @@
 # 📋 Ce Qui Reste À Faire - 20 Janvier 2026
 
-**Date** : 20 Janvier 2026  
-**Statut** : ⏳ **EN ATTENTE DE LA COMMANDE DU 22 JANVIER**
+**Date** : 21 Janvier 2026  
+**Dernière mise à jour** : 21 Janvier 2026  
+**Statut** : ⏳ **EN ATTENTE DE LA COMMANDE DU 22 JANVIER**  
+**Note** : ✅ Numéro QC des 3 moteurs reçus vérifié : **QC 2549** (batch sain)
 
 ---
 
@@ -10,6 +12,7 @@
 ### ✅ **Ce qui est fait**
 
 - ✅ **3 moteurs reçus** le 17 janvier 2026 (moteurs 1, 2, 4)
+- ✅ **Numéro QC vérifié** : **QC 2549** (21 janvier 2026) - Batch sain ✅
 - ✅ **Documentation complète** et à jour (20 janvier 2026)
 - ✅ **Scripts de validation** créés et testés
 - ✅ **Guides d'installation** complets
@@ -49,9 +52,10 @@
 
 **Checklist de vérification** :
 
-- [ ] **Numéros QC vérifiés** :
-  - ❌ Ne doivent PAS être QC 2542, 2543, ou 2544
-  - ✅ Doivent être d'un batch sain
+- [x] ✅ **Numéros QC vérifiés** (21 janvier 2026) :
+  - ✅ **QC 2549** - Batch sain (pas dans les batches problématiques 2542/2543/2544)
+  - ✅ Tous les 3 moteurs (1, 2, 4) ont le même numéro QC 2549
+  - ✅ Moteurs sécurisés pour installation
 - [ ] **Test mécanique** :
   - Chaque moteur doit tourner smooth (pas de résistance)
   - Pas de bruit anormal
@@ -217,4 +221,4 @@
 
 ---
 
-**Dernière mise à jour** : 20 Janvier 2026
+**Dernière mise à jour** : 21 Janvier 2026

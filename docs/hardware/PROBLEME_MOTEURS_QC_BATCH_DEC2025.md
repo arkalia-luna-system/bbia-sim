@@ -121,7 +121,10 @@ Le SDK v1.2.4 va **automatiquement reflasher** les moteurs lors de :
 
 **✅ MOTEURS REÇUS** : **17 Janvier 2026**
 - ✅ **3 moteurs reçus** (moteurs 1, 2, 4)
-- 📦 **Statut** : Moteurs reçus, en attente d'installation et de tests
+- ✅ **Numéro QC vérifié** : **QC 2549** (21 janvier 2026)
+  - ✅ **Excellent** : Batch QC 2549 n'est PAS dans les batches problématiques (2542/2543/2544)
+  - ✅ **Sécurisé** : Moteurs d'un batch sain, pas de risque connu
+- 📦 **Statut** : Moteurs reçus et vérifiés, en attente d'installation et de tests
 - ⏳ **Prochaines étapes** : Installation des moteurs, tests unitaires, tests globaux
 
 ### **3. Remplacement préventif (recommandé)**
@@ -191,6 +194,9 @@ Si vous avez des moteurs QC 2542 (moteurs 5 et 6) :
 - **17 Janvier 2026** : ✅ **3 moteurs reçus** (moteurs 1, 2, 4)
   - Moteurs de remplacement livrés
   - En attente d'installation et de tests
+- **21 Janvier 2026** : ✅ **Numéro QC vérifié** : **QC 2549**
+  - ✅ Batch sain (pas dans les batches problématiques 2542/2543/2544)
+  - ✅ Moteurs sécurisés pour installation
 
 ---
 
