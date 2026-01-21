@@ -2,12 +2,12 @@
 """🔧 CORRECTION TÊTE PENCHÉE - Reachy Mini Wireless
 Compatible Mac avec connexion réseau via Zenoh
 
-Auteur: Athalia Luna (BBIA-SIM)
+Auteur: BBIA-SIM Team
 Basé sur: https://github.com/pollen-robotics/reachy_mini/issues (Batch Dec 2025)
 
 Usage:
     python examples/reachy_mini/fix_head_tilted_wireless.py
-    python examples/reachy_mini/fix_head_tilted_wireless.py --robot-ip 192.168.129.64
+    python examples/reachy_mini/fix_head_tilted_wireless.py --robot-ip <ROBOT_IP>
 """
 
 import argparse
