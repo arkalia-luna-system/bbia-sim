@@ -5,13 +5,13 @@ Ce script combine le diagnostic et la correction en un seul script simple à ex�
 directement sur le robot via SSH. Basé sur la solution de squirrel (Discord Pollen Robotics).
 
 Usage (sur le robot via SSH):
-    ssh pollen@192.168.129.64
+    ssh pollen@<ROBOT_IP>
     sudo systemctl stop reachy-mini-daemon
     source /venvs/mini-daemon/bin/activate
     python3 /path/to/diagnose_and_fix_motor_ssh.py
 
 Ou depuis le Mac (si le script est copié sur le robot):
-    ssh pollen@192.168.129.64 "sudo systemctl stop reachy-mini-daemon && source /venvs/mini-daemon/bin/activate && python3 diagnose_and_fix_motor_ssh.py"
+    ssh pollen@<ROBOT_IP> "sudo systemctl stop reachy-mini-daemon && source /venvs/mini-daemon/bin/activate && python3 diagnose_and_fix_motor_ssh.py"
 """
 
 import sys

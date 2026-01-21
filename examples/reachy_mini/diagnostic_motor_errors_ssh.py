@@ -312,7 +312,7 @@ def main() -> None:
     print()
 
     # Paramètres par défaut
-    robot_ip = "192.168.129.64"
+    robot_ip = "<ROBOT_IP>"
     username = "pollen"
 
     print(f"Robot: {username}@{robot_ip}")

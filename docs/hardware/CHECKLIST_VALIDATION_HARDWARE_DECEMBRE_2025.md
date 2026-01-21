@@ -18,7 +18,7 @@
   - Batterie chargée ou alimentation USB-C connectée ✅
   - LED d'alimentation allumée ✅
   - Wi-Fi accessible (SSID réseau vérifié) ✅
-  - Robot répond au ping réseau (IP: 192.168.129.64) ✅
+  - Robot répond au ping réseau (IP: [IP_ROBOT]) ✅
 
 ### Installation SDK
 

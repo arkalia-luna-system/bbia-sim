@@ -5,7 +5,7 @@
 **Dernière mise à jour** : 22 Décembre 2025  
 **Version** : 1.2.0  
 **Robot** : Reachy Mini Wireless (Pollen Robotics)  
-**IP Robot** : 192.168.129.64
+**IP Robot** : [IP_ROBOT]
 
 ---
 
@@ -15,7 +15,7 @@
 
 - [x] **SDK Reachy installé** : Version 1.2.3 ✅
 - [x] **Robot allumé** : LED de statut verte ✅
-- [x] **Connexion réseau** : IP robot 192.168.129.64 ✅
+- [x] **Connexion réseau** : IP robot [IP_ROBOT] ✅
 - [x] **Ports ouverts** : 8080 (API), 8081 (WebSocket) ✅
 - [x] **WiFi configuré** : Robot connecté au réseau local ✅
 

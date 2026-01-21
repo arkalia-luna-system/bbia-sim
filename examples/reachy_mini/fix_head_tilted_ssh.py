@@ -6,7 +6,7 @@ C'est plus fiable que de se connecter depuis le Mac via Zenoh.
 
 Usage:
     python examples/reachy_mini/fix_head_tilted_ssh.py
-    python examples/reachy_mini/fix_head_tilted_ssh.py --robot-ip 192.168.129.64
+    python examples/reachy_mini/fix_head_tilted_ssh.py --robot-ip <ROBOT_IP>
 """
 
 import argparse
@@ -122,8 +122,8 @@ def main() -> None:
     parser.add_argument(
         "--robot-ip",
         type=str,
-        default="192.168.129.64",
-        help="IP du robot (défaut: 192.168.129.64)",
+        default="<ROBOT_IP>",
+        help="IP du robot (défaut: <ROBOT_IP>)",
     )
     parser.add_argument(
         "--user",

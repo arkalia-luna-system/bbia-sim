@@ -12,7 +12,7 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - ✅ **Robot Reachy Mini Wireless reçu** : 18 Décembre 2025
 - ✅ **Montage effectué** : 20 Décembre 2025 (durée : 4 heures)
 - ✅ **Premiers tests et diagnostics** : 22 Décembre 2025
-- ✅ **IP Robot** : 192.168.129.64 (WiFi configuré)
+- ✅ **IP Robot** : [IP_ROBOT] (WiFi configuré)
 - ✅ **Bug décembre 2025 résolu** : Reflash moteurs effectué (tous les moteurs ID 10-18 reconfigurés)
 - ⚠️ **Problèmes identifiés** :
   - Tête penchée : Correction logicielle effectuée, vérification câblage nécessaire

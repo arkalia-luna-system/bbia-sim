@@ -85,7 +85,7 @@ Si le problème persiste, réinitialisez les erreurs :
 
 ```bash
 # Sur le robot (SSH)
-ssh pollen@192.168.129.64
+ssh pollen@<ROBOT_IP>
 python3 examples/reachy_mini/reset_motor_2_errors.py
 ```
 
@@ -155,7 +155,7 @@ reachy-mini-calibrate-offsets
 
 **Option B : Manuellement via SSH**
 ```bash
-ssh pollen@192.168.129.64
+ssh pollen@<ROBOT_IP>
 # Suivre procédure de calibration officielle
 ```
 
