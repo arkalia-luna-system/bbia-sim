@@ -53,11 +53,15 @@ def check_sdk_version() -> bool:
                 print("✅ Version compatible (v1.2.4+ avec reflash automatique)")
                 if patch < 11:
                     print(f"⚠️  Version v1.2.11 disponible (vous êtes sur v{version})")
-                    print("   Recommandation: Mettre à jour après installation des moteurs")
+                    print(
+                        "   Recommandation: Mettre à jour après installation des moteurs"
+                    )
                 return True
             else:
                 print(f"⚠️  Version ancienne (v{version})")
-                print("   Recommandation: Mettre à jour vers v1.2.4+ avant installation")
+                print(
+                    "   Recommandation: Mettre à jour vers v1.2.4+ avant installation"
+                )
                 return False
         else:
             print("⚠️  Impossible de déterminer la version")
@@ -145,7 +149,10 @@ def print_checklist() -> None:
 
     checklist = [
         ("Nouveaux moteurs reçus", "Vérifier que vous avez bien reçu les 3 moteurs"),
-        ("Numéros QC vérifiés", "Vérifier que les nouveaux moteurs ne sont PAS QC 2542/2543/2544"),
+        (
+            "Numéros QC vérifiés",
+            "Vérifier que les nouveaux moteurs ne sont PAS QC 2542/2543/2544",
+        ),
         ("Test mécanique effectué", "Chaque moteur doit tourner smooth (pas raide)"),
         ("Outils préparés", "Tournevis, câbles, documentation"),
         ("Robot éteint", "Éteindre le robot avant de commencer"),

@@ -67,6 +67,7 @@
 **Avant de démonter Reachy** :
 
 - [ ] **Exécuter le script de vérification** :
+
   ```bash
   python examples/reachy_mini/check_before_motor_installation.py
   ```
@@ -107,10 +108,13 @@
 - [ ] **Allumer le robot**
 - [ ] **Attendre le démarrage complet**
 - [ ] **Exécuter le script de validation** :
+
   ```bash
   python examples/reachy_mini/validate_motor_installation.py
   ```
+
 - [ ] **Vérifier les logs** :
+
   ```bash
   journalctl -u reachy-mini-daemon -f
   ```
@@ -177,14 +181,14 @@
 
 ## 🎯 **RÉSUMÉ**
 
-### **Actions immédiates (22 janvier)** :
+### **Actions immédiates (22 janvier)**
 
 1. ⏳ Réception de la commande
 2. ⏳ Vérification du contenu
 3. ⏳ Vérification des numéros QC
 4. ⏳ Tests mécaniques
 
-### **Actions après vérification** :
+### **Actions après vérification**
 
 1. ⏳ Préparation (scripts, guides, outils)
 2. ⏳ Installation des moteurs
@@ -203,7 +207,7 @@
 - ✅ Tous les tests
 - ✅ Toute l'analyse
 
-**Il ne reste plus qu'à** :
+**Il ne reste plus qu'à**
 
 1. ⏳ Recevoir et vérifier la commande du 22 janvier
 2. ⏳ Installer les moteurs
