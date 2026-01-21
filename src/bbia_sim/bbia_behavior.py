@@ -118,14 +118,14 @@ class WakeUpBehavior(BBIABehavior):
                     # AMÉLIORATION INTELLIGENCE: Messages de réveil variés,
                     # personnels et expressifs
                     wake_messages = [
-                        "Bonjour Athalia ! Je suis là, prêt à interagir avec vous.",
+                        "Bonjour ! Je suis là, prêt à interagir avec vous.",
                         "Salut ! BBIA est réveillé et prêt à discuter !",
-                        "Coucou Athalia ! Content de me réveiller à vos côtés.",
+                        "Coucou ! Content de me réveiller à vos côtés.",
                         "Bonjour ! Je suis BBIA, votre robot compagnon. "
                         "Comment allez-vous ?",
-                        "Salut Athalia ! Je me sens bien et énergisé aujourd'hui !",
+                        "Salut ! Je me sens bien et énergisé aujourd'hui !",
                         "Hello ! Je suis prêt pour une nouvelle journée avec vous !",
-                        "Me voilà ! Je suis là pour vous accompagner, Athalia.",
+                        "Me voilà ! Je suis là pour vous accompagner.",
                         "Bonjour ! Je me réveille avec enthousiasme "
                         "pour passer du temps ensemble.",
                     ]
@@ -203,13 +203,13 @@ class WakeUpBehavior(BBIABehavior):
         # AMÉLIORATION INTELLIGENCE: Messages de réveil plus variés,
         # personnels et expressifs
         wake_messages = [
-            "Bonjour Athalia ! Je suis là, prêt à interagir avec vous.",
+            "Bonjour ! Je suis là, prêt à interagir avec vous.",
             "Salut ! BBIA est réveillé et prêt à discuter !",
-            "Coucou Athalia ! Content de me réveiller à vos côtés.",
+            "Coucou ! Content de me réveiller à vos côtés.",
             "Bonjour ! Je suis BBIA, votre robot compagnon. Comment allez-vous ?",
-            "Salut Athalia ! Je me sens bien et énergisé aujourd'hui !",
+            "Salut ! Je me sens bien et énergisé aujourd'hui !",
             "Hello ! Je suis prêt pour une nouvelle journée avec vous !",
-            "Me voilà ! Je suis là pour vous accompagner, Athalia.",
+            "Me voilà ! Je suis là pour vous accompagner.",
             "Bonjour ! Je me réveille avec enthousiasme pour passer du temps ensemble.",
         ]
         wake_message = secrets.choice(wake_messages)
