@@ -122,6 +122,7 @@
   ```bash
   journalctl -u reachy-mini-daemon -f
   ```
+
 - [ ] **Effectuer les tests manuels** (voir guide)
 
 ---
@@ -166,7 +167,7 @@
 
 ## ⚠️ **IMPORTANT**
 
-### **Ne pas démonter Reachy avant** :
+### **Ne pas démonter Reachy avant**
 
 - ✅ Avoir reçu et vérifié le contenu complet de la commande du 22 janvier
 - ✅ Avoir vérifié les numéros QC des nouveaux moteurs
@@ -174,7 +175,7 @@
 - ✅ Avoir lu les guides d'installation
 - ✅ Avoir préparé les outils
 
-### **Points d'attention** :
+### **Points d'attention**
 
 - **Numéros QC** : Vérifier que les nouveaux moteurs ne sont PAS QC 2542/2543/2544
 - **Test mécanique** : Chaque moteur doit tourner smooth avant installation
@@ -211,7 +212,7 @@
 - ✅ Tous les tests
 - ✅ Toute l'analyse
 
-**Il ne reste plus qu'à**
+**Il ne reste plus qu'à :**
 
 1. ⏳ Recevoir et vérifier la commande du 22 janvier
 2. ⏳ Installer les moteurs

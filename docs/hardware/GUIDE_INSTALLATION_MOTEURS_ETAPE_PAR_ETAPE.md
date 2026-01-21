@@ -17,6 +17,7 @@ python examples/reachy_mini/check_before_motor_installation.py
 ```
 
 Ce script vérifie :
+
 - ✅ Version SDK
 - ✅ Documentation disponible
 - ✅ État actuel des moteurs
@@ -49,8 +50,9 @@ sudo shutdown -h now
 ### **Étape 2 : Démonter la tête (si nécessaire)**
 
 Suivez le guide d'assemblage officiel Pollen :
-- <https://github.com/pollen-robotics/reachy_mini/blob/develop/docs/platforms/reachy_mini/get_started.md>
-- <https://huggingface.co/spaces/pollen-robotics/Reachy_Mini_Assembly_Guide>
+
+- [GitHub - Guide d'assemblage](https://github.com/pollen-robotics/reachy_mini/blob/develop/docs/platforms/reachy_mini/get_started.md)
+- [Hugging Face - Guide interactif](https://huggingface.co/spaces/pollen-robotics/Reachy_Mini_Assembly_Guide)
 
 ### **Étape 3 : Remplacer les moteurs**
 
@@ -89,12 +91,14 @@ Suivez le guide d'assemblage officiel Pollen :
 ### **Étape 4 : Vérifier le câblage**
 
 Vérifiez que tous les câbles sont :
+
 - ✅ Bien branchés (pas de connecteurs lâches)
 - ✅ Correctement orientés (pas de torsions)
 - ✅ Pas de dommages (isolation intacte)
 - ✅ Pas de courts-circuits visibles
 
 **Configuration attendue** :
+
 - Motor 1 (slot 1) → short → Motor 2 (slot 2) → long → Motor 3 (slot 3)
 - Motor 4 (slot 4) → long → Motor 5 (slot 5) → short → Motor 6 (slot 6)
 
@@ -116,6 +120,7 @@ Suivez le guide d'assemblage officiel pour remonter la tête.
 ### **Étape 2 : Attendre le démarrage complet**
 
 Attendre que :
+
 - ✅ Le système soit complètement démarré
 - ✅ Le daemon soit actif : `sudo systemctl status reachy-mini-daemon`
 - ✅ Les LEDs des moteurs soient éteintes (après reflash automatique)
@@ -123,11 +128,13 @@ Attendre que :
 ### **Étape 3 : Vérifier le reflash automatique**
 
 Le SDK v1.2.4+ effectue automatiquement un reflash des moteurs lors de :
+
 - La connexion au robot
 - Le démarrage du robot
 - L'ouverture du dashboard
 
 **Vérifications** :
+
 - ✅ Les LEDs des moteurs sont éteintes (après reflash)
 - ✅ Pas d'erreurs dans les logs : `journalctl -u reachy-mini-daemon -f`
 
@@ -138,6 +145,7 @@ python examples/reachy_mini/validate_motor_installation.py
 ```
 
 Ce script effectue :
+
 1. ✅ Vérification de la connexion
 2. ✅ Scan des moteurs (baudrate et ID)
 3. ✅ Test de chaque moteur individuellement
@@ -206,6 +214,7 @@ curl http://localhost:8000/api/motors/diagnostic
 
 # OU via le dashboard
 # Ouvrir http://localhost:8000 dans le navigateur
+# Note: URLs locales (localhost) acceptées par le linter
 ```
 
 ---
@@ -227,6 +236,7 @@ curl http://localhost:8000/api/motors/diagnostic
 ✅ **Installation réussie !**
 
 **Prochaines étapes** :
+
 1. Continuer à surveiller les moteurs (voir GUIDE_PREVENTION_PROBLEMES_MOTEURS.md)
 2. Effectuer des tests réguliers (quotidien, hebdomadaire)
 3. Mettre à jour le SDK vers v1.2.11 (recommandé, non critique)
@@ -241,11 +251,13 @@ curl http://localhost:8000/api/motors/diagnostic
    - Pas de dommages aux câbles?
 
 2. **Vérifier les logs**
+
    ```bash
    journalctl -u reachy-mini-daemon -f
    ```
 
 3. **Relancer le scan**
+
    ```bash
    python examples/reachy_mini/scan_motors_baudrate.py
    ```
@@ -256,7 +268,7 @@ curl http://localhost:8000/api/motors/diagnostic
 
 5. **Contacter Pollen Robotics si nécessaire**
    - Email : sales@pollen-robotics.com
-   - Discord : <https://discord.gg/pollen-robotics>
+   - Discord : [Pollen Robotics Discord](https://discord.gg/pollen-robotics)
 
 ---
 
@@ -270,9 +282,9 @@ curl http://localhost:8000/api/motors/diagnostic
 
 ### **Documentation Officielle Pollen**
 
-- Guide d'assemblage : <https://github.com/pollen-robotics/reachy_mini/blob/develop/docs/platforms/reachy_mini/get_started.md>
-- Guide interactif : <https://huggingface.co/spaces/pollen-robotics/Reachy_Mini_Assembly_Guide>
-- Documentation SDK : <https://docs.pollen-robotics.com/>
+- Guide d'assemblage : [GitHub](https://github.com/pollen-robotics/reachy_mini/blob/develop/docs/platforms/reachy_mini/get_started.md)
+- Guide interactif : [Hugging Face](https://huggingface.co/spaces/pollen-robotics/Reachy_Mini_Assembly_Guide)
+- Documentation SDK : [Docs Pollen](https://docs.pollen-robotics.com/)
 
 ### **Scripts Utiles**
 
@@ -295,5 +307,5 @@ curl http://localhost:8000/api/motors/diagnostic
 
 ---
 
-**Dernière mise à jour** : 17 Janvier 2026  
+**Dernière mise à jour** : 21 Janvier 2026  
 **Statut** : ✅ **PRÊT POUR INSTALLATION**
