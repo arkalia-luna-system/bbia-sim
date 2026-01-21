@@ -64,7 +64,9 @@ class TestModelOptimizer:
             received_kwargs.append(kwargs)
             return "model_with_args"
 
-        result = get_cached_model("key_args", mock_loader, "arg1", "arg2", kwarg1="val1")
+        result = get_cached_model(
+            "key_args", mock_loader, "arg1", "arg2", kwarg1="val1"
+        )
 
         assert result == "model_with_args"
         assert received_args[-1] == ("arg1", "arg2")

@@ -86,7 +86,9 @@ class TestTelemetryCollector:
 
             # Enregistrer des steps
             for i in range(5):
-                collector.record_step({"joint1": float(i) * 0.1, "joint2": float(i) * 0.2})
+                collector.record_step(
+                    {"joint1": float(i) * 0.1, "joint2": float(i) * 0.2}
+                )
 
             stats = collector.stop_collection()
             csv_path = collector.export_csv("test_output.csv", stats)
