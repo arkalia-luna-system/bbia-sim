@@ -267,7 +267,7 @@ curl http://localhost:8000/api/motors/diagnostic
    - Documentation officielle Pollen
 
 5. **Contacter Pollen Robotics si nécessaire**
-   - Email : sales@pollen-robotics.com
+   - Email : [sales@pollen-robotics.com](mailto:sales@pollen-robotics.com)
    - Discord : [Pollen Robotics Discord](https://discord.gg/pollen-robotics)
 
 ---
