@@ -277,12 +277,13 @@ def _try_record_audio(
 
     """
     try:
-        return _sd.rec(
+        result: np.ndarray = _sd.rec(
             int(duree * frequence),
             samplerate=frequence,
             channels=1,
             dtype="int16",
         )
+        return result
     except Exception as channel_error:
         return _record_with_fallback_channels(_sd, duree, frequence, channel_error)
 
@@ -318,12 +319,13 @@ def _record_with_fallback_channels(
         channels = device_info.get("max_input_channels", 1)
         logging.info("📊 Canaux disponibles détectés: %d", channels)
 
-        return _sd.rec(
+        result: np.ndarray = _sd.rec(
             int(duree * frequence),
             samplerate=frequence,
             channels=min(channels, 1),
             dtype="int16",
         )
+        return result
     except Exception as fallback_error:
         if is_ci:
             logging.debug(
