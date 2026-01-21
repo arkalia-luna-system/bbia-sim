@@ -1,7 +1,8 @@
 # 🔧 Guide d'Installation des Moteurs - Étape par Étape
 
-**Dernière mise à jour** : 17 Janvier 2026  
-**Objectif** : Guide complet pour installer les nouveaux moteurs et rallumer Reachy
+**Dernière mise à jour** : 21 Janvier 2026  
+**Objectif** : Guide complet pour installer les nouveaux moteurs et rallumer Reachy  
+**Note** : ✅ Numéro QC des moteurs vérifié : **QC 2549** (batch sain)
 
 ---
 
