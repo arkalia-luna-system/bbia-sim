@@ -99,7 +99,9 @@ class ReachyBackend(RobotAPI):
 
             except (TimeoutError, ConnectionError, OSError) as e:
                 # Pas de robot physique - bascule en mode simulation
-                logger.info("⏱️  Pas de robot physique détecté - mode simulation: %s", e)
+                logger.info(
+                    "⏱️  Pas de robot physique détecté - mode simulation: %s", e
+                )
                 self.robot_sdk = None
                 self.is_connected = True  # Mode simulation
                 self.start_time = time.time()

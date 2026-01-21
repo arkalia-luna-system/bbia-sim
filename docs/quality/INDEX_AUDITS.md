@@ -1,6 +1,6 @@
-# Index des Audits - Décembre 2025
+# Index des Audits - Janvier 2026
 
-**Dernière mise à jour : 15 Décembre 2025
+**Dernière mise à jour** : 21 Janvier 2026
 
 ---
 
@@ -9,18 +9,23 @@
 ### 1. Audit Consolidé
 
 - **`AUDIT_CONSOLIDE_DECEMBRE_2025.md`** - Document unique consolidé
-  - Statut global
+  - Statut global + audit sécurité janvier 2026
   - Actions complétées
   - Ce qui manque (optionnel)
   - Forces BBIA
 
+### 2. Audit Sécurité (21 Janvier 2026)
+
+- **53 vulnérabilités corrigées** dans les dépendances
+- **42 nouveaux tests** de couverture ajoutés
+- Modules `telemetry`, `model_optimizer`, `mapping_reachy` : 0% → ~100%
 
 ### 3. Ce Qui Manque
 
 - **`CE_QUI_MANQUE_BBIA_DEC2025.md`** - Détails fonctionnalités manquantes (document consolidé)
   - Synchronisation fine : FAIT
   - Fluidité conversationnelle : FAIT
-  - WebRTC/MCP/DoA : Optionnel (BBIA a déjà mieux ou équivalent)
+  - WebRTC/MCP/DoA : Optionnel
 
 ### 4. Audit Reachy Mini
 
@@ -37,5 +42,5 @@
 
 ---
 
-**Dernière mise à jour** : 22 Décembre 2025
+**Dernière mise à jour** : 21 Janvier 2026
 

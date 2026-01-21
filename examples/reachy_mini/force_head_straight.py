@@ -64,7 +64,7 @@ def force_head_straight() -> None:
 
         # Essayer plusieurs positions pour forcer la tête droite
         print("5️⃣ Correction de la tête (plusieurs tentatives)...")
-        
+
         # Tentative 1: Position neutre standard
         print("   → Tentative 1: Position neutre standard...")
         try:
@@ -77,7 +77,7 @@ def force_head_straight() -> None:
             time.sleep(3.5)
         except Exception as e:
             print(f"      ⚠️  Erreur: {e}")
-        
+
         # Tentative 2: Petit mouvement pour débloquer
         print("   → Tentative 2: Petit mouvement pour débloquer...")
         try:
@@ -85,11 +85,11 @@ def force_head_straight() -> None:
             test1 = create_head_pose(roll=5, degrees=True)
             robot.goto_target(head=test1, duration=1.5)
             time.sleep(2)
-            
+
             test2 = create_head_pose(roll=-5, degrees=True)
             robot.goto_target(head=test2, duration=1.5)
             time.sleep(2)
-            
+
             # Retour neutre
             neutral = create_head_pose(
                 x=0, y=0, z=0,
@@ -100,18 +100,18 @@ def force_head_straight() -> None:
             time.sleep(2.5)
         except Exception as e:
             print(f"      ⚠️  Erreur: {e}")
-        
+
         # Tentative 3: Petit mouvement pitch
         print("   → Tentative 3: Petit mouvement pitch...")
         try:
             test1 = create_head_pose(pitch=5, degrees=True)
             robot.goto_target(head=test1, duration=1.5)
             time.sleep(2)
-            
+
             test2 = create_head_pose(pitch=-5, degrees=True)
             robot.goto_target(head=test2, duration=1.5)
             time.sleep(2)
-            
+
             # Retour neutre
             neutral = create_head_pose(
                 x=0, y=0, z=0,
@@ -122,7 +122,7 @@ def force_head_straight() -> None:
             time.sleep(2.5)
         except Exception as e:
             print(f"      ⚠️  Erreur: {e}")
-        
+
         print("   ✅ Corrections terminées")
         print()
 
@@ -134,7 +134,7 @@ def force_head_straight() -> None:
             joint_name = f"stewart_{i+1}"
             pos = head_positions[i]
             print(f"   {joint_name:12s}: {pos:8.4f} rad ({pos*180/3.14159:6.2f}°)")
-        
+
         # Calculer l'écart moyen
         if len(head_positions) >= 6:
             avg_pos = sum(head_positions[:6]) / 6
@@ -142,7 +142,7 @@ def force_head_straight() -> None:
             print()
             print(f"   Position moyenne: {avg_pos:.4f} rad ({avg_pos*180/3.14159:.2f}°)")
             print(f"   Écart max: {max_dev:.4f} rad ({max_dev*180/3.14159:.2f}°)")
-            
+
             if max_dev < 0.1:  # Moins de 6° d'écart
                 print("   ✅ Tête relativement droite")
             else:

@@ -32,7 +32,7 @@ except ImportError:
 
 # Import SDK officiel pour create_head_pose (optionnel)
 try:
-    from reachy_mini.utils import create_head_pose
+    from reachy_mini.utils import create_head_pose  # type: ignore[import-untyped]
 
     REACHY_MINI_UTILS_AVAILABLE = True
 except ImportError:
@@ -105,115 +105,95 @@ class WakeUpBehavior(BBIABehavior):
         )
         self.priority = 10
 
-    def execute(self, context: dict[str, Any]) -> bool:  # noqa: ARG002
-        logger.info("Début de la séquence de réveil BBIA")
+    def _get_wake_messages(self) -> list[str]:
+        """Retourne la liste des messages de réveil."""
+        return [
+            "Bonjour ! Je suis là, prêt à interagir avec vous.",
+            "Salut ! BBIA est réveillé et prêt à discuter !",
+            "Coucou ! Content de me réveiller à vos côtés.",
+            "Bonjour ! Je suis BBIA, votre robot compagnon. " "Comment allez-vous ?",
+            "Salut ! Je me sens bien et énergisé aujourd'hui !",
+            "Hello ! Je suis prêt pour une nouvelle journée avec vous !",
+            "Me voilà ! Je suis là pour vous accompagner.",
+            "Bonjour ! Je me réveille avec enthousiasme "
+            "pour passer du temps ensemble.",
+        ]
 
-        # Si robot_api disponible, utiliser run_behavior du SDK officiel
-        if self.robot_api and hasattr(self.robot_api, "run_behavior"):
-            try:
-                logger.info("Exécution wake_up via SDK officiel")
-                success = self.robot_api.run_behavior("wake_up", duration=5.0)
-                if success:
-                    logger.info("Réveil via SDK réussi")
-                    # AMÉLIORATION INTELLIGENCE: Messages de réveil variés,
-                    # personnels et expressifs
-                    wake_messages = [
-                        "Bonjour Athalia ! Je suis là, prêt à interagir avec vous.",
-                        "Salut ! BBIA est réveillé et prêt à discuter !",
-                        "Coucou Athalia ! Content de me réveiller à vos côtés.",
-                        "Bonjour ! Je suis BBIA, votre robot compagnon. "
-                        "Comment allez-vous ?",
-                        "Salut Athalia ! Je me sens bien et énergisé aujourd'hui !",
-                        "Hello ! Je suis prêt pour une nouvelle journée avec vous !",
-                        "Me voilà ! Je suis là pour vous accompagner, Athalia.",
-                        "Bonjour ! Je me réveille avec enthousiasme "
-                        "pour passer du temps ensemble.",
-                    ]
-                    wake_message = secrets.choice(wake_messages)
-                    # OPTIMISATION SDK: Passer robot_api pour utiliser haut-parleur 5W
-                    try:
-                        dire_texte(wake_message, robot_api=self.robot_api)
-                        logger.info("Synthèse vocale : %s", wake_message)
-                    except (RuntimeError, Exception) as e:
-                        # Erreur TTS attendue (eSpeak non disponible en CI)
-                        logger.warning("Synthèse vocale non disponible: %s", e)
-                    return True
-            except (AttributeError, RuntimeError, ValueError):
-                logger.exception("Erreur wake_up SDK")
-            except Exception:
-                logger.exception("Erreur inattendue wake_up SDK")
+    def _try_sdk_wake_up(self) -> bool:
+        """Tente le réveil via SDK officiel."""
+        if not (self.robot_api and hasattr(self.robot_api, "run_behavior")):
+            return False
 
-        # Fallback: Séquence manuelle conforme SDK
-        # (utilise create_head_pose et yaw_body)
+        try:
+            logger.info("Exécution wake_up via SDK officiel")
+            success = self.robot_api.run_behavior("wake_up", duration=5.0)
+            if success:
+                logger.info("Réveil via SDK réussi")
+                wake_message = secrets.choice(self._get_wake_messages())
+                try:
+                    dire_texte(wake_message, robot_api=self.robot_api)
+                    logger.info("Synthèse vocale : %s", wake_message)
+                except (RuntimeError, Exception) as e:
+                    logger.warning("Synthèse vocale non disponible: %s", e)
+                return True
+        except (AttributeError, RuntimeError, ValueError):
+            logger.exception("Erreur wake_up SDK")
+        except Exception:
+            logger.exception("Erreur inattendue wake_up SDK")
+        return False
+
+    def _perform_manual_wake_sequence(self) -> None:
+        """Effectue la séquence de réveil manuelle."""
         logger.info(
             "Étape : Mouvement de tête vers position neutre puis légèrement relevée",
         )
         if self.robot_api and hasattr(self.robot_api, "set_emotion"):
             self.robot_api.set_emotion("neutral", 0.3)
             time.sleep(0.5)
-            self.robot_api.set_emotion(
-                "happy",
-                0.5,
-            )  # Conforme SDK: pitch=0.1 * intensity
+            self.robot_api.set_emotion("happy", 0.5)
 
         time.sleep(1)
+        self._perform_body_rotation()
+        time.sleep(1)
 
+    def _perform_body_rotation(self) -> None:
+        """Effectue la rotation du corps pour le réveil."""
         logger.info("Étape : Rotation corps subtile avec interpolation fluide (réveil)")
-        # OPTIMISATION EXPERT: Utiliser goto_target au lieu de set_joint_pos répétés
-        # pour mouvement fluide avec interpolation automatique (minjerk)
-        if self.robot_api:
-            try:
-                if (
-                    hasattr(self.robot_api, "goto_target")
-                    and REACHY_MINI_UTILS_AVAILABLE
-                ):
-                    # Mouvement fluide avec interpolation SDK (meilleure performance)
-                    self.robot_api.goto_target(
-                        body_yaw=0.15,
-                        duration=0.8,
-                        method="minjerk",
-                    )
-                    time.sleep(1.0)
-                    self.robot_api.goto_target(
-                        body_yaw=-0.15,
-                        duration=0.8,
-                        method="minjerk",
-                    )
-                    time.sleep(1.0)
-                    self.robot_api.goto_target(
-                        body_yaw=0.0,
-                        duration=0.8,
-                        method="minjerk",
-                    )
-                elif hasattr(self.robot_api, "set_joint_pos"):
-                    # Fallback: Rotation subtile conforme limites (max 0.3 rad safe)
-                    self.robot_api.set_joint_pos("yaw_body", 0.15)
-                    time.sleep(0.5)
-                    self.robot_api.set_joint_pos("yaw_body", -0.15)
-                    time.sleep(0.5)
-                    self.robot_api.set_joint_pos("yaw_body", 0.0)
-            except (AttributeError, RuntimeError, ValueError) as e:
-                logger.warning("Erreur mouvement corps réveil (continuation): %s", e)
-            except (TypeError, KeyError, IndexError) as e:
-                logger.warning("Erreur inattendue mouvement corps réveil: %s", e)
+        if not self.robot_api:
+            return
 
-        time.sleep(1)
+        try:
+            if hasattr(self.robot_api, "goto_target") and REACHY_MINI_UTILS_AVAILABLE:
+                self.robot_api.goto_target(
+                    body_yaw=0.15, duration=0.8, method="minjerk"
+                )
+                time.sleep(1.0)
+                self.robot_api.goto_target(
+                    body_yaw=-0.15, duration=0.8, method="minjerk"
+                )
+                time.sleep(1.0)
+                self.robot_api.goto_target(body_yaw=0.0, duration=0.8, method="minjerk")
+            elif hasattr(self.robot_api, "set_joint_pos"):
+                self.robot_api.set_joint_pos("yaw_body", 0.15)
+                time.sleep(0.5)
+                self.robot_api.set_joint_pos("yaw_body", -0.15)
+                time.sleep(0.5)
+                self.robot_api.set_joint_pos("yaw_body", 0.0)
+        except (AttributeError, RuntimeError, ValueError) as e:
+            logger.warning("Erreur mouvement corps réveil (continuation): %s", e)
+        except (TypeError, KeyError, IndexError) as e:
+            logger.warning("Erreur inattendue mouvement corps réveil: %s", e)
+
+    def execute(self, context: dict[str, Any]) -> bool:  # noqa: ARG002
+        logger.info("Début de la séquence de réveil BBIA")
+
+        if self._try_sdk_wake_up():
+            return True
+
+        self._perform_manual_wake_sequence()
 
         logger.info("Étape : Première parole d'éveil")
-        # AMÉLIORATION INTELLIGENCE: Messages de réveil plus variés,
-        # personnels et expressifs
-        wake_messages = [
-            "Bonjour Athalia ! Je suis là, prêt à interagir avec vous.",
-            "Salut ! BBIA est réveillé et prêt à discuter !",
-            "Coucou Athalia ! Content de me réveiller à vos côtés.",
-            "Bonjour ! Je suis BBIA, votre robot compagnon. Comment allez-vous ?",
-            "Salut Athalia ! Je me sens bien et énergisé aujourd'hui !",
-            "Hello ! Je suis prêt pour une nouvelle journée avec vous !",
-            "Me voilà ! Je suis là pour vous accompagner, Athalia.",
-            "Bonjour ! Je me réveille avec enthousiasme pour passer du temps ensemble.",
-        ]
-        wake_message = secrets.choice(wake_messages)
-        # OPTIMISATION SDK: Passer robot_api pour utiliser haut-parleur 5W
+        wake_message = secrets.choice(self._get_wake_messages())
         dire_texte(wake_message, robot_api=self.robot_api)
         logger.info("Synthèse vocale : %s", wake_message)
 
@@ -414,116 +394,105 @@ class VisionTrackingBehavior(BBIABehavior):
         self.vision = vision
         self.priority = 6
 
-    def execute(self, context: dict[str, Any]) -> bool:  # noqa: ARG002
-        logger.info("Activation du suivi visuel")
+    def _try_look_at_world(self, first_object: dict[str, Any]) -> bool:
+        """Tente look_at_world si position 3D disponible."""
+        robot = self.robot_api
+        if robot is None or not hasattr(robot, "look_at_world"):
+            return False
 
-        result = self.vision.scan_environment()
-        logger.info("Résultat du scan environnement : %s", result)
+        pos = first_object.get("position", {})
+        if not pos:
+            logger.debug("Pas de position 3D disponible")
+            return False
 
-        if result["objects"]:
-            first_object = result["objects"][0]
-            object_name = first_object.get("name", "quelque chose")
-            logger.info("Suivi de l'objet : %s", object_name)
-            self.vision.track_object(first_object["name"])
+        try:
+            x = float(pos.get("x", 0.2))
+            y = float(pos.get("y", 0.1))
+            z = float(pos.get("z", 0.0))
+            if not (-2.0 <= x <= 2.0 and -2.0 <= y <= 2.0 and -1.0 <= z <= 1.0):
+                logger.debug("Coordonnées 3D hors limites: (%s, %s, %s)", x, y, z)
+                return False
 
-            # AMÉLIORATION INTELLIGENCE: Commentaires vocaux variés lors de détection
-            detection_comments = [
-                f"Je vois {object_name} !",
-                f"Oh, il y a {object_name} là-bas !",
-                f"Je regarde {object_name}.",
-                f"{object_name} m'intrigue !",
-                f"Intéressant, je vois {object_name}.",
-            ]
-            comment = secrets.choice(detection_comments)
-            # OPTIMISATION SDK: Passer robot_api pour utiliser haut-parleur 5W
-            dire_texte(comment, robot_api=self.robot_api)
-            logger.info("Synthèse vocale (vision) : %s", comment)
-
-            # OPTIMISATION EXPERT: Utiliser look_at_world/look_at_image
-            # avec gestion d'erreur robuste et fallback gracieux
-            if self.robot_api:
-                tracking_success = False
-
-                # Méthode 1 (préférée): look_at_world si position 3D disponible
-                if hasattr(self.robot_api, "look_at_world"):
-                    pos = first_object.get("position", {})
-                    if pos:
-                        try:
-                            x = float(pos.get("x", 0.2))
-                            y = float(pos.get("y", 0.1))
-                            z = float(pos.get("z", 0.0))
-                            # Validation des coordonnées (éviter valeurs extrêmes)
-                            if (
-                                -2.0 <= x <= 2.0
-                                and -2.0 <= y <= 2.0
-                                and -1.0 <= z <= 1.0
-                            ):
-                                self.robot_api.look_at_world(
-                                    x,
-                                    y,
-                                    z,
-                                    duration=1.0,
-                                    perform_movement=True,
-                                )
-                                logger.info(
-                                    (
-                                        f"Look_at_world vers position 3D: "
-                                        f"({x:.2f}, {y:.2f}, {z:.2f})"
-                                    ),
-                                )
-                                tracking_success = True
-                            else:
-                                logger.debug(
-                                    f"Coordonnées 3D hors limites: ({x}, {y}, {z}), "
-                                    "tentative avec look_at_image",
-                                )
-                        except (ValueError, TypeError, AttributeError) as e:
-                            logger.debug(
-                                "Erreur look_at_world, fallback vers look_at_image: %s",
-                                e,
-                            )
-                    else:
-                        logger.debug(
-                            "Pas de position 3D disponible, "
-                            "tentative avec look_at_image",
-                        )
-
-                # Méthode 2: look_at_image si position 2D disponible (fallback)
-                if not tracking_success and hasattr(self.robot_api, "look_at_image"):
-                    bbox = first_object.get("bbox", {})
-                    if bbox:
-                        try:
-                            u = int(bbox.get("center_x", 320))
-                            v = int(bbox.get("center_y", 240))
-                            # Validation coordonnées image (éviter hors cadre)
-                            if 0 <= u <= 640 and 0 <= v <= 480:
-                                self.robot_api.look_at_image(u, v, duration=1.0)
-                                logger.info("Look_at_image vers pixel: (%s, %s)", u, v)
-                                tracking_success = True
-                            else:
-                                logger.debug(
-                                    f"Coordonnées image hors limites: ({u}, {v})",
-                                )
-                        except (ValueError, TypeError, AttributeError) as e:
-                            logger.debug("Erreur look_at_image: %s", e)
-                    else:
-                        logger.debug("Pas de bbox disponible pour look_at_image")
-
-                # Méthode 3 (fallback final): émotion curious (regard explorateur)
-                if not tracking_success and hasattr(self.robot_api, "set_emotion"):
-                    try:
-                        self.robot_api.set_emotion("curious", 0.6)
-                        logger.info("Fallback: émotion curious appliquée")
-                    except Exception as e:
-                        logger.debug("Erreur fallback émotion: %s", e)
-
+            robot.look_at_world(x, y, z, duration=1.0, perform_movement=True)
+            logger.info("Look_at_world vers position 3D: (%.2f, %.2f, %.2f)", x, y, z)
             return True
+        except (ValueError, TypeError, AttributeError) as e:
+            logger.debug("Erreur look_at_world: %s", e)
+            return False
 
-        # Aucun objet détecté - appliquer émotion "curious" et commentaire varié
+    def _try_look_at_image(self, first_object: dict[str, Any]) -> bool:
+        """Tente look_at_image si position 2D disponible."""
+        robot = self.robot_api
+        if robot is None or not hasattr(robot, "look_at_image"):
+            return False
+
+        bbox = first_object.get("bbox", {})
+        if not bbox:
+            logger.debug("Pas de bbox disponible pour look_at_image")
+            return False
+
+        try:
+            u = int(bbox.get("center_x", 320))
+            v = int(bbox.get("center_y", 240))
+            if not (0 <= u <= 640 and 0 <= v <= 480):
+                logger.debug("Coordonnées image hors limites: (%s, %s)", u, v)
+                return False
+
+            robot.look_at_image(u, v, duration=1.0)
+            logger.info("Look_at_image vers pixel: (%s, %s)", u, v)
+            return True
+        except (ValueError, TypeError, AttributeError) as e:
+            logger.debug("Erreur look_at_image: %s", e)
+            return False
+
+    def _apply_curious_emotion_fallback(self) -> None:
+        """Applique émotion curious comme fallback."""
+        robot = self.robot_api
+        if robot is None or not hasattr(robot, "set_emotion"):
+            return
+        try:
+            robot.set_emotion("curious", 0.6)
+            logger.info("Fallback: émotion curious appliquée")
+        except Exception as e:
+            logger.debug("Erreur fallback émotion: %s", e)
+
+    def _track_object(self, first_object: dict[str, Any]) -> None:
+        """Effectue le suivi de l'objet détecté."""
+        if not self.robot_api:
+            return
+
+        # Essayer les méthodes de tracking dans l'ordre de priorité
+        if self._try_look_at_world(first_object):
+            return
+        if self._try_look_at_image(first_object):
+            return
+        self._apply_curious_emotion_fallback()
+
+    def _handle_object_detected(self, first_object: dict[str, Any]) -> bool:
+        """Gère le cas où un objet est détecté."""
+        object_name = first_object.get("name", "quelque chose")
+        logger.info("Suivi de l'objet : %s", object_name)
+        self.vision.track_object(first_object["name"])
+
+        detection_comments = [
+            f"Je vois {object_name} !",
+            f"Oh, il y a {object_name} là-bas !",
+            f"Je regarde {object_name}.",
+            f"{object_name} m'intrigue !",
+            f"Intéressant, je vois {object_name}.",
+        ]
+        comment = secrets.choice(detection_comments)
+        dire_texte(comment, robot_api=self.robot_api)
+        logger.info("Synthèse vocale (vision) : %s", comment)
+
+        self._track_object(first_object)
+        return True
+
+    def _handle_no_object_detected(self) -> bool:
+        """Gère le cas où aucun objet n'est détecté."""
         if self.robot_api and hasattr(self.robot_api, "set_emotion"):
             self.robot_api.set_emotion("curious", 0.6)
 
-        # AMÉLIORATION INTELLIGENCE: Messages variés quand aucun objet détecté
         no_object_comments = [
             "Je ne vois rien d'intéressant pour l'instant.",
             "Rien de nouveau dans mon champ de vision.",
@@ -532,11 +501,21 @@ class VisionTrackingBehavior(BBIABehavior):
             "Aucun objet détecté autour de moi.",
         ]
         comment = secrets.choice(no_object_comments)
-        # OPTIMISATION SDK: Passer robot_api pour utiliser haut-parleur 5W
         dire_texte(comment, robot_api=self.robot_api)
         logger.info("Synthèse vocale (vision, aucun objet) : %s", comment)
         logger.info("Aucun objet détecté pour le suivi visuel")
         return False
+
+    def execute(self, context: dict[str, Any]) -> bool:  # noqa: ARG002
+        """Exécute le comportement de suivi visuel."""
+        logger.info("Activation du suivi visuel")
+
+        result = self.vision.scan_environment()
+        logger.info("Résultat du scan environnement : %s", result)
+
+        if result["objects"]:
+            return self._handle_object_detected(result["objects"][0])
+        return self._handle_no_object_detected()
 
 
 class ConversationBehavior(BBIABehavior):
@@ -661,75 +640,67 @@ class ConversationBehavior(BBIABehavior):
         )
         return secrets.choice(responses)  # nosec B311
 
-    def execute(self, context: dict[str, Any]) -> bool:  # noqa: ARG002
-        """Exécute une conversation intelligente avec reconnaissance vocale."""
-        logger.info("Activation du mode conversation intelligente")
-
-        # Message d'accueil avec variété
-        greeting_messages = [
+    def _get_greeting_messages(self) -> list[str]:
+        """Retourne la liste des messages d'accueil."""
+        return [
             "Je vous écoute attentivement.",
             "Je suis tout ouïe, parlez-moi.",
             "Dites-moi ce qui vous passe par la tête.",
             "Je suis là pour vous, que souhaitez-vous me dire ?",
         ]
 
-        greeting = secrets.choice(greeting_messages)  # nosec B311
-        # OPTIMISATION SDK: Passer robot_api pour utiliser haut-parleur 5W
+    def _handle_huggingface_response(self, texte: str) -> bool:
+        """Gère la réponse via BBIAHuggingFace si disponible."""
+        if not self.hf_chat:
+            return False
+
+        try:
+            response = self.hf_chat.chat(texte, enable_tools=True)
+            dire_texte(response, robot_api=self.robot_api)
+            logger.info("Synthèse vocale (HF + outils LLM) : %s", response)
+
+            sentiment_result = self.hf_chat.analyze_sentiment(texte)
+            sentiment_dict: dict[str, Any] = {
+                "sentiment": sentiment_result.get("sentiment", "neutral"),
+                "score": sentiment_result.get("score", 0.5),
+            }
+            self._apply_sentiment_to_robot(sentiment_dict)
+            return True
+        except (ValueError, TypeError, KeyError) as e:
+            logger.warning("Erreur BBIAHuggingFace, fallback enrichi : %s", e)
+            return False
+
+    def _handle_enriched_response(self, texte_lower: str) -> None:
+        """Gère la réponse via le système enrichi."""
+        response = self._generate_enriched_response(texte_lower)
+        dire_texte(response, robot_api=self.robot_api)
+        logger.info("Synthèse vocale (enrichi) : %s", response)
+
+        emotion = self._detect_emotion_from_text(texte_lower)
+        if emotion and self.robot_api:
+            try:
+                self.robot_api.set_emotion(emotion, 0.6)
+                logger.info("Émotion appliquée au robot : %s", emotion)
+            except (ValueError, RuntimeError, AttributeError) as e:
+                logger.warning("Erreur application émotion : %s", e)
+
+    def execute(self, context: dict[str, Any]) -> bool:  # noqa: ARG002
+        """Exécute une conversation intelligente avec reconnaissance vocale."""
+        logger.info("Activation du mode conversation intelligente")
+
+        greeting = secrets.choice(self._get_greeting_messages())  # nosec B311
         dire_texte(greeting, robot_api=self.robot_api)
         logger.info("Synthèse vocale : %s", greeting)
 
-        # OPTIMISATION SDK: Reconnaissance vocale via robot.media.microphone
-        # si disponible
-        # Bénéfice: 4 microphones directionnels avec annulation de bruit automatique
         texte = reconnaitre_parole(duree=5, robot_api=self.robot_api)
         logger.info("Texte reconnu : %s", texte)
 
         if texte:
             texte_lower = texte.lower()
-
-            # Utiliser BBIAHuggingFace si disponible
-            # (intelligence avancée + function calling)
-            if self.hf_chat:
-                try:
-                    # Chat avec outils LLM activés pour détection automatique
-                    response = self.hf_chat.chat(texte, enable_tools=True)
-                    # OPTIMISATION SDK: Passer robot_api pour utiliser haut-parleur 5W
-                    dire_texte(response, robot_api=self.robot_api)
-                    logger.info("Synthèse vocale (HF + outils LLM) : %s", response)
-
-                    # Appliquer émotion correspondante au robot si disponible
-                    sentiment_result = self.hf_chat.analyze_sentiment(texte)
-                    # Convertir SentimentResult en dict pour compatibilité
-                    sentiment_dict: dict[str, Any] = {
-                        "sentiment": sentiment_result.get("sentiment", "neutral"),
-                        "score": sentiment_result.get("score", 0.5),
-                    }
-                    self._apply_sentiment_to_robot(sentiment_dict)
-
-                    return True
-                except (ValueError, TypeError, KeyError) as e:
-                    logger.warning("Erreur BBIAHuggingFace, fallback enrichi : %s", e)
-                    # Fallback vers système enrichi
-
-            # Système enrichi (fallback ou si HF non disponible)
-            response = self._generate_enriched_response(texte_lower)
-            # OPTIMISATION SDK: Passer robot_api pour utiliser haut-parleur 5W
-            dire_texte(response, robot_api=self.robot_api)
-            logger.info("Synthèse vocale (enrichi) : %s", response)
-
-            # Appliquer émotion basique si robot_api disponible
-            emotion = self._detect_emotion_from_text(texte_lower)
-            if emotion and self.robot_api:
-                try:
-                    self.robot_api.set_emotion(emotion, 0.6)
-                    logger.info("Émotion appliquée au robot : %s", emotion)
-                except (ValueError, RuntimeError, AttributeError) as e:
-                    logger.warning("Erreur application émotion : %s", e)
-
+            if not self._handle_huggingface_response(texte):
+                self._handle_enriched_response(texte_lower)
         else:
-            # Aucun texte entendu
             response = self._get_enriched_response("not_heard")
-            # OPTIMISATION SDK: Passer robot_api pour utiliser haut-parleur 5W
             dire_texte(response, robot_api=self.robot_api)
             logger.info("Synthèse vocale : %s", response)
 
@@ -1351,6 +1322,108 @@ def clear_saved_moves() -> None:
     manager.clear_saved_moves()
 
 
+class SimpleMove:
+    """Classe Move simple standalone (ne dépend pas de reachy_mini).
+
+    Permet de créer et interpoler des mouvements sans dépendance externe.
+    """
+
+    def __init__(
+        self,
+        positions: list[dict[str, float]],
+        duration: float,
+    ) -> None:
+        """Initialise un mouvement simple.
+
+        Args:
+            positions: Liste de positions de joints
+            duration: Durée du mouvement en secondes
+
+        """
+        self._positions = positions
+        self._duration = duration
+
+    def duration(self) -> float:
+        """Retourne la durée du mouvement."""
+        return float(self._duration)
+
+    def evaluate(self, t: float) -> dict[str, float]:
+        """Évalue la position à un temps t (0.0 à 1.0).
+
+        Args:
+            t: Temps normalisé entre 0.0 et 1.0
+
+        Returns:
+            Positions interpolées des joints
+
+        """
+        if not self._positions or t <= 0:
+            return self._positions[0] if self._positions else {}
+        if t >= 1:
+            return self._positions[-1] if self._positions else {}
+
+        idx = int(t * (len(self._positions) - 1))
+        if idx >= len(self._positions) - 1:
+            return dict(self._positions[-1]) if self._positions else {}
+
+        pos1 = self._positions[idx]
+        pos2 = self._positions[idx + 1]
+
+        result: dict[str, float] = {}
+        for key in pos1:
+            if key in pos2:
+                result[key] = pos1[key] + (pos2[key] - pos1[key]) * (
+                    t * (len(self._positions) - 1) - idx
+                )
+            else:
+                result[key] = pos1[key]
+        return result
+
+
+def _try_create_move_via_backend(
+    positions_list: list[dict[str, float]],
+    duration: float,
+) -> SimpleMove | None:
+    """Tente de créer un Move via le backend SDK si disponible.
+
+    Returns:
+        Objet Move du backend ou None si non disponible
+
+    """
+    try:
+        from .robot_factory import RobotFactory
+
+        backend = RobotFactory.create_backend("reachy_mini")
+        if not backend:
+            backend = RobotFactory.create_backend("mujoco")
+
+        if backend and hasattr(backend, "create_move_from_positions"):
+            try:
+                result = backend.create_move_from_positions(positions_list, duration)
+                if result is not None:
+                    # Wrapper le résultat en SimpleMove si nécessaire
+                    if isinstance(result, SimpleMove):
+                        return result  # type: ignore[return-value]
+                    # Si c'est un autre type d'objet Move, créer un SimpleMove
+                    return SimpleMove(positions_list, duration)  # type: ignore[return-value]
+            except (ImportError, ModuleNotFoundError) as e:
+                logger.debug(
+                    "Backend create_move_from_positions échoué (import): %s",
+                    e,
+                )
+            except Exception as e:
+                logger.debug(
+                    "Backend create_move_from_positions échoué: %s",
+                    e,
+                )
+    except (ImportError, ModuleNotFoundError) as e:
+        logger.debug("RobotFactory/imports non disponibles: %s", e)
+    except Exception as e:
+        logger.debug("RobotFactory non disponible: %s", e)
+
+    return None
+
+
 def create_move_from_positions(
     positions: dict[str, float] | list[dict[str, float]],
     duration: float = 1.0,
@@ -1363,102 +1436,22 @@ def create_move_from_positions(
 
     Returns:
         Objet Move ou None si erreur
+
     """
     try:
-        from .utils.types import JointPositions
-
         # Convertir dict unique en liste si nécessaire
         if isinstance(positions, dict):
-            positions_list: list[JointPositions] = [positions]
+            positions_list: list[dict[str, float]] = [positions]
         else:
             positions_list = positions
 
-        # Classe Move simple standalone (ne dépend pas de reachy_mini)
-        class SimpleMove:
-            """Classe Move simple pour créer des mouvements sans dépendance
-            reachy_mini.
-            """
+        # Essayer d'utiliser le backend SDK si disponible
+        backend_result = _try_create_move_via_backend(positions_list, duration)
+        if backend_result is not None:
+            return backend_result
 
-            def __init__(
-                self,
-                positions: list[JointPositions],
-                duration: float,
-            ) -> None:
-                self._positions = positions
-                self._duration = duration
-
-            def duration(self) -> float:
-                """Retourne la durée du mouvement."""
-                return float(self._duration)
-
-            def evaluate(self, t: float) -> JointPositions:
-                """Évalue la position à un temps t (0.0 à 1.0)."""
-                if not self._positions or t <= 0:
-                    return self._positions[0] if self._positions else {}
-                if t >= 1:
-                    return self._positions[-1] if self._positions else {}
-
-                idx = int(t * (len(self._positions) - 1))
-                if idx >= len(self._positions) - 1:
-                    return dict(self._positions[-1]) if self._positions else {}
-
-                pos1: JointPositions = self._positions[idx]
-                pos2: JointPositions = self._positions[idx + 1]
-
-                result: JointPositions = {}
-                for key in pos1:
-                    if key in pos2:
-                        result[key] = pos1[key] + (pos2[key] - pos1[key]) * (
-                            t * (len(self._positions) - 1) - idx
-                        )
-                    else:
-                        result[key] = pos1[key]
-                return result
-
-        # Essayer d'utiliser le backend si disponible (pour compatibilité SDK)
-        # Note: En CI, reachy_mini peut ne pas être disponible,
-        # donc on catch toutes les exceptions
-        try:
-            from .robot_factory import RobotFactory
-
-            backend = RobotFactory.create_backend("reachy_mini")
-            if not backend:
-                backend = RobotFactory.create_backend("mujoco")
-
-            if backend and hasattr(backend, "create_move_from_positions"):
-                try:
-                    result = backend.create_move_from_positions(
-                        positions_list, duration
-                    )
-                    if result is not None:
-                        return result  # type: ignore[no-any-return]
-                except (ImportError, ModuleNotFoundError) as e:
-                    # Si reachy_mini n'est pas disponible, utiliser SimpleMove
-                    logger.debug(
-                        "Backend create_move_from_positions échoué (import): "
-                        "%s, utilisation SimpleMove",
-                        e,
-                    )
-                except Exception as e:
-                    # Si le backend échoue pour une autre raison,
-                    # continuer avec SimpleMove
-                    logger.debug(
-                        "Backend create_move_from_positions échoué: "
-                        "%s, utilisation SimpleMove",
-                        e,
-                    )
-        except (ImportError, ModuleNotFoundError) as e:
-            # Si RobotFactory ou imports échouent, continuer avec SimpleMove
-            logger.debug(
-                "RobotFactory/imports non disponibles: %s, utilisation SimpleMove",
-                e,
-            )
-        except Exception as e:
-            # Si RobotFactory échoue pour une autre raison, continuer avec SimpleMove
-            logger.debug("RobotFactory non disponible: %s, utilisation SimpleMove", e)
-
-        # Toujours retourner un SimpleMove (fonctionne même sans reachy_mini)
-        return SimpleMove(positions_list, duration)  # type: ignore[no-any-return]
+        # Fallback: SimpleMove (fonctionne sans reachy_mini)
+        return SimpleMove(positions_list, duration)
 
     except Exception:
         logger.exception("Erreur création Move depuis positions")

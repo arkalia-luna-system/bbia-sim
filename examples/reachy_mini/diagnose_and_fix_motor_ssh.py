@@ -5,13 +5,13 @@ Ce script combine le diagnostic et la correction en un seul script simple à ex�
 directement sur le robot via SSH. Basé sur la solution de squirrel (Discord Pollen Robotics).
 
 Usage (sur le robot via SSH):
-    ssh pollen@192.168.129.64
+    ssh pollen@<ROBOT_IP>
     sudo systemctl stop reachy-mini-daemon
     source /venvs/mini-daemon/bin/activate
     python3 /path/to/diagnose_and_fix_motor_ssh.py
 
 Ou depuis le Mac (si le script est copié sur le robot):
-    ssh pollen@192.168.129.64 "sudo systemctl stop reachy-mini-daemon && source /venvs/mini-daemon/bin/activate && python3 diagnose_and_fix_motor_ssh.py"
+    ssh pollen@<ROBOT_IP> "sudo systemctl stop reachy-mini-daemon && source /venvs/mini-daemon/bin/activate && python3 diagnose_and_fix_motor_ssh.py"
 """
 
 import sys
@@ -87,12 +87,12 @@ def diagnose_motors(serialport: str = "/dev/ttyAMA3") -> dict:
     print("=" * 60)
     print()
 
-    print(f"1️⃣ Scan à 1,000,000 baud (configuration correcte)...")
+    print("1️⃣ Scan à 1,000,000 baud (configuration correcte)...")
     motors_1m = scan_bus_at_baudrate(serialport, BAUDRATE_1M)
     print(f"   ✅ Moteurs trouvés: {motors_1m if motors_1m else 'Aucun'}")
     time.sleep(0.5)
 
-    print(f"\n2️⃣ Scan à 57,600 baud (paramètres d'usine)...")
+    print("\n2️⃣ Scan à 57,600 baud (paramètres d'usine)...")
     motors_57k = scan_bus_at_baudrate(serialport, BAUDRATE_57K)
     print(f"   {'⚠️  Moteurs trouvés: ' + str(motors_57k) if motors_57k else '✅ Aucun (normal)'}")
 

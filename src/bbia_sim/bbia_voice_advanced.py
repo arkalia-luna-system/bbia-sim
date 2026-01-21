@@ -152,7 +152,9 @@ class BBIAVoiceAdvanced:
             except Exception:
                 # Ne pas logger l'exception complète en CI (trop verbeux)
                 if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1":
-                    logger.warning("⚠️ Erreur initialisation fallback (audio désactivé)")
+                    logger.warning(
+                        "⚠️ Erreur initialisation fallback (audio désactivé)"
+                    )
                 else:
                     logger.exception("❌ Erreur initialisation fallback")
                 self.pyttsx3_engine = None

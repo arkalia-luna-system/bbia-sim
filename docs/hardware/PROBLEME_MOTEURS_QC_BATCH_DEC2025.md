@@ -91,12 +91,41 @@ Le SDK v1.2.4 va **automatiquement reflasher** les moteurs lors de :
 
 ### **2. Remplacement des moteurs défectueux**
 
-**Formulaires remplis** :
+**Formulaires remplis** (Décembre 2025) :
 - ✅ Moteur 1 (QC 2543 - raide)
 - ✅ Moteur 2 (QC 2544 - raide + clignotement rouge)
 - ✅ Moteur 4 (QC 2544 - raide)
 
-**En attente** : Réception des moteurs de remplacement
+**⚠️ PROBLÈME** : Aucun email de confirmation reçu après les formulaires
+
+**Email envoyé le 6 janvier 2026** :
+- Contact direct avec Pollen Robotics
+- Demande de remplacement pour :
+  - Moteur 1 (stewart_1) - nouveau batch sain
+  - Moteur 2 (stewart_2) - nouveau batch sain
+  - Moteur 3 (stewart_3) - remplacement préventif (pour éviter de redémonter la tête)
+  - Moteur 4 (stewart_4) - nouveau batch sain
+  - Moteur 5 (stewart_5) - remplacement préventif (optionnel, QC 2542)
+  - Moteur 6 (stewart_6) - remplacement préventif (optionnel, QC 2542)
+- Informations de commande incluses : REACHYMINI-XXXX ([Date])
+
+**Email envoyé avec succès le 6 janvier 2026, 15h08** :
+- ✅ Email envoyé à **sales@pollen-robotics.com**
+- ✅ Demande complète pour les 6 moteurs (1, 2, 3, 4, 5, 6)
+- ✅ Documentation fournie (QC batches, SDK v1.2.4, reflash effectué)
+- ⏳ **En attente de réponse** de Pollen Robotics
+
+**Autres utilisateurs en attente aussi** :
+- **Hala** attend toujours sa résolution depuis le 2-3 janvier (problème motor 4)
+- **Plusieurs utilisateurs** sur Discord ont des problèmes similaires (batches QC 2542, 2543, 2544)
+
+**✅ MOTEURS REÇUS** : **17 Janvier 2026**
+- ✅ **3 moteurs reçus** (moteurs 1, 2, 4)
+- ✅ **Numéro QC vérifié** : **QC 2549** (21 janvier 2026)
+  - ✅ **Excellent** : Batch QC 2549 n'est PAS dans les batches problématiques (2542/2543/2544)
+  - ✅ **Sécurisé** : Moteurs d'un batch sain, pas de risque connu
+- 📦 **Statut** : Moteurs reçus et vérifiés, en attente d'installation et de tests
+- ⏳ **Prochaines étapes** : Installation des moteurs, tests unitaires, tests globaux
 
 ### **3. Remplacement préventif (recommandé)**
 
@@ -132,10 +161,25 @@ Si vous avez des moteurs QC 2542 (moteurs 5 et 6) :
 
 ## 🔗 **RESSOURCES**
 
-- **Formulaire de remplacement** : Google Form "Dynamixel motor replacement request"
+- **Formulaire de remplacement** : Google Form "Dynamixel motor replacement request" (https://forms.gle/JdhMzadeCnbynw7Q6)
+  - ⚠️ **Note** : Aucune confirmation automatique reçue après soumission
 - **SDK v1.2.4** : Mise à jour automatique via dashboard
-- **Support Pollen** : Contact via Discord #support
+- **Support Pollen** : 
+  - Contact via Discord #support
+  - Email direct (recommandé si pas de réponse aux formulaires)
 - **Documentation BBIA** : `docs/hardware/REACHY_MINI_SDK_v1.2.4.md`
+
+## 📧 **INFORMATIONS DE COMMANDE (pour référence)**
+
+> ⚠️ **Note de sécurité** : Les informations personnelles ont été anonymisées pour la version publique.
+
+- **Facture** : REACHYMINI-XXXX (anonymisé)
+- **Date** : [Date de commande]
+- **Email** : [email@example.com] (anonymisé)
+- **Nom** : [Nom] (anonymisé)
+- **Adresse** : [Ville, Pays] (anonymisé)
+- **Téléphone** : [Numéro] (anonymisé)
+- **Modèle** : Reachy Mini (with Onboard Compute and battery)
 
 ---
 
@@ -143,8 +187,18 @@ Si vous avez des moteurs QC 2542 (moteurs 5 et 6) :
 
 - **Décembre 2025** : Problème identifié par Pollen Robotics
 - **22 Décembre 2025** : Reflash effectué (tous les moteurs détectés)
-- **Décembre 2025** : Formulaires de remplacement remplis (moteurs 1, 2, 4)
+- **Décembre 2025** : Formulaires de remplacement remplis (moteurs 1, 2, 4) - **Aucune confirmation reçue**
 - **Décembre 2025** : SDK v1.2.4 annoncé avec reflash automatique
+- **6 Janvier 2026, 15h08** : Email envoyé avec succès à sales@pollen-robotics.com
+  - Demande de remplacement pour moteurs 1, 2, 3, 4 (et 5, 6 en préventif)
+  - Informations de commande : REACHYMINI-XXXX ([Date])
+  - Email professionnel et complet avec tous les détails
+- **17 Janvier 2026** : ✅ **3 moteurs reçus** (moteurs 1, 2, 4)
+  - Moteurs de remplacement livrés
+  - En attente d'installation et de tests
+- **21 Janvier 2026** : ✅ **Numéro QC vérifié** : **QC 2549**
+  - ✅ Batch sain (pas dans les batches problématiques 2542/2543/2544)
+  - ✅ Moteurs sécurisés pour installation
 
 ---
 

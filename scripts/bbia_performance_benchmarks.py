@@ -599,7 +599,7 @@ class BBIAPerformanceBenchmark:
             for op_name, op_stats in benchmarks["latency"]["operations"].items():
                 if isinstance(op_stats, dict):
                     for stat_name, stat_value in op_stats.items():
-                        if isinstance(stat_value, (int, float)):
+                        if isinstance(stat_value, int | float):
                             metrics.append(
                                 (f"latency.{op_name}.{stat_name}", float(stat_value))
                             )
@@ -611,7 +611,7 @@ class BBIAPerformanceBenchmark:
                     # Métriques globales
                     for key in ["success_rate", "requests_per_second", "total_time"]:
                         if key in test_data and isinstance(
-                            test_data[key], (int, float)
+                            test_data[key], int | float
                         ):
                             metrics.append(
                                 (f"load.{test_name}.{key}", float(test_data[key]))
@@ -619,7 +619,7 @@ class BBIAPerformanceBenchmark:
                     # Latency stats
                     if "latency_stats" in test_data:
                         for stat_name, stat_value in test_data["latency_stats"].items():
-                            if isinstance(stat_value, (int, float)):
+                            if isinstance(stat_value, int | float):
                                 metrics.append(
                                     (
                                         f"load.{test_name}.latency.{stat_name}",
@@ -633,7 +633,7 @@ class BBIAPerformanceBenchmark:
                 if isinstance(test_data, dict):
                     for key in ["memory_growth_mb", "peak_memory_mb"]:
                         if key in test_data and isinstance(
-                            test_data[key], (int, float)
+                            test_data[key], int | float
                         ):
                             metrics.append(
                                 (f"memory.{test_name}.{key}", float(test_data[key]))
@@ -644,7 +644,7 @@ class BBIAPerformanceBenchmark:
             for test_name, test_data in benchmarks["cpu"]["cpu_tests"].items():
                 if isinstance(test_data, dict) and "cpu_stats" in test_data:
                     for stat_name, stat_value in test_data["cpu_stats"].items():
-                        if isinstance(stat_value, (int, float)):
+                        if isinstance(stat_value, int | float):
                             metrics.append(
                                 (f"cpu.{test_name}.{stat_name}", float(stat_value))
                             )
@@ -681,7 +681,7 @@ class BBIAPerformanceBenchmark:
                         baseline_data = json.loads(line)
                         metric_name = baseline_data.get("metric")
                         metric_value = baseline_data.get("value")
-                        if metric_name and isinstance(metric_value, (int, float)):
+                        if metric_name and isinstance(metric_value, int | float):
                             baseline_metrics[metric_name] = float(metric_value)
         except Exception as e:
             logger.error(f"Erreur chargement baseline: {e}")

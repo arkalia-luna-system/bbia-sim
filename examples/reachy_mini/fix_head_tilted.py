@@ -170,7 +170,7 @@ def main() -> None:
 
     # Connexion
     print("🔌 Connexion au robot...")
-    print("   IP robot: 192.168.129.64")
+    print("   IP robot: <ROBOT_IP>")
     print("   Attente connexion Zenoh (peut prendre 30-60 secondes)...")
     try:
         if USE_SDK:

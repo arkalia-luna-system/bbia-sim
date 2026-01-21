@@ -159,6 +159,188 @@ def _is_safe_path(path: str) -> bool:
         return False
 
 
+def _save_audio_to_wav(
+    fichier: str,
+    audio_data: bytes | np.ndarray | Any,
+    frequence: int,
+) -> None:
+    """Sauvegarde les données audio dans un fichier WAV.
+
+    Args:
+        fichier: Chemin du fichier de sortie
+        audio_data: Données audio (bytes, numpy array ou autre)
+        frequence: Fréquence d'échantillonnage
+
+    """
+    with wave.open(fichier, "wb") as wf:
+        wf.setnchannels(1)
+        wf.setsampwidth(2)
+        wf.setframerate(frequence)
+        if isinstance(audio_data, bytes):
+            wf.writeframes(audio_data)
+        elif isinstance(audio_data, np.ndarray):
+            wf.writeframes((audio_data.astype(np.int16)).tobytes())
+        else:
+            wf.writeframes(bytes(audio_data))
+
+
+def _enregistrer_via_sdk(
+    fichier: str,
+    duree: int,
+    frequence: int,
+    robot_api: Optional["RobotAPI"],
+    microphone_sdk: object | None,
+) -> bool | None:
+    """Tente l'enregistrement via SDK Reachy Mini.
+
+    Returns:
+        True si succès, None si fallback nécessaire
+
+    """
+    if microphone_sdk is None:
+        return None
+
+    try:
+        # Enregistrement via robot.media.record_audio()
+        if (
+            robot_api
+            and hasattr(robot_api, "media")
+            and robot_api.media
+            and hasattr(robot_api.media, "record_audio")
+        ):
+            logging.info(
+                "Enregistrement via SDK (4 microphones) (%ss) dans %s...",
+                duree,
+                fichier,
+            )
+            audio_data = robot_api.media.record_audio(
+                duration=duree,
+                sample_rate=frequence,
+            )
+            _save_audio_to_wav(fichier, audio_data, frequence)
+            logging.info("Enregistrement SDK terminé.")
+            return True
+
+        # Alternative: microphone.record() si disponible
+        if hasattr(microphone_sdk, "record"):
+            audio_data = microphone_sdk.record(
+                duration=duree,
+                sample_rate=frequence,
+            )
+            _save_audio_to_wav(fichier, audio_data, frequence)
+            logging.info("Enregistrement SDK terminé.")
+            return True
+    except (AttributeError, RuntimeError, OSError):
+        logging.debug("Erreur enregistrement SDK (fallback sounddevice)")
+
+    return None
+
+
+def _enregistrer_via_sounddevice(
+    fichier: str,
+    duree: int,
+    frequence: int,
+) -> bool:
+    """Enregistre via sounddevice (fallback).
+
+    Returns:
+        True si succès
+
+    Raises:
+        RuntimeError: Si enregistrement impossible
+
+    """
+    logging.info("Enregistrement audio (%ss) dans %s...", duree, fichier)
+    _sd = _get_sd()
+    if _sd is None:
+        msg = "sounddevice indisponible (BBIA_DISABLE_AUDIO conseillé en CI)"
+        raise RuntimeError(msg)
+
+    # Issue #329: Gestion gracieuse canaux audio invalides
+    audio = _try_record_audio(_sd, duree, frequence)
+
+    _sd.wait()
+    _save_audio_to_wav(fichier, audio, frequence)
+    logging.info("Enregistrement terminé.")
+    return True
+
+
+def _try_record_audio(
+    _sd: Any,
+    duree: int,
+    frequence: int,
+) -> np.ndarray:
+    """Tente d'enregistrer audio avec gestion des canaux.
+
+    Returns:
+        Données audio numpy array
+
+    """
+    try:
+        result: np.ndarray = _sd.rec(
+            int(duree * frequence),
+            samplerate=frequence,
+            channels=1,
+            dtype="int16",
+        )
+        return result
+    except Exception as channel_error:
+        return _record_with_fallback_channels(_sd, duree, frequence, channel_error)
+
+
+def _record_with_fallback_channels(
+    _sd: Any,
+    duree: int,
+    frequence: int,
+    channel_error: Exception,
+) -> np.ndarray:
+    """Tente enregistrement avec détection automatique des canaux."""
+    is_ci = os.environ.get("CI", "false").lower() == "true"
+    if is_ci:
+        logging.debug(
+            "Erreur canaux audio (Issue #329): %s. "
+            "Tentative avec configuration par défaut...",
+            channel_error,
+        )
+    else:
+        logging.warning(
+            "⚠️ Erreur canaux audio (Issue #329): %s. "
+            "Tentative avec configuration par défaut...",
+            channel_error,
+        )
+
+    try:
+        sd_module = _get_sd()
+        if sd_module is None:
+            raise ImportError("sounddevice non disponible")
+
+        default_device = sd_module.default.device
+        device_info = sd_module.query_devices(default_device[0])
+        channels = device_info.get("max_input_channels", 1)
+        logging.info("📊 Canaux disponibles détectés: %d", channels)
+
+        result: np.ndarray = _sd.rec(
+            int(duree * frequence),
+            samplerate=frequence,
+            channels=min(channels, 1),
+            dtype="int16",
+        )
+        return result
+    except Exception as fallback_error:
+        if is_ci:
+            logging.debug(
+                "Échec enregistrement audio même avec fallback: %s",
+                fallback_error,
+            )
+        else:
+            logging.error(
+                "❌ Échec enregistrement audio même avec fallback: %s",
+                fallback_error,
+            )
+        msg = f"Impossible d'enregistrer audio: {fallback_error}"
+        raise RuntimeError(msg) from fallback_error
+
+
 def enregistrer_audio(
     fichier: str,
     duree: int = 3,
@@ -193,12 +375,10 @@ def enregistrer_audio(
     if max_buffer_duration is None:
         max_buffer_duration = int(
             os.environ.get("BBIA_MAX_AUDIO_BUFFER_DURATION", "180"),
-        )  # 3 min par défaut
+        )
 
-    # Validation: s'assurer que max_buffer_duration est au moins 1 seconde
-    # pour éviter les warnings inutiles dans les tests
     if max_buffer_duration <= 0:
-        max_buffer_duration = 180  # Valeur par défaut si valeur invalide
+        max_buffer_duration = 180
 
     if duree > max_buffer_duration:
         logging.warning(
@@ -214,145 +394,20 @@ def enregistrer_audio(
         msg = "Chemin de sortie non autorisé (path traversal)"
         raise ValueError(msg)
 
-    # OPTIMISATION SDK: Utiliser robot.media.microphone si disponible
-    # (toujours disponible via shim)
+    # Tenter enregistrement via SDK
     microphone_sdk = _get_robot_media_microphone(robot_api)
-    # microphone_sdk peut être None uniquement si robot_api.media n'existe pas du tout
-    if microphone_sdk is not None:
-        try:
-            # OPTIMISATION SDK: Enregistrement via robot.media.record_audio()
-            # Bénéfice: 4 microphones directionnels avec annulation de bruit automatique
-            if (
-                robot_api
-                and hasattr(robot_api, "media")
-                and robot_api.media
-                and hasattr(robot_api.media, "record_audio")
-            ):
-                logging.info(
-                    "Enregistrement via SDK (4 microphones) (%ss) dans %s...",
-                    duree,
-                    fichier,
-                )
-                audio_data = robot_api.media.record_audio(
-                    duration=duree,
-                    sample_rate=frequence,
-                )
-                # Sauvegarder dans fichier WAV
-                with wave.open(fichier, "wb") as wf:
-                    wf.setnchannels(1)
-                    wf.setsampwidth(2)
-                    wf.setframerate(frequence)
-                    if isinstance(audio_data, bytes):
-                        wf.writeframes(audio_data)
-                    elif isinstance(audio_data, np.ndarray):
-                        wf.writeframes((audio_data.astype(np.int16)).tobytes())
-                    else:
-                        # Convertir si nécessaire
-                        wf.writeframes(bytes(audio_data))
-                logging.info("Enregistrement SDK terminé.")
-                return True
-            if hasattr(microphone_sdk, "record"):
-                # Alternative: microphone.record() si disponible
-                audio_data = microphone_sdk.record(
-                    duration=duree,
-                    sample_rate=frequence,
-                )
-                with wave.open(fichier, "wb") as wf:
-                    wf.setnchannels(1)
-                    wf.setsampwidth(2)
-                    wf.setframerate(frequence)
-                    wf.writeframes(
-                        (
-                            bytes(audio_data)
-                            if isinstance(audio_data, bytes | bytearray)
-                            else audio_data.tobytes()
-                        ),
-                    )
-                logging.info("Enregistrement SDK terminé.")
-                return True
-        except (AttributeError, RuntimeError, OSError):
-            logging.debug("Erreur enregistrement SDK (fallback sounddevice)")
-            # Fallback vers sounddevice
-
-    # Fallback: sounddevice (compatibilité)
-    try:
-        logging.info("Enregistrement audio (%ss) dans %s...", duree, fichier)
-        _sd = _get_sd()
-        if _sd is None:
-            msg = "sounddevice indisponible (BBIA_DISABLE_AUDIO conseillé en CI)"
-            raise RuntimeError(
-                msg,
-            )
-
-        # Issue #329: Gestion gracieuse canaux audio invalides
-        try:
-            # Essayer avec 1 canal (mono)
-            audio = _sd.rec(
-                int(duree * frequence),
-                samplerate=frequence,
-                channels=1,
-                dtype="int16",
-            )
-        except Exception as channel_error:
-            # Si erreur canaux, essayer de détecter le nombre de canaux disponibles
-            # Log en debug en CI (erreurs attendues sans périphériques audio)
-            if os.environ.get("CI", "false").lower() == "true":
-                logging.debug(
-                    "Erreur canaux audio (Issue #329): %s. "
-                    "Tentative avec configuration par défaut...",
-                    channel_error,
-                )
-            else:
-                logging.warning(
-                    "⚠️ Erreur canaux audio (Issue #329): %s. "
-                    "Tentative avec configuration par défaut...",
-                    channel_error,
-                )
-            try:
-                # Essayer avec configuration par défaut
-                sd_module = _get_sd()
-                if sd_module is None:
-                    raise ImportError("sounddevice non disponible")
-
-                default_device = sd_module.default.device
-                device_info = sd_module.query_devices(default_device[0])
-                channels = device_info.get("max_input_channels", 1)
-                logging.info("📊 Canaux disponibles détectés: %d", channels)
-
-                audio = _sd.rec(
-                    int(duree * frequence),
-                    samplerate=frequence,
-                    channels=min(channels, 1),  # Limiter à mono pour compatibilité
-                    dtype="int16",
-                )
-            except Exception as fallback_error:
-                # Log en debug en CI (erreurs attendues sans périphériques audio)
-                if os.environ.get("CI", "false").lower() == "true":
-                    logging.debug(
-                        "Échec enregistrement audio même avec fallback: %s",
-                        fallback_error,
-                    )
-                else:
-                    logging.error(
-                        "❌ Échec enregistrement audio même avec fallback: %s",
-                        fallback_error,
-                    )
-                msg = f"Impossible d'enregistrer audio: {fallback_error}"
-                raise RuntimeError(
-                    msg,
-                ) from fallback_error
-
-        _sd.wait()
-        with wave.open(fichier, "wb") as wf:
-            wf.setnchannels(1)
-            wf.setsampwidth(2)
-            wf.setframerate(frequence)
-            wf.writeframes(audio.tobytes())
-        logging.info("Enregistrement terminé.")
+    sdk_result = _enregistrer_via_sdk(
+        fichier, duree, frequence, robot_api, microphone_sdk
+    )
+    if sdk_result is True:
         return True
+
+    # Fallback: sounddevice
+    try:
+        return _enregistrer_via_sounddevice(fichier, duree, frequence)
     except Exception as e:
-        # Log en debug en CI (erreurs attendues sans périphériques audio)
-        if os.environ.get("CI", "false").lower() == "true":
+        is_ci = os.environ.get("CI", "false").lower() == "true"
+        if is_ci:
             logging.debug("Erreur d'enregistrement audio: %s", e)
         else:
             logging.error("Erreur d'enregistrement audio: %s", e)

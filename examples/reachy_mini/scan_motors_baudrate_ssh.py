@@ -6,17 +6,16 @@ Il utilise le SDK reachy_mini qui est déjà installé sur le robot.
 
 Usage sur le robot:
     # Copier le script sur le robot
-    scp examples/reachy_mini/scan_motors_baudrate_ssh.py pollen@192.168.129.64:/tmp/
+    scp examples/reachy_mini/scan_motors_baudrate_ssh.py pollen@<ROBOT_IP>:/tmp/
 
     # Se connecter au robot
-    ssh pollen@192.168.129.64
+    ssh pollen@<ROBOT_IP>
 
     # Exécuter le script
     python3 /tmp/scan_motors_baudrate_ssh.py
 """
 
 import sys
-import time
 
 # Mapping Motor ID → Nom joint
 MOTOR_ID_TO_JOINT = {

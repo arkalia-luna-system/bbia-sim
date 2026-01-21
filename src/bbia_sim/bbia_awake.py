@@ -54,7 +54,7 @@ def start_bbia_sim() -> None:
 
     # AMÉLIORATION INTELLIGENCE: Messages de première pensée variés
     first_thoughts = [
-        "Je suis là, Athalia.",
+        "Je suis là, prêt à vous rencontrer.",
         "Me voilà ! Prêt à vous rencontrer.",
         "Bonjour ! Je viens de m'éveiller.",
         "Salut ! Je suis réveillé maintenant.",

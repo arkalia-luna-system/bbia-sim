@@ -424,7 +424,9 @@ class BBIAAdvancedWebSocketManager:
             heartbeat_data = {
                 "type": "heartbeat",
                 "timestamp": datetime.now().isoformat(),
-                "interval": self._heartbeat_interval,  # NOUVEAU: Inclure intervalle adaptatif
+                "interval": (
+                    self._heartbeat_interval
+                ),  # NOUVEAU: Inclure intervalle adaptatif
             }
             # Envoyer directement aux connexions pour éviter récursion avec broadcast()
             message = json.dumps(heartbeat_data)
@@ -3753,7 +3755,9 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                                 if os.environ.get("CI", "false").lower() == "true":
                                     logger.debug("Robot connect() a retourné False")
                                 else:
-                                    logger.warning("⚠️ Robot connect() a retourné False")
+                                    logger.warning(
+                                        "⚠️ Robot connect() a retourné False"
+                                    )
                                 await advanced_websocket_manager.send_log_message(
                                     "warning",
                                     f"⚠️ Robot {advanced_websocket_manager.robot_backend} en mode simulation",

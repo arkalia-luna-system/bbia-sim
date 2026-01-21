@@ -42,7 +42,7 @@ def unlock_head_movement() -> None:
             robot.disable_motors()
             print("   → Moteurs désactivés (reset)")
             time.sleep(1)
-            
+
             # Activer les moteurs (pas compensation gravité pour permettre mouvement)
             robot.enable_motors()
             print("   ✅ Moteurs activés (mode normal - permet mouvement)")
@@ -74,12 +74,12 @@ def unlock_head_movement() -> None:
             # Lire position avant
             pos_before, _ = robot.get_current_joint_positions()
             print(f"   Position avant: stewart_2 = {pos_before[1]*180/3.14159:.2f}°" if len(pos_before) >= 2 else "   Position avant: N/A")
-            
+
             print("   → Mouvement +10° (plus grand pour être sûr)...")
             pose1 = create_head_pose(roll=10, degrees=True)
             robot.goto_target(head=pose1, duration=2.0)
             time.sleep(3.0)  # Attendre plus longtemps
-            
+
             # Vérifier si ça a bougé
             pos_after1, _ = robot.get_current_joint_positions()
             if len(pos_before) >= 2 and len(pos_after1) >= 2:
@@ -89,12 +89,12 @@ def unlock_head_movement() -> None:
                     print("   ⚠️  La tête n'a PAS bougé!")
                 else:
                     print("   ✅ La tête a bougé")
-            
+
             print("   → Mouvement -10°...")
             pose2 = create_head_pose(roll=-10, degrees=True)
             robot.goto_target(head=pose2, duration=2.0)
             time.sleep(3.0)
-            
+
             print("   → Retour centre...")
             neutral = create_head_pose(
                 x=0, y=0, z=0,
@@ -115,12 +115,12 @@ def unlock_head_movement() -> None:
             pose1 = create_head_pose(pitch=5, degrees=True)
             robot.goto_target(head=pose1, duration=2.0)
             time.sleep(2.5)
-            
+
             print("   → Mouvement -5°...")
             pose2 = create_head_pose(pitch=-5, degrees=True)
             robot.goto_target(head=pose2, duration=2.0)
             time.sleep(2.5)
-            
+
             print("   → Retour centre...")
             neutral = create_head_pose(
                 x=0, y=0, z=0,
@@ -141,12 +141,12 @@ def unlock_head_movement() -> None:
             pose1 = create_head_pose(yaw=10, degrees=True)
             robot.goto_target(head=pose1, duration=2.0)
             time.sleep(2.5)
-            
+
             print("   → Mouvement -10°...")
             pose2 = create_head_pose(yaw=-10, degrees=True)
             robot.goto_target(head=pose2, duration=2.0)
             time.sleep(2.5)
-            
+
             print("   → Retour centre...")
             neutral = create_head_pose(
                 x=0, y=0, z=0,

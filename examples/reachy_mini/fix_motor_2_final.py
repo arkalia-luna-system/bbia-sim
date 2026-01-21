@@ -89,7 +89,7 @@ def fix_motor_2_final() -> None:
               f"{head_positions_before[1]*180/3.14159:.2f}°" if len(head_positions_before) >= 2 else "N/A")
         time.sleep(10)
         head_positions_after, _ = robot.get_current_joint_positions()
-        
+
         if len(head_positions_before) >= 2 and len(head_positions_after) >= 2:
             diff = abs(head_positions_before[1] - head_positions_after[1])
             diff_deg = diff * 180 / 3.14159

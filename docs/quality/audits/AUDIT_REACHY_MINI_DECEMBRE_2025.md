@@ -37,7 +37,7 @@
 **✅ Robot reçu** : 18 Décembre 2025  
 **✅ Montage effectué** : 20 Décembre 2025 (durée : 4 heures)  
 **✅ Premiers tests** : 22 Décembre 2025  
-**✅ IP Robot** : 192.168.129.64 (WiFi configuré)
+**✅ IP Robot** : [IP_ROBOT] (WiFi configuré)
 
 **Problèmes rencontrés** :
 - ✅ Bug décembre 2025 (moteurs mal configurés) → **Reflash effectué** le 22 déc 2025

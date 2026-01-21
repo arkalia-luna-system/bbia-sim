@@ -1,17 +1,32 @@
-pyttsx3
-speechrecognition
-sounddevice
-numpy
-opencv-python
-Pillow
-mujoco
-fastapi
-uvicorn[standard]
-websockets
-pydantic
-pydantic-settings
-python-multipart
+# === BBIA-SIM Core Dependencies ===
+# Versions spécifiées pour sécurité et reproductibilité
+
+# Text-to-Speech & Audio
+pyttsx3>=2.90
+speechrecognition>=3.10.0
+sounddevice>=0.4.6
+
+# Core Libraries
+numpy>=1.26.4
+opencv-python>=4.8.0
+Pillow>=10.0.0
+
+# Simulation
+mujoco>=2.1.0
+
+# === WEB FRAMEWORK (versions sécurisées) ===
+# SECURITY: Mise à jour pour corriger vulnérabilités connues
+fastapi>=0.109.1
+uvicorn[standard]>=0.24.0
+starlette>=0.40.0
+websockets>=12.0
+pydantic>=2.5.0
+pydantic-settings>=2.0.0
+python-multipart>=0.0.18
 httpx>=0.25.0
+aiohttp>=3.13.3
+jinja2>=3.1.6
+requests>=2.32.4
 
 # === PHASE 2 DEPENDENCIES ===
 # Hugging Face Integration
@@ -40,9 +55,9 @@ ultralytics>=8.0.0
 openai-whisper>=20231117
 
 # === DEVELOPMENT TOOLS ===
-ruff
-black
-isort
+ruff>=0.1.0
+black>=23.0.0
+isort>=5.12.0
 pytest>=7.0.0
 pytest-cov>=4.0.0
 pytest-timeout>=2.0.0

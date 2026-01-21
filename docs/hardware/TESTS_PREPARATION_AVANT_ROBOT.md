@@ -6,7 +6,7 @@
 **Objectif** : Valider l'environnement local et diagnostiquer le robot physique  
 **Durée estimée** : 30-60 minutes
 
-> **✅ Robot physique disponible** : Ces tests peuvent maintenant être effectués avec le robot réel (IP: 192.168.129.64)
+> **✅ Robot physique disponible** : Ces tests peuvent maintenant être effectués avec le robot réel (IP: [IP_ROBOT])
 
 ---
 

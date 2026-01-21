@@ -5,14 +5,14 @@ Ce script identifie précisément quel moteur (par ID) a un problème et quel ty
 
 Usage:
     # Depuis votre Mac, connectez-vous en SSH au robot:
-    ssh pollen@192.168.129.64
+    ssh pollen@<ROBOT_IP>
 
     # Puis exécutez le script:
     python3 /path/to/diagnostic_motor_errors_ssh.py
 
     # OU copiez le script sur le robot et exécutez-le:
-    scp examples/reachy_mini/diagnostic_motor_errors_ssh.py pollen@192.168.129.64:/tmp/
-    ssh pollen@192.168.129.64 "python3 /tmp/diagnostic_motor_errors_ssh.py"
+    scp examples/reachy_mini/diagnostic_motor_errors_ssh.py pollen@<ROBOT_IP>:/tmp/
+    ssh pollen@<ROBOT_IP> "python3 /tmp/diagnostic_motor_errors_ssh.py"
 """
 
 import subprocess
@@ -312,7 +312,7 @@ def main() -> None:
     print()
 
     # Paramètres par défaut
-    robot_ip = "192.168.129.64"
+    robot_ip = "<ROBOT_IP>"
     username = "pollen"
 
     print(f"Robot: {username}@{robot_ip}")

@@ -466,7 +466,7 @@ La simulation BBIA intègre désormais une séquence de réveil immersive, pour 
 🤖 Mouvements de tête lents (simulation)...
 🤖 Mouvements de bras légers (simulation)...
 😊 Expression : sourire doux.
-🗣️ Première pensée : 'Je suis là, Athalia.'
+🗣️ Première pensée : 'Je suis là, [Nom utilisateur].'
 ✨ BBIA est complètement réveillé et prêt !
 
 ```
