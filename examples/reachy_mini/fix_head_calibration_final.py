@@ -5,9 +5,9 @@ Ce script essaie de corriger la tête en ajustant les positions individuelles
 des stewart joints pour compenser les offsets.
 """
 
+import math
 import sys
 import time
-import math
 
 try:
     from reachy_mini import ReachyMini
@@ -110,7 +110,7 @@ def fix_head_calibration() -> None:
             test_pose = create_head_pose(roll=3, degrees=True)
             robot.goto_target(head=test_pose, duration=1.0)
             time.sleep(1.5)
-            
+
             # Retour à la position "droite" actuelle
             current_pose = robot.get_current_head_pose()
             robot.goto_target(head=current_pose, duration=1.0)

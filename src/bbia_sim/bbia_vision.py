@@ -92,7 +92,7 @@ except ImportError:
     YOLO_AVAILABLE = False
 
 try:
-    import mediapipe as mp
+    import mediapipe as mp  # type: ignore[import-untyped]
 
     # Vérifier que mp.solutions existe (peut être absent même si import réussit)
     if hasattr(mp, "solutions"):
@@ -138,7 +138,7 @@ except ImportError:
 # Import conditionnel cv2 pour conversions couleur
 CV2_AVAILABLE = False
 try:
-    import cv2
+    import cv2  # type: ignore[import-untyped]
 
     CV2_AVAILABLE = True
 except ImportError:
@@ -247,7 +247,9 @@ class BBIAVision:
             if self._camera is None:
                 return
 
-            from ..backends.simulation_shims import SimulationCamera
+            from ..backends.simulation_shims import (  # type: ignore[import-untyped]
+                SimulationCamera,
+            )
 
             if isinstance(self._camera, SimulationCamera):
                 self._camera_sdk_available = False
@@ -461,237 +463,6 @@ class BBIAVision:
                 "⚠️ MediaPipe Pose non disponible (erreur inattendue): %s", e
             )
 
-    def _init_sdk_camera(self, robot_api: Any | None) -> None:
-        """Initialise la caméra SDK si disponible."""
-        self._camera_sdk_available = False
-        self._camera = None
-        if robot_api and hasattr(robot_api, "media"):
-            try:
-                media = robot_api.media
-                if media:
-                    self._camera = getattr(media, "camera", None)
-                    if self._camera is not None:
-                        from ..backends.simulation_shims import SimulationCamera
-
-                        if isinstance(self._camera, SimulationCamera):
-                            self._camera_sdk_available = False
-                            logger.debug("Caméra simulation (shim) disponible")
-                        else:
-                            self._camera_sdk_available = True
-                            logger.info("✅ Caméra SDK disponible: robot.media.camera")
-            except (AttributeError, RuntimeError, OSError) as e:
-                logger.debug("Caméra SDK non disponible (fallback simulation): %s", e)
-            except Exception as e:  # noqa: BLE001
-                logger.debug("Erreur inattendue caméra SDK: %s", e)
-
-    def _init_opencv_camera(self) -> None:
-        """Initialise la webcam OpenCV si disponible."""
-        self._opencv_camera = None
-        self._opencv_camera_available = False
-        if not self._camera_sdk_available and CV2_AVAILABLE and cv2:
-            try:
-                camera_index_str = os.environ.get("BBIA_CAMERA_INDEX", "0")
-                camera_device = os.environ.get("BBIA_CAMERA_DEVICE")
-
-                if camera_device:
-                    self._opencv_camera = cv2.VideoCapture(camera_device)
-                    logger.info("🔌 Tentative ouverture webcam: %s", camera_device)
-                else:
-                    try:
-                        camera_index = int(camera_index_str)
-                        self._opencv_camera = cv2.VideoCapture(camera_index)
-                        logger.info(
-                            f"🔌 Tentative ouverture webcam (index {camera_index})",
-                        )
-                    except ValueError:
-                        logger.warning(
-                            f"⚠️ BBIA_CAMERA_INDEX invalide: {camera_index_str}, "
-                            f"utilisation index 0",
-                        )
-                        self._opencv_camera = cv2.VideoCapture(0)
-
-                if self._opencv_camera is not None and self._opencv_camera.isOpened():
-                    ret, test_frame = self._opencv_camera.read()
-                    if ret and test_frame is not None:
-                        self._opencv_camera_available = True
-                        logger.info("✅ Webcam USB OpenCV disponible")
-                    else:
-                        self._opencv_camera.release()
-                        self._opencv_camera = None
-                        logger.debug(
-                            "Webcam OpenCV ouverte mais ne capture pas d'images",
-                        )
-                else:
-                    if self._opencv_camera:
-                        self._opencv_camera.release()
-                    self._opencv_camera = None
-                    logger.debug("Webcam OpenCV non disponible (fallback simulation)")
-            except (OSError, RuntimeError, AttributeError) as e:
-                self._release_opencv_camera()
-                logger.debug("Erreur initialisation webcam OpenCV: %s", e)
-            except Exception as e:  # noqa: BLE001
-                self._opencv_camera = None
-                logger.debug("Erreur inattendue initialisation webcam OpenCV: %s", e)
-
-    def _release_opencv_camera(self) -> None:
-        """Libère la webcam OpenCV proprement."""
-        if self._opencv_camera:
-            try:
-                self._opencv_camera.release()
-            except (OSError, RuntimeError) as release_error:
-                logger.debug(
-                    "Erreur lors de la libération de la webcam OpenCV: %s",
-                    release_error,
-                )
-            except Exception as release_error:  # noqa: BLE001
-                logger.debug(
-                    "Erreur inattendue libération webcam OpenCV: %s",
-                    release_error,
-                )
-            finally:
-                self._opencv_camera = None
-
-    def _init_detectors(self) -> None:
-        """Initialise tous les détecteurs (YOLO, MediaPipe, DeepFace, Pose)."""
-        self.yolo_detector = None
-        if (
-            self._camera_sdk_available
-            and YOLO_AVAILABLE
-            and create_yolo_detector is not None
-        ):
-            try:
-                confidence_threshold = float(
-                    os.environ.get("BBIA_YOLO_CONFIDENCE", "0.25"),
-                )
-                self.yolo_detector = create_yolo_detector(
-                    model_size="n",
-                    confidence_threshold=confidence_threshold,
-                )
-                if self.yolo_detector:
-                    self.yolo_detector.load_model()
-                    logger.info(
-                        "✅ Détecteur YOLO initialisé (lazy loading - caméra réelle)",
-                    )
-            except (ImportError, RuntimeError, AttributeError) as e:
-                logger.warning("⚠️ YOLO non disponible: %s", e)
-            except Exception as e:  # noqa: BLE001
-                logger.error("⚠️ Erreur inattendue YOLO (critique): %s", e)
-        else:
-            logger.debug(
-                "YOLO non chargé (lazy loading - caméra simulation ou non disponible)",
-            )
-
-        self._init_mediapipe_face_detector()
-        self._init_deepface()
-        self._init_mediapipe_pose()
-
-    def _init_mediapipe_face_detector(self) -> None:
-        """Initialise le détecteur de visages MediaPipe."""
-        self.face_detector = None
-        if MEDIAPIPE_AVAILABLE and mp:
-            try:
-                try:
-                    from .vision_yolo import (
-                        _mediapipe_cache_lock,
-                        _mediapipe_face_detection_cache,
-                    )
-
-                    with _mediapipe_cache_lock:
-                        if (
-                            _mediapipe_face_detection_cache is not None
-                            and MEDIAPIPE_AVAILABLE
-                            and mp is not None
-                        ):
-                            logger.debug(
-                                "♻️ Réutilisation détecteur MediaPipe depuis cache "
-                                "(bbia_vision)",
-                            )
-                            self.face_detector = _mediapipe_face_detection_cache
-                            logger.debug(
-                                "✅ Détecteur MediaPipe Face initialisé (cache)",
-                            )
-                        elif _mediapipe_face_detection_cache is not None:
-                            logger.debug(
-                                "🧹 Nettoyage cache MediaPipe (non disponible)"
-                            )
-                            _mediapipe_face_detection_cache = None
-                            self.face_detector = None
-                        else:
-                            if not hasattr(mp, "solutions"):
-                                raise AttributeError(
-                                    "mediapipe module has no attribute 'solutions'"
-                                )
-                            self.face_detector = (
-                                mp.solutions.face_detection.FaceDetection(
-                                    model_selection=0,
-                                    min_detection_confidence=0.5,
-                                )
-                            )
-                            _mediapipe_face_detection_cache = self.face_detector
-                            logger.debug("✅ Détecteur MediaPipe Face initialisé")
-                except ImportError:
-                    if mp is not None and hasattr(mp, "solutions"):
-                        self.face_detector = mp.solutions.face_detection.FaceDetection(
-                            model_selection=0,
-                            min_detection_confidence=0.5,
-                        )
-                        logger.debug("✅ Détecteur MediaPipe Face initialisé")
-                    else:
-                        raise AttributeError(
-                            "mediapipe module has no attribute 'solutions'"
-                        ) from None
-            except (ImportError, RuntimeError, AttributeError) as e:
-                logger.warning("⚠️ MediaPipe non disponible: %s", e)
-            except Exception as e:  # noqa: BLE001
-                logger.error(
-                    "⚠️ MediaPipe non disponible (erreur inattendue critique): %s", e
-                )
-
-    def _init_deepface(self) -> None:
-        """Initialise DeepFace pour reconnaissance de visages."""
-        self.face_recognition = None
-        if DEEPFACE_AVAILABLE and create_face_recognition is not None:
-            try:
-                db_path = os.environ.get("BBIA_FACES_DB", "faces_db")
-                model_name = os.environ.get("BBIA_DEEPFACE_MODEL", "VGG-Face")
-                self.face_recognition = create_face_recognition(db_path, model_name)
-                if self.face_recognition and self.face_recognition.is_initialized:
-                    logger.info(
-                        f"✅ DeepFace initialisé (db: {db_path}, modèle: {model_name})",
-                    )
-            except (ImportError, RuntimeError, AttributeError) as e:
-                logger.debug("⚠️ DeepFace non disponible: %s", e)
-            except (TypeError, ValueError, OSError) as e:
-                logger.debug("⚠️ DeepFace non disponible (type/value/os): %s", e)
-            except Exception as e:  # noqa: BLE001
-                logger.debug("⚠️ DeepFace non disponible (erreur inattendue): %s", e)
-
-    def _init_mediapipe_pose(self) -> None:
-        """Initialise MediaPipe Pose pour détection de postures."""
-        self.pose_detector = None
-        if MEDIAPIPE_POSE_AVAILABLE and create_pose_detector is not None:
-            try:
-                model_complexity = int(os.environ.get("BBIA_POSE_COMPLEXITY", "1"))
-                self.pose_detector = create_pose_detector(
-                    model_complexity=model_complexity,
-                )
-                if self.pose_detector and self.pose_detector.is_initialized:
-                    logger.info(
-                        f"✅ MediaPipe Pose initialisé "
-                        f"(complexité: {model_complexity})",
-                    )
-            except (ImportError, RuntimeError, AttributeError) as e:
-                logger.warning("⚠️ MediaPipe Pose non disponible: %s", e)
-            except (TypeError, ValueError, OSError) as e:
-                logger.warning(
-                    "⚠️ MediaPipe Pose non disponible (type/value/os): %s", e
-                )
-            except Exception as e:  # noqa: BLE001
-                logger.warning(
-                    "⚠️ MediaPipe Pose non disponible (erreur inattendue): %s",
-                    e,
-                )
-
     def _capture_image_from_camera(self) -> npt.NDArray[np.uint8] | None:
         """Capture une image depuis robot.media.camera si disponible,
         sinon webcam USB OpenCV.
@@ -822,15 +593,18 @@ class BBIAVision:
 
     def _capture_raw_from_sdk(self) -> Any | None:
         """Capture une image brute depuis le SDK."""
-        if hasattr(self._camera, "get_image"):
-            return self._camera.get_image()
-        if hasattr(self._camera, "capture"):
-            return self._camera.capture()
-        if hasattr(self._camera, "read"):
-            ret, image = self._camera.read()
+        camera = self._camera
+        if camera is None:
+            return None
+        if hasattr(camera, "get_image"):
+            return camera.get_image()  # type: ignore[union-attr]
+        if hasattr(camera, "capture"):
+            return camera.capture()  # type: ignore[union-attr]
+        if hasattr(camera, "read"):
+            ret, image = camera.read()  # type: ignore[union-attr]
             return image if ret else None
-        if callable(self._camera):
-            return self._camera()
+        if callable(camera):
+            return camera()
         logger.warning(
             "⚠️ robot.media.camera disponible mais méthode de capture inconnue"
         )

@@ -11,8 +11,8 @@ Usage:
     python examples/reachy_mini/check_before_motor_installation.py
 """
 
-import sys
 import subprocess
+import sys
 from pathlib import Path
 
 # Ajouter le répertoire racine au path

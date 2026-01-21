@@ -81,7 +81,7 @@ def fix_head_gravity() -> None:
         print("5️⃣ Test stabilité (attente 5 secondes)...")
         print("   → Vérifie si la tête reste en position...")
         time.sleep(5)
-        
+
         head_positions_after, _ = robot.get_current_joint_positions()
         if len(head_positions) >= 6 and len(head_positions_after) >= 6:
             # Comparer les positions

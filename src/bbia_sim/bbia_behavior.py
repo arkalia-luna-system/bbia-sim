@@ -32,7 +32,7 @@ except ImportError:
 
 # Import SDK officiel pour create_head_pose (optionnel)
 try:
-    from reachy_mini.utils import create_head_pose
+    from reachy_mini.utils import create_head_pose  # type: ignore[import-untyped]
 
     REACHY_MINI_UTILS_AVAILABLE = True
 except ImportError:
@@ -394,116 +394,105 @@ class VisionTrackingBehavior(BBIABehavior):
         self.vision = vision
         self.priority = 6
 
-    def execute(self, context: dict[str, Any]) -> bool:  # noqa: ARG002
-        logger.info("Activation du suivi visuel")
+    def _try_look_at_world(self, first_object: dict[str, Any]) -> bool:
+        """Tente look_at_world si position 3D disponible."""
+        robot = self.robot_api
+        if robot is None or not hasattr(robot, "look_at_world"):
+            return False
 
-        result = self.vision.scan_environment()
-        logger.info("Résultat du scan environnement : %s", result)
+        pos = first_object.get("position", {})
+        if not pos:
+            logger.debug("Pas de position 3D disponible")
+            return False
 
-        if result["objects"]:
-            first_object = result["objects"][0]
-            object_name = first_object.get("name", "quelque chose")
-            logger.info("Suivi de l'objet : %s", object_name)
-            self.vision.track_object(first_object["name"])
+        try:
+            x = float(pos.get("x", 0.2))
+            y = float(pos.get("y", 0.1))
+            z = float(pos.get("z", 0.0))
+            if not (-2.0 <= x <= 2.0 and -2.0 <= y <= 2.0 and -1.0 <= z <= 1.0):
+                logger.debug("Coordonnées 3D hors limites: (%s, %s, %s)", x, y, z)
+                return False
 
-            # AMÉLIORATION INTELLIGENCE: Commentaires vocaux variés lors de détection
-            detection_comments = [
-                f"Je vois {object_name} !",
-                f"Oh, il y a {object_name} là-bas !",
-                f"Je regarde {object_name}.",
-                f"{object_name} m'intrigue !",
-                f"Intéressant, je vois {object_name}.",
-            ]
-            comment = secrets.choice(detection_comments)
-            # OPTIMISATION SDK: Passer robot_api pour utiliser haut-parleur 5W
-            dire_texte(comment, robot_api=self.robot_api)
-            logger.info("Synthèse vocale (vision) : %s", comment)
-
-            # OPTIMISATION EXPERT: Utiliser look_at_world/look_at_image
-            # avec gestion d'erreur robuste et fallback gracieux
-            if self.robot_api:
-                tracking_success = False
-
-                # Méthode 1 (préférée): look_at_world si position 3D disponible
-                if hasattr(self.robot_api, "look_at_world"):
-                    pos = first_object.get("position", {})
-                    if pos:
-                        try:
-                            x = float(pos.get("x", 0.2))
-                            y = float(pos.get("y", 0.1))
-                            z = float(pos.get("z", 0.0))
-                            # Validation des coordonnées (éviter valeurs extrêmes)
-                            if (
-                                -2.0 <= x <= 2.0
-                                and -2.0 <= y <= 2.0
-                                and -1.0 <= z <= 1.0
-                            ):
-                                self.robot_api.look_at_world(
-                                    x,
-                                    y,
-                                    z,
-                                    duration=1.0,
-                                    perform_movement=True,
-                                )
-                                logger.info(
-                                    (
-                                        f"Look_at_world vers position 3D: "
-                                        f"({x:.2f}, {y:.2f}, {z:.2f})"
-                                    ),
-                                )
-                                tracking_success = True
-                            else:
-                                logger.debug(
-                                    f"Coordonnées 3D hors limites: ({x}, {y}, {z}), "
-                                    "tentative avec look_at_image",
-                                )
-                        except (ValueError, TypeError, AttributeError) as e:
-                            logger.debug(
-                                "Erreur look_at_world, fallback vers look_at_image: %s",
-                                e,
-                            )
-                    else:
-                        logger.debug(
-                            "Pas de position 3D disponible, "
-                            "tentative avec look_at_image",
-                        )
-
-                # Méthode 2: look_at_image si position 2D disponible (fallback)
-                if not tracking_success and hasattr(self.robot_api, "look_at_image"):
-                    bbox = first_object.get("bbox", {})
-                    if bbox:
-                        try:
-                            u = int(bbox.get("center_x", 320))
-                            v = int(bbox.get("center_y", 240))
-                            # Validation coordonnées image (éviter hors cadre)
-                            if 0 <= u <= 640 and 0 <= v <= 480:
-                                self.robot_api.look_at_image(u, v, duration=1.0)
-                                logger.info("Look_at_image vers pixel: (%s, %s)", u, v)
-                                tracking_success = True
-                            else:
-                                logger.debug(
-                                    f"Coordonnées image hors limites: ({u}, {v})",
-                                )
-                        except (ValueError, TypeError, AttributeError) as e:
-                            logger.debug("Erreur look_at_image: %s", e)
-                    else:
-                        logger.debug("Pas de bbox disponible pour look_at_image")
-
-                # Méthode 3 (fallback final): émotion curious (regard explorateur)
-                if not tracking_success and hasattr(self.robot_api, "set_emotion"):
-                    try:
-                        self.robot_api.set_emotion("curious", 0.6)
-                        logger.info("Fallback: émotion curious appliquée")
-                    except Exception as e:
-                        logger.debug("Erreur fallback émotion: %s", e)
-
+            robot.look_at_world(x, y, z, duration=1.0, perform_movement=True)
+            logger.info("Look_at_world vers position 3D: (%.2f, %.2f, %.2f)", x, y, z)
             return True
+        except (ValueError, TypeError, AttributeError) as e:
+            logger.debug("Erreur look_at_world: %s", e)
+            return False
 
-        # Aucun objet détecté - appliquer émotion "curious" et commentaire varié
+    def _try_look_at_image(self, first_object: dict[str, Any]) -> bool:
+        """Tente look_at_image si position 2D disponible."""
+        robot = self.robot_api
+        if robot is None or not hasattr(robot, "look_at_image"):
+            return False
+
+        bbox = first_object.get("bbox", {})
+        if not bbox:
+            logger.debug("Pas de bbox disponible pour look_at_image")
+            return False
+
+        try:
+            u = int(bbox.get("center_x", 320))
+            v = int(bbox.get("center_y", 240))
+            if not (0 <= u <= 640 and 0 <= v <= 480):
+                logger.debug("Coordonnées image hors limites: (%s, %s)", u, v)
+                return False
+
+            robot.look_at_image(u, v, duration=1.0)
+            logger.info("Look_at_image vers pixel: (%s, %s)", u, v)
+            return True
+        except (ValueError, TypeError, AttributeError) as e:
+            logger.debug("Erreur look_at_image: %s", e)
+            return False
+
+    def _apply_curious_emotion_fallback(self) -> None:
+        """Applique émotion curious comme fallback."""
+        robot = self.robot_api
+        if robot is None or not hasattr(robot, "set_emotion"):
+            return
+        try:
+            robot.set_emotion("curious", 0.6)
+            logger.info("Fallback: émotion curious appliquée")
+        except Exception as e:
+            logger.debug("Erreur fallback émotion: %s", e)
+
+    def _track_object(self, first_object: dict[str, Any]) -> None:
+        """Effectue le suivi de l'objet détecté."""
+        if not self.robot_api:
+            return
+
+        # Essayer les méthodes de tracking dans l'ordre de priorité
+        if self._try_look_at_world(first_object):
+            return
+        if self._try_look_at_image(first_object):
+            return
+        self._apply_curious_emotion_fallback()
+
+    def _handle_object_detected(self, first_object: dict[str, Any]) -> bool:
+        """Gère le cas où un objet est détecté."""
+        object_name = first_object.get("name", "quelque chose")
+        logger.info("Suivi de l'objet : %s", object_name)
+        self.vision.track_object(first_object["name"])
+
+        detection_comments = [
+            f"Je vois {object_name} !",
+            f"Oh, il y a {object_name} là-bas !",
+            f"Je regarde {object_name}.",
+            f"{object_name} m'intrigue !",
+            f"Intéressant, je vois {object_name}.",
+        ]
+        comment = secrets.choice(detection_comments)
+        dire_texte(comment, robot_api=self.robot_api)
+        logger.info("Synthèse vocale (vision) : %s", comment)
+
+        self._track_object(first_object)
+        return True
+
+    def _handle_no_object_detected(self) -> bool:
+        """Gère le cas où aucun objet n'est détecté."""
         if self.robot_api and hasattr(self.robot_api, "set_emotion"):
             self.robot_api.set_emotion("curious", 0.6)
 
-        # AMÉLIORATION INTELLIGENCE: Messages variés quand aucun objet détecté
         no_object_comments = [
             "Je ne vois rien d'intéressant pour l'instant.",
             "Rien de nouveau dans mon champ de vision.",
@@ -512,11 +501,21 @@ class VisionTrackingBehavior(BBIABehavior):
             "Aucun objet détecté autour de moi.",
         ]
         comment = secrets.choice(no_object_comments)
-        # OPTIMISATION SDK: Passer robot_api pour utiliser haut-parleur 5W
         dire_texte(comment, robot_api=self.robot_api)
         logger.info("Synthèse vocale (vision, aucun objet) : %s", comment)
         logger.info("Aucun objet détecté pour le suivi visuel")
         return False
+
+    def execute(self, context: dict[str, Any]) -> bool:  # noqa: ARG002
+        """Exécute le comportement de suivi visuel."""
+        logger.info("Activation du suivi visuel")
+
+        result = self.vision.scan_environment()
+        logger.info("Résultat du scan environnement : %s", result)
+
+        if result["objects"]:
+            return self._handle_object_detected(result["objects"][0])
+        return self._handle_no_object_detected()
 
 
 class ConversationBehavior(BBIABehavior):
@@ -1384,7 +1383,7 @@ class SimpleMove:
 def _try_create_move_via_backend(
     positions_list: list[dict[str, float]],
     duration: float,
-) -> object | None:
+) -> SimpleMove | None:
     """Tente de créer un Move via le backend SDK si disponible.
 
     Returns:
@@ -1402,7 +1401,11 @@ def _try_create_move_via_backend(
             try:
                 result = backend.create_move_from_positions(positions_list, duration)
                 if result is not None:
-                    return result
+                    # Wrapper le résultat en SimpleMove si nécessaire
+                    if isinstance(result, SimpleMove):
+                        return result  # type: ignore[return-value]
+                    # Si c'est un autre type d'objet Move, créer un SimpleMove
+                    return SimpleMove(positions_list, duration)  # type: ignore[return-value]
             except (ImportError, ModuleNotFoundError) as e:
                 logger.debug(
                     "Backend create_move_from_positions échoué (import): %s",

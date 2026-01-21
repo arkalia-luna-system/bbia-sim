@@ -93,14 +93,16 @@ def diagnose_motor_issue(serialport: str, motor_id: int = 13, old_id: int = 1) -
 
         # Essayer d'utiliser le script de scan automatique si disponible
         try:
-            from examples.reachy_mini.scan_motors_baudrate import diagnose_motors_baudrate
+            from examples.reachy_mini.scan_motors_baudrate import (
+                diagnose_motors_baudrate,
+            )
 
             print("\n   🔍 Utilisation du scan automatique...")
             results = diagnose_motors_baudrate(serialport)
 
             if motor_id in results["wrong_baudrate_motors"]:
                 print(f"   ⚠️  PROBLÈME DÉTECTÉ: Motor ID {motor_id} a un mauvais baudrate!")
-                print(f"      → Trouvé à 57.6k baud mais pas à 1M baud")
+                print("      → Trouvé à 57.6k baud mais pas à 1M baud")
                 return True
             elif motor_id in results["missing_motors"]:
                 print(f"   ⚠️  PROBLÈME DÉTECTÉ: Motor ID {motor_id} est manquant!")

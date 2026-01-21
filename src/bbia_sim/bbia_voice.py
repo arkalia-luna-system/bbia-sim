@@ -210,7 +210,7 @@ def get_bbia_voice(engine: Any) -> str:
         return "com.apple.speech.voice.Amelie.fr-FR"
 
     voices = engine.getProperty("voices")
-    candidates: dict[str, str | None] = {k: None for k in _VOICE_PRIORITY_KEYS}
+    candidates: dict[str, str | None] = dict.fromkeys(_VOICE_PRIORITY_KEYS, None)
 
     # Une seule passe sur toutes les voix
     for v in voices:

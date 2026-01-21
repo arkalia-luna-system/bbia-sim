@@ -16,7 +16,6 @@ Usage sur le robot:
 """
 
 import sys
-import time
 
 # Mapping Motor ID → Nom joint
 MOTOR_ID_TO_JOINT = {

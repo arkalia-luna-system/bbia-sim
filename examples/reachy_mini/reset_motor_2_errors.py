@@ -45,7 +45,7 @@ def reset_motor_2_errors() -> None:
             robot.disable_motors()
             print("   ✅ Moteurs désactivés")
             time.sleep(1)
-            
+
             # Réactiver les moteurs
             robot.enable_motors()
             print("   ✅ Moteurs réactivés")
@@ -72,7 +72,7 @@ def reset_motor_2_errors() -> None:
                 roll=0, pitch=0, yaw=0,
                 degrees=True, mm=True
             )
-            
+
             print("   → Déplacement vers position neutre...")
             robot.goto_target(head=neutral, duration=3.0)
             time.sleep(3.5)
@@ -103,7 +103,7 @@ def reset_motor_2_errors() -> None:
             print("   → Petit mouvement de test...")
             robot.goto_target(head=test_pose, duration=1.0)
             time.sleep(1.5)
-            
+
             # Retour neutre
             neutral = create_head_pose(
                 x=0, y=0, z=0,

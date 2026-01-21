@@ -87,12 +87,12 @@ def diagnose_motors(serialport: str = "/dev/ttyAMA3") -> dict:
     print("=" * 60)
     print()
 
-    print(f"1️⃣ Scan à 1,000,000 baud (configuration correcte)...")
+    print("1️⃣ Scan à 1,000,000 baud (configuration correcte)...")
     motors_1m = scan_bus_at_baudrate(serialport, BAUDRATE_1M)
     print(f"   ✅ Moteurs trouvés: {motors_1m if motors_1m else 'Aucun'}")
     time.sleep(0.5)
 
-    print(f"\n2️⃣ Scan à 57,600 baud (paramètres d'usine)...")
+    print("\n2️⃣ Scan à 57,600 baud (paramètres d'usine)...")
     motors_57k = scan_bus_at_baudrate(serialport, BAUDRATE_57K)
     print(f"   {'⚠️  Moteurs trouvés: ' + str(motors_57k) if motors_57k else '✅ Aucun (normal)'}")
 

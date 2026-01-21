@@ -6,7 +6,6 @@ après le reflash.
 """
 
 import sys
-import time
 
 try:
     from reachy_mini import ReachyMini
@@ -62,13 +61,13 @@ def diagnose_motor_2() -> None:
             stewart_2_index = 1  # stewart_2 est à l'index 1 (0=stewart_1, 1=stewart_2)
             stewart_2_position = head_positions[stewart_2_index]
             print(f"   Position stewart_2: {stewart_2_position:.4f} rad ({stewart_2_position*180/3.14159:.2f}°)")
-            
+
             # Vérifier si la position est dans les limites
             stewart_2_limits = (-1.396263401595614, 1.2217304763958803)
             if stewart_2_limits[0] <= stewart_2_position <= stewart_2_limits[1]:
                 print("   ✅ Position dans les limites")
             else:
-                print(f"   ⚠️  Position HORS LIMITES!")
+                print("   ⚠️  Position HORS LIMITES!")
                 print(f"      Limites: [{stewart_2_limits[0]:.4f}, {stewart_2_limits[1]:.4f}] rad")
         else:
             print("   ❌ Impossible de lire la position de stewart_2")
@@ -83,11 +82,11 @@ def diagnose_motor_2() -> None:
                 if len(motors) > 1:
                     motor_2 = motors[1]  # Index 1 = stewart_2
                     print(f"   Moteur 2 trouvé: {motor_2}")
-                    
+
                     # Essayer de lire l'état du moteur
                     if hasattr(motor_2, 'id'):
                         print(f"   ID du moteur: {motor_2.id}")
-                    
+
                     # Essayer de lire les erreurs
                     if hasattr(motor_2, 'hardware_error'):
                         error = motor_2.hardware_error
@@ -99,11 +98,11 @@ def diagnose_motor_2() -> None:
                             print("      - Surchauffe (overheating)")
                             print("      - Problème de connexion")
                             print("      - Moteur en butée mécanique")
-                    
+
                     if hasattr(motor_2, 'present_position'):
                         pos = motor_2.present_position
                         print(f"   Position actuelle: {pos}")
-                    
+
                     if hasattr(motor_2, 'goal_position'):
                         goal = motor_2.goal_position
                         print(f"   Position cible: {goal}")

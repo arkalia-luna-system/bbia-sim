@@ -6,7 +6,6 @@ Usage:
 """
 
 import sys
-import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
@@ -29,21 +28,21 @@ def diagnose_motor_errors(robot) -> None:
     try:
         # Obtenir l'état complet du robot
         print("1️⃣ Lecture état des moteurs...")
-        
+
         if USE_SDK:
             # Obtenir les positions des joints
             head_positions, antenna_positions = robot.get_current_joint_positions()
-            
+
             print(f"   Positions tête: {len(head_positions)} joints")
             print(f"   Positions antennes: {len(antenna_positions)} joints")
-            
+
             # Essayer d'accéder aux moteurs directement si possible
             try:
                 # Vérifier si on peut accéder aux moteurs via l'API
                 if hasattr(robot, 'head') and hasattr(robot.head, 'motors'):
                     print("\n2️⃣ Vérification erreurs matérielles...")
                     motors = robot.head.motors
-                    for i, motor in enumerate(motors, 1):
+                    for i, _motor in enumerate(motors, 1):
                         try:
                             # Essayer de lire l'état du moteur
                             print(f"   Moteur {i}: Vérification...")

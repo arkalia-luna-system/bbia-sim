@@ -7,6 +7,20 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+### 🔒 **Audit Sécurité et Qualité** (21 Janvier 2026)
+
+- ✅ **53 vulnérabilités dépendances corrigées** :
+  - `aiohttp` : 3.9.0 → **3.13.3** (HTTP Request Smuggling)
+  - `jinja2` : 3.1.0 → **3.1.6** (XSS)
+  - `requests` : non spécifié → **2.32.4** (TLS/netrc)
+  - `starlette` : non spécifié → **0.40.0** (DoS)
+- ✅ **Tests couverture ajoutés** :
+  - `test_telemetry_coverage.py` : 9 tests (0% → 96%)
+  - `test_model_optimizer_coverage.py` : 8 tests (0% → 100%)
+  - `test_mapping_reachy_coverage.py` : 25 tests (0% → 100%)
+- ✅ **Code quality** : Ruff, Black, tous les checks passent
+- ✅ **42 nouveaux tests** : Tous passent
+
 ### 📦 **Réception et Montage Robot Physique** (22 Décembre 2025)
 
 - ✅ **Robot Reachy Mini Wireless reçu** : 18 Décembre 2025
