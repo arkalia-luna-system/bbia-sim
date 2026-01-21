@@ -450,7 +450,9 @@ class BBIAVision:
             except (ImportError, RuntimeError, AttributeError) as e:
                 logger.warning("⚠️ MediaPipe Pose non disponible: %s", e)
             except (TypeError, ValueError, OSError) as e:
-                logger.warning("⚠️ MediaPipe Pose non disponible (type/value/os): %s", e)
+                logger.warning(
+                    "⚠️ MediaPipe Pose non disponible (type/value/os): %s", e
+                )
             except (
                 Exception
             ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues

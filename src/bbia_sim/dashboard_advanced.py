@@ -3755,7 +3755,9 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                                 if os.environ.get("CI", "false").lower() == "true":
                                     logger.debug("Robot connect() a retourné False")
                                 else:
-                                    logger.warning("⚠️ Robot connect() a retourné False")
+                                    logger.warning(
+                                        "⚠️ Robot connect() a retourné False"
+                                    )
                                 await advanced_websocket_manager.send_log_message(
                                     "warning",
                                     f"⚠️ Robot {advanced_websocket_manager.robot_backend} en mode simulation",

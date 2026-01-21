@@ -189,7 +189,9 @@ class TestSDKMediaIntegration:
                         print("✅ enregistrer_audio vérifie robot.media.microphone")
                     except Exception:
                         # Peut échouer en test car sounddevice nécessite setup réel
-                        print("⚠️  enregistrer_audio testé (peut nécessiter setup réel)")
+                        print(
+                            "⚠️  enregistrer_audio testé (peut nécessiter setup réel)"
+                        )
 
     def test_behavior_manager_has_recording_methods(self):
         """Test: BBIABehaviorManager doit avoir méthodes recording/replay."""
