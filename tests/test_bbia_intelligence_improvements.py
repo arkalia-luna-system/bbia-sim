@@ -23,13 +23,14 @@ class TestBBIAIntelligenceImprovements:
     def test_wake_up_messages_variety(self):
         """Test que les messages de réveil sont variés."""
         behavior = WakeUpBehavior()
-        # Vérifier que le code contient plusieurs messages de réveil
-        # (on teste la structure, pas l'exécution complète)
-        import inspect
-
-        source = inspect.getsource(behavior.execute)
-        assert "wake_messages" in source, "Messages de réveil doivent être définis"
-        assert source.count('"') >= 16, "Doit y avoir plusieurs messages de réveil"
+        # Vérifier que les messages de réveil sont variés
+        # (après refactoring, les messages sont dans _get_wake_messages)
+        messages = behavior._get_wake_messages()
+        assert (
+            len(messages) >= 8
+        ), f"Doit y avoir au moins 8 messages de réveil (actuel: {len(messages)})"
+        # Vérifier que les messages sont différents
+        assert len(set(messages)) == len(messages), "Les messages doivent être uniques"
 
     def test_conversation_greeting_responses_variety(self):
         """Test que les réponses de salutation sont variées."""

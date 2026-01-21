@@ -128,17 +128,22 @@ def _get_cached_voice_id() -> str:
 
 
 # Constantes pour la sélection de voix
-_MALE_VOICE_INDICATORS = frozenset([
-    "thomas", "jacques", "reed", "rocko", "eddy", "grandpa", "daniel"
-])
-_FEMALE_FR_VOICES = frozenset([
-    "audrey", "virginie", "julie", "flo", "sandy", "shelley"
-])
+_MALE_VOICE_INDICATORS = frozenset(
+    ["thomas", "jacques", "reed", "rocko", "eddy", "grandpa", "daniel"]
+)
+_FEMALE_FR_VOICES = frozenset(
+    ["audrey", "virginie", "julie", "flo", "sandy", "shelley"]
+)
 _VOICE_PRIORITY_KEYS = [
-    "aurelie_enhanced_fr", "amelie_enhanced_fr",
-    "aurelie_fr_FR", "aurelie_fr_CA",
-    "amelie_fr_FR", "amelie_fr_CA",
-    "aurelie_any", "amelie_any", "femme_fr"
+    "aurelie_enhanced_fr",
+    "amelie_enhanced_fr",
+    "aurelie_fr_FR",
+    "aurelie_fr_CA",
+    "amelie_fr_FR",
+    "amelie_fr_CA",
+    "aurelie_any",
+    "amelie_any",
+    "femme_fr",
 ]
 
 
@@ -583,7 +588,9 @@ def reconnaitre_parole(
         except (RuntimeError, AttributeError, OSError) as e:
             logging.debug("Erreur reconnaissance SDK (runtime/attr/os): %s", e)
         except Exception as e:  # noqa: BLE001
-            logging.debug("Erreur reconnaissance SDK (fallback speech_recognition): %s", e)
+            logging.debug(
+                "Erreur reconnaissance SDK (fallback speech_recognition): %s", e
+            )
 
     # Fallback: speech_recognition local
     try:
