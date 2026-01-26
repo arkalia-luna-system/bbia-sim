@@ -20,7 +20,6 @@ Ce dossier contient tous les guides pratiques pour utiliser BBIA-SIM.
 
 ### 📹 Démonstrations & Partage
 - **`GUIDE_VIDEOS_DEMONSTRATION.md`** - Guide des vidéos de démonstration
-- **`DEMO_VIDEO_ROADMAP.md`** - Roadmap des démos vidéo
 - **`PARTAGE_APPS_BBIA_HF_HUB.md`** - Partage d'apps sur Hugging Face Hub
 
 ## 📚 Documentation Associée
