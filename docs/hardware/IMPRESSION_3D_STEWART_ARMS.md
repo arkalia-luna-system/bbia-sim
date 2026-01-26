@@ -42,16 +42,38 @@
 - **Hauteur d'impression** : 5.5 mm
 - **Support** : NON nécessaire
 
-### Paramètres slicer
+### Paramètres slicer - PLA (MAXIMUM RÉSISTANCE)
 
-| Paramètre | Valeur |
-|-----------|--------|
-| **Résolution** | 0.2 mm (standard) ou 0.15 mm (qualité) |
-| **Remplissage** | 20-30% |
-| **Périmètres** | 3-4 |
-| **Température** | 200-210°C (PLA) ou 230-240°C (PETG) |
-| **Plateau** | 60°C (PLA) ou 70-80°C (PETG) |
-| **Vitesse** | 50-60 mm/s |
+**⚠️ IMPORTANT** : Ces paramètres sont optimisés pour la **résistance mécanique maximale** avec du PLA.
+
+| Paramètre | Valeur | Pourquoi |
+|-----------|--------|----------|
+| **Résolution (hauteur couche)** | **0.15 mm** (qualité) ou **0.2 mm** (standard) | Couches plus fines = meilleure adhésion inter-couches = plus résistant |
+| **Remplissage** | **40-50%** (au lieu de 20-30%) | Plus de matière = plus résistant |
+| **Motif remplissage** | **Grid** ou **Triangles** (éviter Lines) | Meilleure résistance aux forces multidirectionnelles |
+| **Périmètres (murs)** | **5-6** (au lieu de 3-4) | Plus de murs = plus résistant aux forces latérales |
+| **Température buse** | **210-220°C** | Température plus élevée = meilleure fusion = plus résistant |
+| **Température plateau** | **60-65°C** | Bonne adhésion sans déformation |
+| **Vitesse d'impression** | **40-50 mm/s** (plus lent = mieux) | Impression plus lente = meilleure fusion = plus résistant |
+| **Vitesse périmètres** | **30-40 mm/s** | Encore plus lent pour les murs = qualité maximale |
+| **Refroidissement** | **Désactivé** pour les 3-4 premières couches, puis **30-50%** | Évite le warping, permet bonne adhésion |
+| **Top/Bottom layers** | **5-6 couches** (au lieu de 3-4) | Plus de couches solides = plus résistant |
+| **Température chambre** | **Ambiente** (pas de chambre chauffée) | PLA n'aime pas la chaleur excessive |
+
+### ⚠️ PLA vs PETG - Résistance
+
+**PLA** :
+- ✅ **Avantages** : Facile à imprimer, pas de warping, bon pour débuter
+- ⚠️ **Limites** : Moins résistant que PETG, peut se déformer à >60°C
+- ✅ **Pour bras moteur** : **PLA fonctionne très bien** si bien imprimé avec ces paramètres
+
+**PETG** (si tu en achètes plus tard) :
+- ✅ Plus résistant mécaniquement
+- ✅ Plus flexible (moins cassant)
+- ✅ Résiste mieux à la chaleur
+- ⚠️ Plus difficile à imprimer (adhésion, stringing)
+
+**Conclusion** : Le PLA avec ces paramètres est **parfaitement adapté** pour les bras Stewart. Pas besoin de PETG pour l'instant.
 
 ---
 
@@ -73,12 +95,35 @@
 
 ---
 
+## 🔧 Paramètres avancés pour résistance maximale
+
+### Orientation d'impression (CRUCIAL)
+
+**✅ RECOMMANDÉ** : Imprimer **debout** (hauteur = 49.25mm)
+- Les forces du moteur sont principalement **verticales**
+- Les couches horizontales résistent mieux aux forces verticales
+- Éviter d'imprimer à plat (couches verticales = plus fragile)
+
+### Post-traitement (optionnel mais recommandé)
+
+1. **Lissage** : Vaporiser avec acétone (si PLA+ ou ABS) - **ATTENTION** : Ne fonctionne pas avec PLA standard
+2. **Renfort** : Si besoin, ajouter des renforts métalliques dans les zones critiques
+3. **Test** : Tester un bras avant d'imprimer les 6
+
+### Vérifications après impression
+
+- [ ] Pas de déformations visibles
+- [ ] Pas de couches qui se décollent
+- [ ] Les trous de fixation sont bien ronds (pas ovalisés)
+- [ ] Test d'assemblage avec le moteur (doit s'emboîter sans forcer)
+
 ## 📝 Notes importantes
 
 - **Unités STL** : Tous les fichiers STL sont en **MÈTRES** (format standard)
 - **Conversion** : Les logiciels de slicing détectent automatiquement l'unité
 - **Tolérances** : Prévoir 0.1-0.2mm de tolérance pour l'assemblage
 - **Quantité** : 6 bras nécessaires (1 par moteur Stewart)
+- **PLA** : Parfaitement adapté avec les bons paramètres (voir ci-dessus)
 
 ---
 
