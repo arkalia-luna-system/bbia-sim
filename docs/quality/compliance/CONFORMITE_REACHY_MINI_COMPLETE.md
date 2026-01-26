@@ -19,15 +19,13 @@ Référence officielle: `pollen-robotics/reachy_mini` (GitHub) — voir `README`
 
 ---
 
-## 📋 Checklists Complémentaires
+## 📋 Checklist Complémentaire
 
 Pour des vérifications détaillées par aspect, consultez :
 
 1. **[CHECKLIST_FINALE_CONFORMITE.md](CHECKLIST_FINALE_CONFORMITE.md)** - Conformité endpoints REST et backend SDK
-2. **[CHECKLIST_FINALE_COMPARAISON_OFFICIELLE.md](CHECKLIST_FINALE_COMPARAISON_OFFICIELLE.md)** - Comparaison exhaustive avec repo officiel
-3. **[CHECKLIST_AUDIT_EXHAUSTIF.md](CHECKLIST_AUDIT_EXHAUSTIF.md)** - Audit système exhaustif (différences détectées)
 
-Ce fichier (`CONFORMITE_REACHY_MINI_COMPLETE.md`) est le document principal de conformité. Les checklists complémentaires fournissent des détails supplémentaires pour des aspects spécifiques.
+Ce fichier (`CONFORMITE_REACHY_MINI_COMPLETE.md`) est le document principal de conformité. La checklist complémentaire fournit des détails supplémentaires pour des aspects spécifiques.
 
 ---
 
