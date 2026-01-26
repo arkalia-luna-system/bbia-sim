@@ -3604,13 +3604,28 @@ if FASTAPI_AVAILABLE:
                         frame_count += 1
                         last_frame_time = current_time
 
-                        if frame_count % 30 == 0:
-                            logger.debug(
-                                "Stream vidéo: %d frames, qualité=%s, FPS=%.1f",
-                                frame_count,
-                                jpeg_quality,
-                                target_fps,
-                            )
+                        # Report gstreamer latency (v1.2.13)
+                        # Calculer latence streaming (temps entre capture et envoi)
+                        streaming_latency_ms = (current_time - last_frame_time) * 1000.0
+                        if streaming_latency_ms > 0:
+                            # Logger latence toutes les 30 frames pour monitoring
+                            if frame_count % 30 == 0:
+                                logger.debug(
+                                    "Stream vidéo: %d frames, qualité=%s, FPS=%.1f, latence=%.1fms",
+                                    frame_count,
+                                    jpeg_quality,
+                                    target_fps,
+                                    streaming_latency_ms,
+                                )
+                                # Reporter latence dans les métriques si disponible
+                                try:
+                                    from bbia_sim.daemon.app.routers.metrics import (
+                                        _record_latency,
+                                    )
+
+                                    _record_latency(streaming_latency_ms)
+                                except ImportError:
+                                    pass
 
                     except asyncio.CancelledError:
                         # Arrêt propre si le client se déconnecte

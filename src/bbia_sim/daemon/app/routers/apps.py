@@ -438,10 +438,22 @@ async def _run_installation_job(
         _cleanup_old_jobs()
 
     except Exception as e:
-        logger.exception("❌ Erreur job %s: %s", job_id, e)
+        error_type = type(e).__name__
+        error_msg = str(e)
+        logger.exception(
+            "❌ Erreur job %s (app: %s, HF Space: %s): %s: %s",
+            job_id,
+            app_name,
+            hf_space_id,
+            error_type,
+            error_msg,
+        )
         job["status"] = "failed"
-        job["logs"].append(f"❌ Erreur: {str(e)}")
-        job["error"] = str(e)
+        job["logs"].append(
+            f"❌ Erreur ({error_type}): {error_msg}. "
+            f"Vérifiez les logs serveur pour plus de détails."
+        )
+        job["error"] = f"{error_type}: {error_msg}"
 
         # OPTIMISATION RAM: Nettoyer les vieux jobs même en cas d'erreur
         _cleanup_old_jobs()

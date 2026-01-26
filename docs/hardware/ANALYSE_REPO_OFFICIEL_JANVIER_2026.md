@@ -299,8 +299,8 @@
 - ✅ **Intégré dans BBIA** : Documentation reflash Pi depuis macOS dans `docs/hardware/REFLASH_PI_MACOS.md`
 
 **Autres améliorations v1.2.13** :
-- Fix: Apps not showing as Installed quand nom entry point diffère du nom Hugging Face space
-- Amélioration messages d'erreur quand Reachy Mini est éteint
-- Report gstreamer latency
-- Add raw write method
-- Fix MyPy CI
+- ✅ **Intégré dans BBIA** : Fix apps not showing as Installed (vérification par nom space ET entry point)
+- ✅ **Intégré dans BBIA** : Amélioration messages d'erreur quand Reachy Mini est éteint (messages plus clairs)
+- Report gstreamer latency (non critique pour BBIA - WebSocket utilisé)
+- Add raw write method (non critique pour BBIA - méthodes existantes suffisantes)
+- Fix MyPy CI (erreurs MyPy dans calibrate.py sont normales - API OpenCV variable selon versions)

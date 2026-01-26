@@ -291,11 +291,20 @@ class ReachyMiniBackend(RobotAPI):
             RuntimeError,
             ImportError,
         ) as e:
-            error_msg = str(e)
-            logger.warning(
-                "⚠️  Erreur connexion Reachy-Mini (mode simulation activé): %s",
-                error_msg,
-            )
+            error_msg = str(e).lower()
+            # Amélioration messages d'erreur v1.2.13 : Messages plus clairs quand robot éteint
+            if "timeout" in error_msg or "connection" in error_msg or "refused" in error_msg:
+                logger.warning(
+                    "⚠️  Impossible de se connecter au Reachy Mini. "
+                    "Le robot est peut-être éteint ou le daemon n'est pas démarré. "
+                    "Erreur: %s. Mode simulation activé.",
+                    str(e),
+                )
+            else:
+                logger.warning(
+                    "⚠️  Erreur connexion Reachy-Mini (mode simulation activé): %s",
+                    str(e),
+                )
             self._activate_simulation_mode()
             self._start_watchdog()
             return False
