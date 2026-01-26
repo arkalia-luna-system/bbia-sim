@@ -6,9 +6,11 @@
 *21 méthodes implémentées • 37 tests passants • 100% conforme*
 
 **Version** : BBIA-SIM v1.4.0 • **Dernière mise à jour** : 26 Janvier 2026  
-**SDK Cible** : `reachy_mini` (Pollen Robotics × Hugging Face)
+**SDK Cible** : `reachy_mini` (Pollen Robotics × Hugging Face)  
+**Version SDK Installée** : 1.2.3  
+**Version SDK Officiel Latest** : v1.2.13 (21 janvier 2026)
 
-**État SDK** : Utiliser la **dernière version stable** de `reachy-mini` publiée sur PyPI (mise à jour régulière recommandée)
+**État SDK** : Utiliser la **dernière version stable** de `reachy-mini` publiée sur PyPI (mise à jour régulière recommandée). Version actuelle BBIA : 1.2.3 (10 versions de retard). Mise à jour recommandée vers v1.2.13 après installation des nouveaux moteurs.
 
 Référence officielle: `pollen-robotics/reachy_mini` (GitHub) — voir `README` et instructions d’installation
 ([lien](https://github.com/pollen-robotics/reachy_mini)).

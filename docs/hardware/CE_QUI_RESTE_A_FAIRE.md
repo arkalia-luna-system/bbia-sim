@@ -231,6 +231,7 @@
 - ✅ Tests créés et passants (8/8)
 - ✅ Black formatting appliqué (321 fichiers OK)
 - ✅ Outils installés (Python 3.10, reachy-mini v1.2.3, pytest, black, git)
+- ⚠️ SDK Reachy Mini : Version installée 1.2.3 (dernière version officielle : v1.2.13 - 21 janvier 2026)
 
 ### ✅ **Documentation**
 - ✅ Tous les guides présents et à jour
@@ -241,7 +242,7 @@
 ### 🔍 **Vérifications Optionnelles (non bloquantes)** ✅ TERMINÉES
 - ✅ **Cohérence entre guides** : Vérifiée - Versions SDK, QC 2549, dates cohérentes
 - ✅ **Liens documentation** : Structure OK, tous formatés correctement (test manuel navigateur optionnel)
-- ✅ **Version SDK** : v1.2.3 installé (fonctionne), v1.2.11 mentionnée (dernière) - OK
+- ⚠️ **Version SDK** : v1.2.3 installé (fonctionne), v1.2.13 disponible (dernière - 21 janvier 2026) - Mise à jour recommandée après installation moteurs
 - ✅ **Scripts mode simulation** : Syntaxe valide, gestion erreurs présente, testables sans robot
 
 ---
@@ -271,5 +272,5 @@
 
 ---
 
-**Dernière mise à jour** : 21 Janvier 2026  
-**Statut** : ✅ **100% PRÊT - EN ATTENTE RÉCEPTION DEMAIN**
+**Dernière mise à jour** : 26 Janvier 2026  
+**Statut** : ✅ **100% PRÊT - TOUS LES MOTEURS REÇUS - PRÊT POUR INSTALLATION**
