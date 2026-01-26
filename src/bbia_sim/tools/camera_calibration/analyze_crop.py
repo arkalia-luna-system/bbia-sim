@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Analyse facteurs de crop pour résolutions multiples - Reachy Mini.
+"""Analyse des facteurs de crop pour différentes résolutions - Reachy Mini.
 
 Usage:
     python -m bbia_sim.tools.camera_calibration.analyze_crop \
@@ -13,59 +13,91 @@ from pathlib import Path
 
 import numpy as np
 
-from .scale_calibration import scale_intrinsics
 
-
-def analyze_crop(calibration_file: Path, resolutions: list[tuple[int, int]]) -> None:
+def analyze_crop_factors(
+    calibration_file: Path,
+    resolutions: list[tuple[int, int]],
+) -> None:
     """Analyse les facteurs de crop pour différentes résolutions.
 
     Args:
-        calibration_file: Fichier calibration
+        calibration_file: Fichier de calibration
         resolutions: Liste de résolutions (width, height)
     """
     # Charger calibration
     with open(calibration_file) as f:
         calib_data = json.load(f)
 
-    camera_matrix = np.array(calib_data["camera_matrix"])
-    orig_res = (calib_data["resolution"]["width"], calib_data["resolution"]["height"])
+    orig_matrix = np.array(calib_data["camera_matrix"], dtype=np.float32)
+    orig_res = (
+        calib_data["resolution"]["width"],
+        calib_data["resolution"]["height"],
+    )
 
-    print(f"📊 Analyse crop pour {len(resolutions)} résolutions")
-    print(f"📐 Résolution originale: {orig_res[0]}x{orig_res[1]}\n")
+    fx, fy = orig_matrix[0][0], orig_matrix[1][1]
+    cx, cy = orig_matrix[0][2], orig_matrix[1][2]
 
-    for res in resolutions:
-        w, h = res
-        scale_x = w / orig_res[0]
-        scale_y = h / orig_res[1]
+    print("📊 Analyse des facteurs de crop")
+    print(f"   Résolution originale: {orig_res[0]}x{orig_res[1]}")
+    print(f"   Centre optique: ({cx:.1f}, {cy:.1f})")
+    print()
 
-        # Calculer intrinsics mises à l'échelle
-        scaled_matrix = scale_intrinsics(camera_matrix, orig_res, res, None)
+    for target_w, target_h in resolutions:
+        # Facteurs d'échelle
+        scale_x = target_w / orig_res[0]
+        scale_y = target_h / orig_res[1]
 
-        fx_orig = camera_matrix[0, 0]
-        fy_orig = camera_matrix[1, 1]
-        fx_scaled = scaled_matrix[0, 0]
-        fy_scaled = scaled_matrix[1, 1]
+        # Nouveaux centres optiques
+        cx_scaled = cx * scale_x
+        cy_scaled = cy * scale_y
 
-        print(f"📐 Résolution: {w}x{h}")
-        print(f"   Scale: {scale_x:.3f}x (width), {scale_y:.3f}x (height)")
-        print(f"   Focal: {fx_orig:.1f} → {fx_scaled:.1f} (fx), {fy_orig:.1f} → {fy_scaled:.1f} (fy)")
-        print(f"   Principal point: ({scaled_matrix[0,2]:.1f}, {scaled_matrix[1,2]:.1f})")
+        # Nouveaux focaux
+        fx_scaled = fx * scale_x
+        fy_scaled = fy * scale_y
+
+        print(f"📐 Résolution: {target_w}x{target_h}")
+        print(f"   Facteurs: {scale_x:.3f}x, {scale_y:.3f}y")
+        print(f"   Focaux: fx={fx_scaled:.1f}, fy={fy_scaled:.1f}")
+        print(f"   Centre: ({cx_scaled:.1f}, {cy_scaled:.1f})")
         print()
+
+    # Recommandations
+    print("💡 Recommandations:")
+    print("   - Utiliser scale_calibration.py pour générer calibrations mises à l'échelle")
+    print("   - Fermer la caméra avant de changer de résolution (nécessaire pour WebRTC)")
+    print("   - Utiliser crop pour zoomer sur une zone spécifique")
 
 
 def main() -> None:
     """Point d'entrée principal."""
-    parser = argparse.ArgumentParser(description="Analyse facteurs de crop")
-    parser.add_argument("--calibration", type=str, required=True, help="Fichier calibration")
+    parser = argparse.ArgumentParser(
+        description="Analyse des facteurs de crop pour différentes résolutions"
+    )
     parser.add_argument(
-        "--resolutions", type=str, required=True, help="Résolutions (ex: 640x480,1280x720)"
+        "--calibration",
+        type=str,
+        required=True,
+        help="Fichier de calibration",
+    )
+    parser.add_argument(
+        "--resolutions",
+        type=str,
+        required=True,
+        help="Résolutions séparées par virgule (ex: 640x480,1280x720)",
     )
 
     args = parser.parse_args()
 
-    resolutions = [tuple(map(int, r.split("x"))) for r in args.resolutions.split(",")]
+    # Parser résolutions
+    resolutions = []
+    for res_str in args.resolutions.split(","):
+        w, h = map(int, res_str.strip().split("x"))
+        resolutions.append((w, h))
 
-    analyze_crop(calibration_file=Path(args.calibration), resolutions=resolutions)
+    analyze_crop_factors(
+        calibration_file=Path(args.calibration),
+        resolutions=resolutions,
+    )
 
 
 if __name__ == "__main__":

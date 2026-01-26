@@ -123,6 +123,11 @@ def calibrate_camera(
 
     mean_error = total_error / total_points if total_points > 0 else 0.0
 
+    # Vérifier que image_size n'est pas None (déjà vérifié plus haut mais mypy ne le sait pas)
+    if image_size is None:
+        print("❌ Impossible de déterminer la taille d'image")
+        sys.exit(1)
+
     # Sauvegarder résultats
     calibration_data = {
         "camera_matrix": camera_matrix.tolist(),
