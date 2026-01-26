@@ -42,8 +42,9 @@ def calibrate_camera(
     )
 
     # Détecteur Charuco
-    charuco_params = aruco.DetectorParameters()
-    charuco_detector = aruco.CharucoDetector(board, charuco_params)
+    charuco_params = aruco.CharucoParameters()
+    detector_params = aruco.DetectorParameters()
+    charuco_detector = aruco.CharucoDetector(board, charuco_params, detector_params)
 
     # Collecter toutes les images
     image_files = sorted(images_dir.glob("*.jpg")) + sorted(images_dir.glob("*.png"))
@@ -55,7 +56,7 @@ def calibrate_camera(
 
     all_charuco_corners = []
     all_charuco_ids = []
-    image_size = None
+    image_size: tuple[int, int] | None = None
 
     for img_file in image_files:
         img = cv2.imread(str(img_file))
@@ -69,14 +70,13 @@ def calibrate_camera(
             print(f"⚠️  Résolution incohérente dans {img_file.name}")
             continue
 
-        # Détecter Charuco
-        corners, ids, _ = charuco_detector.detectMarkers(img)
-        if ids is None or len(ids) == 0:
-            print(f"⚠️  Aucun marqueur détecté dans {img_file.name}")
+        # Détecter Charuco (API OpenCV 4.x)
+        charuco_corners, charuco_ids, marker_corners, marker_ids = (
+            charuco_detector.detectBoard(img)
+        )
+        if charuco_ids is None or len(charuco_ids) == 0:
+            print(f"⚠️  Aucun coin Charuco détecté dans {img_file.name}")
             continue
-
-        result = charuco_detector.interpolateCornersCharuco(corners, ids, img)
-        charuco_corners, charuco_ids, _, _ = result
 
         if charuco_corners is None or len(charuco_corners) < 4:
             print(f"⚠️  Pas assez de coins Charuco dans {img_file.name}")
@@ -120,8 +120,8 @@ def calibrate_camera(
         sys.exit(1)
 
     # Calculer erreur de reprojection
-    total_error = 0
-    total_points = 0
+    total_error: float = 0.0
+    total_points: int = 0
     for i in range(len(obj_points)):
         img_points_proj, _ = cv2.projectPoints(
             obj_points[i], rvecs[i], tvecs[i], camera_matrix, dist_coeffs
@@ -129,7 +129,7 @@ def calibrate_camera(
         error = cv2.norm(img_points[i], img_points_proj, cv2.NORM_L2) / len(
             img_points_proj
         )
-        total_error += error * len(img_points_proj)
+        total_error += float(error * len(img_points_proj))
         total_points += len(img_points_proj)
 
     mean_error = total_error / total_points if total_points > 0 else 0.0

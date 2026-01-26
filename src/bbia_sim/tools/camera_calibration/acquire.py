@@ -78,11 +78,12 @@ def acquire_images(
 
     # Détecteur Charuco
     dictionary = aruco.getPredefinedDictionary(aruco.DICT_4X4_1000)
-    charuco_params = aruco.DetectorParameters()
+    charuco_params = aruco.CharucoParameters()
+    detector_params = aruco.DetectorParameters()
     board = aruco.CharucoBoard(
         (7, 5), squareLength=20.0, markerLength=15.0, dictionary=dictionary
     )
-    charuco_detector = aruco.CharucoDetector(board, charuco_params)
+    charuco_detector = aruco.CharucoDetector(board, charuco_params, detector_params)
 
     print(f"\n📸 Acquisition de {count} images...")
     print("💡 Déplacez le Charuco board à différents angles et distances")
@@ -113,14 +114,17 @@ def acquire_images(
                 x, y, w, h = crop
                 frame = frame[y : y + h, x : x + w]
 
-            # Détecter Charuco
-            corners, ids, _ = charuco_detector.detectMarkers(frame)
-            if ids is not None and len(ids) > 0:
-                result = charuco_detector.interpolateCornersCharuco(corners, ids, frame)
-                charuco_corners, charuco_ids, _, _ = result
+            # Détecter Charuco (API OpenCV 4.x)
+            charuco_corners, charuco_ids, marker_corners, marker_ids = (
+                charuco_detector.detectBoard(frame)
+            )
+            if charuco_ids is not None and len(charuco_ids) > 0:
                 if charuco_corners is not None and len(charuco_corners) > 0:
                     # Dessiner détection
-                    frame = aruco.drawDetectedMarkers(frame, corners, ids)
+                    if marker_corners is not None and marker_ids is not None:
+                        frame = aruco.drawDetectedMarkers(
+                            frame, marker_corners, marker_ids
+                        )
                     frame = aruco.drawDetectedCornersCharuco(
                         frame, charuco_corners, charuco_ids
                     )
