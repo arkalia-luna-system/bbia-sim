@@ -234,7 +234,12 @@ async def list_all_available_apps() -> list[dict[str, Any]]:
         for space in hf_spaces:
             if space.id and space.id not in existing_names:
                 # Vérifier si déjà installée
-                is_installed = _hf_app_installer.is_installed(space.id.split("/")[-1])
+                # FIX v1.2.13: Vérifier par nom space ET par nom entry point
+                space_name = space.id.split("/")[-1]
+                is_installed = _hf_app_installer.is_installed(space_name)
+                # Vérifier aussi par nom complet (username/space-name)
+                if not is_installed:
+                    is_installed = _hf_app_installer.is_installed(space.id)
                 apps.append(
                     {
                         "name": space.id,
