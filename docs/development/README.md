@@ -16,8 +16,6 @@ Ce dossier contient toute la documentation technique pour le développement de B
 - **`testing.md`** - Guide des tests
 - **`troubleshooting.md`** - Guide de dépannage
 - **`integration.md`** - Guide d'intégration
-- **`migration.md`** - Guide de migration
-- **`METRICS_COLLECTION.md`** - Collection de métriques
 - **`assistant-ia-guide.md`** - Guide pour utiliser l'assistant IA
 - **`dashboard-advanced.md`** - Guide du dashboard avancé
 - **`switch-sim-robot.md`** - Guide pour basculer entre simulation et robot réel
