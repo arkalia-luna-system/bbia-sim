@@ -125,7 +125,7 @@ pytest tests/ --cov=src/bbia_sim --cov-report=html
 
 ### Dates standardisées
 
-- **Dernière mise à jour : 15 Décembre 2025`
+- **Dernière mise à jour** : 26 Janvier 2026`
 - **Date de création :** Date du premier commit Git (immutable)
 
 ### Formatage Markdown
@@ -326,7 +326,7 @@ docs/
 
 ---
 
-**Dernière mise à jour :** 8 Décembre 2025
+**Dernière mise à jour :** 26 Janvier 2026
 
 ## 🎯 Navigation
 

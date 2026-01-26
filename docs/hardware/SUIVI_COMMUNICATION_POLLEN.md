@@ -63,7 +63,7 @@
 ### **Décembre 2025**
 
 - **Décembre 2025** : Problème identifié par Pollen Robotics
-- **22 Décembre 2025** : Reflash effectué (tous les moteurs détectés)
+- **26 Janvier 2026** : Reflash effectué (tous les moteurs détectés)
 - **Décembre 2025** : Formulaires de remplacement remplis (moteurs 1, 2, 4)
   - ⚠️ **Aucune confirmation reçue**
 

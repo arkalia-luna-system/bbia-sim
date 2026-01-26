@@ -190,7 +190,7 @@ Si vous avez des moteurs QC 2542 (moteurs 5 et 6) :
 ## 📅 **HISTORIQUE**
 
 - **Décembre 2025** : Problème identifié par Pollen Robotics
-- **22 Décembre 2025** : Reflash effectué (tous les moteurs détectés)
+- **26 Janvier 2026** : Reflash effectué (tous les moteurs détectés)
 - **Décembre 2025** : Formulaires de remplacement remplis (moteurs 1, 2, 4) - **Aucune confirmation reçue**
 - **Décembre 2025** : SDK v1.2.4 annoncé avec reflash automatique
 - **6 Janvier 2026, 15h08** : Email envoyé avec succès à sales@pollen-robotics.com

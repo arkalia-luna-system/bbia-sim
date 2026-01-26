@@ -1,6 +1,6 @@
 # 🔄 Switch Sim → Robot
 
-**Dernière mise à jour :** 22 Décembre 2025  
+**Dernière mise à jour :** 26 Janvier 2026  
 **Version** : 1.1  
 **Statut Robot** : ✅ Reçu le 18 déc 2025, monté le 20 déc 2025, tests en cours
 

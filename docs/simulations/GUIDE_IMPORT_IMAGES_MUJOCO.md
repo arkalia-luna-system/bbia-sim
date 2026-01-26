@@ -1,6 +1,6 @@
 # 🎨 Guide - Importer Images dans MuJoCo
 
-**Dernière mise à jour : 15 Décembre 2025
+**Dernière mise à jour** : 26 Janvier 2026
 
 > **Question** : Peut-on importer des images créées (ex: pièce avec audit) dans MuJoCo pour les scènes 3D ?
 > **Réponse** : ✅ **OUI, C'EST POSSIBLE ET RELATIVEMENT SIMPLE !**
@@ -392,4 +392,4 @@ sim.launch_simulation()
 
 ---
 
-*Guide Import Images MuJoCo - BBIA-SIM - 8 Décembre 2025*
+*Guide Import Images MuJoCo - BBIA-SIM - 26 Janvier 2026*

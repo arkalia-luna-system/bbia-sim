@@ -17,7 +17,7 @@
 
 **Configuration :** Python 3.11+ requis • **Version** : v1.4.0 • **Dernière mise à jour** : 26 Janvier 2026
 
-**Mise à jour 8 Décembre 2025** :
+**Mise à jour 26 Janvier 2026** :
 - 44 exemples disponibles
 - Comportements, endpoints et modules avec exemples dédiés
 
@@ -188,7 +188,7 @@ export BBIA_TELEMETRY_TIMEOUT=1.0
 
 ## 📋 Organisation de la Documentation
 
-La documentation a été réorganisée le **8 Décembre 2025** pour une meilleure navigation :
+La documentation a été réorganisée le **26 Janvier 2026** pour une meilleure navigation :
 
 - ✅ **Dossiers vides supprimés** : `rapports/`, `semaines/`
 - ✅ **Fichiers obsolètes archivés** : Voir `docs/_archive/`
@@ -202,4 +202,4 @@ La documentation a été réorganisée le **8 Décembre 2025** pour une meilleur
 **Retour à** : [README Documentation](README.md)
 **Voir aussi** : [Index Thématique](reference/INDEX_THEMATIQUE.md)
 
-**Dernière mise à jour** : 8 Décembre 2025
+**Dernière mise à jour** : 26 Janvier 2026

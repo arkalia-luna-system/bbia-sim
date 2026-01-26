@@ -15,5 +15,5 @@ Ce dossier contient les guides de déploiement et de configuration CI/CD pour BB
 
 ---
 
-**Dernière mise à jour** : 8 Décembre 2025
+**Dernière mise à jour** : 26 Janvier 2026
 

@@ -3,7 +3,7 @@
 > **Guide centralisé d'installation**  
 > **⚠️ IMPORTANT** : Ce fichier est la référence pour toutes les instructions d'installation. Les autres guides référencent ce fichier.
 
-**Dernière mise à jour** : 15 Décembre 2025
+**Dernière mise à jour** : 26 Janvier 2026
 
 ---
 

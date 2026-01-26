@@ -57,6 +57,9 @@ def is_historical_date(date_str: str) -> bool:
 
 def should_update_date(line: str, date_str: str) -> bool:
     """Détermine si une date doit être mise à jour."""
+    if not date_str:
+        return False
+    
     # Ne pas mettre à jour si c'est une date historique
     if is_historical_date(date_str):
         return False
@@ -87,19 +90,25 @@ def correct_file(file_path: Path, dry_run: bool = True) -> Tuple[int, List[str]]
         for i, line in enumerate(lines, 1):
             original_line = line
             
-            # Chercher les dates dans la ligne
-            for pattern, replacement in UPDATE_PATTERNS:
-                matches = list(re.finditer(pattern, line))
-                for match in reversed(matches):  # Parcourir en sens inverse pour préserver les indices
-                    date_str = match.group(2) if len(match.groups()) >= 2 else match.group(0)
-                    
-                    # Vérifier si on doit mettre à jour
-                    if should_update_date(line, date_str):
-                        # Remplacer la date
-                        new_line = re.sub(pattern, replacement, line, count=1)
-                        if new_line != line:
-                            line = new_line
-                            changes.append(f"Ligne {i}: {date_str} → {CURRENT_DATE}")
+            # Chercher les dates dans la ligne - pattern simple et robuste
+            # Pattern: "Dernière mise à jour : DATE" ou "**Dernière mise à jour** : DATE"
+            pattern_simple = r"(?i)(\*\*)?Dernière mise à jour\s*[:*]\s*(\*\*)?\s*(\d{1,2}\s+\w+\s+2025)"
+            matches = list(re.finditer(pattern_simple, line))
+            
+            for match in reversed(matches):  # Parcourir en sens inverse pour préserver les indices
+                if match.groups():
+                    date_str = match.group(3) if len(match.groups()) >= 3 else None
+                    if date_str:
+                        # Vérifier si on doit mettre à jour
+                        if should_update_date(line, date_str):
+                            # Remplacer la date
+                            prefix = match.group(1) or ""
+                            suffix = match.group(2) or ""
+                            new_date = f"{prefix}Dernière mise à jour{suffix} : {CURRENT_DATE}"
+                            new_line = line[:match.start()] + new_date + line[match.end():]
+                            if new_line != line:
+                                line = new_line
+                                changes.append(f"Ligne {i}: {date_str} → {CURRENT_DATE}")
             
             modified_lines.append(line)
         

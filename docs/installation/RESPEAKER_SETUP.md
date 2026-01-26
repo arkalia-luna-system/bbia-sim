@@ -2,7 +2,7 @@
 
 <div align="center">
 
-**Dernière mise à jour : 15 Décembre 2025  
+**Dernière mise à jour** : 26 Janvier 2026  
 **Hardware** : ReSpeaker 4 microphones directionnels (Reachy Mini)
 
 [![🎤 Audio](https://img.shields.io/badge/🎤-Audio%20Hardware-blue.svg)](#-vue-densemble)
@@ -440,5 +440,5 @@ except (OSError, RuntimeError, ValueError) as e:
 
 ---
 
-**Dernière mise à jour** : 8 Décembre 2025
+**Dernière mise à jour** : 26 Janvier 2026
 

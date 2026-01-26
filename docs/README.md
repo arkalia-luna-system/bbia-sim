@@ -119,7 +119,7 @@ flowchart TB
 
 ## 📋 Organisation de la Documentation
 
-La documentation a été réorganisée le **8 Décembre 2025** :
+La documentation a été réorganisée le **26 Janvier 2026** :
 
 - ✅ **Structure clarifiée** : Tous les dossiers principaux ont un README
 - ✅ **Fichiers obsolètes archivés** : Voir `quality/audits/archives/`

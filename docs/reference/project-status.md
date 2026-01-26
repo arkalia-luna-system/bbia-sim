@@ -8,11 +8,11 @@
 **Version** : 1.4.0 • **Dernière mise à jour** : 26 Janvier 2026
 **Prêt pour arrivée robot** 🤖
 
-**Mise à jour 8 Décembre 2025** : 100% d'exploitation des capacités
+**Mise à jour 26 Janvier 2026** : 100% d'exploitation des capacités
 - 44 exemples disponibles (39 existants + 5 nouveaux créés 22 Nov. 2025)
 - Tous les comportements, endpoints et modules ont des exemples dédiés
 
-**Mise à jour 8 Décembre 2025** : Améliorations Phase 1 Quick Wins terminées
+**Mise à jour 26 Janvier 2026** : Améliorations Phase 1 Quick Wins terminées
 - Python 3.12 dans CI (matrice lint)
 - Pre-commit hooks améliorés (gitleaks, check-json, check-toml)
 - Scan secrets automatisé (gitleaks dans CI)

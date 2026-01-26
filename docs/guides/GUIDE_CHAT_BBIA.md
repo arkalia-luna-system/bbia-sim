@@ -5,7 +5,7 @@
 **Chat avec robot Reachy Mini**
 * IA conversationnelle • Réponses contextuelles • Personnalités configurables*
 
-**Dernière mise à jour** : 15 Décembre 2025
+**Dernière mise à jour** : 26 Janvier 2026
 
 [📚 FAQ](../getting-started/troubleshooting.md) • [🧠 Guide NLP](../guides/GUIDE_NLP_SMOLVLM.md) • [📊 État du projet](../reference/project-status.md)
 
@@ -222,7 +222,7 @@ bbia.chat("Je suis très content aujourd'hui")
         "user": "Message utilisateur",
         "bbia": "Réponse BBIA",
         "sentiment": {"sentiment": "POSITIVE", "score": 0.95},
-        "timestamp": "8 Décembre 2025"
+        "timestamp": "26 Janvier 2026"
     },
     ...
 ]

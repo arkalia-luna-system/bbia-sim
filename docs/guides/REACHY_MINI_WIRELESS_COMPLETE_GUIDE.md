@@ -1,6 +1,6 @@
 # 🤖 Guide Reachy Mini Wireless - BBIA
 
-**Dernière mise à jour** : 22 Décembre 2025  
+**Dernière mise à jour** : 26 Janvier 2026  
 **Statut Robot** : ✅ Reçu le 18 déc 2025, monté le 20 déc 2025, tests en cours  
 **IP Robot** : [IP_ROBOT]
 
@@ -252,25 +252,25 @@ gantt
     title Plan de Développement BBIA
     dateFormat  YYYY-MM-DD
     section Phase 1: Préparation
-    Documentation complète    :done, doc, 8 Décembre 2025
-    Environnement dev        :active, env, 8 Décembre 2025
-    Simulation Unity         :sim, 8 Décembre 2025
+    Documentation complète    :done, doc, 26 Janvier 2026
+    Environnement dev        :active, env, 26 Janvier 2026
+    Simulation Unity         :sim, 26 Janvier 2026
 
     section Phase 2: Core
-    Configuration robot      :robot, 8 Décembre 2025
-    Tests mouvements         :move, 8 Décembre 2025
-    Reconnaissance vocale    :voice, 8 Décembre 2025
-    Système émotions         :emotions, 8 Décembre 2025
+    Configuration robot      :robot, 26 Janvier 2026
+    Tests mouvements         :move, 26 Janvier 2026
+    Reconnaissance vocale    :voice, 26 Janvier 2026
+    Système émotions         :emotions, 26 Janvier 2026
 
     section Phase 3: Intelligence
-    Hugging Face             :hf, 8 Décembre 2025
-    Modèles IA               :ai, 8 Décembre 2025
-    Comportements complexes  :behavior, 8 Décembre 2025
+    Hugging Face             :hf, 26 Janvier 2026
+    Modèles IA               :ai, 26 Janvier 2026
+    Comportements complexes  :behavior, 26 Janvier 2026
 
     section Phase 4: Optimisation
-    Performance              :perf, 8 Décembre 2025
-    Nouvelles fonctionnalités :feat, 8 Décembre 2025
-    Déploiement production   :deploy, 8 Décembre 2025
+    Performance              :perf, 26 Janvier 2026
+    Nouvelles fonctionnalités :feat, 26 Janvier 2026
+    Déploiement production   :deploy, 26 Janvier 2026
 
 ```
 
@@ -565,5 +565,5 @@ Le **Reachy Mini Wireless** fournit une base solide pour BBIA :
 ---
 
 **Version** : 1.0
-**Dernière mise à jour : 15 Décembre 2025
+**Dernière mise à jour** : 26 Janvier 2026
 **Statut** : Guide Reachy Mini Wireless

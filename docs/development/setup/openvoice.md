@@ -1,6 +1,6 @@
 # 🎤 Voix Personnalisée (Offline) – Pipeline Propre et Sûr
 
-**Dernière mise à jour : 15 Décembre 2025
+**Dernière mise à jour** : 26 Janvier 2026
 
 ## Objectif
 
@@ -112,4 +112,4 @@ bandit -r src/bbia_sim -ll
 
 ---
 
-**Dernière mise à jour** : 8 Décembre 2025
+**Dernière mise à jour** : 26 Janvier 2026

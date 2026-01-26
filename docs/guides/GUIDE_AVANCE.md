@@ -2,7 +2,7 @@
 
 <div align="center">
 
-**Dernière mise à jour** : 15 Décembre 2025
+**Dernière mise à jour** : 26 Janvier 2026
 [![Version](https://img.shields.io/badge/version-1.4.0-blue.svg)](https://github.com/arkalia-luna-system/bbia-sim)
 [![Niveau](https://img.shields.io/badge/niveau-Technique-orange.svg)](docs/guides/)
 [![Temps](https://img.shields.io/badge/temps-15%20min-purple.svg)](#architecture-détaillée)
