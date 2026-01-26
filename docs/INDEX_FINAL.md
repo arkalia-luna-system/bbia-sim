@@ -51,8 +51,7 @@
 
 1. [Guide de Test](development/testing.md) — Guide
 2. [Index Audits](quality/INDEX_AUDITS.md) — Tous les audits
-3. [Index Audits](quality/INDEX_AUDITS.md) — Tous les audits
-4. [Audit Consolidé](quality/AUDIT_CONSOLIDE_DECEMBRE_2025.md) — Rapports consolidés
+3. [Audit Consolidé](quality/AUDIT_CONSOLIDE_DECEMBRE_2025.md) — Rapports consolidés
 
 ### 📊 Chef de Projet
 
@@ -106,13 +105,12 @@
 
 - [Mouvements Reachy Mini](hardware/MOUVEMENTS_REACHY_MINI.md) — Contrôle des mouvements
 - [Sécurité Robot](hardware/SECURITE_ROBOT.md) — DO/DON'T
-- [Reachy Updates Log](hardware/reachy-mini/REACHY_UPDATES_LOG.md) — Journal des mises à jour
 
 ### ⚡ Performance
 
-- [Optimisations Reachy Mini](quality/performance/OPTIMISATIONS_EXPERT_REACHY_MINI.md) — Optimisations spécifiques
-- [Optimisations Robotique](quality/performance/OPTIMISATIONS_EXPERT_ROBOTIQUE_2025.md) — Optimisations générales
+- [Optimisations Performance](quality/performance/OPTIMISATIONS_PERFORMANCE_DEC2025.md) — Optimisations complètes
 - [Résumé Performance](quality/performance/RESUME_PERFORMANCE_CORRECTIONS_2025.md) — Résumé optimisations
+- [Watchdog Implementation](quality/performance/WATCHDOG_IMPLEMENTATION.md) — Implémentation watchdog
 
 ### 🎯 Simulation
 
@@ -130,15 +128,12 @@
 ### 🔧 Corrections & Améliorations
 
 - [Index Audits](quality/INDEX_AUDITS.md) — Tous les audits et corrections
-- [Améliorations Intelligence Contexte](quality/improvements/intelligence-context.md) — Intelligence contextuelle
-- [Améliorations Gratuites](quality/improvements/free-improvements.md) — Solutions gratuites
 
 ### 📋 Références
 
 - [Statut du Projet](reference/project-status.md) — État opérationnel et tableau de bord
 - [Release Notes](reference/RELEASE_NOTES.md) — Notes de version
 - [Historique](reference/PROJECT_HISTORY.md) — Historique
-- [Résumé Final](reference/summaries/final-summary.md) — Résumé
 
 ### 🎮 Unity & Jeux
 
