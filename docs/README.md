@@ -106,7 +106,7 @@ flowchart TB
 ### Qualité Code
 
 - 🎯 **[Performance](quality/performance/RESUME_PERFORMANCE_CORRECTIONS_2025.md)** — Optimisations appliquées
-- ✅ **[Validation Qualité](quality/validation/VALIDATION_FINALE_QUALITE_2025.md)** — Rapports de validation
+- ✅ **[Audit Consolidé](quality/AUDIT_CONSOLIDE_DECEMBRE_2025.md)** — Rapports consolidés
 
 ---
 
@@ -122,7 +122,7 @@ flowchart TB
 La documentation a été réorganisée le **26 Janvier 2026** :
 
 - ✅ **Structure clarifiée** : Tous les dossiers principaux ont un README
-- ✅ **Fichiers obsolètes archivés** : Voir `quality/audits/archives/`
+- ✅ **Fichiers obsolètes archivés** : Voir `docs/_archive/obsoletes_jan2026/`
 - ✅ **Doublons supprimés** : Fichiers redondants fusionnés ou archivés
 - ✅ **Dossiers vides supprimés** : `rapports/`, `semaines/`
 

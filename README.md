@@ -129,7 +129,7 @@ BBIA-SIM suit des standards de qualité:
 - **Sécurité**: Analyse statique avec Bandit + scan secrets (gitleaks)
 - **Performance**: Optimisations continues et monitoring (métriques Prometheus)
 
-**[🚀 Quick Start](#-démarrage-rapide)** | **[📚 Guide de Démarrage](docs/guides/GUIDE_DEMARRAGE.md)** | **[🔬 Documentation](docs/guides/GUIDE_AVANCE.md)** | **[🌐 English README](README_EN.md)** | **[🎬 Vidéos Démo](docs/guides/GUIDE_VIDEOS_DEMONSTRATION.md)** | **[🌍 Guide Communauté](docs/community/GUIDE_COMMUNAUTE.md)** | **[🤝 Contribuer](docs/community/GUIDE_CONTRIBUTEURS_COMPLET.md)**
+**[🚀 Quick Start](#-démarrage-rapide)** | **[📚 Guide de Démarrage](docs/guides/GUIDE_DEMARRAGE.md)** | **[🔬 Documentation](docs/guides/GUIDE_AVANCE.md)** | **[🌐 English README](README_EN.md)** | **[🎬 Vidéos Démo](docs/guides/GUIDE_VIDEOS_DEMONSTRATION.md)** | **[🌍 Guide Communauté](docs/community/GUIDE_COMMUNAUTE.md)** | **[🤝 Contribuer](docs/community/CONTRIBUTION_GUIDE.md)**
 
 ---
 
@@ -632,7 +632,7 @@ python scripts/replay_viewer.py artifacts/my_animation.jsonl --speed 1.5
 **Captures d'écran dashboard** (Nov 2025) : 4 captures du dashboard BBIA Advanced Dashboard disponibles dans `assets/images/` montrant l'interface complète avec métriques temps réel, contrôles joints, vision et chat.
 
 **Inventaire complet** : Voir [`assets/MEDIAS_INVENTAIRE.md`](assets/MEDIAS_INVENTAIRE.md)
-**Roadmap vidéos** : Voir [`docs/guides/DEMO_VIDEO_ROADMAP.md`](docs/guides/DEMO_VIDEO_ROADMAP.md)
+**Roadmap vidéos** : Voir [`docs/guides/GUIDE_VIDEOS_DEMONSTRATION.md`](docs/guides/GUIDE_VIDEOS_DEMONSTRATION.md)
 
 ### 📋 Documentation
 
@@ -662,7 +662,7 @@ La documentation HTML offre :
 - **[Contrats REST/WS](docs/development/api/CONTRATS_REST_WS.md)**
 - **[Sécurité robot DO/DON'T](docs/hardware/SECURITE_ROBOT.md)**
 - **[Datasets & Golden Images](docs/ai/datasets.md)**
-- **[Roadmap Dashboard/UX](docs/dashboard/ROADMAP_DASHBOARD.md)**
+- **[Guide Dashboard](docs/dashboard/README.md)**
 - **[Guide Contribution](docs/community/CONTRIBUTION_GUIDE.md)**
 
 ### Note importante sur les joints
@@ -972,7 +972,7 @@ pytest -q --disable-warnings \
 
 **📊 Qualité & Conformité :**
 
-- **Conformité SDK officiel** : Validée (47 tests de conformité) — [📊 Vérification](docs/quality/audits/VERIFICATION_ANALYSE_COMPLETE_26NOV2025.md)
+- **Conformité SDK officiel** : Validée (47 tests de conformité) — [📊 Vérification](docs/quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md)
 - **Coverage global** : 68.86% — [📊 Rapport Codecov](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim) | [📁 Rapport HTML local](htmlcov/index.html)
 - **Coverage modules core** : ~50% — [📊 Rapport Codecov](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim) | [📁 Rapport HTML local](htmlcov/index.html)
 - **Tests totaux** : 1,743 tests collectés — [📊 Détails CI](https://github.com/arkalia-luna-system/bbia-sim/actions)
@@ -1024,4 +1024,4 @@ Le robot Reachy Mini est simulé avec une fidélité élevée aux spécification
 
 ---
 
-*Dernière mise à jour : 7 Décembre 2025*
+*Dernière mise à jour : 26 Janvier 2026*

@@ -6,7 +6,7 @@
 
 ## 📦 STATUT ROBOT PHYSIQUE
 
-✅ **Robot reçu** : 126 Janvier 2026  
+✅ **Robot reçu** : 18 Décembre 2025  
 ✅ **Montage effectué** : 20 Décembre 2025  
 ✅ **3 moteurs reçus** : 17 Janvier 2026 (QC 2549 - batch sain)  
 ⏳ **Commande en attente** : 22 Janvier 2026

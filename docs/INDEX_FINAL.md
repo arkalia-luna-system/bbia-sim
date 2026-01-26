@@ -51,8 +51,8 @@
 
 1. [Guide de Test](development/testing.md) — Guide
 2. [Index Audits](quality/INDEX_AUDITS.md) — Tous les audits
-3. [Corrections Appliquées](quality/corrections/applied.md) — Corrections
-4. [Validation Qualité](quality/validation/VALIDATION_FINALE_QUALITE_2025.md) — Rapports
+3. [Index Audits](quality/INDEX_AUDITS.md) — Tous les audits
+4. [Audit Consolidé](quality/AUDIT_CONSOLIDE_DECEMBRE_2025.md) — Rapports consolidés
 
 ### 📊 Chef de Projet
 
@@ -83,7 +83,7 @@
 ### ✅ Qualité & Conformité
 
 - [Conformité Reachy-Mini](quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md) — Conformité SDK
-- [Validation Qualité](quality/validation/VALIDATION_FINALE_QUALITE_2025.md) — Rapports de validation
+- [Audit Consolidé](quality/AUDIT_CONSOLIDE_DECEMBRE_2025.md) — Rapports consolidés
 - [Index Audits](quality/INDEX_AUDITS.md) — Tous les audits
 - [Pipeline CI/CD](deployment/PIPELINE_CI.md) — Intégration continue
 
@@ -125,13 +125,11 @@
 - [Analyse Modules Non Prioritaires](quality/audits/modules-non-prioritaires.md) — Analyse modules
 - [Analyse Coverage](quality/audits/AUDIT_COVERAGE_IMPORTS.md) — Analyse code coverage
 - [Analyse Unity AR](quality/audits/unity-ar.md) — Évaluation Unity AR
-- [Roadmap Dashboard](dashboard/ROADMAP_DASHBOARD.md) — Roadmap UX
+- [Guide Dashboard](dashboard/README.md) — Documentation dashboard
 
 ### 🔧 Corrections & Améliorations
 
-- [Corrections Appliquées](quality/corrections/applied.md) — Corrections démos et modules
-- [Améliorations SDK Futures](quality/improvements/sdk-future.md) — Features SDK avancées
-- [Améliorations Intelligence BBIA](quality/improvements/intelligence-bbia.md) — Intelligence conversationnelle
+- [Index Audits](quality/INDEX_AUDITS.md) — Tous les audits et corrections
 - [Améliorations Intelligence Contexte](quality/improvements/intelligence-context.md) — Intelligence contextuelle
 - [Améliorations Gratuites](quality/improvements/free-improvements.md) — Solutions gratuites
 

@@ -34,12 +34,12 @@
 
 ### 🔍 Rapports de validation complets
 
-[![🔍 Validation](https://img.shields.io/badge/🔍-Validation%202025-orange)](validation/VALIDATION_FINALE_QUALITE_2025.md)
-[![📊 Rapports](https://img.shields.io/badge/📊-Rapports%20Détaillés-blue)](validation/VALIDATION_FINALE_QUALITE_2025.md)
+[![🔍 Audit](https://img.shields.io/badge/🔍-Audit%20Consolidé-orange)](AUDIT_CONSOLIDE_DECEMBRE_2025.md)
+[![📊 Rapports](https://img.shields.io/badge/📊-Rapports%20Détaillés-blue)](AUDIT_CONSOLIDE_DECEMBRE_2025.md)
 
 </div>
 
-**[📋 Validation Finale Qualité 2025](validation/VALIDATION_FINALE_QUALITE_2025.md)** - Rapports de validation (black, ruff, mypy, bandit)
+**[📋 Audit Consolidé](AUDIT_CONSOLIDE_DECEMBRE_2025.md)** - Rapports consolidés (black, ruff, mypy, bandit)
 
 ### 📊 Audits
 

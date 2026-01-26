@@ -355,7 +355,7 @@ Good for learning advanced Python!
 
 ### Pour Contribuer
 
-- **[Guide Contributeurs Complet](GUIDE_CONTRIBUTEURS_COMPLET.md)** : Guide détaillé pour contribuer
+- **[Guide Contributeurs](CONTRIBUTION_GUIDE.md)** : Guide détaillé pour contribuer
 - **[Guide Contribution](CONTRIBUTION_GUIDE.md)** : Processus de contribution
 - **[Code de Conduite](../../CODE_OF_CONDUCT.md)** : Standards de comportement
 

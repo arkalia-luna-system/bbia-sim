@@ -1196,7 +1196,7 @@ class BBIAWebSocket {
 
 ### 📚 Ressources
 
-- **PWA Guide** : [`docs/dashboard/ROADMAP_DASHBOARD.md`](../dashboard/ROADMAP_DASHBOARD.md) → Section Apps Mobiles
+- **PWA Guide** : [`docs/dashboard/GUIDE_INSTALLATION_PWA.md`](../dashboard/GUIDE_INSTALLATION_PWA.md) → Guide installation PWA
 - **API Documentation** : `http://localhost:8000/docs` (Swagger UI)
 - **WebSocket Docs** : [`docs/development/api/CONTRATS_REST_WS.md`](api/CONTRATS_REST_WS.md)
 

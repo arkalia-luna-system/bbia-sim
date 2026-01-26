@@ -39,7 +39,7 @@
 
 ## Dashboard / UX
 
-- Roadmap mini UI télémétrie: `docs/dashboard/ROADMAP_DASHBOARD.md`
+- Guide Dashboard: `docs/dashboard/README.md`
 
 ## Communauté
 

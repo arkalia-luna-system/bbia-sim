@@ -39,7 +39,7 @@ Merci de vouloir contribuer à BBIA Reachy Mini Wireless !
 
 Pour plus de détails, consultez :
 
-- **[Guide Contributeurs Complet](docs/community/GUIDE_CONTRIBUTEURS_COMPLET.md)** : Guide détaillé complet
+- **[Guide Contributeurs](docs/community/CONTRIBUTION_GUIDE.md)** : Guide détaillé complet
 - **[Guide Contribution](docs/community/CONTRIBUTION_GUIDE.md)** : Processus de contribution détaillé
 - **[Guide Hugging Face Spaces](docs/community/GUIDE_HUGGINGFACE_SPACES.md)** : Créer des applications publiques
 - **[Innovations BBIA](docs/community/INNOVATIONS_BBIA.md)** : Documentation des innovations majeures
