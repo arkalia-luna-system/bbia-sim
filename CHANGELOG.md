@@ -7,6 +7,15 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+### 📦 **Réception Moteurs Supplémentaires** (26 Janvier 2026)
+
+- ✅ **2 moteurs supplémentaires reçus** :
+  - 1x **QC 2549** (4ème moteur QC 2549)
+  - 1x **QC 2548** (nouveau batch)
+- ✅ **Total moteurs reçus** : **5 moteurs** (4x QC 2549 + 1x QC 2548)
+- ✅ **Statut** : Tous les moteurs nécessaires reçus, prêts pour installation
+- 📝 **Documentation mise à jour** : Tous les fichiers MD hardware mis à jour
+
 ### 🔒 **Audit Sécurité et Qualité** (21 Janvier 2026)
 
 - ✅ **53 vulnérabilités dépendances corrigées** :

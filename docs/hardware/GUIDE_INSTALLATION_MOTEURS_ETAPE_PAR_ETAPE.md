@@ -2,7 +2,7 @@
 
 **Dernière mise à jour** : 21 Janvier 2026  
 **Objectif** : Guide complet pour installer les nouveaux moteurs et rallumer Reachy  
-**Note** : ✅ Numéro QC des moteurs vérifié : **QC 2549** (batch sain)
+**Note** : ✅ Numéros QC vérifiés : **4x QC 2549** + **1x QC 2548** (batches sains)
 
 ---
 
@@ -24,10 +24,13 @@ Ce script vérifie :
 
 ### **2. Checklist de préparation**
 
-- [x] ✅ **Nouveaux moteurs reçus** (3 moteurs : 1, 2, 4) - 17 janvier 2026
-- [x] ✅ **Numéros QC vérifiés** (21 janvier 2026) : **QC 2549** - Batch sain ✅
-  - ✅ Ne sont PAS QC 2542/2543/2544 (batches problématiques)
-  - ✅ Batch QC 2549 : aucun problème connu
+- [x] ✅ **Nouveaux moteurs reçus** :
+  - 3 moteurs QC 2549 (1, 2, 4) - 17 janvier 2026
+  - 2 moteurs supplémentaires (1x QC 2549 + 1x QC 2548) - 26 janvier 2026
+  - **Total** : 5 moteurs (4x QC 2549 + 1x QC 2548)
+- [x] ✅ **Numéros QC vérifiés** :
+  - **QC 2549** (21 janvier 2026) : Batch sain ✅ - Ne sont PAS QC 2542/2543/2544 (batches problématiques)
+  - **QC 2548** (26 janvier 2026) : Nouveau batch, à vérifier
 - [ ] **Test mécanique effectué** (chaque moteur doit tourner smooth)
 - [ ] **Outils préparés** (tournevis, documentation)
 - [ ] **Robot éteint** (éteindre avant de commencer)

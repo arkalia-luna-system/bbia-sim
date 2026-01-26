@@ -42,5 +42,5 @@
 
 ---
 
-**Dernière mise à jour** : 20 Janvier 2026  
-**Statut Robot** : ✅ Reçu le 18 déc 2025, monté le 20 déc 2025, 3 moteurs reçus le 17 jan 2026 (en attente d'installation)
+**Dernière mise à jour** : 26 Janvier 2026  
+**Statut Robot** : ✅ Reçu le 18 déc 2025, monté le 20 déc 2025, **5 moteurs reçus** (4x QC 2549 + 1x QC 2548) - Prêts pour installation
