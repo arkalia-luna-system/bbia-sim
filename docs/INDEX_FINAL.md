@@ -106,7 +106,6 @@
 
 - [Mouvements Reachy Mini](hardware/MOUVEMENTS_REACHY_MINI.md) — Contrôle des mouvements
 - [Sécurité Robot](hardware/SECURITE_ROBOT.md) — DO/DON'T
-- [Prêt Reachy A4](hardware/reachy-mini/PRET_REACHY_A4.md) — Configuration A4
 - [Reachy Updates Log](hardware/reachy-mini/REACHY_UPDATES_LOG.md) — Journal des mises à jour
 
 ### ⚡ Performance
