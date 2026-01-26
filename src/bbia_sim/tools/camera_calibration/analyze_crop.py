@@ -63,8 +63,12 @@ def analyze_crop_factors(
 
     # Recommandations
     print("💡 Recommandations:")
-    print("   - Utiliser scale_calibration.py pour générer calibrations mises à l'échelle")
-    print("   - Fermer la caméra avant de changer de résolution (nécessaire pour WebRTC)")
+    print(
+        "   - Utiliser scale_calibration.py pour générer calibrations mises à l'échelle"
+    )
+    print(
+        "   - Fermer la caméra avant de changer de résolution (nécessaire pour WebRTC)"
+    )
     print("   - Utiliser crop pour zoomer sur une zone spécifique")
 
 

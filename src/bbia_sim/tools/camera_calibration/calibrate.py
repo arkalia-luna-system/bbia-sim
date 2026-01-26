@@ -35,7 +35,10 @@ def calibrate_camera(
     # Créer le Charuco board
     dictionary = aruco.getPredefinedDictionary(aruco.DICT_4X4_1000)
     board = aruco.CharucoBoard(
-        board_size, squareLength=square_size, markerLength=square_size * 0.75, dictionary=dictionary
+        board_size,
+        squareLength=square_size,
+        markerLength=square_size * 0.75,
+        dictionary=dictionary,
     )
 
     # Détecteur Charuco
@@ -84,7 +87,9 @@ def calibrate_camera(
         print(f"✅ {img_file.name}: {len(charuco_corners)} coins détectés")
 
     if len(all_charuco_corners) < 5:
-        print(f"❌ Pas assez d'images valides (minimum 5, trouvé {len(all_charuco_corners)})")
+        print(
+            f"❌ Pas assez d'images valides (minimum 5, trouvé {len(all_charuco_corners)})"
+        )
         sys.exit(1)
 
     print(f"\n🔧 Calibration avec {len(all_charuco_corners)} images...")
@@ -93,7 +98,9 @@ def calibrate_camera(
     obj_points = []
     img_points = []
 
-    for charuco_corners, charuco_ids in zip(all_charuco_corners, all_charuco_ids, strict=False):
+    for charuco_corners, charuco_ids in zip(
+        all_charuco_corners, all_charuco_ids, strict=False
+    ):
         # Points 3D du board
         obj_pts = []
         for corner_id in charuco_ids.flatten():
@@ -116,8 +123,12 @@ def calibrate_camera(
     total_error = 0
     total_points = 0
     for i in range(len(obj_points)):
-        img_points_proj, _ = cv2.projectPoints(obj_points[i], rvecs[i], tvecs[i], camera_matrix, dist_coeffs)
-        error = cv2.norm(img_points[i], img_points_proj, cv2.NORM_L2) / len(img_points_proj)
+        img_points_proj, _ = cv2.projectPoints(
+            obj_points[i], rvecs[i], tvecs[i], camera_matrix, dist_coeffs
+        )
+        error = cv2.norm(img_points[i], img_points_proj, cv2.NORM_L2) / len(
+            img_points_proj
+        )
         total_error += error * len(img_points_proj)
         total_points += len(img_points_proj)
 
@@ -154,10 +165,18 @@ def calibrate_camera(
 def main() -> None:
     """Point d'entrée principal."""
     parser = argparse.ArgumentParser(description="Calibration caméra Charuco")
-    parser.add_argument("--images", type=str, default="./calibration_images", help="Dossier images")
-    parser.add_argument("--output", type=str, default="./camera_calibration.json", help="Fichier sortie")
-    parser.add_argument("--board-size", type=str, default="7x5", help="Taille board (ex: 7x5)")
-    parser.add_argument("--square-size", type=float, default=20.0, help="Taille carré en mm")
+    parser.add_argument(
+        "--images", type=str, default="./calibration_images", help="Dossier images"
+    )
+    parser.add_argument(
+        "--output", type=str, default="./camera_calibration.json", help="Fichier sortie"
+    )
+    parser.add_argument(
+        "--board-size", type=str, default="7x5", help="Taille board (ex: 7x5)"
+    )
+    parser.add_argument(
+        "--square-size", type=float, default=20.0, help="Taille carré en mm"
+    )
 
     args = parser.parse_args()
 

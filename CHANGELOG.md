@@ -15,8 +15,8 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - ✅ **Documentation** : `src/bbia_sim/tools/camera_calibration/README.md`
 
 #### **Améliorations WebRTC** ✅
-- ✅ **Gestion résolution caméra améliorée** : Support changement résolution dynamique
-- ✅ **Report gstreamer latency** : Mesure et reporting latence streaming vidéo
+- ✅ **Gestion résolution caméra améliorée** : Support changement résolution dynamique via `set_resolution()`
+- ✅ **Report gstreamer latency** : Mesure et reporting latence streaming vidéo (compatible SDK v1.2.13)
 
 #### **Documentation** ✅
 - ✅ **Migration Hugging Face** : Documentation mise à jour (https://huggingface.co/docs/reachy_mini/)

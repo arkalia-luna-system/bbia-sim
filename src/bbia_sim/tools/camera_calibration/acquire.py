@@ -25,6 +25,7 @@ except ImportError:
 
 try:
     from reachy_mini import ReachyMini
+
     SDK_AVAILABLE = True
 except ImportError:
     SDK_AVAILABLE = False
@@ -110,7 +111,7 @@ def acquire_images(
             # Appliquer crop si nécessaire
             if crop:
                 x, y, w, h = crop
-                frame = frame[y:y+h, x:x+w]
+                frame = frame[y : y + h, x : x + w]
 
             # Détecter Charuco
             corners, ids, _ = charuco_detector.detectMarkers(frame)
@@ -120,7 +121,9 @@ def acquire_images(
                 if charuco_corners is not None and len(charuco_corners) > 0:
                     # Dessiner détection
                     frame = aruco.drawDetectedMarkers(frame, corners, ids)
-                    frame = aruco.drawDetectedCornersCharuco(frame, charuco_corners, charuco_ids)
+                    frame = aruco.drawDetectedCornersCharuco(
+                        frame, charuco_corners, charuco_ids
+                    )
 
             # Afficher
             text = f"Saved: {saved_count}/{count} | Frame: {frame_count}"
@@ -159,10 +162,16 @@ def acquire_images(
 
 def main() -> None:
     """Point d'entrée principal."""
-    parser = argparse.ArgumentParser(description="Acquisition d'images pour calibration caméra")
-    parser.add_argument("--output", type=str, default="./calibration_images", help="Dossier de sortie")
+    parser = argparse.ArgumentParser(
+        description="Acquisition d'images pour calibration caméra"
+    )
+    parser.add_argument(
+        "--output", type=str, default="./calibration_images", help="Dossier de sortie"
+    )
     parser.add_argument("--count", type=int, default=20, help="Nombre d'images")
-    parser.add_argument("--delay", type=float, default=2.0, help="Délai entre captures (secondes)")
+    parser.add_argument(
+        "--delay", type=float, default=2.0, help="Délai entre captures (secondes)"
+    )
     parser.add_argument("--resolution", type=str, help="Résolution (ex: 640x480)")
     parser.add_argument("--crop", type=str, help="Crop (ex: 100,100,640,480)")
     parser.add_argument("--sim", action="store_true", help="Utiliser simulation")

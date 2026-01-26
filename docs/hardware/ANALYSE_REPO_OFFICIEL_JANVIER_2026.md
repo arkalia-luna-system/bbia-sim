@@ -257,14 +257,16 @@
 
 ## 📅 **MISE À JOUR 26 JANVIER 2026**
 
-**Vérification complète effectuée** : 26 Janvier 2026
+**Vérification complète effectuée** : 26 Janvier 2026  
+**Dernière vérification repo officiel** : 26 Janvier 2026
 
 ### **Résultat de la vérification**
 
 ✅ **Nouvelle version SDK** : v1.2.13 (21 janvier 2026)  
-✅ **Dernier commit** : 26 janvier 2026 (amélioration calibration caméra)  
+✅ **Dernier commit officiel** : 26 janvier 2026 (Fix/Improve camera calibration #741 - `set_resolution()` pour WebRTC)  
 ✅ **Toutes les branches analysées** : develop, main, et branches liées aux moteurs  
-✅ **Nouvelles fonctionnalités** : Outils calibration caméra, amélioration WebRTC, support Windows GStreamer
+✅ **Nouvelles fonctionnalités** : Outils calibration caméra, amélioration WebRTC (`set_resolution()`), support Windows GStreamer  
+✅ **Documentation officielle** : Migration vers Hugging Face (https://huggingface.co/docs/reachy_mini/) - ancienne doc locale supprimée
 
 ### **Nouvelles informations identifiées (non liées aux moteurs)**
 
@@ -289,9 +291,10 @@
 - Amélioration intrinsics caméra avec `scale_intrinsics()` pour résolutions multiples
 
 **Améliorations WebRTC** (v1.2.13) :
-- Amélioration gestion résolution caméra dans WebRTC streaming backend
-- Support changement résolution dynamique (nécessite fermeture caméra avant changement)
-- Fix/Improve camera calibration (#741) - commit 26 janvier 2026
+- ✅ **Intégré dans BBIA** : Amélioration gestion résolution caméra dans WebRTC streaming backend
+- ✅ **Intégré dans BBIA** : Support changement résolution dynamique via `set_resolution()` (nécessite fermeture caméra avant changement)
+- ✅ **Intégré dans BBIA** : Fix/Improve camera calibration (#741) - commit 26 janvier 2026
+- ✅ **Intégré dans BBIA** : Report gstreamer latency (mesure et reporting latence streaming vidéo)
 
 **Documentation** (v1.2.13) :
 - Migration documentation vers Hugging Face (https://huggingface.co/docs/reachy_mini/)

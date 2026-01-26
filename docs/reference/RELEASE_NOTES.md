@@ -23,9 +23,9 @@ Intégration complète des nouvelles fonctionnalités du SDK Reachy Mini v1.2.13
 
 #### **Améliorations WebRTC** ✅
 
-- **Gestion résolution caméra améliorée** : Support changement résolution dynamique
-- **Report gstreamer latency** : Mesure et reporting de la latence streaming vidéo
-- **Optimisations streaming** : Compression adaptative et frame rate adaptatif
+- **Gestion résolution caméra améliorée** : Support changement résolution dynamique via `set_resolution()` (compatible SDK v1.2.13)
+- **Report gstreamer latency** : Mesure et reporting de la latence streaming vidéo (compatible SDK v1.2.13)
+- **Optimisations streaming** : Compression adaptative et frame rate adaptatif (déjà présent dans BBIA)
 
 #### **Documentation** ✅
 

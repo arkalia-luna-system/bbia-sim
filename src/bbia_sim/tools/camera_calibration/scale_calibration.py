@@ -93,9 +93,7 @@ def scale_calibration(
     )
 
     # Mettre à l'échelle
-    scaled_matrix, final_res = scale_intrinsics(
-        orig_matrix, orig_res, resolution, crop
-    )
+    scaled_matrix, final_res = scale_intrinsics(orig_matrix, orig_res, resolution, crop)
 
     # Créer nouvelle calibration
     scaled_calib = {
@@ -114,7 +112,12 @@ def scale_calibration(
     }
 
     if crop:
-        scaled_calib["crop"] = {"x": crop[0], "y": crop[1], "width": crop[2], "height": crop[3]}
+        scaled_calib["crop"] = {
+            "x": crop[0],
+            "y": crop[1],
+            "width": crop[2],
+            "height": crop[3],
+        }
 
     # Sauvegarder
     output_file.parent.mkdir(parents=True, exist_ok=True)

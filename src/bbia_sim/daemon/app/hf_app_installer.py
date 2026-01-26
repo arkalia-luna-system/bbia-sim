@@ -244,12 +244,18 @@ class HFAppInstaller:
                     with open(setup_py) as f:
                         content = f.read()
                         # Chercher le nom de l'app dans setup.py
-                        if f'name="{app_name}"' in content or f"name='{app_name}'" in content:
+                        if (
+                            f'name="{app_name}"' in content
+                            or f"name='{app_name}'" in content
+                        ):
                             return True
                         # Chercher aussi par space name
                         if "/" in app_name:
                             space_name = app_name.split("/")[-1]
-                            if f'name="{space_name}"' in content or f"name='{space_name}'" in content:
+                            if (
+                                f'name="{space_name}"' in content
+                                or f"name='{space_name}'" in content
+                            ):
                                 return True
                 except Exception:
                     pass

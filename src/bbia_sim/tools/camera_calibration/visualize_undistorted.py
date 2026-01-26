@@ -46,7 +46,9 @@ def visualize_undistorted(
     new_camera_matrix, roi = cv2.getOptimalNewCameraMatrix(
         camera_matrix, dist_coeffs, (w, h), 1, (w, h)
     )
-    undistorted = cv2.undistort(img, camera_matrix, dist_coeffs, None, new_camera_matrix)
+    undistorted = cv2.undistort(
+        img, camera_matrix, dist_coeffs, None, new_camera_matrix
+    )
 
     # Crop ROI si nécessaire
     x, y, w_roi, h_roi = roi
