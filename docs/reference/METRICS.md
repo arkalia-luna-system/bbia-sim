@@ -106,7 +106,7 @@ Voir `docs/observabilite/OBSERVABILITE.md` pour plus de détails.
 - Ces métriques sont mises à jour automatiquement depuis la CI/CD
 - Pour les métriques détaillées par module, voir les rapports de coverage HTML
 - Les tests de conformité SDK sont validés à chaque commit
-- **Guide d'utilisation** : Voir [METRICS_COLLECTION.md](../development/METRICS_COLLECTION.md) pour plus de détails
+- **Guide d'utilisation** : Voir ce document pour les détails complets
 
 ---
 

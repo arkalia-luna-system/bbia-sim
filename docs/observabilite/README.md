@@ -9,7 +9,6 @@ Ce dossier contient la documentation sur l'observabilité, les logs, métriques 
 ## 📚 Documentation Associée
 
 - **Métriques** : [`../reference/METRICS.md`](../reference/METRICS.md)
-- **Développement** : [`../development/METRICS_COLLECTION.md`](../development/METRICS_COLLECTION.md)
 - **Dashboard** : [`../dashboard/`](../dashboard/)
 
 ---
