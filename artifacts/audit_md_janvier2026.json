@@ -1,0 +1,3298 @@
+{
+  "date_audit": "26 Janvier 2026",
+  "total_files": 192,
+  "files_with_issues": 107,
+  "issues": {
+    "obsolete_dates": 576,
+    "version_issues": 4,
+    "broken_links": 76
+  },
+  "details": {
+    "obsolete_dates": [
+      {
+        "file": "CHECKLIST_FINALISATION_VERSION.md",
+        "date": "26 Novembre 2025",
+        "line": 4
+      },
+      {
+        "file": "CHECKLIST_FINALISATION_VERSION.md",
+        "date": "26 Novembre 2025",
+        "line": 4
+      },
+      {
+        "file": "CHECKLIST_FINALISATION_VERSION.md",
+        "date": "26 Novembre 2025",
+        "line": 4
+      },
+      {
+        "file": "CHECKLIST_FINALISATION_VERSION.md",
+        "date": "26 Novembre 2025",
+        "line": 4
+      },
+      {
+        "file": "README.md",
+        "date": "7 Décembre 2025",
+        "line": 1027
+      },
+      {
+        "file": "README.md",
+        "date": "7 Décembre 2025",
+        "line": 1027
+      },
+      {
+        "file": "README.md",
+        "date": "26 Novembre 2025",
+        "line": 138
+      },
+      {
+        "file": "README.md",
+        "date": "7 Décembre 2025",
+        "line": 1027
+      },
+      {
+        "file": "README.md",
+        "date": "26 Novembre 2025",
+        "line": 138
+      },
+      {
+        "file": "README.md",
+        "date": "7 Décembre 2025",
+        "line": 1027
+      },
+      {
+        "file": "SECURITY.md",
+        "date": "24 Novembre 2025",
+        "line": 230
+      },
+      {
+        "file": "SECURITY.md",
+        "date": "24 Novembre 2025",
+        "line": 230
+      },
+      {
+        "file": "SECURITY.md",
+        "date": "24 Novembre 2025",
+        "line": 230
+      },
+      {
+        "file": "SECURITY.md",
+        "date": "24 Novembre 2025",
+        "line": 230
+      },
+      {
+        "file": "assets/logos/bbia/INTEGRATION_DASHBOARD.md",
+        "date": "7 Décembre 2025",
+        "line": 140
+      },
+      {
+        "file": "assets/logos/bbia/INTEGRATION_DASHBOARD.md",
+        "date": "7 Décembre 2025",
+        "line": 140
+      },
+      {
+        "file": "assets/logos/bbia/INTEGRATION_DASHBOARD.md",
+        "date": "7 Décembre 2025",
+        "line": 140
+      },
+      {
+        "file": "assets/logos/bbia/INTEGRATION_DASHBOARD.md",
+        "date": "7 Décembre 2025",
+        "line": 140
+      },
+      {
+        "file": "assets/logos/bbia/README.md",
+        "date": "7 Décembre 2025",
+        "line": 191
+      },
+      {
+        "file": "assets/logos/bbia/README.md",
+        "date": "7 Décembre 2025",
+        "line": 191
+      },
+      {
+        "file": "assets/logos/bbia/README.md",
+        "date": "7 Décembre 2025",
+        "line": 191
+      },
+      {
+        "file": "assets/logos/bbia/README.md",
+        "date": "7 Décembre 2025",
+        "line": 191
+      },
+      {
+        "file": "assets/logos/bbia/VUE_ENSEMBLE_COMPLETE.md",
+        "date": "7 Décembre 2025",
+        "line": 238
+      },
+      {
+        "file": "assets/logos/bbia/VUE_ENSEMBLE_COMPLETE.md",
+        "date": "7 Décembre 2025",
+        "line": 238
+      },
+      {
+        "file": "assets/logos/bbia/VUE_ENSEMBLE_COMPLETE.md",
+        "date": "7 Décembre 2025",
+        "line": 238
+      },
+      {
+        "file": "assets/logos/bbia/VUE_ENSEMBLE_COMPLETE.md",
+        "date": "7 Décembre 2025",
+        "line": 238
+      },
+      {
+        "file": "docs/INDEX_FINAL.md",
+        "date": "15 Décembre 2025",
+        "line": 18
+      },
+      {
+        "file": "docs/INDEX_FINAL.md",
+        "date": "8 Décembre 2025",
+        "line": 206
+      },
+      {
+        "file": "docs/INDEX_FINAL.md",
+        "date": "15 Décembre 2025",
+        "line": 18
+      },
+      {
+        "file": "docs/INDEX_FINAL.md",
+        "date": "8 Décembre 2025",
+        "line": 206
+      },
+      {
+        "file": "docs/INDEX_FINAL.md",
+        "date": "15 Décembre 2025",
+        "line": 18
+      },
+      {
+        "file": "docs/INDEX_FINAL.md",
+        "date": "8 Décembre 2025",
+        "line": 20
+      },
+      {
+        "file": "docs/INDEX_FINAL.md",
+        "date": "8 Décembre 2025",
+        "line": 206
+      },
+      {
+        "file": "docs/INDEX_FINAL.md",
+        "date": "15 Décembre 2025",
+        "line": 18
+      },
+      {
+        "file": "docs/INDEX_FINAL.md",
+        "date": "8 Décembre 2025",
+        "line": 20
+      },
+      {
+        "file": "docs/INDEX_FINAL.md",
+        "date": "8 Décembre 2025",
+        "line": 206
+      },
+      {
+        "file": "docs/_templates/COMPATIBILITE_PYTHON.md",
+        "date": "15 Décembre 2025",
+        "line": 23
+      },
+      {
+        "file": "docs/_templates/COMPATIBILITE_PYTHON.md",
+        "date": "15 Décembre 2025",
+        "line": 23
+      },
+      {
+        "file": "docs/_templates/COMPATIBILITE_PYTHON.md",
+        "date": "15 Décembre 2025",
+        "line": 23
+      },
+      {
+        "file": "docs/_templates/COMPATIBILITE_PYTHON.md",
+        "date": "15 Décembre 2025",
+        "line": 23
+      },
+      {
+        "file": "docs/ai/README.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/ai/README.md",
+        "date": "8 Décembre 2025",
+        "line": 103
+      },
+      {
+        "file": "docs/ai/README.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/ai/README.md",
+        "date": "8 Décembre 2025",
+        "line": 103
+      },
+      {
+        "file": "docs/ai/README.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/ai/README.md",
+        "date": "8 Décembre 2025",
+        "line": 103
+      },
+      {
+        "file": "docs/ai/README.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/ai/README.md",
+        "date": "8 Décembre 2025",
+        "line": 103
+      },
+      {
+        "file": "docs/ai/datasets.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/ai/datasets.md",
+        "date": "8 Décembre 2025",
+        "line": 65
+      },
+      {
+        "file": "docs/ai/datasets.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/ai/datasets.md",
+        "date": "8 Décembre 2025",
+        "line": 65
+      },
+      {
+        "file": "docs/ai/datasets.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/ai/datasets.md",
+        "date": "8 Décembre 2025",
+        "line": 65
+      },
+      {
+        "file": "docs/ai/datasets.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/ai/datasets.md",
+        "date": "8 Décembre 2025",
+        "line": 65
+      },
+      {
+        "file": "docs/ai/llm.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/ai/llm.md",
+        "date": "8 Décembre 2025",
+        "line": 4
+      },
+      {
+        "file": "docs/ai/llm.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/ai/llm.md",
+        "date": "8 Décembre 2025",
+        "line": 4
+      },
+      {
+        "file": "docs/ai/llm.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/ai/llm.md",
+        "date": "8 Décembre 2025",
+        "line": 4
+      },
+      {
+        "file": "docs/ai/llm.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/ai/llm.md",
+        "date": "8 Décembre 2025",
+        "line": 4
+      },
+      {
+        "file": "docs/ai/modules.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/ai/modules.md",
+        "date": "8 Décembre 2025",
+        "line": 4
+      },
+      {
+        "file": "docs/ai/modules.md",
+        "date": "8 Décembre 2025",
+        "line": 524
+      },
+      {
+        "file": "docs/ai/modules.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/ai/modules.md",
+        "date": "8 Décembre 2025",
+        "line": 4
+      },
+      {
+        "file": "docs/ai/modules.md",
+        "date": "8 Décembre 2025",
+        "line": 524
+      },
+      {
+        "file": "docs/ai/modules.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/ai/modules.md",
+        "date": "8 Décembre 2025",
+        "line": 4
+      },
+      {
+        "file": "docs/ai/modules.md",
+        "date": "8 Décembre 2025",
+        "line": 524
+      },
+      {
+        "file": "docs/ai/modules.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/ai/modules.md",
+        "date": "8 Décembre 2025",
+        "line": 4
+      },
+      {
+        "file": "docs/ai/modules.md",
+        "date": "8 Décembre 2025",
+        "line": 524
+      },
+      {
+        "file": "docs/ai/voice.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/ai/voice.md",
+        "date": "8 Décembre 2025",
+        "line": 4
+      },
+      {
+        "file": "docs/ai/voice.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/ai/voice.md",
+        "date": "8 Décembre 2025",
+        "line": 4
+      },
+      {
+        "file": "docs/ai/voice.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/ai/voice.md",
+        "date": "8 Décembre 2025",
+        "line": 4
+      },
+      {
+        "file": "docs/ai/voice.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/ai/voice.md",
+        "date": "8 Décembre 2025",
+        "line": 4
+      },
+      {
+        "file": "docs/community/CONTRIBUTION_GUIDE.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/community/CONTRIBUTION_GUIDE.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/community/CONTRIBUTION_GUIDE.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/community/CONTRIBUTION_GUIDE.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/community/GUIDE_COMMUNAUTE.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/community/GUIDE_COMMUNAUTE.md",
+        "date": "15 Décembre 2025",
+        "line": 349
+      },
+      {
+        "file": "docs/community/GUIDE_COMMUNAUTE.md",
+        "date": "8 Décembre 2025",
+        "line": 350
+      },
+      {
+        "file": "docs/community/GUIDE_COMMUNAUTE.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/community/GUIDE_COMMUNAUTE.md",
+        "date": "15 Décembre 2025",
+        "line": 349
+      },
+      {
+        "file": "docs/community/GUIDE_COMMUNAUTE.md",
+        "date": "8 Décembre 2025",
+        "line": 350
+      },
+      {
+        "file": "docs/community/GUIDE_COMMUNAUTE.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/community/GUIDE_COMMUNAUTE.md",
+        "date": "15 Décembre 2025",
+        "line": 349
+      },
+      {
+        "file": "docs/community/GUIDE_COMMUNAUTE.md",
+        "date": "8 Décembre 2025",
+        "line": 350
+      },
+      {
+        "file": "docs/community/GUIDE_COMMUNAUTE.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/community/GUIDE_COMMUNAUTE.md",
+        "date": "15 Décembre 2025",
+        "line": 349
+      },
+      {
+        "file": "docs/community/GUIDE_COMMUNAUTE.md",
+        "date": "8 Décembre 2025",
+        "line": 350
+      },
+      {
+        "file": "docs/community/GUIDE_HUGGINGFACE_SPACES.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/community/GUIDE_HUGGINGFACE_SPACES.md",
+        "date": "8 Décembre 2025",
+        "line": 325
+      },
+      {
+        "file": "docs/community/GUIDE_HUGGINGFACE_SPACES.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/community/GUIDE_HUGGINGFACE_SPACES.md",
+        "date": "8 Décembre 2025",
+        "line": 325
+      },
+      {
+        "file": "docs/community/GUIDE_HUGGINGFACE_SPACES.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/community/GUIDE_HUGGINGFACE_SPACES.md",
+        "date": "8 Décembre 2025",
+        "line": 325
+      },
+      {
+        "file": "docs/community/GUIDE_HUGGINGFACE_SPACES.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/community/GUIDE_HUGGINGFACE_SPACES.md",
+        "date": "8 Décembre 2025",
+        "line": 325
+      },
+      {
+        "file": "docs/community/INNOVATIONS_BBIA.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/community/INNOVATIONS_BBIA.md",
+        "date": "8 Décembre 2025",
+        "line": 303
+      },
+      {
+        "file": "docs/community/INNOVATIONS_BBIA.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/community/INNOVATIONS_BBIA.md",
+        "date": "8 Décembre 2025",
+        "line": 303
+      },
+      {
+        "file": "docs/community/INNOVATIONS_BBIA.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/community/INNOVATIONS_BBIA.md",
+        "date": "8 Décembre 2025",
+        "line": 303
+      },
+      {
+        "file": "docs/community/INNOVATIONS_BBIA.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/community/INNOVATIONS_BBIA.md",
+        "date": "8 Décembre 2025",
+        "line": 303
+      },
+      {
+        "file": "docs/community/README.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/community/README.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/community/README.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/community/README.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/dashboard/GUIDE_DASHBOARD_MODERNE.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/dashboard/GUIDE_DASHBOARD_MODERNE.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/dashboard/GUIDE_DASHBOARD_MODERNE.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/dashboard/GUIDE_DASHBOARD_MODERNE.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/dashboard/GUIDE_INSTALLATION_PWA.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/dashboard/GUIDE_INSTALLATION_PWA.md",
+        "date": "8 Décembre 2025",
+        "line": 218
+      },
+      {
+        "file": "docs/dashboard/GUIDE_INSTALLATION_PWA.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/dashboard/GUIDE_INSTALLATION_PWA.md",
+        "date": "8 Décembre 2025",
+        "line": 218
+      },
+      {
+        "file": "docs/dashboard/GUIDE_INSTALLATION_PWA.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/dashboard/GUIDE_INSTALLATION_PWA.md",
+        "date": "8 Décembre 2025",
+        "line": 218
+      },
+      {
+        "file": "docs/dashboard/GUIDE_INSTALLATION_PWA.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/dashboard/GUIDE_INSTALLATION_PWA.md",
+        "date": "8 Décembre 2025",
+        "line": 218
+      },
+      {
+        "file": "docs/dashboard/README.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/dashboard/README.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/dashboard/README.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/dashboard/README.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/deployment/PIPELINE_CI.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/deployment/PIPELINE_CI.md",
+        "date": "8 Décembre 2025",
+        "line": 125
+      },
+      {
+        "file": "docs/deployment/PIPELINE_CI.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/deployment/PIPELINE_CI.md",
+        "date": "8 Décembre 2025",
+        "line": 125
+      },
+      {
+        "file": "docs/deployment/PIPELINE_CI.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/deployment/PIPELINE_CI.md",
+        "date": "8 Décembre 2025",
+        "line": 125
+      },
+      {
+        "file": "docs/deployment/PIPELINE_CI.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/deployment/PIPELINE_CI.md",
+        "date": "8 Décembre 2025",
+        "line": 125
+      },
+      {
+        "file": "docs/deployment/README.md",
+        "date": "8 Décembre 2025",
+        "line": 18
+      },
+      {
+        "file": "docs/deployment/README.md",
+        "date": "8 Décembre 2025",
+        "line": 18
+      },
+      {
+        "file": "docs/deployment/README.md",
+        "date": "8 Décembre 2025",
+        "line": 18
+      },
+      {
+        "file": "docs/deployment/README.md",
+        "date": "8 Décembre 2025",
+        "line": 18
+      },
+      {
+        "file": "docs/deployment/RENDER_HOWTO.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/deployment/RENDER_HOWTO.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/deployment/RENDER_HOWTO.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/deployment/RENDER_HOWTO.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/README.md",
+        "date": "8 Décembre 2025",
+        "line": 31
+      },
+      {
+        "file": "docs/development/README.md",
+        "date": "8 Décembre 2025",
+        "line": 31
+      },
+      {
+        "file": "docs/development/README.md",
+        "date": "8 Décembre 2025",
+        "line": 31
+      },
+      {
+        "file": "docs/development/README.md",
+        "date": "8 Décembre 2025",
+        "line": 31
+      },
+      {
+        "file": "docs/development/api/CONTRATS_REST_WS.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/api/CONTRATS_REST_WS.md",
+        "date": "8 Décembre 2025",
+        "line": 148
+      },
+      {
+        "file": "docs/development/api/CONTRATS_REST_WS.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/api/CONTRATS_REST_WS.md",
+        "date": "8 Décembre 2025",
+        "line": 148
+      },
+      {
+        "file": "docs/development/api/CONTRATS_REST_WS.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/api/CONTRATS_REST_WS.md",
+        "date": "8 Décembre 2025",
+        "line": 148
+      },
+      {
+        "file": "docs/development/api/CONTRATS_REST_WS.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/api/CONTRATS_REST_WS.md",
+        "date": "8 Décembre 2025",
+        "line": 148
+      },
+      {
+        "file": "docs/development/architecture/ARCHITECTURE.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/architecture/ARCHITECTURE.md",
+        "date": "8 Décembre 2025",
+        "line": 41
+      },
+      {
+        "file": "docs/development/architecture/ARCHITECTURE.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/architecture/ARCHITECTURE.md",
+        "date": "8 Décembre 2025",
+        "line": 41
+      },
+      {
+        "file": "docs/development/architecture/ARCHITECTURE.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/architecture/ARCHITECTURE.md",
+        "date": "8 Décembre 2025",
+        "line": 41
+      },
+      {
+        "file": "docs/development/architecture/ARCHITECTURE.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/architecture/ARCHITECTURE.md",
+        "date": "8 Décembre 2025",
+        "line": 41
+      },
+      {
+        "file": "docs/development/architecture/ARCHITECTURE_DETAILED.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/architecture/ARCHITECTURE_DETAILED.md",
+        "date": "8 Décembre 2025",
+        "line": 711
+      },
+      {
+        "file": "docs/development/architecture/ARCHITECTURE_DETAILED.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/architecture/ARCHITECTURE_DETAILED.md",
+        "date": "8 Décembre 2025",
+        "line": 711
+      },
+      {
+        "file": "docs/development/architecture/ARCHITECTURE_DETAILED.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/architecture/ARCHITECTURE_DETAILED.md",
+        "date": "8 Décembre 2025",
+        "line": 711
+      },
+      {
+        "file": "docs/development/architecture/ARCHITECTURE_DETAILED.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/architecture/ARCHITECTURE_DETAILED.md",
+        "date": "8 Décembre 2025",
+        "line": 711
+      },
+      {
+        "file": "docs/development/architecture/ARCHITECTURE_OVERVIEW.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/architecture/ARCHITECTURE_OVERVIEW.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/architecture/ARCHITECTURE_OVERVIEW.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/architecture/ARCHITECTURE_OVERVIEW.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/assistant-ia-guide.md",
+        "date": "15 Décembre 2025",
+        "line": 6
+      },
+      {
+        "file": "docs/development/assistant-ia-guide.md",
+        "date": "15 Décembre 2025",
+        "line": 128
+      },
+      {
+        "file": "docs/development/assistant-ia-guide.md",
+        "date": "8 Décembre 2025",
+        "line": 329
+      },
+      {
+        "file": "docs/development/assistant-ia-guide.md",
+        "date": "15 Décembre 2025",
+        "line": 6
+      },
+      {
+        "file": "docs/development/assistant-ia-guide.md",
+        "date": "15 Décembre 2025",
+        "line": 128
+      },
+      {
+        "file": "docs/development/assistant-ia-guide.md",
+        "date": "8 Décembre 2025",
+        "line": 329
+      },
+      {
+        "file": "docs/development/assistant-ia-guide.md",
+        "date": "15 Décembre 2025",
+        "line": 6
+      },
+      {
+        "file": "docs/development/assistant-ia-guide.md",
+        "date": "15 Décembre 2025",
+        "line": 128
+      },
+      {
+        "file": "docs/development/assistant-ia-guide.md",
+        "date": "8 Décembre 2025",
+        "line": 329
+      },
+      {
+        "file": "docs/development/assistant-ia-guide.md",
+        "date": "15 Décembre 2025",
+        "line": 6
+      },
+      {
+        "file": "docs/development/assistant-ia-guide.md",
+        "date": "15 Décembre 2025",
+        "line": 128
+      },
+      {
+        "file": "docs/development/assistant-ia-guide.md",
+        "date": "8 Décembre 2025",
+        "line": 329
+      },
+      {
+        "file": "docs/development/dashboard-advanced.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/dashboard-advanced.md",
+        "date": "15 Décembre 2025",
+        "line": 372
+      },
+      {
+        "file": "docs/development/dashboard-advanced.md",
+        "date": "8 Décembre 2025",
+        "line": 377
+      },
+      {
+        "file": "docs/development/dashboard-advanced.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/dashboard-advanced.md",
+        "date": "15 Décembre 2025",
+        "line": 372
+      },
+      {
+        "file": "docs/development/dashboard-advanced.md",
+        "date": "8 Décembre 2025",
+        "line": 377
+      },
+      {
+        "file": "docs/development/dashboard-advanced.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/dashboard-advanced.md",
+        "date": "15 Décembre 2025",
+        "line": 372
+      },
+      {
+        "file": "docs/development/dashboard-advanced.md",
+        "date": "8 Décembre 2025",
+        "line": 377
+      },
+      {
+        "file": "docs/development/dashboard-advanced.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/dashboard-advanced.md",
+        "date": "15 Décembre 2025",
+        "line": 372
+      },
+      {
+        "file": "docs/development/dashboard-advanced.md",
+        "date": "8 Décembre 2025",
+        "line": 377
+      },
+      {
+        "file": "docs/development/integration.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/integration.md",
+        "date": "8 Décembre 2025",
+        "line": 1209
+      },
+      {
+        "file": "docs/development/integration.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/integration.md",
+        "date": "8 Décembre 2025",
+        "line": 1209
+      },
+      {
+        "file": "docs/development/integration.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/integration.md",
+        "date": "8 Décembre 2025",
+        "line": 1209
+      },
+      {
+        "file": "docs/development/integration.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/integration.md",
+        "date": "8 Décembre 2025",
+        "line": 1209
+      },
+      {
+        "file": "docs/development/setup/coqui-tts.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/setup/coqui-tts.md",
+        "date": "8 Décembre 2025",
+        "line": 331
+      },
+      {
+        "file": "docs/development/setup/coqui-tts.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/setup/coqui-tts.md",
+        "date": "8 Décembre 2025",
+        "line": 331
+      },
+      {
+        "file": "docs/development/setup/coqui-tts.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/setup/coqui-tts.md",
+        "date": "8 Décembre 2025",
+        "line": 331
+      },
+      {
+        "file": "docs/development/setup/coqui-tts.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/setup/coqui-tts.md",
+        "date": "8 Décembre 2025",
+        "line": 331
+      },
+      {
+        "file": "docs/development/setup/deepface.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/setup/deepface.md",
+        "date": "8 Décembre 2025",
+        "line": 278
+      },
+      {
+        "file": "docs/development/setup/deepface.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/setup/deepface.md",
+        "date": "8 Décembre 2025",
+        "line": 278
+      },
+      {
+        "file": "docs/development/setup/deepface.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/setup/deepface.md",
+        "date": "8 Décembre 2025",
+        "line": 278
+      },
+      {
+        "file": "docs/development/setup/deepface.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/setup/deepface.md",
+        "date": "8 Décembre 2025",
+        "line": 278
+      },
+      {
+        "file": "docs/development/setup/environments.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/setup/environments.md",
+        "date": "8 Décembre 2025",
+        "line": 244
+      },
+      {
+        "file": "docs/development/setup/environments.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/setup/environments.md",
+        "date": "8 Décembre 2025",
+        "line": 244
+      },
+      {
+        "file": "docs/development/setup/environments.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/setup/environments.md",
+        "date": "8 Décembre 2025",
+        "line": 244
+      },
+      {
+        "file": "docs/development/setup/environments.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/setup/environments.md",
+        "date": "8 Décembre 2025",
+        "line": 244
+      },
+      {
+        "file": "docs/development/setup/openvoice.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/setup/openvoice.md",
+        "date": "8 Décembre 2025",
+        "line": 115
+      },
+      {
+        "file": "docs/development/setup/openvoice.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/setup/openvoice.md",
+        "date": "8 Décembre 2025",
+        "line": 115
+      },
+      {
+        "file": "docs/development/setup/openvoice.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/setup/openvoice.md",
+        "date": "8 Décembre 2025",
+        "line": 115
+      },
+      {
+        "file": "docs/development/setup/openvoice.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/setup/openvoice.md",
+        "date": "8 Décembre 2025",
+        "line": 115
+      },
+      {
+        "file": "docs/development/switch-sim-robot.md",
+        "date": "22 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/switch-sim-robot.md",
+        "date": "8 Décembre 2025",
+        "line": 325
+      },
+      {
+        "file": "docs/development/switch-sim-robot.md",
+        "date": "22 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/switch-sim-robot.md",
+        "date": "8 Décembre 2025",
+        "line": 325
+      },
+      {
+        "file": "docs/development/switch-sim-robot.md",
+        "date": "22 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/switch-sim-robot.md",
+        "date": "8 Décembre 2025",
+        "line": 325
+      },
+      {
+        "file": "docs/development/switch-sim-robot.md",
+        "date": "22 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/switch-sim-robot.md",
+        "date": "8 Décembre 2025",
+        "line": 325
+      },
+      {
+        "file": "docs/development/testing.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/testing.md",
+        "date": "8 Décembre 2025",
+        "line": 429
+      },
+      {
+        "file": "docs/development/testing.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/testing.md",
+        "date": "8 Décembre 2025",
+        "line": 429
+      },
+      {
+        "file": "docs/development/testing.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/testing.md",
+        "date": "8 Décembre 2025",
+        "line": 429
+      },
+      {
+        "file": "docs/development/testing.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/testing.md",
+        "date": "8 Décembre 2025",
+        "line": 429
+      },
+      {
+        "file": "docs/development/troubleshooting.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/troubleshooting.md",
+        "date": "8 Décembre 2025",
+        "line": 454
+      },
+      {
+        "file": "docs/development/troubleshooting.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/troubleshooting.md",
+        "date": "8 Décembre 2025",
+        "line": 454
+      },
+      {
+        "file": "docs/development/troubleshooting.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/troubleshooting.md",
+        "date": "8 Décembre 2025",
+        "line": 454
+      },
+      {
+        "file": "docs/development/troubleshooting.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/development/troubleshooting.md",
+        "date": "8 Décembre 2025",
+        "line": 454
+      },
+      {
+        "file": "docs/getting-started/INSTALLATION.md",
+        "date": "15 Décembre 2025",
+        "line": 6
+      },
+      {
+        "file": "docs/getting-started/INSTALLATION.md",
+        "date": "15 Décembre 2025",
+        "line": 6
+      },
+      {
+        "file": "docs/getting-started/INSTALLATION.md",
+        "date": "15 Décembre 2025",
+        "line": 6
+      },
+      {
+        "file": "docs/getting-started/INSTALLATION.md",
+        "date": "15 Décembre 2025",
+        "line": 6
+      },
+      {
+        "file": "docs/getting-started/NAVIGATION.md",
+        "date": "15 Décembre 2025",
+        "line": 88
+      },
+      {
+        "file": "docs/getting-started/NAVIGATION.md",
+        "date": "15 Décembre 2025",
+        "line": 88
+      },
+      {
+        "file": "docs/getting-started/NAVIGATION.md",
+        "date": "15 Décembre 2025",
+        "line": 88
+      },
+      {
+        "file": "docs/getting-started/NAVIGATION.md",
+        "date": "15 Décembre 2025",
+        "line": 88
+      },
+      {
+        "file": "docs/getting-started/README.md",
+        "date": "8 Décembre 2025",
+        "line": 28
+      },
+      {
+        "file": "docs/getting-started/README.md",
+        "date": "8 Décembre 2025",
+        "line": 28
+      },
+      {
+        "file": "docs/getting-started/README.md",
+        "date": "8 Décembre 2025",
+        "line": 28
+      },
+      {
+        "file": "docs/getting-started/README.md",
+        "date": "8 Décembre 2025",
+        "line": 28
+      },
+      {
+        "file": "docs/getting-started/contributing.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/getting-started/contributing.md",
+        "date": "8 Décembre 2025",
+        "line": 395
+      },
+      {
+        "file": "docs/getting-started/contributing.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/getting-started/contributing.md",
+        "date": "8 Décembre 2025",
+        "line": 395
+      },
+      {
+        "file": "docs/getting-started/contributing.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/getting-started/contributing.md",
+        "date": "8 Décembre 2025",
+        "line": 395
+      },
+      {
+        "file": "docs/getting-started/contributing.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/getting-started/contributing.md",
+        "date": "8 Décembre 2025",
+        "line": 395
+      },
+      {
+        "file": "docs/getting-started/troubleshooting.md",
+        "date": "15 Décembre 2025",
+        "line": 8
+      },
+      {
+        "file": "docs/getting-started/troubleshooting.md",
+        "date": "8 Décembre 2025",
+        "line": 434
+      },
+      {
+        "file": "docs/getting-started/troubleshooting.md",
+        "date": "15 Décembre 2025",
+        "line": 8
+      },
+      {
+        "file": "docs/getting-started/troubleshooting.md",
+        "date": "8 Décembre 2025",
+        "line": 434
+      },
+      {
+        "file": "docs/getting-started/troubleshooting.md",
+        "date": "15 Décembre 2025",
+        "line": 8
+      },
+      {
+        "file": "docs/getting-started/troubleshooting.md",
+        "date": "8 Décembre 2025",
+        "line": 434
+      },
+      {
+        "file": "docs/getting-started/troubleshooting.md",
+        "date": "15 Décembre 2025",
+        "line": 8
+      },
+      {
+        "file": "docs/getting-started/troubleshooting.md",
+        "date": "8 Décembre 2025",
+        "line": 434
+      },
+      {
+        "file": "docs/guides/DEMARRAGE_DAEMON.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/guides/DEMARRAGE_DAEMON.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/guides/DEMARRAGE_DAEMON.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/guides/DEMARRAGE_DAEMON.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/guides/GUIDE_AVANCE.md",
+        "date": "15 Décembre 2025",
+        "line": 5
+      },
+      {
+        "file": "docs/guides/GUIDE_AVANCE.md",
+        "date": "15 Décembre 2025",
+        "line": 5
+      },
+      {
+        "file": "docs/guides/GUIDE_AVANCE.md",
+        "date": "15 Décembre 2025",
+        "line": 5
+      },
+      {
+        "file": "docs/guides/GUIDE_AVANCE.md",
+        "date": "15 Décembre 2025",
+        "line": 5
+      },
+      {
+        "file": "docs/guides/GUIDE_CHAT_BBIA.md",
+        "date": "15 Décembre 2025",
+        "line": 8
+      },
+      {
+        "file": "docs/guides/GUIDE_CHAT_BBIA.md",
+        "date": "15 Décembre 2025",
+        "line": 8
+      },
+      {
+        "file": "docs/guides/GUIDE_CHAT_BBIA.md",
+        "date": "15 Décembre 2025",
+        "line": 8
+      },
+      {
+        "file": "docs/guides/GUIDE_CHAT_BBIA.md",
+        "date": "15 Décembre 2025",
+        "line": 8
+      },
+      {
+        "file": "docs/guides/GUIDE_COMPORTEMENTS.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/guides/GUIDE_COMPORTEMENTS.md",
+        "date": "8 Décembre 2025",
+        "line": 596
+      },
+      {
+        "file": "docs/guides/GUIDE_COMPORTEMENTS.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/guides/GUIDE_COMPORTEMENTS.md",
+        "date": "8 Décembre 2025",
+        "line": 596
+      },
+      {
+        "file": "docs/guides/GUIDE_COMPORTEMENTS.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/guides/GUIDE_COMPORTEMENTS.md",
+        "date": "8 Décembre 2025",
+        "line": 596
+      },
+      {
+        "file": "docs/guides/GUIDE_COMPORTEMENTS.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/guides/GUIDE_COMPORTEMENTS.md",
+        "date": "8 Décembre 2025",
+        "line": 596
+      },
+      {
+        "file": "docs/guides/GUIDE_DEMARRAGE.md",
+        "date": "15 Décembre 2025",
+        "line": 5
+      },
+      {
+        "file": "docs/guides/GUIDE_DEMARRAGE.md",
+        "date": "15 Décembre 2025",
+        "line": 5
+      },
+      {
+        "file": "docs/guides/GUIDE_DEMARRAGE.md",
+        "date": "15 Décembre 2025",
+        "line": 5
+      },
+      {
+        "file": "docs/guides/GUIDE_DEMARRAGE.md",
+        "date": "15 Décembre 2025",
+        "line": 5
+      },
+      {
+        "file": "docs/guides/GUIDE_LLM_CONVERSATION.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/guides/GUIDE_LLM_CONVERSATION.md",
+        "date": "8 Décembre 2025",
+        "line": 417
+      },
+      {
+        "file": "docs/guides/GUIDE_LLM_CONVERSATION.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/guides/GUIDE_LLM_CONVERSATION.md",
+        "date": "8 Décembre 2025",
+        "line": 417
+      },
+      {
+        "file": "docs/guides/GUIDE_LLM_CONVERSATION.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/guides/GUIDE_LLM_CONVERSATION.md",
+        "date": "8 Décembre 2025",
+        "line": 417
+      },
+      {
+        "file": "docs/guides/GUIDE_LLM_CONVERSATION.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/guides/GUIDE_LLM_CONVERSATION.md",
+        "date": "8 Décembre 2025",
+        "line": 417
+      },
+      {
+        "file": "docs/guides/GUIDE_NLP_SMOLVLM.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/guides/GUIDE_NLP_SMOLVLM.md",
+        "date": "8 Décembre 2025",
+        "line": 505
+      },
+      {
+        "file": "docs/guides/GUIDE_NLP_SMOLVLM.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/guides/GUIDE_NLP_SMOLVLM.md",
+        "date": "8 Décembre 2025",
+        "line": 505
+      },
+      {
+        "file": "docs/guides/GUIDE_NLP_SMOLVLM.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/guides/GUIDE_NLP_SMOLVLM.md",
+        "date": "8 Décembre 2025",
+        "line": 505
+      },
+      {
+        "file": "docs/guides/GUIDE_NLP_SMOLVLM.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/guides/GUIDE_NLP_SMOLVLM.md",
+        "date": "8 Décembre 2025",
+        "line": 505
+      },
+      {
+        "file": "docs/guides/GUIDE_VIDEOS_DEMONSTRATION.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/guides/GUIDE_VIDEOS_DEMONSTRATION.md",
+        "date": "15 Décembre 2025",
+        "line": 308
+      },
+      {
+        "file": "docs/guides/GUIDE_VIDEOS_DEMONSTRATION.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/guides/GUIDE_VIDEOS_DEMONSTRATION.md",
+        "date": "15 Décembre 2025",
+        "line": 308
+      },
+      {
+        "file": "docs/guides/GUIDE_VIDEOS_DEMONSTRATION.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/guides/GUIDE_VIDEOS_DEMONSTRATION.md",
+        "date": "15 Décembre 2025",
+        "line": 308
+      },
+      {
+        "file": "docs/guides/GUIDE_VIDEOS_DEMONSTRATION.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/guides/GUIDE_VIDEOS_DEMONSTRATION.md",
+        "date": "15 Décembre 2025",
+        "line": 308
+      },
+      {
+        "file": "docs/guides/PARTAGE_APPS_BBIA_HF_HUB.md",
+        "date": "8 Décembre 2025",
+        "line": 246
+      },
+      {
+        "file": "docs/guides/PARTAGE_APPS_BBIA_HF_HUB.md",
+        "date": "8 Décembre 2025",
+        "line": 247
+      },
+      {
+        "file": "docs/guides/PARTAGE_APPS_BBIA_HF_HUB.md",
+        "date": "8 Décembre 2025",
+        "line": 246
+      },
+      {
+        "file": "docs/guides/PARTAGE_APPS_BBIA_HF_HUB.md",
+        "date": "8 Décembre 2025",
+        "line": 247
+      },
+      {
+        "file": "docs/guides/PARTAGE_APPS_BBIA_HF_HUB.md",
+        "date": "8 Décembre 2025",
+        "line": 246
+      },
+      {
+        "file": "docs/guides/PARTAGE_APPS_BBIA_HF_HUB.md",
+        "date": "8 Décembre 2025",
+        "line": 247
+      },
+      {
+        "file": "docs/guides/PARTAGE_APPS_BBIA_HF_HUB.md",
+        "date": "8 Décembre 2025",
+        "line": 246
+      },
+      {
+        "file": "docs/guides/PARTAGE_APPS_BBIA_HF_HUB.md",
+        "date": "8 Décembre 2025",
+        "line": 247
+      },
+      {
+        "file": "docs/guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md",
+        "date": "22 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md",
+        "date": "15 Décembre 2025",
+        "line": 568
+      },
+      {
+        "file": "docs/guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md",
+        "date": "22 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md",
+        "date": "15 Décembre 2025",
+        "line": 568
+      },
+      {
+        "file": "docs/guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md",
+        "date": "22 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md",
+        "date": "15 Décembre 2025",
+        "line": 568
+      },
+      {
+        "file": "docs/guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md",
+        "date": "22 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md",
+        "date": "15 Décembre 2025",
+        "line": 568
+      },
+      {
+        "file": "docs/guides/README.md",
+        "date": "8 Décembre 2025",
+        "line": 33
+      },
+      {
+        "file": "docs/guides/README.md",
+        "date": "8 Décembre 2025",
+        "line": 33
+      },
+      {
+        "file": "docs/guides/README.md",
+        "date": "8 Décembre 2025",
+        "line": 33
+      },
+      {
+        "file": "docs/guides/README.md",
+        "date": "8 Décembre 2025",
+        "line": 33
+      },
+      {
+        "file": "docs/hardware/CARTE_SD_REACHY_MINI.md",
+        "date": "15 Décembre 2025",
+        "line": 88
+      },
+      {
+        "file": "docs/hardware/CARTE_SD_REACHY_MINI.md",
+        "date": "15 Décembre 2025",
+        "line": 88
+      },
+      {
+        "file": "docs/hardware/CARTE_SD_REACHY_MINI.md",
+        "date": "15 Décembre 2025",
+        "line": 88
+      },
+      {
+        "file": "docs/hardware/CARTE_SD_REACHY_MINI.md",
+        "date": "15 Décembre 2025",
+        "line": 88
+      },
+      {
+        "file": "docs/hardware/MOUVEMENTS_REACHY_MINI.md",
+        "date": "15 Décembre 2025",
+        "line": 163
+      },
+      {
+        "file": "docs/hardware/MOUVEMENTS_REACHY_MINI.md",
+        "date": "15 Décembre 2025",
+        "line": 163
+      },
+      {
+        "file": "docs/hardware/MOUVEMENTS_REACHY_MINI.md",
+        "date": "15 Décembre 2025",
+        "line": 163
+      },
+      {
+        "file": "docs/hardware/MOUVEMENTS_REACHY_MINI.md",
+        "date": "15 Décembre 2025",
+        "line": 163
+      },
+      {
+        "file": "docs/hardware/SECURITE_ROBOT.md",
+        "date": "15 Décembre 2025",
+        "line": 43
+      },
+      {
+        "file": "docs/hardware/SECURITE_ROBOT.md",
+        "date": "15 Décembre 2025",
+        "line": 43
+      },
+      {
+        "file": "docs/hardware/SECURITE_ROBOT.md",
+        "date": "15 Décembre 2025",
+        "line": 43
+      },
+      {
+        "file": "docs/hardware/SECURITE_ROBOT.md",
+        "date": "15 Décembre 2025",
+        "line": 43
+      },
+      {
+        "file": "docs/installation/AUDIO_SETUP.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/installation/AUDIO_SETUP.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/installation/AUDIO_SETUP.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/installation/AUDIO_SETUP.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/installation/README.md",
+        "date": "8 Décembre 2025",
+        "line": 18
+      },
+      {
+        "file": "docs/installation/README.md",
+        "date": "8 Décembre 2025",
+        "line": 18
+      },
+      {
+        "file": "docs/installation/README.md",
+        "date": "8 Décembre 2025",
+        "line": 18
+      },
+      {
+        "file": "docs/installation/README.md",
+        "date": "8 Décembre 2025",
+        "line": 18
+      },
+      {
+        "file": "docs/installation/RESPEAKER_SETUP.md",
+        "date": "15 Décembre 2025",
+        "line": 5
+      },
+      {
+        "file": "docs/installation/RESPEAKER_SETUP.md",
+        "date": "8 Décembre 2025",
+        "line": 443
+      },
+      {
+        "file": "docs/installation/RESPEAKER_SETUP.md",
+        "date": "15 Décembre 2025",
+        "line": 5
+      },
+      {
+        "file": "docs/installation/RESPEAKER_SETUP.md",
+        "date": "8 Décembre 2025",
+        "line": 443
+      },
+      {
+        "file": "docs/installation/RESPEAKER_SETUP.md",
+        "date": "15 Décembre 2025",
+        "line": 5
+      },
+      {
+        "file": "docs/installation/RESPEAKER_SETUP.md",
+        "date": "8 Décembre 2025",
+        "line": 443
+      },
+      {
+        "file": "docs/installation/RESPEAKER_SETUP.md",
+        "date": "15 Décembre 2025",
+        "line": 5
+      },
+      {
+        "file": "docs/installation/RESPEAKER_SETUP.md",
+        "date": "8 Décembre 2025",
+        "line": 443
+      },
+      {
+        "file": "docs/observabilite/README.md",
+        "date": "8 Décembre 2025",
+        "line": 17
+      },
+      {
+        "file": "docs/observabilite/README.md",
+        "date": "8 Décembre 2025",
+        "line": 17
+      },
+      {
+        "file": "docs/observabilite/README.md",
+        "date": "8 Décembre 2025",
+        "line": 17
+      },
+      {
+        "file": "docs/observabilite/README.md",
+        "date": "8 Décembre 2025",
+        "line": 17
+      },
+      {
+        "file": "docs/presentation/PORTFOLIO_ONEPAGER.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/presentation/PORTFOLIO_ONEPAGER.md",
+        "date": "15 Décembre 2025",
+        "line": 255
+      },
+      {
+        "file": "docs/presentation/PORTFOLIO_ONEPAGER.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/presentation/PORTFOLIO_ONEPAGER.md",
+        "date": "15 Décembre 2025",
+        "line": 255
+      },
+      {
+        "file": "docs/presentation/PORTFOLIO_ONEPAGER.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/presentation/PORTFOLIO_ONEPAGER.md",
+        "date": "15 Décembre 2025",
+        "line": 255
+      },
+      {
+        "file": "docs/presentation/PORTFOLIO_ONEPAGER.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/presentation/PORTFOLIO_ONEPAGER.md",
+        "date": "15 Décembre 2025",
+        "line": 255
+      },
+      {
+        "file": "docs/presentation/README.md",
+        "date": "8 Décembre 2025",
+        "line": 16
+      },
+      {
+        "file": "docs/presentation/README.md",
+        "date": "8 Décembre 2025",
+        "line": 16
+      },
+      {
+        "file": "docs/presentation/README.md",
+        "date": "8 Décembre 2025",
+        "line": 16
+      },
+      {
+        "file": "docs/presentation/README.md",
+        "date": "8 Décembre 2025",
+        "line": 16
+      },
+      {
+        "file": "docs/quality/AUDIT_CONSOLIDE_DECEMBRE_2025.md",
+        "date": "8 Décembre 2025",
+        "line": 99
+      },
+      {
+        "file": "docs/quality/AUDIT_CONSOLIDE_DECEMBRE_2025.md",
+        "date": "8 Décembre 2025",
+        "line": 99
+      },
+      {
+        "file": "docs/quality/AUDIT_CONSOLIDE_DECEMBRE_2025.md",
+        "date": "8 Décembre 2025",
+        "line": 99
+      },
+      {
+        "file": "docs/quality/AUDIT_CONSOLIDE_DECEMBRE_2025.md",
+        "date": "8 Décembre 2025",
+        "line": 99
+      },
+      {
+        "file": "docs/quality/CHECKLIST_RELEASE_STABLE.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/quality/CHECKLIST_RELEASE_STABLE.md",
+        "date": "15 Décembre 2025",
+        "line": 200
+      },
+      {
+        "file": "docs/quality/CHECKLIST_RELEASE_STABLE.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/quality/CHECKLIST_RELEASE_STABLE.md",
+        "date": "15 Décembre 2025",
+        "line": 200
+      },
+      {
+        "file": "docs/quality/CHECKLIST_RELEASE_STABLE.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/quality/CHECKLIST_RELEASE_STABLE.md",
+        "date": "15 Décembre 2025",
+        "line": 200
+      },
+      {
+        "file": "docs/quality/CHECKLIST_RELEASE_STABLE.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/quality/CHECKLIST_RELEASE_STABLE.md",
+        "date": "15 Décembre 2025",
+        "line": 200
+      },
+      {
+        "file": "docs/quality/README.md",
+        "date": "8 Décembre 2025",
+        "line": 82
+      },
+      {
+        "file": "docs/quality/README.md",
+        "date": "8 Décembre 2025",
+        "line": 82
+      },
+      {
+        "file": "docs/quality/README.md",
+        "date": "8 Décembre 2025",
+        "line": 82
+      },
+      {
+        "file": "docs/quality/README.md",
+        "date": "8 Décembre 2025",
+        "line": 82
+      },
+      {
+        "file": "docs/quality/audits/AUDIT_REACHY_MINI_DECEMBRE_2025.md",
+        "date": "22 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/quality/audits/AUDIT_REACHY_MINI_DECEMBRE_2025.md",
+        "date": "22 Décembre 2025",
+        "line": 602
+      },
+      {
+        "file": "docs/quality/audits/AUDIT_REACHY_MINI_DECEMBRE_2025.md",
+        "date": "22 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/quality/audits/AUDIT_REACHY_MINI_DECEMBRE_2025.md",
+        "date": "22 Décembre 2025",
+        "line": 602
+      },
+      {
+        "file": "docs/quality/audits/AUDIT_REACHY_MINI_DECEMBRE_2025.md",
+        "date": "22 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/quality/audits/AUDIT_REACHY_MINI_DECEMBRE_2025.md",
+        "date": "22 Décembre 2025",
+        "line": 602
+      },
+      {
+        "file": "docs/quality/audits/AUDIT_REACHY_MINI_DECEMBRE_2025.md",
+        "date": "22 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/quality/audits/AUDIT_REACHY_MINI_DECEMBRE_2025.md",
+        "date": "22 Décembre 2025",
+        "line": 602
+      },
+      {
+        "file": "docs/quality/audits/README.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/quality/audits/README.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/quality/audits/README.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/quality/audits/README.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/quality/compliance/CHECKLIST_FINALE_CONFORMITE.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/quality/compliance/CHECKLIST_FINALE_CONFORMITE.md",
+        "date": "8 Décembre 2025",
+        "line": 17
+      },
+      {
+        "file": "docs/quality/compliance/CHECKLIST_FINALE_CONFORMITE.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/quality/compliance/CHECKLIST_FINALE_CONFORMITE.md",
+        "date": "8 Décembre 2025",
+        "line": 17
+      },
+      {
+        "file": "docs/quality/compliance/CHECKLIST_FINALE_CONFORMITE.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/quality/compliance/CHECKLIST_FINALE_CONFORMITE.md",
+        "date": "8 Décembre 2025",
+        "line": 17
+      },
+      {
+        "file": "docs/quality/compliance/CHECKLIST_FINALE_CONFORMITE.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/quality/compliance/CHECKLIST_FINALE_CONFORMITE.md",
+        "date": "8 Décembre 2025",
+        "line": 17
+      },
+      {
+        "file": "docs/quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md",
+        "date": "15 Décembre 2025",
+        "line": 8
+      },
+      {
+        "file": "docs/quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md",
+        "date": "15 Décembre 2025",
+        "line": 8
+      },
+      {
+        "file": "docs/quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md",
+        "date": "15 Décembre 2025",
+        "line": 8
+      },
+      {
+        "file": "docs/quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md",
+        "date": "15 Décembre 2025",
+        "line": 8
+      },
+      {
+        "file": "docs/quality/compliance/RESUME_FINAL_IMPLÉMENTATION.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/quality/compliance/RESUME_FINAL_IMPLÉMENTATION.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/quality/compliance/RESUME_FINAL_IMPLÉMENTATION.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/quality/compliance/RESUME_FINAL_IMPLÉMENTATION.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/quality/performance/OPTIMISATIONS_PERFORMANCE_DEC2025.md",
+        "date": "22 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/quality/performance/OPTIMISATIONS_PERFORMANCE_DEC2025.md",
+        "date": "15 Décembre 2025",
+        "line": 285
+      },
+      {
+        "file": "docs/quality/performance/OPTIMISATIONS_PERFORMANCE_DEC2025.md",
+        "date": "8 Décembre 2025",
+        "line": 286
+      },
+      {
+        "file": "docs/quality/performance/OPTIMISATIONS_PERFORMANCE_DEC2025.md",
+        "date": "22 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/quality/performance/OPTIMISATIONS_PERFORMANCE_DEC2025.md",
+        "date": "15 Décembre 2025",
+        "line": 285
+      },
+      {
+        "file": "docs/quality/performance/OPTIMISATIONS_PERFORMANCE_DEC2025.md",
+        "date": "8 Décembre 2025",
+        "line": 286
+      },
+      {
+        "file": "docs/quality/performance/OPTIMISATIONS_PERFORMANCE_DEC2025.md",
+        "date": "22 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/quality/performance/OPTIMISATIONS_PERFORMANCE_DEC2025.md",
+        "date": "15 Décembre 2025",
+        "line": 285
+      },
+      {
+        "file": "docs/quality/performance/OPTIMISATIONS_PERFORMANCE_DEC2025.md",
+        "date": "8 Décembre 2025",
+        "line": 286
+      },
+      {
+        "file": "docs/quality/performance/OPTIMISATIONS_PERFORMANCE_DEC2025.md",
+        "date": "22 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/quality/performance/OPTIMISATIONS_PERFORMANCE_DEC2025.md",
+        "date": "15 Décembre 2025",
+        "line": 285
+      },
+      {
+        "file": "docs/quality/performance/OPTIMISATIONS_PERFORMANCE_DEC2025.md",
+        "date": "8 Décembre 2025",
+        "line": 286
+      },
+      {
+        "file": "docs/quality/performance/WATCHDOG_IMPLEMENTATION.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/quality/performance/WATCHDOG_IMPLEMENTATION.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/quality/performance/WATCHDOG_IMPLEMENTATION.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/quality/performance/WATCHDOG_IMPLEMENTATION.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/reference/COMMUNITY_CONFIG.md",
+        "date": "15 Décembre 2025",
+        "line": 8
+      },
+      {
+        "file": "docs/reference/COMMUNITY_CONFIG.md",
+        "date": "15 Décembre 2025",
+        "line": 8
+      },
+      {
+        "file": "docs/reference/COMMUNITY_CONFIG.md",
+        "date": "15 Décembre 2025",
+        "line": 8
+      },
+      {
+        "file": "docs/reference/COMMUNITY_CONFIG.md",
+        "date": "15 Décembre 2025",
+        "line": 8
+      },
+      {
+        "file": "docs/reference/METRICS.md",
+        "date": "8 Décembre 2025",
+        "line": 5
+      },
+      {
+        "file": "docs/reference/METRICS.md",
+        "date": "15 Décembre 2025",
+        "line": 100
+      },
+      {
+        "file": "docs/reference/METRICS.md",
+        "date": "8 Décembre 2025",
+        "line": 5
+      },
+      {
+        "file": "docs/reference/METRICS.md",
+        "date": "15 Décembre 2025",
+        "line": 100
+      },
+      {
+        "file": "docs/reference/METRICS.md",
+        "date": "8 Décembre 2025",
+        "line": 5
+      },
+      {
+        "file": "docs/reference/METRICS.md",
+        "date": "15 Décembre 2025",
+        "line": 100
+      },
+      {
+        "file": "docs/reference/METRICS.md",
+        "date": "8 Décembre 2025",
+        "line": 5
+      },
+      {
+        "file": "docs/reference/METRICS.md",
+        "date": "15 Décembre 2025",
+        "line": 100
+      },
+      {
+        "file": "docs/reference/PROJECT_HISTORY.md",
+        "date": "15 Décembre 2025",
+        "line": 8
+      },
+      {
+        "file": "docs/reference/PROJECT_HISTORY.md",
+        "date": "15 Décembre 2025",
+        "line": 8
+      },
+      {
+        "file": "docs/reference/PROJECT_HISTORY.md",
+        "date": "15 Décembre 2025",
+        "line": 8
+      },
+      {
+        "file": "docs/reference/PROJECT_HISTORY.md",
+        "date": "15 Décembre 2025",
+        "line": 8
+      },
+      {
+        "file": "docs/reference/README.md",
+        "date": "8 Décembre 2025",
+        "line": 30
+      },
+      {
+        "file": "docs/reference/README.md",
+        "date": "8 Décembre 2025",
+        "line": 30
+      },
+      {
+        "file": "docs/reference/README.md",
+        "date": "8 Décembre 2025",
+        "line": 30
+      },
+      {
+        "file": "docs/reference/README.md",
+        "date": "8 Décembre 2025",
+        "line": 30
+      },
+      {
+        "file": "docs/reference/RELEASE_NOTES.md",
+        "date": "8 Décembre 2025",
+        "line": 332
+      },
+      {
+        "file": "docs/reference/RELEASE_NOTES.md",
+        "date": "8 Décembre 2025",
+        "line": 332
+      },
+      {
+        "file": "docs/reference/RELEASE_NOTES.md",
+        "date": "8 Décembre 2025",
+        "line": 332
+      },
+      {
+        "file": "docs/reference/RELEASE_NOTES.md",
+        "date": "8 Décembre 2025",
+        "line": 332
+      },
+      {
+        "file": "docs/reference/project-status.md",
+        "date": "15 Décembre 2025",
+        "line": 8
+      },
+      {
+        "file": "docs/reference/project-status.md",
+        "date": "15 Décembre 2025",
+        "line": 8
+      },
+      {
+        "file": "docs/reference/project-status.md",
+        "date": "15 Décembre 2025",
+        "line": 8
+      },
+      {
+        "file": "docs/reference/project-status.md",
+        "date": "8 Décembre 2025",
+        "line": 11
+      },
+      {
+        "file": "docs/reference/project-status.md",
+        "date": "8 Décembre 2025",
+        "line": 15
+      },
+      {
+        "file": "docs/reference/project-status.md",
+        "date": "15 Décembre 2025",
+        "line": 8
+      },
+      {
+        "file": "docs/reference/project-status.md",
+        "date": "8 Décembre 2025",
+        "line": 11
+      },
+      {
+        "file": "docs/reference/project-status.md",
+        "date": "8 Décembre 2025",
+        "line": 15
+      },
+      {
+        "file": "docs/reports/README.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/reports/README.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/reports/README.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/reports/README.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/simulations/GUIDE_IMPORT_IMAGES_MUJOCO.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/simulations/GUIDE_IMPORT_IMAGES_MUJOCO.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/simulations/GUIDE_IMPORT_IMAGES_MUJOCO.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/simulations/GUIDE_IMPORT_IMAGES_MUJOCO.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/simulations/GUIDE_PROCREATE_COMPLET.md",
+        "date": "22 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/simulations/GUIDE_PROCREATE_COMPLET.md",
+        "date": "22 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/simulations/GUIDE_PROCREATE_COMPLET.md",
+        "date": "22 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/simulations/GUIDE_PROCREATE_COMPLET.md",
+        "date": "22 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/simulations/INDEX_GUIDES_PROCREATE.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/simulations/INDEX_GUIDES_PROCREATE.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/simulations/INDEX_GUIDES_PROCREATE.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/simulations/INDEX_GUIDES_PROCREATE.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/simulations/MUJOCO_SIMULATION_GUIDE.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/simulations/MUJOCO_SIMULATION_GUIDE.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/simulations/MUJOCO_SIMULATION_GUIDE.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/simulations/MUJOCO_SIMULATION_GUIDE.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/simulations/README.md",
+        "date": "8 Décembre 2025",
+        "line": 25
+      },
+      {
+        "file": "docs/simulations/README.md",
+        "date": "8 Décembre 2025",
+        "line": 25
+      },
+      {
+        "file": "docs/simulations/README.md",
+        "date": "8 Décembre 2025",
+        "line": 25
+      },
+      {
+        "file": "docs/simulations/README.md",
+        "date": "8 Décembre 2025",
+        "line": 25
+      },
+      {
+        "file": "docs/simulations/SIMULATION_BBIA_COMPLETE.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/simulations/SIMULATION_BBIA_COMPLETE.md",
+        "date": "15 Décembre 2025",
+        "line": 257
+      },
+      {
+        "file": "docs/simulations/SIMULATION_BBIA_COMPLETE.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/simulations/SIMULATION_BBIA_COMPLETE.md",
+        "date": "15 Décembre 2025",
+        "line": 257
+      },
+      {
+        "file": "docs/simulations/SIMULATION_BBIA_COMPLETE.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/simulations/SIMULATION_BBIA_COMPLETE.md",
+        "date": "15 Décembre 2025",
+        "line": 257
+      },
+      {
+        "file": "docs/simulations/SIMULATION_BBIA_COMPLETE.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/simulations/SIMULATION_BBIA_COMPLETE.md",
+        "date": "15 Décembre 2025",
+        "line": 257
+      },
+      {
+        "file": "docs/unity/README.md",
+        "date": "8 Décembre 2025",
+        "line": 18
+      },
+      {
+        "file": "docs/unity/README.md",
+        "date": "8 Décembre 2025",
+        "line": 18
+      },
+      {
+        "file": "docs/unity/README.md",
+        "date": "8 Décembre 2025",
+        "line": 18
+      },
+      {
+        "file": "docs/unity/README.md",
+        "date": "8 Décembre 2025",
+        "line": 18
+      },
+      {
+        "file": "docs/unity/UNITY_BBIA_GUIDE.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/unity/UNITY_BBIA_GUIDE.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/unity/UNITY_BBIA_GUIDE.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/unity/UNITY_BBIA_GUIDE.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/unity/UNITY_TROUBLESHOOTING.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/unity/UNITY_TROUBLESHOOTING.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/unity/UNITY_TROUBLESHOOTING.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "docs/unity/UNITY_TROUBLESHOOTING.md",
+        "date": "15 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "examples/reachy_mini/GUIDE_DEPANNAGE_REACHY_MINI.md",
+        "date": "22 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "examples/reachy_mini/GUIDE_DEPANNAGE_REACHY_MINI.md",
+        "date": "22 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "examples/reachy_mini/GUIDE_DEPANNAGE_REACHY_MINI.md",
+        "date": "22 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "examples/reachy_mini/GUIDE_DEPANNAGE_REACHY_MINI.md",
+        "date": "22 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "presentation/SUIVI_BRANDING.md",
+        "date": "7 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "presentation/SUIVI_BRANDING.md",
+        "date": "7 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "presentation/SUIVI_BRANDING.md",
+        "date": "7 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "presentation/SUIVI_BRANDING.md",
+        "date": "7 Décembre 2025",
+        "line": 3
+      },
+      {
+        "file": "src/bbia_sim/daemon/app/dashboard/static/logos/INTEGRATION_DASHBOARD.md",
+        "date": "7 Décembre 2025",
+        "line": 140
+      },
+      {
+        "file": "src/bbia_sim/daemon/app/dashboard/static/logos/INTEGRATION_DASHBOARD.md",
+        "date": "7 Décembre 2025",
+        "line": 140
+      },
+      {
+        "file": "src/bbia_sim/daemon/app/dashboard/static/logos/INTEGRATION_DASHBOARD.md",
+        "date": "7 Décembre 2025",
+        "line": 140
+      },
+      {
+        "file": "src/bbia_sim/daemon/app/dashboard/static/logos/INTEGRATION_DASHBOARD.md",
+        "date": "7 Décembre 2025",
+        "line": 140
+      },
+      {
+        "file": "src/bbia_sim/daemon/app/dashboard/static/logos/README.md",
+        "date": "7 Décembre 2025",
+        "line": 178
+      },
+      {
+        "file": "src/bbia_sim/daemon/app/dashboard/static/logos/README.md",
+        "date": "7 Décembre 2025",
+        "line": 178
+      },
+      {
+        "file": "src/bbia_sim/daemon/app/dashboard/static/logos/README.md",
+        "date": "7 Décembre 2025",
+        "line": 178
+      },
+      {
+        "file": "src/bbia_sim/daemon/app/dashboard/static/logos/README.md",
+        "date": "7 Décembre 2025",
+        "line": 178
+      },
+      {
+        "file": "src/bbia_sim/daemon/app/dashboard/static/logos/VUE_ENSEMBLE_COMPLETE.md",
+        "date": "7 Décembre 2025",
+        "line": 229
+      },
+      {
+        "file": "src/bbia_sim/daemon/app/dashboard/static/logos/VUE_ENSEMBLE_COMPLETE.md",
+        "date": "7 Décembre 2025",
+        "line": 229
+      },
+      {
+        "file": "src/bbia_sim/daemon/app/dashboard/static/logos/VUE_ENSEMBLE_COMPLETE.md",
+        "date": "7 Décembre 2025",
+        "line": 229
+      },
+      {
+        "file": "src/bbia_sim/daemon/app/dashboard/static/logos/VUE_ENSEMBLE_COMPLETE.md",
+        "date": "7 Décembre 2025",
+        "line": 229
+      },
+      {
+        "file": "tests/REACHY_MINI_TESTS_STRUCTURE.md",
+        "date": "21 Novembre 2025",
+        "line": 225
+      },
+      {
+        "file": "tests/REACHY_MINI_TESTS_STRUCTURE.md",
+        "date": "21 Novembre 2025",
+        "line": 225
+      },
+      {
+        "file": "tests/REACHY_MINI_TESTS_STRUCTURE.md",
+        "date": "21 Novembre 2025",
+        "line": 225
+      },
+      {
+        "file": "tests/REACHY_MINI_TESTS_STRUCTURE.md",
+        "date": "21 Novembre 2025",
+        "line": 225
+      },
+      {
+        "file": "tests/README.md",
+        "date": "26 Novembre 2025",
+        "line": 443
+      },
+      {
+        "file": "tests/README.md",
+        "date": "26 Novembre 2025",
+        "line": 443
+      },
+      {
+        "file": "tests/README.md",
+        "date": "26 Novembre 2025",
+        "line": 443
+      },
+      {
+        "file": "tests/README.md",
+        "date": "26 Novembre 2025",
+        "line": 443
+      }
+    ],
+    "version_issues": [
+      {
+        "file": "assets/MEDIAS_INVENTAIRE.md",
+        "message": "Version 1.2.0 trouvée (attendu 1.4.0)",
+        "line": 92
+      },
+      {
+        "file": "docs/community/GUIDE_HUGGINGFACE_SPACES.md",
+        "message": "Version 4.0.0 trouvée (attendu 1.4.0)",
+        "line": 169
+      },
+      {
+        "file": "docs/guides/PARTAGE_APPS_BBIA_HF_HUB.md",
+        "message": "Version 4.0.0 trouvée (attendu 1.4.0)",
+        "line": 175
+      },
+      {
+        "file": "docs/quality/audits/AUDIT_REACHY_MINI_DECEMBRE_2025.md",
+        "message": "Version 1.2.3 trouvée (attendu 1.4.0)",
+        "line": 379
+      }
+    ],
+    "broken_links": [
+      {
+        "file": "CONTRIBUTING.md",
+        "message": "Lien brisé: docs/community/GUIDE_CONTRIBUTEURS_COMPLET.md",
+        "line": 42
+      },
+      {
+        "file": "README.md",
+        "message": "Lien brisé: docs/community/GUIDE_CONTRIBUTEURS_COMPLET.md",
+        "line": 132
+      },
+      {
+        "file": "README.md",
+        "message": "Lien brisé: docs/guides/DEMO_VIDEO_ROADMAP.md",
+        "line": 635
+      },
+      {
+        "file": "README.md",
+        "message": "Lien brisé: docs/dashboard/ROADMAP_DASHBOARD.md",
+        "line": 665
+      },
+      {
+        "file": "README.md",
+        "message": "Lien brisé: docs/quality/audits/VERIFICATION_ANALYSE_COMPLETE_26NOV2025.md",
+        "line": 975
+      },
+      {
+        "file": "README.md",
+        "message": "Lien brisé: htmlcov/index.html",
+        "line": 976
+      },
+      {
+        "file": "README.md",
+        "message": "Lien brisé: htmlcov/index.html",
+        "line": 977
+      },
+      {
+        "file": "docs/INDEX_FINAL.md",
+        "message": "Lien brisé: quality/corrections/applied.md",
+        "line": 54
+      },
+      {
+        "file": "docs/INDEX_FINAL.md",
+        "message": "Lien brisé: quality/validation/VALIDATION_FINALE_QUALITE_2025.md",
+        "line": 55
+      },
+      {
+        "file": "docs/INDEX_FINAL.md",
+        "message": "Lien brisé: quality/validation/VALIDATION_FINALE_QUALITE_2025.md",
+        "line": 86
+      },
+      {
+        "file": "docs/INDEX_FINAL.md",
+        "message": "Lien brisé: hardware/reachy-mini/PRET_REACHY_A4.md",
+        "line": 109
+      },
+      {
+        "file": "docs/INDEX_FINAL.md",
+        "message": "Lien brisé: hardware/reachy-mini/REACHY_UPDATES_LOG.md",
+        "line": 110
+      },
+      {
+        "file": "docs/INDEX_FINAL.md",
+        "message": "Lien brisé: quality/performance/OPTIMISATIONS_EXPERT_REACHY_MINI.md",
+        "line": 114
+      },
+      {
+        "file": "docs/INDEX_FINAL.md",
+        "message": "Lien brisé: quality/performance/OPTIMISATIONS_EXPERT_ROBOTIQUE_2025.md",
+        "line": 115
+      },
+      {
+        "file": "docs/INDEX_FINAL.md",
+        "message": "Lien brisé: quality/performance/RESUME_PERFORMANCE_CORRECTIONS_2025.md",
+        "line": 116
+      },
+      {
+        "file": "docs/INDEX_FINAL.md",
+        "message": "Lien brisé: quality/audits/modules-non-prioritaires.md",
+        "line": 126
+      },
+      {
+        "file": "docs/INDEX_FINAL.md",
+        "message": "Lien brisé: quality/audits/AUDIT_COVERAGE_IMPORTS.md",
+        "line": 127
+      },
+      {
+        "file": "docs/INDEX_FINAL.md",
+        "message": "Lien brisé: quality/audits/unity-ar.md",
+        "line": 128
+      },
+      {
+        "file": "docs/INDEX_FINAL.md",
+        "message": "Lien brisé: dashboard/ROADMAP_DASHBOARD.md",
+        "line": 129
+      },
+      {
+        "file": "docs/INDEX_FINAL.md",
+        "message": "Lien brisé: quality/corrections/applied.md",
+        "line": 133
+      },
+      {
+        "file": "docs/INDEX_FINAL.md",
+        "message": "Lien brisé: quality/improvements/sdk-future.md",
+        "line": 134
+      },
+      {
+        "file": "docs/INDEX_FINAL.md",
+        "message": "Lien brisé: quality/improvements/intelligence-bbia.md",
+        "line": 135
+      },
+      {
+        "file": "docs/INDEX_FINAL.md",
+        "message": "Lien brisé: quality/improvements/intelligence-context.md",
+        "line": 136
+      },
+      {
+        "file": "docs/INDEX_FINAL.md",
+        "message": "Lien brisé: quality/improvements/free-improvements.md",
+        "line": 137
+      },
+      {
+        "file": "docs/INDEX_FINAL.md",
+        "message": "Lien brisé: reference/summaries/final-summary.md",
+        "line": 144
+      },
+      {
+        "file": "docs/README.md",
+        "message": "Lien brisé: quality/performance/RESUME_PERFORMANCE_CORRECTIONS_2025.md",
+        "line": 108
+      },
+      {
+        "file": "docs/README.md",
+        "message": "Lien brisé: quality/validation/VALIDATION_FINALE_QUALITE_2025.md",
+        "line": 109
+      },
+      {
+        "file": "docs/community/GUIDE_COMMUNAUTE.md",
+        "message": "Lien brisé: GUIDE_CONTRIBUTEURS_COMPLET.md",
+        "line": 358
+      },
+      {
+        "file": "docs/community/GUIDE_COMMUNAUTE.md",
+        "message": "Lien brisé: ../../quality/audits/AUDIT_STRATEGIQUE_VALEUR_26NOV2025.md",
+        "line": 369
+      },
+      {
+        "file": "docs/community/GUIDE_COMMUNAUTE.md",
+        "message": "Lien brisé: ../../quality/audits/CE_QUI_MANQUE_BBIA_DEC2025.md",
+        "line": 370
+      },
+      {
+        "file": "docs/community/README.md",
+        "message": "Lien brisé: GUIDE_CONTRIBUTEURS_COMPLET.md",
+        "line": 14
+      },
+      {
+        "file": "docs/dashboard/README.md",
+        "message": "Lien brisé: COMPARAISON_DASHBOARD_TESTEURS.md",
+        "line": 12
+      },
+      {
+        "file": "docs/development/api/CONTRATS_REST_WS.md",
+        "message": "Lien brisé: ../reference/INDEX_THEMATIQUE.md",
+        "line": 7
+      },
+      {
+        "file": "docs/development/api/CONTRATS_REST_WS.md",
+        "message": "Lien brisé: ../reference/project-status.md",
+        "line": 7
+      },
+      {
+        "file": "docs/development/api/CONTRATS_REST_WS.md",
+        "message": "Lien brisé: ../development/integration.md",
+        "line": 9
+      },
+      {
+        "file": "docs/development/api/CONTRATS_REST_WS.md",
+        "message": "Lien brisé: ../deployment/PIPELINE_CI.md",
+        "line": 9
+      },
+      {
+        "file": "docs/development/api/CONTRATS_REST_WS.md",
+        "message": "Lien brisé: ../reference/INDEX_THEMATIQUE.md",
+        "line": 155
+      },
+      {
+        "file": "docs/development/architecture/ARCHITECTURE.md",
+        "message": "Lien brisé: ../quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md",
+        "line": 37
+      },
+      {
+        "file": "docs/development/architecture/ARCHITECTURE_DETAILED.md",
+        "message": "Lien brisé: ../reference/INDEX_THEMATIQUE.md",
+        "line": 6
+      },
+      {
+        "file": "docs/development/architecture/ARCHITECTURE_DETAILED.md",
+        "message": "Lien brisé: ../reference/project-status.md",
+        "line": 6
+      },
+      {
+        "file": "docs/development/architecture/ARCHITECTURE_DETAILED.md",
+        "message": "Lien brisé: ../reference/INDEX_THEMATIQUE.md",
+        "line": 709
+      },
+      {
+        "file": "docs/development/architecture/ARCHITECTURE_OVERVIEW.md",
+        "message": "Lien brisé: ../reference/INDEX_THEMATIQUE.md",
+        "line": 6
+      },
+      {
+        "file": "docs/development/architecture/ARCHITECTURE_OVERVIEW.md",
+        "message": "Lien brisé: ../reference/project-status.md",
+        "line": 6
+      },
+      {
+        "file": "docs/development/architecture/ARCHITECTURE_OVERVIEW.md",
+        "message": "Lien brisé: ../reference/INDEX_THEMATIQUE.md",
+        "line": 547
+      },
+      {
+        "file": "docs/development/integration.md",
+        "message": "Lien brisé: ../dashboard/ROADMAP_DASHBOARD.md",
+        "line": 1199
+      },
+      {
+        "file": "docs/getting-started/NAVIGATION.md",
+        "message": "Lien brisé: ../quality/corrections/applied.md",
+        "line": 30
+      },
+      {
+        "file": "docs/getting-started/NAVIGATION.md",
+        "message": "Lien brisé: ../quality/validation/VALIDATION_FINALE_QUALITE_2025.md",
+        "line": 31
+      },
+      {
+        "file": "docs/getting-started/NAVIGATION.md",
+        "message": "Lien brisé: ../quality/performance/OPTIMISATIONS_EXPERT_REACHY_MINI.md",
+        "line": 75
+      },
+      {
+        "file": "docs/getting-started/NAVIGATION.md",
+        "message": "Lien brisé: ../quality/performance/RESUME_PERFORMANCE_CORRECTIONS_2025.md",
+        "line": 76
+      },
+      {
+        "file": "docs/getting-started/contributing.md",
+        "message": "Lien brisé: ../../quality/audits/ANALYSE_ISSUES_GITHUB.md",
+        "line": 403
+      },
+      {
+        "file": "docs/getting-started/contributing.md",
+        "message": "Lien brisé: ../../quality/audits/ANALYSE_ISSUES_GITHUB.md",
+        "line": 416
+      },
+      {
+        "file": "docs/guides/GUIDE_AVANCE.md",
+        "message": "Lien brisé: ../development/migration.md",
+        "line": 269
+      },
+      {
+        "file": "docs/guides/GUIDE_NLP_SMOLVLM.md",
+        "message": "Lien brisé: ../quality/audits/COMPARAISON_OFFICIELLE.md",
+        "line": 5
+      },
+      {
+        "file": "docs/hardware/GUIDE_INSTALLATION_MOTEURS_ETAPE_PAR_ETAPE.md",
+        "message": "Lien brisé: mailto:sales@pollen-robotics.com",
+        "line": 273
+      },
+      {
+        "file": "docs/observabilite/README.md",
+        "message": "Lien brisé: ../development/METRICS_COLLECTION.md",
+        "line": 12
+      },
+      {
+        "file": "docs/quality/README.md",
+        "message": "Lien brisé: validation/VALIDATION_FINALE_QUALITE_2025.md",
+        "line": 42
+      },
+      {
+        "file": "docs/quality/README.md",
+        "message": "Lien brisé: audits/RESUME_ETAT_ACTUEL_BBIA.md",
+        "line": 56
+      },
+      {
+        "file": "docs/quality/audits/README.md",
+        "message": "Lien brisé: COMPATIBILITE_REACHY_MINI_OFFICIEL.md",
+        "line": 18
+      },
+      {
+        "file": "docs/quality/audits/README.md",
+        "message": "Lien brisé: modules-non-prioritaires.md",
+        "line": 24
+      },
+      {
+        "file": "docs/quality/audits/README.md",
+        "message": "Lien brisé: coverage-details.md",
+        "line": 30
+      },
+      {
+        "file": "docs/quality/audits/README.md",
+        "message": "Lien brisé: unity-ar.md",
+        "line": 37
+      },
+      {
+        "file": "docs/quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md",
+        "message": "Lien brisé: ../guides/GUIDE_DEMARRAGE.md",
+        "line": 16
+      },
+      {
+        "file": "docs/quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md",
+        "message": "Lien brisé: ../audits/VERIFICATION_ANALYSE_COMPLETE_26NOV2025.md",
+        "line": 469
+      },
+      {
+        "file": "docs/quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md",
+        "message": "Lien brisé: ../../tests/REACHY_MINI_TESTS_STRUCTURE.md",
+        "line": 792
+      },
+      {
+        "file": "docs/reference/METRICS.md",
+        "message": "Lien brisé: ../development/METRICS_COLLECTION.md",
+        "line": 109
+      },
+      {
+        "file": "docs/unity/UNITY_BBIA_GUIDE.md",
+        "message": "Lien brisé: ../reference/summaries/final-summary.md",
+        "line": 191
+      },
+      {
+        "file": "metrics/metrics.md",
+        "message": "Lien brisé: data/metrics.json",
+        "line": 14
+      },
+      {
+        "file": "presentation/README_BRANDING.md",
+        "message": "Lien brisé: ../../assets/logos/bbia/README.md",
+        "line": 150
+      },
+      {
+        "file": "presentation/README_BRANDING.md",
+        "message": "Lien brisé: ../../docs/quality/audits/MIGRATION_LOGOS_BBIA_7DEC2025.md",
+        "line": 150
+      },
+      {
+        "file": "presentation/SUIVI_BRANDING.md",
+        "message": "Lien brisé: ../../assets/logos/bbia/README.md",
+        "line": 163
+      },
+      {
+        "file": "presentation/livrables/TEMPLATE_README_ASSET.md",
+        "message": "Lien brisé: logo_bbia_complet.png",
+        "line": 136
+      },
+      {
+        "file": "presentation/livrables/TEMPLATE_README_ASSET.md",
+        "message": "Lien brisé: ../livrables/v1.0/logo/exports/logo_bbia_complet.png",
+        "line": 176
+      },
+      {
+        "file": "tests/README.md",
+        "message": "Lien brisé: ../docs/quality/audits/AUDIT_COVERAGE_IMPORTS.md",
+        "line": 10
+      },
+      {
+        "file": "venv-vision-py310/lib/python3.10/site-packages/_sounddevice_data/portaudio-binaries/README.md",
+        "message": "Lien brisé: .github/workflows/build-libs.yml",
+        "line": 27
+      },
+      {
+        "file": "venv-voice/lib/python3.10/site-packages/_sounddevice_data/portaudio-binaries/README.md",
+        "message": "Lien brisé: .github/workflows/build-libs.yml",
+        "line": 27
+      },
+      {
+        "file": "venv-voice/lib/python3.10/site-packages/nltk-3.9.2.dist-info/licenses/README.md",
+        "message": "Lien brisé: CONTRIBUTING.md",
+        "line": 15
+      }
+    ]
+  }
+}

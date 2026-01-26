@@ -3,7 +3,7 @@
 > **⚠️ ATTENTION : Ce guide est destiné aux ASSISTANTS IA, pas aux utilisateurs !**  
 > **👤 Si vous êtes un utilisateur, commencez par :** [Guide de Démarrage](../guides/GUIDE_DEMARRAGE.md)
 
-> **Dernière mise à jour : 15 Décembre 2025  
+> **Dernière mise à jour** : 26 Janvier 2026  
 > **Version :** 1.4.0
 
 ## 📋 Vue d'ensemble
@@ -22,7 +22,7 @@ Ce guide est destiné aux **assistants IA** (Claude, GPT, Cursor AI, etc.) pour 
 ### ✅ Statut général
 
 - **Version :** 1.4.0
-- **Documentation :** **106 fichiers MD** dans `docs/` (après nettoyage complet)
+- **Documentation :** **107 fichiers MD** dans `docs/` (après nettoyage complet)
 - **Tests :** **1362 tests sélectionnés** (1418 collectés, 56 deselected)
 - **Coverage :** **68.86%** global
 - **Conformité SDK :** 100% validée

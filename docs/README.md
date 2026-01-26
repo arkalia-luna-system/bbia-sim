@@ -1,8 +1,8 @@
 # 📚 Documentation BBIA-SIM — Navigation Rapide
 
-**Dernière mise à jour :** 22 Décembre 2025  
+**Dernière mise à jour :** 26 Janvier 2026  
 **Version** : v1.4.0  
-**Statut Robot** : ✅ Reçu le 18 déc 2025, monté le 20 déc 2025, tests en cours
+**Statut Robot** : ✅ Reçu le 18 déc 2025, monté le 20 déc 2025, **5 moteurs reçus** (4x QC 2549 + 1x QC 2548) - Prêts pour installation
 
 > **Moteur cognitif Python pour robot Reachy Mini**
 > *Simulation • IA • SDK conforme*
@@ -130,4 +130,4 @@ La documentation a été réorganisée le **8 Décembre 2025** :
 
 **💡 Besoin d'aide ?** Consultez le [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) ou le [Troubleshooting](getting-started/troubleshooting.md)
 
-**Dernière mise à jour** : 8 Décembre 2025
+**Dernière mise à jour** : 26 Janvier 2026

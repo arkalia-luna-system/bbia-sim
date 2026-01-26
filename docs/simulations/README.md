@@ -22,5 +22,5 @@ Ce dossier contient les guides pour créer et utiliser des simulations avec MuJo
 
 ---
 
-**Dernière mise à jour** : 8 Décembre 2025
+**Dernière mise à jour** : 26 Janvier 2026
 

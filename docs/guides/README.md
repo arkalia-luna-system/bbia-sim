@@ -30,5 +30,5 @@ Ce dossier contient tous les guides pratiques pour utiliser BBIA-SIM.
 
 ---
 
-**Dernière mise à jour** : 8 Décembre 2025
+**Dernière mise à jour** : 26 Janvier 2026
 

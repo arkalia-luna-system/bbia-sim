@@ -1,6 +1,6 @@
 # 📘 Guide d'Intégration BBIA-SIM - Phase 3
 
-**Dernière mise à jour : 15 Décembre 2025  
+**Dernière mise à jour** : 26 Janvier 2026  
 **Version** : 1.4.0
 
 > **Compatibilité Python** : Python 3.11+ requis. Voir [`docs/getting-started/INSTALLATION.md`](../getting-started/INSTALLATION.md) pour les détails d'installation.
@@ -1206,7 +1206,7 @@ Vous avez intégré BBIA-SIM dans votre projet. Écosystème BBIA-SIM prêt à l
 
 ---
 
-**Dernière mise à jour** : 8 Décembre 2025  
+**Dernière mise à jour** : 26 Janvier 2026  
 **Note** : Sections apps mobiles et PWA ajoutées
 
 ---

@@ -15,7 +15,7 @@
 | **Dashboard** | `python src/bbia_sim/dashboard_advanced.py` | Instant | [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) |
 | **Premier robot** | Voir guide | 5 min | [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) ⭐ |
 
-**Configuration :** Python 3.11+ requis • **Version** : v1.4.0 • **Dernière mise à jour : 15 Décembre 2025
+**Configuration :** Python 3.11+ requis • **Version** : v1.4.0 • **Dernière mise à jour** : 26 Janvier 2026
 
 **Mise à jour 8 Décembre 2025** :
 - 44 exemples disponibles
@@ -97,7 +97,7 @@
 ### 🔧 Développement
 
 - [Guide d'Intégration](development/integration.md) — Intégrer BBIA-SIM
-- [Guide de Migration](development/migration.md) — Migration Sim → Robot
+- [Switch Sim → Robot](development/switch-sim-robot.md) — Basculer entre simulation et robot réel
 - [Guide de Test](development/testing.md) — Tests et qualité
 - [Setup Guides](development/setup/) — Configuration (environments, deepface, webcam, etc.)
 - [API REST/WS](development/api/CONTRATS_REST_WS.md) — Contrats API
