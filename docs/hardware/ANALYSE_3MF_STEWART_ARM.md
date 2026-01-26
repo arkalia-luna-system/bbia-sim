@@ -26,11 +26,17 @@
 
 1. **Périmètres (wall_loops)** : **2 → 5-6**
    - Impact : **+150% de résistance** aux forces latérales
-   - Action : Dans BambuStudio, aller dans "Quality" → "Wall Loops" → 5 ou 6
+   - **Action en français** :
+     - Menu : **"Qualité"** (ou "Quality" si interface en anglais)
+     - Paramètre : **"Boucles de paroi"** (Wall Loops)
+     - Modifier : **2** → **5** ou **6**
 
 2. **Bottom layers** : **3 → 5-6**
    - Impact : Meilleure résistance à la base
-   - Action : "Quality" → "Bottom Shell Layers" → 5
+   - **Action en français** :
+     - Menu : **"Qualité"** (ou "Quality")
+     - Paramètre : **"Couches de coque inférieure"** (Bottom Shell Layers)
+     - Modifier : **3** → **5** ou **6**
 
 ### ✅ **Déjà Optimal**
 
@@ -74,11 +80,16 @@ Pour **résistance maximale** avec PLA :
 
 **Le fichier .3mf est bien configuré** mais il faut **augmenter les périmètres** de 2 à 5-6 pour une résistance maximale.
 
-**Action immédiate** :
+**Action immédiate** (interface française) :
 1. Ouvrir le fichier .3mf dans BambuStudio
-2. Modifier "Wall Loops" : 2 → **5**
-3. Modifier "Bottom Shell Layers" : 3 → **5**
-4. Vérifier que le support n'est pas nécessaire
-5. Ré-exporter ou imprimer directement
+2. Aller dans l'onglet **"Qualité"** (ou "Quality")
+3. Chercher **"Boucles de paroi"** (Wall Loops) → Modifier **2** → **5**
+4. Chercher **"Couches de coque inférieure"** (Bottom Shell Layers) → Modifier **3** → **5**
+5. Vérifier que le support n'est pas nécessaire (onglet "Support")
+6. Ré-exporter ou imprimer directement
+
+**💡 Astuce** : Si tu ne trouves pas les paramètres, utilise la **barre de recherche** en haut de BambuStudio et tape :
+- "boucles" ou "wall loops"
+- "coque inférieure" ou "bottom shell"
 
 Avec ces modifications, le bras sera **beaucoup plus résistant** ! 💪
