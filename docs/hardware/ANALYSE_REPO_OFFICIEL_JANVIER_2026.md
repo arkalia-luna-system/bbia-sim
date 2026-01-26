@@ -282,10 +282,10 @@
 ### **Nouvelles fonctionnalités v1.2.12 → v1.2.13**
 
 **Calibration caméra** (v1.2.13) :
-- Nouveaux outils de calibration caméra avec Charuco board
-- Scripts : `acquire.py`, `calibrate.py`, `scale_calibration.py`, `visualize_undistorted.py`, `analyze_crop.py`
+- ✅ **Intégré dans BBIA** : Outils de calibration caméra avec Charuco board
+- Scripts disponibles : `acquire.py` (acquisition d'images), `calibrate.py`, `scale_calibration.py`, `visualize_undistorted.py`, `analyze_crop.py`
 - Support résolutions multiples avec crop/zoom (facteurs de crop documentés)
-- Documentation complète dans `src/reachy_mini/tools/camera_calibration/README.md`
+- Documentation complète dans `src/bbia_sim/tools/camera_calibration/README.md`
 - Amélioration intrinsics caméra avec `scale_intrinsics()` pour résolutions multiples
 
 **Améliorations WebRTC** (v1.2.13) :
@@ -296,7 +296,7 @@
 **Documentation** (v1.2.13) :
 - Migration documentation vers Hugging Face (https://huggingface.co/docs/reachy_mini/)
 - Documentation locale simplifiée dans `docs/source/`
-- Documentation reflash Pi depuis macOS ajoutée
+- ✅ **Intégré dans BBIA** : Documentation reflash Pi depuis macOS dans `docs/hardware/REFLASH_PI_MACOS.md`
 
 **Autres améliorations v1.2.13** :
 - Fix: Apps not showing as Installed quand nom entry point diffère du nom Hugging Face space
