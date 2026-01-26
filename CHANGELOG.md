@@ -7,6 +7,26 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+### 🎯 **Intégration SDK v1.2.13** (26 Janvier 2026)
+
+#### **Outils de calibration caméra** ✅
+- ✅ **Scripts complets** : `acquire.py`, `calibrate.py`, `scale_calibration.py`, `visualize_undistorted.py`, `analyze_crop.py`
+- ✅ **Support résolutions multiples** : 640x480, 1280x720, 1920x1080 avec crop/zoom
+- ✅ **Documentation** : `src/bbia_sim/tools/camera_calibration/README.md`
+
+#### **Améliorations WebRTC** ✅
+- ✅ **Gestion résolution caméra améliorée** : Support changement résolution dynamique
+- ✅ **Report gstreamer latency** : Mesure et reporting latence streaming vidéo
+
+#### **Documentation** ✅
+- ✅ **Migration Hugging Face** : Documentation mise à jour (https://huggingface.co/docs/reachy_mini/)
+- ✅ **Documentation reflash Pi macOS** : Guide complet `docs/hardware/REFLASH_PI_MACOS.md`
+
+#### **Corrections** ✅
+- ✅ **Fix apps installation** : Correction détection apps (nom entry point vs Hugging Face space name)
+- ✅ **Amélioration messages d'erreur** : Messages plus détaillés dans modules concernés
+- ✅ **Fix MyPy CI** : Correction erreurs typage scripts calibration
+
 ### 📦 **Réception Moteurs Supplémentaires** (26 Janvier 2026)
 
 - ✅ **2 moteurs supplémentaires reçus** :
