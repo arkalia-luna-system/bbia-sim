@@ -34,7 +34,7 @@
 
 ### 📦 Réception et Montage Robot Physique
 
-**✅ Robot reçu** : 126 Janvier 2026  
+**✅ Robot reçu** : 18 Décembre 2025  
 **✅ Montage effectué** : 20 Décembre 2025 (durée : 4 heures)  
 **✅ Premiers tests** : 26 Janvier 2026  
 **✅ IP Robot** : [IP_ROBOT] (WiFi configuré)

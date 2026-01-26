@@ -9,7 +9,7 @@
 
 ## Développeur robot (Sim/Physique)
 
-- Migration Sim → Robot: `docs/development/migration.md`
+- Switch Sim → Robot: `docs/development/switch-sim-robot.md`
 - Conformité SDK: `docs/quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md`
 - Sécurité robot (DO/DON'T): `docs/hardware/SECURITE_ROBOT.md`
 
@@ -17,7 +17,7 @@
 
 - État par axe (référence): `docs/reference/project-status.md`
 - Observabilité (logs JSON, /metrics, liveness/readiness): `docs/observabilite/OBSERVABILITE.md`
-- Performance (analyses, optimisations): `docs/quality/performance/ANALYSE_PERFORMANCE_PROBLEMES_2025.md`, `docs/quality/performance/OPTIMISATIONS_EXPERT_REACHY_MINI.md`, `docs/quality/performance/RESUME_PERFORMANCE_CORRECTIONS_2025.md`
+- Performance (analyses, optimisations): `docs/quality/performance/OPTIMISATIONS_PERFORMANCE_DEC2025.md`, `docs/quality/performance/RESUME_PERFORMANCE_CORRECTIONS_2025.md`
 
 ## API / SDK / Front
 
@@ -35,7 +35,7 @@
 - Audit IA modules pré-entraînés: `docs/ai/modules.md`
 - Intelligence LLM: `docs/ai/llm.md`
 - Analyse voix: `docs/ai/voice.md`
-- Améliorations IA: `docs/quality/improvements/_archived/intelligence-bbia.md`, `docs/quality/improvements/_archived/intelligence-context.md`
+- Améliorations IA: Voir `docs/quality/AUDIT_CONSOLIDE_DECEMBRE_2025.md` pour l'état actuel
 
 ## Dashboard / UX
 
