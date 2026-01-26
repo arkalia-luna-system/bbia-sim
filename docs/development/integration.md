@@ -1214,4 +1214,4 @@ Vous avez intégré BBIA-SIM dans votre projet. Écosystème BBIA-SIM prêt à l
 ## 🎯 Navigation
 
 **Retour à** : [README Documentation](../README.md)  
-**Voir aussi** : [Guide Technique](../guides/GUIDE_AVANCE.md) • [Architecture](../development/architecture/ARCHITECTURE_OVERVIEW.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md) • [Roadmap Dashboard](../dashboard/ROADMAP_DASHBOARD.md)
+**Voir aussi** : [Guide Technique](../guides/GUIDE_AVANCE.md) • [Architecture](../development/architecture/ARCHITECTURE_OVERVIEW.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md) • [Dashboard](../dashboard/README.md)
