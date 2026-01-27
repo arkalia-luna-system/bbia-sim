@@ -1,6 +1,6 @@
 # 🌐 Guide Hugging Face Spaces - BBIA-SIM
 
-**Dernière mise à jour : 15 Décembre 2025  
+**Dernière mise à jour** : 26 Janvier 2026  
 **Version** : 1.4.0  
 **Objectif** : Guide pour créer et publier des applications BBIA-SIM sur Hugging Face Spaces
 
@@ -322,5 +322,5 @@ Si vous avez des questions :
 
 ---
 
-**Dernière mise à jour** : 8 Décembre 2025
+**Dernière mise à jour** : 26 Janvier 2026
 

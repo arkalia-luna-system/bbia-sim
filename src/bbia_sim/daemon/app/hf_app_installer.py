@@ -77,8 +77,16 @@ class HFAppInstaller:
                 # Nettoyer en cas d'erreur
                 if app_path.exists():
                     shutil.rmtree(app_path, ignore_errors=True)
+                error_msg = result.stderr or result.stdout or "Erreur inconnue"
+                logger.error(
+                    "❌ Échec clonage app %s depuis %s: %s",
+                    app_name,
+                    hf_space_id,
+                    error_msg,
+                )
                 raise RuntimeError(
-                    f"Échec clonage: {result.stderr or result.stdout}",
+                    f"Échec clonage app '{app_name}' depuis Hugging Face Space '{hf_space_id}': {error_msg}. "
+                    f"Vérifiez que le Space existe et que vous avez les permissions nécessaires."
                 )
 
             logger.info("✅ App %s clonée avec succès", app_name)
@@ -99,8 +107,18 @@ class HFAppInstaller:
             # Nettoyer en cas d'erreur
             if app_path.exists():
                 shutil.rmtree(app_path, ignore_errors=True)
-            logger.exception("Erreur installation app %s: %s", app_name, e)
-            raise RuntimeError(f"Échec installation: {e}") from e
+            logger.exception(
+                "❌ Erreur installation app %s (HF Space: %s): %s",
+                app_name,
+                hf_space_id,
+                e,
+            )
+            error_type = type(e).__name__
+            raise RuntimeError(
+                f"Échec installation app '{app_name}' depuis Hugging Face Space '{hf_space_id}': "
+                f"{error_type}: {str(e)}. "
+                f"Vérifiez votre connexion réseau, les permissions du Space, et que le Space existe bien."
+            ) from e
 
     async def _install_dependencies(self, requirements_file: Path) -> None:
         """Installe les dépendances depuis requirements.txt.
@@ -193,11 +211,53 @@ class HFAppInstaller:
     def is_installed(self, app_name: str) -> bool:
         """Vérifie si une app est installée.
 
+        FIX v1.2.13: Vérifie par nom space ET par nom entry point.
+        Certaines apps peuvent avoir un nom d'entry point différent du nom du space.
+
         Args:
-            app_name: Nom de l'app
+            app_name: Nom de l'app (peut être "username/space-name" ou juste "space-name")
 
         Returns:
             True si installée, False sinon
         """
+        # Essayer d'abord avec le nom complet
         app_path = self.apps_dir / app_name
-        return app_path.exists() and app_path.is_dir()
+        if app_path.exists() and app_path.is_dir():
+            return True
+
+        # Essayer avec juste le nom du space (sans username/)
+        if "/" in app_name:
+            space_name = app_name.split("/")[-1]
+            app_path = self.apps_dir / space_name
+            if app_path.exists() and app_path.is_dir():
+                return True
+
+        # Vérifier aussi par entry point si un setup.py ou pyproject.toml existe
+        for installed_dir in self.apps_dir.iterdir():
+            if not installed_dir.is_dir():
+                continue
+
+            # Vérifier si le nom correspond à un entry point dans setup.py
+            setup_py = installed_dir / "setup.py"
+            if setup_py.exists():
+                try:
+                    with open(setup_py) as f:
+                        content = f.read()
+                        # Chercher le nom de l'app dans setup.py
+                        if (
+                            f'name="{app_name}"' in content
+                            or f"name='{app_name}'" in content
+                        ):
+                            return True
+                        # Chercher aussi par space name
+                        if "/" in app_name:
+                            space_name = app_name.split("/")[-1]
+                            if (
+                                f'name="{space_name}"' in content
+                                or f"name='{space_name}'" in content
+                            ):
+                                return True
+                except Exception:
+                    pass
+
+        return False

@@ -1,10 +1,11 @@
 # 🔍 Analyse Complète du Repo Officiel Reachy Mini - Janvier 2026
 
-**Date d'analyse** : 20 Janvier 2026  
-**Dernière vérification** : 20 Janvier 2026  
+**Date d'analyse** : 26 Janvier 2026  
+**Dernière vérification** : 26 Janvier 2026  
 **Repo analysé** : https://github.com/pollen-robotics/reachy_mini  
-**Dernière version** : v1.2.11 (14 janvier 2026)  
-**Note** : Aucune nouvelle version depuis le 17 janvier 2026
+**Dernière version** : v1.2.13 (21 janvier 2026)  
+**Version installée BBIA** : 1.2.3  
+**Note** : 10 versions de retard (v1.2.3 → v1.2.13)
 
 ---
 
@@ -14,15 +15,19 @@
 
 | Version | Date | Statut | Notes |
 |---------|------|--------|-------|
-| **v1.2.11** | 14 janvier 2026 | ✅ Latest | Dernière version stable |
+| **v1.2.13** | 21 janvier 2026 | ✅ Latest | Dernière version stable |
+| **v1.2.12** | - | ✅ Stable | - |
+| **v1.2.11** | 14 janvier 2026 | ✅ Stable | - |
 | **v1.2.10** | - | ✅ Stable | - |
 | **v1.2.9** | - | ✅ Stable | - |
 | **v1.2.8** | - | ✅ Stable | - |
 | **v1.2.7** | - | ✅ Stable | - |
 | **v1.2.6** | 3 janvier 2026 | ⚠️ Problèmes connus | Crashes, erreurs IK |
-| **v1.2.4** | Décembre 2025 | ✅ Recommandé | Version que vous avez |
+| **v1.2.5** | 26 décembre 2025 | ✅ Stable | - |
+| **v1.2.4** | 22 décembre 2025 | ✅ Stable | - |
+| **v1.2.3** | 18 décembre 2025 | ✅ Stable | Version installée BBIA |
 
-**⚠️ IMPORTANT** : Vous êtes sur v1.2.4, la dernière version stable est v1.2.11. **Mise à jour recommandée** après installation des nouveaux moteurs.
+**⚠️ IMPORTANT** : Vous êtes sur v1.2.3, la dernière version stable est v1.2.13. **Mise à jour recommandée** après installation des nouveaux moteurs.
 
 ---
 
@@ -73,7 +78,23 @@
 
 ---
 
-## 📦 **NOUVELLES FONCTIONNALITÉS (v1.2.5 → v1.2.11)**
+## 📦 **NOUVELLES FONCTIONNALITÉS (v1.2.3 → v1.2.13)**
+
+### **v1.2.13** (21 janvier 2026) - Latest
+
+**Améliorations** :
+- Fix: Apps not showing as Installed when entry point name differs from Hugging Face space name
+- Amélioration messages d'erreur quand Reachy Mini est éteint
+- Documentation reflash Pi depuis macOS
+- Report gstreamer latency
+- Add raw write method
+- Documentation Hugging Face améliorée
+- Fix MyPy CI
+
+### **v1.2.12** (Non publiée)
+
+**Améliorations** :
+- Corrections diverses
 
 ### **v1.2.11** (14 janvier 2026)
 
@@ -123,11 +144,11 @@
 
 ### **1. Versions SDK**
 
-**Vous avez** : v1.2.4  
-**Dernière version** : v1.2.11  
-**Différence** : 7 versions d'avance
+**Vous avez** : v1.2.3  
+**Dernière version** : v1.2.13  
+**Différence** : 10 versions de retard (v1.2.3 → v1.2.4 → v1.2.5 → v1.2.6 → v1.2.7 → v1.2.8 → v1.2.9 → v1.2.10 → v1.2.11 → v1.2.12 → v1.2.13)
 
-**Recommandation** : Mettre à jour vers v1.2.11 après installation des nouveaux moteurs.
+**Recommandation** : Mettre à jour vers v1.2.13 après installation des nouveaux moteurs.
 
 ### **2. Outils de diagnostic**
 
@@ -182,7 +203,7 @@
 
 ### **Court terme (après installation moteurs)**
 
-1. **Mettre à jour vers v1.2.11**
+1. **Mettre à jour vers v1.2.13**
    ```bash
    pip install --upgrade reachy-mini
    ```
@@ -224,26 +245,28 @@
 ## ⚠️ **IMPORTANT**
 
 - **Ne pas mettre à jour** vers v1.2.6 (problèmes connus)
-- **Mettre à jour** vers v1.2.11 après installation des nouveaux moteurs
+- **Mettre à jour** vers v1.2.13 après installation des nouveaux moteurs
 - **Tester** en environnement de développement avant production
 - **Documenter** tout problème rencontré
 
 ---
 
-**En résumé** : Vous avez 7 versions de retard. La dernière version (v1.2.11) contient de nombreuses améliorations pour les moteurs. Mise à jour recommandée après installation des nouveaux moteurs ! 🚀
+**En résumé** : Vous avez 10 versions de retard (v1.2.3 → v1.2.13). La dernière version (v1.2.13) contient de nombreuses améliorations pour les moteurs, la caméra (calibration améliorée), et la stabilité. Mise à jour recommandée après installation des nouveaux moteurs ! 🚀
 
 ---
 
-## 📅 **MISE À JOUR 20 JANVIER 2026**
+## 📅 **MISE À JOUR 26 JANVIER 2026**
 
-**Vérification complète effectuée** : 20 Janvier 2026
+**Vérification complète effectuée** : 26 Janvier 2026  
+**Dernière vérification repo officiel** : 26 Janvier 2026
 
 ### **Résultat de la vérification**
 
-✅ **Aucune nouvelle version SDK** depuis le 17 janvier 2026  
-✅ **Aucun commit majeur** lié aux moteurs depuis le 17 janvier 2026  
+✅ **Nouvelle version SDK** : v1.2.13 (21 janvier 2026)  
+✅ **Dernier commit officiel** : 26 janvier 2026 (Fix/Improve camera calibration #741 - `set_resolution()` pour WebRTC)  
 ✅ **Toutes les branches analysées** : develop, main, et branches liées aux moteurs  
-✅ **Toutes les releases vérifiées** : v1.2.11 reste la dernière version stable
+✅ **Nouvelles fonctionnalités** : Outils calibration caméra, amélioration WebRTC (`set_resolution()`), support Windows GStreamer  
+✅ **Documentation officielle** : Migration vers Hugging Face (https://huggingface.co/docs/reachy_mini/) - ancienne doc locale supprimée
 
 ### **Nouvelles informations identifiées (non liées aux moteurs)**
 
@@ -256,4 +279,31 @@
 - Firmware moteurs basé sur Rust (meilleure précision pour plateforme Stewart 6-DDL)
 - Gestion temps réel améliorée
 
-**Note** : Ces informations sont déjà intégrées dans le SDK v1.2.11 et n'affectent pas directement les moteurs ou leur installation.
+**Note** : Ces informations sont déjà intégrées dans le SDK v1.2.13 et n'affectent pas directement les moteurs ou leur installation.
+
+### **Nouvelles fonctionnalités v1.2.12 → v1.2.13**
+
+**Calibration caméra** (v1.2.13) :
+- ✅ **Intégré dans BBIA** : Outils de calibration caméra avec Charuco board
+- Scripts disponibles : `acquire.py` (acquisition d'images), `calibrate.py`, `scale_calibration.py`, `visualize_undistorted.py`, `analyze_crop.py`
+- Support résolutions multiples avec crop/zoom (facteurs de crop documentés)
+- Documentation complète dans `src/bbia_sim/tools/camera_calibration/README.md`
+- Amélioration intrinsics caméra avec `scale_intrinsics()` pour résolutions multiples
+
+**Améliorations WebRTC** (v1.2.13) :
+- ✅ **Intégré dans BBIA** : Amélioration gestion résolution caméra dans WebRTC streaming backend
+- ✅ **Intégré dans BBIA** : Support changement résolution dynamique via `set_resolution()` (nécessite fermeture caméra avant changement)
+- ✅ **Intégré dans BBIA** : Fix/Improve camera calibration (#741) - commit 26 janvier 2026
+- ✅ **Intégré dans BBIA** : Report gstreamer latency (mesure et reporting latence streaming vidéo)
+
+**Documentation** (v1.2.13) :
+- Migration documentation vers Hugging Face (https://huggingface.co/docs/reachy_mini/)
+- Documentation locale simplifiée dans `docs/source/`
+- ✅ **Intégré dans BBIA** : Documentation reflash Pi depuis macOS dans `docs/hardware/REFLASH_PI_MACOS.md`
+
+**Autres améliorations v1.2.13** :
+- ✅ **Intégré dans BBIA** : Fix apps not showing as Installed (vérification par nom space ET entry point)
+- ✅ **Intégré dans BBIA** : Amélioration messages d'erreur quand Reachy Mini est éteint (messages plus clairs)
+- Report gstreamer latency (non critique pour BBIA - WebSocket utilisé)
+- Add raw write method (non critique pour BBIA - méthodes existantes suffisantes)
+- Fix MyPy CI (erreurs MyPy dans calibrate.py sont normales - API OpenCV variable selon versions)

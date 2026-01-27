@@ -27,8 +27,7 @@
 
 1. **[Guide de Test](../development/testing.md)** — Guide complet
 2. **[Index Audits](../quality/INDEX_AUDITS.md)** — Tous les audits
-3. **[Corrections Appliquées](../quality/corrections/applied.md)** — Corrections
-4. **[Validation Qualité](../quality/validation/VALIDATION_FINALE_QUALITE_2025.md)** — Rapports
+3. **[Audit Consolidé](../quality/AUDIT_CONSOLIDE_DECEMBRE_2025.md)** — Rapports consolidés
 
 ---
 
@@ -72,7 +71,7 @@ docs/
 
 **Performance**
 
-- [Optimisations Reachy Mini](../quality/performance/OPTIMISATIONS_EXPERT_REACHY_MINI.md)
+- [Optimisations Performance](../quality/performance/OPTIMISATIONS_PERFORMANCE_DEC2025.md)
 - [Résumé Performance](../quality/performance/RESUME_PERFORMANCE_CORRECTIONS_2025.md)
 
 ---
@@ -85,4 +84,4 @@ docs/
 
 ---
 
-**Dernière mise à jour : 15 Décembre 2025
+**Dernière mise à jour** : 26 Janvier 2026

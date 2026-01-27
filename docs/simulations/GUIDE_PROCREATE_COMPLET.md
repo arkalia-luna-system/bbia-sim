@@ -1,6 +1,6 @@
 # 🎨 Guide Complet - Créer Scène MuJoCo avec Procreate
 
-**Dernière mise à jour : 22 Décembre 2025**
+**Dernière mise à jour** : 26 Janvier 2026**
 
 > **Guide complet** pour créer des textures de pièce dans Procreate, optimisées pour MuJoCo
 
@@ -716,5 +716,5 @@ python examples/view_scene_piece.py src/bbia_sim/sim/scenes/ma_scene_procreate.x
 
 ---
 
-*Guide Procreate Complet - BBIA-SIM - 22 Décembre 2025*
+*Guide Procreate Complet - BBIA-SIM - 26 Janvier 2026*
 

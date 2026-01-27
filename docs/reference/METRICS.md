@@ -2,7 +2,7 @@
 
 > **Source de vérité centralisée pour toutes les métriques du projet**
 
-**Dernière mise à jour** : 8 Décembre 2025
+**Dernière mise à jour** : 26 Janvier 2026
 **Source** : [arkalia-metrics-collector](https://github.com/arkalia-luna-system/arkalia-metrics-collector) + CI/CD GitHub Actions + Codecov
 
 ---
@@ -97,7 +97,7 @@ Voir `docs/observabilite/OBSERVABILITE.md` pour plus de détails.
 ## 🔄 Version
 
 - **Version actuelle** : 1.4.0
-- **Dernière mise à jour : 15 Décembre 2025
+- **Dernière mise à jour** : 26 Janvier 2026
 
 ---
 
@@ -106,7 +106,7 @@ Voir `docs/observabilite/OBSERVABILITE.md` pour plus de détails.
 - Ces métriques sont mises à jour automatiquement depuis la CI/CD
 - Pour les métriques détaillées par module, voir les rapports de coverage HTML
 - Les tests de conformité SDK sont validés à chaque commit
-- **Guide d'utilisation** : Voir [METRICS_COLLECTION.md](../development/METRICS_COLLECTION.md) pour plus de détails
+- **Guide d'utilisation** : Voir ce document pour les détails complets
 
 ---
 

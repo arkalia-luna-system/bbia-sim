@@ -1,6 +1,6 @@
 # 🤖 BBIA - Moteur Cognitif pour Robot Reachy Mini
 
-**Dernière mise à jour : 15 Décembre 2025
+**Dernière mise à jour** : 26 Janvier 2026
 
 ## 📋 Résumé exécutif
 
@@ -252,6 +252,6 @@ python -m pytest tests/ -m "not e2e" -v
 **Voir aussi** : [Index Thématique](../reference/INDEX_THEMATIQUE.md)
 
 **Version** : 1.4.0
-**Dernière mise à jour : 15 Décembre 2025
+**Dernière mise à jour** : 26 Janvier 2026
 **Statut** : Production Ready • **Exploitation des capacités principales** ✅
 **Licence** : MIT

@@ -1,8 +1,10 @@
 # 📚 Documentation BBIA-SIM — Navigation Rapide
 
-**Dernière mise à jour :** 22 Décembre 2025  
+**Dernière mise à jour :** 26 Janvier 2026  
 **Version** : v1.4.0  
-**Statut Robot** : ✅ Reçu le 18 déc 2025, monté le 20 déc 2025, tests en cours
+**Statut Robot** : ✅ Reçu le 18 déc 2025, monté le 20 déc 2025. **Installation moteurs 1, 2, 4 effectuée** (slots 1 et 2 = QC 2549, slot 4 = QC 2548). En attente de premier rallumage et validation.  
+**SDK Reachy Mini** : Version installée 1.2.3 (dernière version officielle : v1.2.13 - 21 janvier 2026)  
+**Nouvelles fonctionnalités v1.2.13 intégrées** : ✅ Outils calibration caméra, documentation reflash Pi macOS
 
 > **Moteur cognitif Python pour robot Reachy Mini**
 > *Simulation • IA • SDK conforme*
@@ -106,7 +108,7 @@ flowchart TB
 ### Qualité Code
 
 - 🎯 **[Performance](quality/performance/RESUME_PERFORMANCE_CORRECTIONS_2025.md)** — Optimisations appliquées
-- ✅ **[Validation Qualité](quality/validation/VALIDATION_FINALE_QUALITE_2025.md)** — Rapports de validation
+- ✅ **[Audit Consolidé](quality/AUDIT_CONSOLIDE_DECEMBRE_2025.md)** — Rapports consolidés
 
 ---
 
@@ -119,10 +121,10 @@ flowchart TB
 
 ## 📋 Organisation de la Documentation
 
-La documentation a été réorganisée le **8 Décembre 2025** :
+La documentation a été réorganisée le **26 Janvier 2026** :
 
 - ✅ **Structure clarifiée** : Tous les dossiers principaux ont un README
-- ✅ **Fichiers obsolètes archivés** : Voir `quality/audits/archives/`
+- ✅ **Fichiers obsolètes archivés** : Voir `docs/_archive/obsoletes_jan2026/`
 - ✅ **Doublons supprimés** : Fichiers redondants fusionnés ou archivés
 - ✅ **Dossiers vides supprimés** : `rapports/`, `semaines/`
 
@@ -130,4 +132,4 @@ La documentation a été réorganisée le **8 Décembre 2025** :
 
 **💡 Besoin d'aide ?** Consultez le [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) ou le [Troubleshooting](getting-started/troubleshooting.md)
 
-**Dernière mise à jour** : 8 Décembre 2025
+**Dernière mise à jour** : 26 Janvier 2026

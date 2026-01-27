@@ -1,6 +1,6 @@
 # Documentation Intelligence Artificielle BBIA-SIM
 
-**Dernière mise à jour : 15 Décembre 2025  
+**Dernière mise à jour** : 26 Janvier 2026  
 **Version** : v1.4.0
 
 ---
@@ -100,5 +100,5 @@ Ce dossier contient la documentation complète des modules d'intelligence artifi
 
 ---
 
-**Dernière mise à jour** : 8 Décembre 2025
+**Dernière mise à jour** : 26 Janvier 2026
 

@@ -13,8 +13,6 @@ Ce dossier contient les guides pour créer et utiliser des simulations avec MuJo
 - **`MUJOCO_SIMULATION_GUIDE.md`** - Guide complet simulation MuJoCo
 - **`SIMULATION_BBIA_COMPLETE.md`** - Guide simulation BBIA complète
 
-### 🎨 Couleurs
-- **`CODES_COULEUR_REACHY_MINI.md`** - Codes couleur Reachy Mini
 
 ## 📚 Documentation Associée
 
@@ -24,5 +22,5 @@ Ce dossier contient les guides pour créer et utiliser des simulations avec MuJo
 
 ---
 
-**Dernière mise à jour** : 8 Décembre 2025
+**Dernière mise à jour** : 26 Janvier 2026
 

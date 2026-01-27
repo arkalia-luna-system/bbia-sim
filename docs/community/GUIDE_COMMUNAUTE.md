@@ -1,6 +1,6 @@
 # 🌐 Guide Communauté BBIA-SIM
 
-**Dernière mise à jour : 15 Décembre 2025  
+**Dernière mise à jour** : 26 Janvier 2026  
 **Objectif** : Visibilité et engagement communautaire pour BBIA-SIM
 
 ---
@@ -346,8 +346,8 @@ Good for learning advanced Python!
 
 ---
 
-**Dernière mise à jour : 15 Décembre 2025  
-**Dernière mise à jour** : 8 Décembre 2025
+**Dernière mise à jour** : 26 Janvier 2026  
+**Dernière mise à jour** : 26 Janvier 2026
 
 ---
 
@@ -355,7 +355,7 @@ Good for learning advanced Python!
 
 ### Pour Contribuer
 
-- **[Guide Contributeurs Complet](GUIDE_CONTRIBUTEURS_COMPLET.md)** : Guide détaillé pour contribuer
+- **[Guide Contributeurs](CONTRIBUTION_GUIDE.md)** : Guide détaillé pour contribuer
 - **[Guide Contribution](CONTRIBUTION_GUIDE.md)** : Processus de contribution
 - **[Code de Conduite](../../CODE_OF_CONDUCT.md)** : Standards de comportement
 

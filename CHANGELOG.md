@@ -7,6 +7,35 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+### 🎯 **Intégration SDK v1.2.13** (26 Janvier 2026)
+
+#### **Outils de calibration caméra** ✅
+- ✅ **Scripts complets** : `acquire.py`, `calibrate.py`, `scale_calibration.py`, `visualize_undistorted.py`, `analyze_crop.py`
+- ✅ **Support résolutions multiples** : 640x480, 1280x720, 1920x1080 avec crop/zoom
+- ✅ **Documentation** : `src/bbia_sim/tools/camera_calibration/README.md`
+
+#### **Améliorations WebRTC** ✅
+- ✅ **Gestion résolution caméra améliorée** : Support changement résolution dynamique via `set_resolution()`
+- ✅ **Report gstreamer latency** : Mesure et reporting latence streaming vidéo (compatible SDK v1.2.13)
+
+#### **Documentation** ✅
+- ✅ **Migration Hugging Face** : Documentation mise à jour (https://huggingface.co/docs/reachy_mini/)
+- ✅ **Documentation reflash Pi macOS** : Guide complet `docs/hardware/REFLASH_PI_MACOS.md`
+
+#### **Corrections** ✅
+- ✅ **Fix apps installation** : Correction détection apps (nom entry point vs Hugging Face space name)
+- ✅ **Amélioration messages d'erreur** : Messages plus détaillés dans modules concernés
+- ✅ **Fix MyPy CI** : Correction erreurs typage scripts calibration
+
+### 📦 **Réception Moteurs Supplémentaires** (26 Janvier 2026)
+
+- ✅ **2 moteurs supplémentaires reçus** :
+  - 1x **QC 2549** (4ème moteur QC 2549)
+  - 1x **QC 2548** (nouveau batch)
+- ✅ **Total moteurs reçus** : **5 moteurs** (4x QC 2549 + 1x QC 2548)
+- ✅ **Statut** : Tous les moteurs nécessaires reçus, prêts pour installation
+- 📝 **Documentation mise à jour** : Tous les fichiers MD hardware mis à jour
+
 ### 🔒 **Audit Sécurité et Qualité** (21 Janvier 2026)
 
 - ✅ **53 vulnérabilités dépendances corrigées** :

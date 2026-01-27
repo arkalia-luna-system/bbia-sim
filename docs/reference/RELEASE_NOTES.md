@@ -1,6 +1,50 @@
 # Notes de version - BBIA-SIM
 
-**Dernière mise à jour :** 21 Janvier 2026
+**Dernière mise à jour :** 26 Janvier 2026
+
+## Version 1.4.1 - Intégration SDK v1.2.13 (26 Janvier 2026)
+
+### 🎯 Résumé
+
+Intégration complète des nouvelles fonctionnalités du SDK Reachy Mini v1.2.13 : outils de calibration caméra, améliorations WebRTC, documentation reflash Pi depuis macOS, et corrections diverses.
+
+### 🚀 Nouvelles fonctionnalités
+
+#### **Outils de calibration caméra** ✅
+
+- **Scripts complets** :
+  - `acquire.py` : Acquisition d'images pour calibration Charuco
+  - `calibrate.py` : Calibration caméra à partir d'images
+  - `scale_calibration.py` : Calibration d'échelle pour résolutions multiples
+  - `visualize_undistorted.py` : Visualisation images corrigées
+  - `analyze_crop.py` : Analyse facteurs de crop pour différentes résolutions
+- **Support résolutions multiples** : 640x480, 1280x720, 1920x1080 avec crop/zoom
+- **Documentation complète** : `src/bbia_sim/tools/camera_calibration/README.md`
+
+#### **Améliorations WebRTC** ✅
+
+- **Gestion résolution caméra améliorée** : Support changement résolution dynamique via `set_resolution()` (compatible SDK v1.2.13)
+- **Report gstreamer latency** : Mesure et reporting de la latence streaming vidéo (compatible SDK v1.2.13)
+- **Optimisations streaming** : Compression adaptative et frame rate adaptatif (déjà présent dans BBIA)
+
+#### **Documentation** ✅
+
+- **Migration vers Hugging Face** : Documentation mise à jour (https://huggingface.co/docs/reachy_mini/)
+- **Documentation reflash Pi depuis macOS** : Guide complet dans `docs/hardware/REFLASH_PI_MACOS.md`
+
+### 🔧 Corrections
+
+- **Fix apps installation** : Correction détection apps installées (nom entry point vs Hugging Face space name)
+- **Amélioration messages d'erreur** : Messages plus détaillés et informatifs dans les modules concernés
+- **Fix MyPy CI** : Correction de toutes les erreurs de typage dans les scripts de calibration
+
+### 📚 Documentation
+
+- **RELEASE_NOTES.md** : Mis à jour avec v1.4.1
+- **CHANGELOG.md** : Entrées ajoutées pour v1.4.1
+- **README.md calibration** : Documentation complète des outils de calibration
+
+---
 
 ## 🔒 Audit Sécurité (21 Janvier 2026)
 
@@ -13,8 +57,8 @@
 
 - ✅ **Robot Reachy Mini Wireless reçu** : 18 Décembre 2025
 - ✅ **Montage effectué** : 20 Décembre 2025
-- ✅ **3 moteurs reçus** : 17 Janvier 2026 (QC 2549)
-- ⏳ **Commande en attente** : 22 Janvier 2026
+- ✅ **5 moteurs reçus** : 17 Janvier 2026 (QC 2549) + 26 Janvier 2026 (QC 2548, QC 2542, QC 2543, QC 2544)
+- ✅ **SDK Reachy Mini** : Version installée 1.2.3 (dernière version officielle : v1.2.13 - 21 janvier 2026)
 - ✅ **Scripts de diagnostic créés** : Voir `examples/reachy_mini/`
 
 ## Version 1.4.0 - 100% d'exploitation des capacités
@@ -329,4 +373,4 @@ python scripts/record_trace.py --emotion happy --duration 5
 
 ---
 
-*Dernière mise à jour : 8 Décembre 2025*
+*Dernière mise à jour : 26 Janvier 2026*

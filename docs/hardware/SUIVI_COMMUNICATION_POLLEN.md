@@ -1,6 +1,6 @@
 # 📧 Suivi Communication avec Pollen Robotics
 
-**Dernière mise à jour** : 21 Janvier 2026
+**Dernière mise à jour** : 26 Janvier 2026
 
 ---
 
@@ -63,7 +63,7 @@
 ### **Décembre 2025**
 
 - **Décembre 2025** : Problème identifié par Pollen Robotics
-- **22 Décembre 2025** : Reflash effectué (tous les moteurs détectés)
+- **26 Janvier 2026** : Reflash effectué (tous les moteurs détectés)
 - **Décembre 2025** : Formulaires de remplacement remplis (moteurs 1, 2, 4)
   - ⚠️ **Aucune confirmation reçue**
 
@@ -74,10 +74,15 @@
 - **17 Janvier 2026** : ✅ **3 MOTEURS REÇUS** (moteurs 1, 2, 4)
   - Livraison effectuée en Belgique
   - Délai total : 11 jours (6 janvier → 17 janvier)
-  - **Prochaines étapes** : Installation et tests
+  - Numéros QC : **QC 2549** (batch sain)
 - **21 Janvier 2026** : ✅ **NUMÉRO QC VÉRIFIÉ** : **QC 2549**
   - ✅ **Excellent** : Batch QC 2549 n'est PAS dans les batches problématiques
   - ✅ **Sécurisé** : Moteurs d'un batch sain, prêts pour installation
+- **26 Janvier 2026** : ✅ **2 MOTEURS SUPPLÉMENTAIRES REÇUS**
+  - 1x **QC 2549** (4ème moteur QC 2549)
+  - 1x **QC 2548** (nouveau batch)
+  - **Total reçu** : 5 moteurs (4x QC 2549 + 1x QC 2548)
+  - **Statut** : ✅ Tous les moteurs nécessaires reçus, prêts pour installation
 
 ---
 
@@ -139,8 +144,12 @@
 ✅ **Email envoyé** à sales@pollen-robotics.com (15h08)  
 ✅ **Demande complète** pour les 6 moteurs (1, 2, 3, 4, 5, 6)  
 ✅ **Documentation fournie** (QC batches, SDK v1.2.4, reflash effectué)  
-✅ **3 MOTEURS REÇUS** le 17 janvier 2026 (moteurs 1, 2, 4)  
-✅ **NUMÉRO QC VÉRIFIÉ** : **QC 2549** (21 janvier 2026) - Batch sain ✅  
+✅ **5 MOTEURS REÇUS** :
+  - 3 moteurs QC 2549 le 17 janvier 2026 (moteurs 1, 2, 4)
+  - 2 moteurs supplémentaires le 26 janvier 2026 (1x QC 2549 + 1x QC 2548)
+✅ **NUMÉROS QC VÉRIFIÉS** :
+  - **QC 2549** (21 janvier 2026) : Batch sain ✅ (4 moteurs)
+  - **QC 2548** (26 janvier 2026) : Nouveau batch (1 moteur)
 ⏳ **En attente** : Installation et tests des nouveaux moteurs
 
 **Autres utilisateurs en attente aussi** :

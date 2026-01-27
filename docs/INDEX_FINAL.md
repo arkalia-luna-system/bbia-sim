@@ -15,9 +15,9 @@
 | **Dashboard** | `python src/bbia_sim/dashboard_advanced.py` | Instant | [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) |
 | **Premier robot** | Voir guide | 5 min | [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) ⭐ |
 
-**Configuration :** Python 3.11+ requis • **Version** : v1.4.0 • **Dernière mise à jour : 15 Décembre 2025
+**Configuration :** Python 3.11+ requis • **Version** : v1.4.0 • **Dernière mise à jour** : 26 Janvier 2026
 
-**Mise à jour 8 Décembre 2025** :
+**Mise à jour 26 Janvier 2026** :
 - 44 exemples disponibles
 - Comportements, endpoints et modules avec exemples dédiés
 
@@ -51,8 +51,7 @@
 
 1. [Guide de Test](development/testing.md) — Guide
 2. [Index Audits](quality/INDEX_AUDITS.md) — Tous les audits
-3. [Corrections Appliquées](quality/corrections/applied.md) — Corrections
-4. [Validation Qualité](quality/validation/VALIDATION_FINALE_QUALITE_2025.md) — Rapports
+3. [Audit Consolidé](quality/AUDIT_CONSOLIDE_DECEMBRE_2025.md) — Rapports consolidés
 
 ### 📊 Chef de Projet
 
@@ -83,7 +82,7 @@
 ### ✅ Qualité & Conformité
 
 - [Conformité Reachy-Mini](quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md) — Conformité SDK
-- [Validation Qualité](quality/validation/VALIDATION_FINALE_QUALITE_2025.md) — Rapports de validation
+- [Audit Consolidé](quality/AUDIT_CONSOLIDE_DECEMBRE_2025.md) — Rapports consolidés
 - [Index Audits](quality/INDEX_AUDITS.md) — Tous les audits
 - [Pipeline CI/CD](deployment/PIPELINE_CI.md) — Intégration continue
 
@@ -97,7 +96,7 @@
 ### 🔧 Développement
 
 - [Guide d'Intégration](development/integration.md) — Intégrer BBIA-SIM
-- [Guide de Migration](development/migration.md) — Migration Sim → Robot
+- [Switch Sim → Robot](development/switch-sim-robot.md) — Basculer entre simulation et robot réel
 - [Guide de Test](development/testing.md) — Tests et qualité
 - [Setup Guides](development/setup/) — Configuration (environments, deepface, webcam, etc.)
 - [API REST/WS](development/api/CONTRATS_REST_WS.md) — Contrats API
@@ -106,14 +105,12 @@
 
 - [Mouvements Reachy Mini](hardware/MOUVEMENTS_REACHY_MINI.md) — Contrôle des mouvements
 - [Sécurité Robot](hardware/SECURITE_ROBOT.md) — DO/DON'T
-- [Prêt Reachy A4](hardware/reachy-mini/PRET_REACHY_A4.md) — Configuration A4
-- [Reachy Updates Log](hardware/reachy-mini/REACHY_UPDATES_LOG.md) — Journal des mises à jour
 
 ### ⚡ Performance
 
-- [Optimisations Reachy Mini](quality/performance/OPTIMISATIONS_EXPERT_REACHY_MINI.md) — Optimisations spécifiques
-- [Optimisations Robotique](quality/performance/OPTIMISATIONS_EXPERT_ROBOTIQUE_2025.md) — Optimisations générales
+- [Optimisations Performance](quality/performance/OPTIMISATIONS_PERFORMANCE_DEC2025.md) — Optimisations complètes
 - [Résumé Performance](quality/performance/RESUME_PERFORMANCE_CORRECTIONS_2025.md) — Résumé optimisations
+- [Watchdog Implementation](quality/performance/WATCHDOG_IMPLEMENTATION.md) — Implémentation watchdog
 
 ### 🎯 Simulation
 
@@ -126,22 +123,17 @@
 - [Analyse Modules Non Prioritaires](quality/audits/modules-non-prioritaires.md) — Analyse modules
 - [Analyse Coverage](quality/audits/AUDIT_COVERAGE_IMPORTS.md) — Analyse code coverage
 - [Analyse Unity AR](quality/audits/unity-ar.md) — Évaluation Unity AR
-- [Roadmap Dashboard](dashboard/ROADMAP_DASHBOARD.md) — Roadmap UX
+- [Guide Dashboard](dashboard/README.md) — Documentation dashboard
 
 ### 🔧 Corrections & Améliorations
 
-- [Corrections Appliquées](quality/corrections/applied.md) — Corrections démos et modules
-- [Améliorations SDK Futures](quality/improvements/sdk-future.md) — Features SDK avancées
-- [Améliorations Intelligence BBIA](quality/improvements/intelligence-bbia.md) — Intelligence conversationnelle
-- [Améliorations Intelligence Contexte](quality/improvements/intelligence-context.md) — Intelligence contextuelle
-- [Améliorations Gratuites](quality/improvements/free-improvements.md) — Solutions gratuites
+- [Index Audits](quality/INDEX_AUDITS.md) — Tous les audits et corrections
 
 ### 📋 Références
 
 - [Statut du Projet](reference/project-status.md) — État opérationnel et tableau de bord
 - [Release Notes](reference/RELEASE_NOTES.md) — Notes de version
 - [Historique](reference/PROJECT_HISTORY.md) — Historique
-- [Résumé Final](reference/summaries/final-summary.md) — Résumé
 
 ### 🎮 Unity & Jeux
 
@@ -189,7 +181,7 @@ export BBIA_TELEMETRY_TIMEOUT=1.0
 
 ## 📋 Organisation de la Documentation
 
-La documentation a été réorganisée le **8 Décembre 2025** pour une meilleure navigation :
+La documentation a été réorganisée le **26 Janvier 2026** pour une meilleure navigation :
 
 - ✅ **Dossiers vides supprimés** : `rapports/`, `semaines/`
 - ✅ **Fichiers obsolètes archivés** : Voir `docs/_archive/`
@@ -203,4 +195,4 @@ La documentation a été réorganisée le **8 Décembre 2025** pour une meilleur
 **Retour à** : [README Documentation](README.md)
 **Voir aussi** : [Index Thématique](reference/INDEX_THEMATIQUE.md)
 
-**Dernière mise à jour** : 8 Décembre 2025
+**Dernière mise à jour** : 26 Janvier 2026

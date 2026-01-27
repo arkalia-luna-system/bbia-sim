@@ -20,5 +20,5 @@ Pour les instructions d'installation détaillées, consultez [`docs/getting-star
 
 ---
 
-**Dernière mise à jour** : 15 Décembre 2025
+**Dernière mise à jour** : 26 Janvier 2026
 

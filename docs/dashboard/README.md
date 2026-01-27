@@ -1,6 +1,6 @@
 # 📊 Dashboard - Documentation BBIA-SIM
 
-**Dernière mise à jour : 15 Décembre 2025
+**Dernière mise à jour** : 26 Janvier 2026
 **Objectif** : Documentation complète du dashboard BBIA-SIM et comparaisons.
 
 ---
@@ -13,7 +13,6 @@
 - **[DASHBOARD_OFFICIEL_LIKE.md](DASHBOARD_OFFICIEL_LIKE.md)** : Guide pour créer un dashboard similaire à l'officiel.
 - **[GUIDE_DASHBOARD_MODERNE.md](GUIDE_DASHBOARD_MODERNE.md)** : Guide pour créer un dashboard moderne.
 - **[GUIDE_INSTALLATION_PWA.md](GUIDE_INSTALLATION_PWA.md)** : Guide d'installation PWA (Progressive Web App).
-- **[ROADMAP_DASHBOARD.md](ROADMAP_DASHBOARD.md)** : Roadmap et fonctionnalités du dashboard.
 
 ---
 

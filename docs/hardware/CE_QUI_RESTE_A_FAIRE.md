@@ -1,9 +1,9 @@
-# 📋 Ce Qui Reste À Faire - 21 Janvier 2026
+# 📋 Ce Qui Reste À Faire - 26 Janvier 2026
 
-**Date** : 21 Janvier 2026  
-**Dernière mise à jour** : 21 Janvier 2026  
-**Statut** : ⏳ **EN ATTENTE DE LA COMMANDE DU 22 JANVIER**  
-**Note** : ✅ Numéro QC des 3 moteurs reçus vérifié : **QC 2549** (batch sain)
+**Date** : 26 Janvier 2026  
+**Dernière mise à jour** : 26 Janvier 2026  
+**Statut** : ✅ **INSTALLATION MOTEURS 1, 2, 4 EFFECTUÉE**  
+**Note** : Slots 1 et 2 = QC 2549, Slot 4 = QC 2548 (ou 2549). Anciens 2543/2544 retirés.
 
 ---
 
@@ -11,8 +11,14 @@
 
 ### ✅ **Ce qui est fait**
 
-- ✅ **3 moteurs reçus** le 17 janvier 2026 (moteurs 1, 2, 4)
-- ✅ **Numéro QC vérifié** : **QC 2549** (21 janvier 2026) - Batch sain ✅
+- ✅ **5 moteurs reçus au total** :
+  - **3 moteurs QC 2549** reçus le 17 janvier 2026 (moteurs 1, 2, 4)
+  - **2 moteurs supplémentaires** reçus le 26 janvier 2026 :
+    - 1x **QC 2549** (4ème moteur QC 2549)
+    - 1x **QC 2548** (nouveau batch)
+- ✅ **Numéros QC vérifiés** :
+  - **QC 2549** : Batch sain ✅ (4 moteurs)
+  - **QC 2548** : Batch sain ✅ (1 moteur)
 - ✅ **Audit sécurité complet** (21 janvier 2026) :
   - 53 vulnérabilités dépendances corrigées
   - 42 nouveaux tests couverture ajoutés
@@ -25,47 +31,38 @@
 - ✅ **Code quality** : Ruff, Black OK
 - ✅ **Git** : Tout poussé sur develop
 
+### ✅ **Installation moteurs 1, 2, 4 : FAITE**
+
+- ✅ **Slot 1** (stewart_1) : Nouveau QC 2549
+- ✅ **Slot 2** (stewart_2) : Nouveau QC 2549
+- ✅ **Slot 4** (stewart_4) : Nouveau QC 2548 (ou 2549)
+- ✅ Anciens moteurs défectueux (2543, 2544) retirés et remplacés
+
 ### ⏳ **En attente**
 
-- ⏳ **Réception de la commande du 22 janvier 2026** (contenu inconnu pour l'instant)
-- ⏳ **Vérification du contenu** de la commande
-- ⏳ **Installation des moteurs** (après vérification)
+- ⏳ **Rallumage et validation** : Premier allumage, vérification LEDs, script de validation
+- ⏳ **Moteurs 3, 5, 6** : Inchangés (remplacement préventif optionnel plus tard)
 
 ---
 
 ## 📦 **PROCHAINES ÉTAPES IMMÉDIATES**
 
-### **1. Réception de la commande (22 janvier 2026)**
-
-**À faire** :
-
-- [ ] **Ouvrir la commande** et vérifier le contenu
-- [ ] **Identifier ce qui a été envoyé** :
-  - Moteurs supplémentaires ?
-  - Câbles de rechange ?
-  - Autres pièces ?
-- [ ] **Vérifier les numéros QC** de tous les moteurs reçus
-- [ ] **Documenter le contenu** dans `SUIVI_COMMUNICATION_POLLEN.md`
-
-**Important** : Ne pas démonter Reachy avant d'avoir vérifié le contenu complet de la commande.
-
----
-
-### **2. Vérification des moteurs reçus**
+### **1. Vérification des moteurs reçus (26 janvier 2026)**
 
 **Checklist de vérification** :
 
-- [x] ✅ **Numéros QC vérifiés** (21 janvier 2026) :
-  - ✅ **QC 2549** - Batch sain (pas dans les batches problématiques 2542/2543/2544)
-  - ✅ Tous les 3 moteurs (1, 2, 4) ont le même numéro QC 2549
-  - ✅ Moteurs sécurisés pour installation
-- [ ] **Test mécanique** :
+- [x] ✅ **Numéros QC vérifiés** (26 janvier 2026) :
+  - ✅ **QC 2549** - Batch sain (4 moteurs) - Pas dans les batches problématiques 2542/2543/2544
+  - ✅ **QC 2548** - Batch sain (1 moteur) - Nouveau batch, à vérifier
+  - ✅ Tous les moteurs sécurisés pour installation
+- [ ] **Test mécanique** (à faire maintenant) :
   - Chaque moteur doit tourner smooth (pas de résistance)
   - Pas de bruit anormal
   - Pas de dommages visibles
-- [ ] **Quantité** :
-  - 3 moteurs minimum (1, 2, 4)
-  - Vérifier si d'autres moteurs sont inclus (3, 5, 6 pour remplacement préventif)
+- [x] ✅ **Quantité** :
+  - ✅ 5 moteurs reçus au total
+  - ✅ 4 moteurs QC 2549 (pour remplacer 1, 2, 4 + 1 de rechange)
+  - ✅ 1 moteur QC 2548 (pour remplacement préventif ou rechange)
 
 ---
 
@@ -239,6 +236,7 @@
 - ✅ Tests créés et passants (8/8)
 - ✅ Black formatting appliqué (321 fichiers OK)
 - ✅ Outils installés (Python 3.10, reachy-mini v1.2.3, pytest, black, git)
+- ⚠️ SDK Reachy Mini : Version installée 1.2.3 (dernière version officielle : v1.2.13 - 21 janvier 2026)
 
 ### ✅ **Documentation**
 - ✅ Tous les guides présents et à jour
@@ -249,7 +247,7 @@
 ### 🔍 **Vérifications Optionnelles (non bloquantes)** ✅ TERMINÉES
 - ✅ **Cohérence entre guides** : Vérifiée - Versions SDK, QC 2549, dates cohérentes
 - ✅ **Liens documentation** : Structure OK, tous formatés correctement (test manuel navigateur optionnel)
-- ✅ **Version SDK** : v1.2.3 installé (fonctionne), v1.2.11 mentionnée (dernière) - OK
+- ⚠️ **Version SDK** : v1.2.3 installé (fonctionne), v1.2.13 disponible (dernière - 21 janvier 2026) - Mise à jour recommandée après installation moteurs
 - ✅ **Scripts mode simulation** : Syntaxe valide, gestion erreurs présente, testables sans robot
 
 ---
@@ -279,5 +277,5 @@
 
 ---
 
-**Dernière mise à jour** : 21 Janvier 2026  
-**Statut** : ✅ **100% PRÊT - EN ATTENTE RÉCEPTION DEMAIN**
+**Dernière mise à jour** : 26 Janvier 2026  
+**Statut** : ✅ **INSTALLATION MOTEURS 1, 2, 4 EFFECTUÉE** — En attente de premier rallumage et validation

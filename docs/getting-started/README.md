@@ -25,4 +25,4 @@ Ce dossier contient la documentation de démarrage pour BBIA-SIM.
 
 ---
 
-**Dernière mise à jour** : 8 Décembre 2025
+**Dernière mise à jour** : 26 Janvier 2026

@@ -1,6 +1,6 @@
 # 🔄 Pipeline CI/CD
 
-**Dernière mise à jour : 15 Décembre 2025  
+**Dernière mise à jour** : 26 Janvier 2026  
 **Version** : 1.4.0  
 **Compatibilité Python** : 3.11+ ✅ **Matrice 3.12 ajoutée** (24 Nov. 2025)
 
@@ -122,7 +122,7 @@ sequenceDiagram
 
 ---
 
-**Dernière mise à jour** : 8 Décembre 2025
+**Dernière mise à jour** : 26 Janvier 2026
 
 ## Pré-commit (optionnel)
 

@@ -234,7 +234,12 @@ async def list_all_available_apps() -> list[dict[str, Any]]:
         for space in hf_spaces:
             if space.id and space.id not in existing_names:
                 # Vérifier si déjà installée
-                is_installed = _hf_app_installer.is_installed(space.id.split("/")[-1])
+                # FIX v1.2.13: Vérifier par nom space ET par nom entry point
+                space_name = space.id.split("/")[-1]
+                is_installed = _hf_app_installer.is_installed(space_name)
+                # Vérifier aussi par nom complet (username/space-name)
+                if not is_installed:
+                    is_installed = _hf_app_installer.is_installed(space.id)
                 apps.append(
                     {
                         "name": space.id,
@@ -433,10 +438,22 @@ async def _run_installation_job(
         _cleanup_old_jobs()
 
     except Exception as e:
-        logger.exception("❌ Erreur job %s: %s", job_id, e)
+        error_type = type(e).__name__
+        error_msg = str(e)
+        logger.exception(
+            "❌ Erreur job %s (app: %s, HF Space: %s): %s: %s",
+            job_id,
+            app_name,
+            hf_space_id,
+            error_type,
+            error_msg,
+        )
         job["status"] = "failed"
-        job["logs"].append(f"❌ Erreur: {str(e)}")
-        job["error"] = str(e)
+        job["logs"].append(
+            f"❌ Erreur ({error_type}): {error_msg}. "
+            f"Vérifiez les logs serveur pour plus de détails."
+        )
+        job["error"] = f"{error_type}: {error_msg}"
 
         # OPTIMISATION RAM: Nettoyer les vieux jobs même en cas d'erreur
         _cleanup_old_jobs()

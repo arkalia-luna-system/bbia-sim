@@ -1,6 +1,6 @@
 # Simulation BBIA complète - tous les modes
 
-**Dernière mise à jour** : 15 Décembre 2025
+**Dernière mise à jour** : 26 Janvier 2026
 
 > **Compatibilité Python** : Python 3.11+ requis. Voir [`docs/getting-started/INSTALLATION.md`](../getting-started/INSTALLATION.md) pour les détails d'installation.
 
@@ -254,7 +254,7 @@ ls -la
 🤖============================================================🤖
 🌟 BBIA - Brain-Based Interactive Agent
 🤖 Robot: Reachy Mini Wireless
-📅 Dernière mise à jour : 15 Décembre 2025
+📅 Dernière mise à jour** : 26 Janvier 2026
 💻 Système: darwin
 🤖============================================================🤖
 

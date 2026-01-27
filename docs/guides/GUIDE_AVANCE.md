@@ -2,7 +2,7 @@
 
 <div align="center">
 
-**Dernière mise à jour** : 15 Décembre 2025
+**Dernière mise à jour** : 26 Janvier 2026
 [![Version](https://img.shields.io/badge/version-1.4.0-blue.svg)](https://github.com/arkalia-luna-system/bbia-sim)
 [![Niveau](https://img.shields.io/badge/niveau-Technique-orange.svg)](docs/guides/)
 [![Temps](https://img.shields.io/badge/temps-15%20min-purple.svg)](#architecture-détaillée)
@@ -259,14 +259,14 @@ bbia_sim.sim.enable_caching()
 
 <div align="center">
 
-### Migration vers robot réel
+### Switch Simulation → Robot Réel
 
-[![📖 Guide](https://img.shields.io/badge/📖-Guide%20Complet-blue)](../development/migration.md)
+[![📖 Guide](https://img.shields.io/badge/📖-Guide%20Complet-blue)](../development/switch-sim-robot.md)
 [![✅ Validé](https://img.shields.io/badge/✅-100%25%20Conforme-green)](../quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md)
 
 </div>
 
-Voir : [MIGRATION_GUIDE.md](../development/migration.md)
+Voir : [Switch Sim → Robot](../development/switch-sim-robot.md)
 
 ---
 

@@ -1,6 +1,6 @@
 # 💾 CARTE SD - Reachy Mini Wireless
 
-**Date** : 15 Décembre 2025  
+**Date** : 26 Janvier 2026  
 **Version** : Reachy Mini Wireless  
 **Statut** : ✅ **INCLUSE DANS LE KIT** (preuve formelle ci-dessous)
 
@@ -85,5 +85,5 @@ Si vous voulez une carte de rechange ou une carte plus grande (128GB), vous pouv
 
 ---
 
-**Dernière mise à jour** : 15 Décembre 2025
+**Dernière mise à jour** : 26 Janvier 2026
 

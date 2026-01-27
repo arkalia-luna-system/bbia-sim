@@ -1,9 +1,9 @@
 # 🔍 AUDIT COMPLET REACHY MINI - DÉCEMBRE 2025
 
-**Dernière mise à jour** : 22 Décembre 2025  
+**Dernière mise à jour** : 26 Janvier 2026  
 **Source** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini)  
-**Version SDK Officiel** : v1.2.3 (Latest - vérifié 22 Dec 2025)  
-**Version SDK Installée BBIA** : 1.2.3 ✅  
+**Version SDK Officiel** : v1.2.13 (Latest - vérifié 26 Jan 2026)  
+**Version SDK Installée BBIA** : 1.2.3 ⚠️  
 **Version BBIA** : 1.4.0  
 **Objectif** : Audit exhaustif des changements récents, conformité BBIA, analyse testeurs bêta, analyse de toutes les branches
 
@@ -16,7 +16,7 @@
 | Catégorie | Reachy Mini Officiel | BBIA-SIM | Statut |
 |-----------|---------------------|----------|--------|
 | **SDK Conformité** | ✅ 100% | ✅ 100% | ✅ **ÉGAL** |
-| **Version SDK** | ✅ v1.2.3 (Latest) | ✅ **1.2.3** | ✅ **À JOUR** |
+| **Version SDK** | ✅ v1.2.13 (Latest) | ⚠️ **1.2.3** | ⚠️ **10 versions de retard** |
 | **Émotions** | ✅ 6 émotions | ✅ **12 émotions** | ✅ **Différent** |
 | **Vision** | ⚠️ Basique | ✅ **YOLO + MediaPipe + SmolVLM2** | ✅ **Différent** |
 | **Voice** | ⚠️ Basique | ✅ **Whisper STT + pyttsx3 TTS** | ✅ **Différent** |
@@ -36,7 +36,7 @@
 
 **✅ Robot reçu** : 18 Décembre 2025  
 **✅ Montage effectué** : 20 Décembre 2025 (durée : 4 heures)  
-**✅ Premiers tests** : 22 Décembre 2025  
+**✅ Premiers tests** : 26 Janvier 2026  
 **✅ IP Robot** : [IP_ROBOT] (WiFi configuré)
 
 **Problèmes rencontrés** :
@@ -52,25 +52,34 @@
 
 ### Versions SDK Récentes
 
-**Dernière version** : **v1.2.3** (vérifié 22 Dec 2025)
+**Dernière version** : **v1.2.13** (vérifié 26 Jan 2026)
 
 **Releases disponibles** :
-- **v1.2.3** (Latest) - Décembre 2025
-- **v1.2.0** - Dec 12, 2025
-- **v1.1.1** - Nov 25, 2025
-  - Contributions de `apirrone` et `oxkitsune`
-  - Corrections de bugs et améliorations
-- **v1.1.0** - Nov 20, 2025
-  - **Première production en série version sans fil**
-  - Préparation pour livraisons robots physiques
-- **v1.0.0** - Oct 30, 2025
-  - Version stable initiale
-  - Publication PyPI
+- **v1.2.13** (Latest) - 21 janvier 2026
+  - Fix apps installation, amélioration erreurs, documentation reflash Pi macOS
+- **v1.2.12** - Non publiée
+- **v1.2.11** - 14 janvier 2026
+  - Documentation udev, gestion exceptions, tests média, support Windows
+- **v1.2.9** - Janvier 2026
+  - Corrections bugs, améliorations performance
+- **v1.2.8** - Janvier 2026
+  - Corrections bugs, améliorations stabilité
+- **v1.2.7** - Janvier 2026
+  - Correction radio saccadée
+- **v1.2.6** - 3 janvier 2026
+  - ⚠️ Problèmes connus (crashes, erreurs IK)
+- **v1.2.5** - 26 décembre 2025
+- **v1.2.4** - 22 décembre 2025
+- **v1.2.3** - 18 décembre 2025 (Version installée BBIA)
+- **v1.2.0** - 12 décembre 2025
+- **v1.1.1** - 25 novembre 2025
+- **v1.1.0** - 20 novembre 2025 (Première production série)
+- **v1.0.0** - 30 octobre 2025 (Version stable initiale)
 
 **Statut BBIA** :
-1. ✅ Version installée : `1.2.3` ✅ (à jour)
-2. ✅ Compatibilité : Testée et validée
-3. ✅ Toutes les fonctionnalités SDK disponibles
+1. ⚠️ Version installée : `1.2.3` (10 versions de retard)
+2. ✅ Compatibilité : Testée et validée avec v1.2.3
+3. ⚠️ Nouvelles fonctionnalités v1.2.4 → v1.2.13 non disponibles
 
 ---
 
@@ -203,11 +212,14 @@
 
 #### 1. Version SDK
 
-**BBIA actuel** : Version installée **1.2.3** ✅ (à jour)  
-**SDK officiel** : v1.2.3 (Latest - 22 Dec 2025)
+**BBIA actuel** : Version installée **1.2.3** ⚠️ (10 versions de retard)  
+**SDK officiel** : v1.2.13 (Latest - 26 Jan 2026)
 
 **Statut** :
-- ✅ Version installée : `1.2.3` (dernière version disponible)
+- ⚠️ Version installée : `1.2.3` (dernière version disponible : v1.2.13)
+- ⚠️ Mise à jour recommandée vers v1.2.13 après installation des nouveaux moteurs
+- ✅ Compatibilité : Validée et testée avec v1.2.3
+- ⚠️ Nouvelles fonctionnalités v1.2.4 → v1.2.13 non disponibles (outils calibration caméra, améliorations WebRTC, etc.)
 - ✅ Compatibilité : Validée et testée
 - ✅ Test compatibilité : Import SDK OK ✅
 
@@ -487,7 +499,7 @@
 
 ---
 
-## 🎯 Phase 3 : Améliorations Moyennes (Complétée - 22 Décembre 2025)
+## 🎯 Phase 3 : Améliorations Moyennes (Complétée - 26 Janvier 2026)
 
 ### ✅ File d'Attente Multicouche
 
@@ -543,7 +555,7 @@ robots = registry.discover_robots()
 # GET /api/robots/list
 ```
 
-### ✅ Intégration Complète API (Complétée - 22 Décembre 2025)
+### ✅ Intégration Complète API (Complétée - 26 Janvier 2026)
 
 **Endpoints API** :
 - `POST /api/move/multi-layer` : Exécute danses, émotions, poses simultanées
@@ -574,7 +586,7 @@ POST /api/move/multi-layer
 
 ---
 
-### ✅ Tests Edge Cases (Complétée - 22 Décembre 2025)
+### ✅ Tests Edge Cases (Complétée - 26 Janvier 2026)
 
 **Tests edge cases** : `tests/test_multi_layer_queue_edge_cases.py`
 
@@ -599,7 +611,7 @@ POST /api/move/multi-layer
 
 ---
 
-**Dernière mise à jour** : 22 Décembre 2025  
+**Dernière mise à jour** : 26 Janvier 2026  
 **Prochaine révision** : Après réception robot physique ou mise à jour majeure SDK  
 **Branches analysées** : `develop` (principale), `main` (stable), toutes les branches feature/bugfix/hotfix  
 **Documents liés** :

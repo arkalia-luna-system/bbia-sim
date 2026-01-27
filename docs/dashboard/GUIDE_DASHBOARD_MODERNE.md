@@ -1,6 +1,6 @@
 # 🎨 Guide Dashboard Moderne BBIA
 
-**Dernière mise à jour : 15 Décembre 2025
+**Dernière mise à jour** : 26 Janvier 2026
 **Version BBIA** : 1.3.2
 **Objectif** : Guide complet pour utiliser le dashboard moderne BBIA
 
@@ -258,7 +258,7 @@ Ouvrir dans le navigateur : `http://localhost:8000/`
 
 ---
 
-**Document créé le :** 8 Décembre 2025
+**Document créé le :** 26 Janvier 2026
 **Version BBIA :** 1.3.2
 **Auteur :** Arkalia Luna System
 

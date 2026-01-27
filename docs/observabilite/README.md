@@ -9,10 +9,9 @@ Ce dossier contient la documentation sur l'observabilité, les logs, métriques 
 ## 📚 Documentation Associée
 
 - **Métriques** : [`../reference/METRICS.md`](../reference/METRICS.md)
-- **Développement** : [`../development/METRICS_COLLECTION.md`](../development/METRICS_COLLECTION.md)
 - **Dashboard** : [`../dashboard/`](../dashboard/)
 
 ---
 
-**Dernière mise à jour** : 8 Décembre 2025
+**Dernière mise à jour** : 26 Janvier 2026
 

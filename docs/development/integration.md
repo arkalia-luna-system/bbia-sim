@@ -1,6 +1,6 @@
 # 📘 Guide d'Intégration BBIA-SIM - Phase 3
 
-**Dernière mise à jour : 15 Décembre 2025  
+**Dernière mise à jour** : 26 Janvier 2026  
 **Version** : 1.4.0
 
 > **Compatibilité Python** : Python 3.11+ requis. Voir [`docs/getting-started/INSTALLATION.md`](../getting-started/INSTALLATION.md) pour les détails d'installation.
@@ -943,7 +943,7 @@ asyncio.run(validate_integration())
 
 ---
 
-## 📱 Intégration Applications Mobiles (8 Décembre 2025)
+## 📱 Intégration Applications Mobiles (26 Janvier 2026)
 
 ### 🎯 Vue d'Ensemble
 
@@ -1196,7 +1196,7 @@ class BBIAWebSocket {
 
 ### 📚 Ressources
 
-- **PWA Guide** : [`docs/dashboard/ROADMAP_DASHBOARD.md`](../dashboard/ROADMAP_DASHBOARD.md) → Section Apps Mobiles
+- **PWA Guide** : [`docs/dashboard/GUIDE_INSTALLATION_PWA.md`](../dashboard/GUIDE_INSTALLATION_PWA.md) → Guide installation PWA
 - **API Documentation** : `http://localhost:8000/docs` (Swagger UI)
 - **WebSocket Docs** : [`docs/development/api/CONTRATS_REST_WS.md`](api/CONTRATS_REST_WS.md)
 
@@ -1206,7 +1206,7 @@ Vous avez intégré BBIA-SIM dans votre projet. Écosystème BBIA-SIM prêt à l
 
 ---
 
-**Dernière mise à jour** : 8 Décembre 2025  
+**Dernière mise à jour** : 26 Janvier 2026  
 **Note** : Sections apps mobiles et PWA ajoutées
 
 ---
@@ -1214,4 +1214,4 @@ Vous avez intégré BBIA-SIM dans votre projet. Écosystème BBIA-SIM prêt à l
 ## 🎯 Navigation
 
 **Retour à** : [README Documentation](../README.md)  
-**Voir aussi** : [Guide Technique](../guides/GUIDE_AVANCE.md) • [Architecture](../development/architecture/ARCHITECTURE_OVERVIEW.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md) • [Roadmap Dashboard](../dashboard/ROADMAP_DASHBOARD.md)
+**Voir aussi** : [Guide Technique](../guides/GUIDE_AVANCE.md) • [Architecture](../development/architecture/ARCHITECTURE_OVERVIEW.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md) • [Dashboard](../dashboard/README.md)

@@ -18,8 +18,6 @@ Ce dossier contient la documentation de référence du projet : métriques, hist
 - **`COMMUNITY_CONFIG.md`** - Configuration communauté
 - **`INDEX_THEMATIQUE.md`** - Index thématique de la documentation
 
-### 📋 Résumés
-- **`summaries/final-summary.md`** - Résumé final du projet
 
 ## 📚 Documentation Associée
 
@@ -29,5 +27,5 @@ Ce dossier contient la documentation de référence du projet : métriques, hist
 
 ---
 
-**Dernière mise à jour** : 8 Décembre 2025
+**Dernière mise à jour** : 26 Janvier 2026
 

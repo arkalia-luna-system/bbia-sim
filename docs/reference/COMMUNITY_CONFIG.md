@@ -5,7 +5,7 @@
 > Voir `docs/reference/project-status.md` → "Communauté" pour les templates d’issues/discussions, roadmap publique et "good first issues".
 
 **Version** : 1.4.0 "100% d'Exploitation"
-**Dernière mise à jour : 15 Décembre 2025
+**Dernière mise à jour** : 26 Janvier 2026
 **Public** : Communauté Technique
 
 ## 🎯 **Configuration recommandée**

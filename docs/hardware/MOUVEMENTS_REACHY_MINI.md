@@ -160,4 +160,4 @@ yaw_body: -0.15 rad (rotation lente)
 - Mouvements expressifs implémentés
 - Amplitudes sécurisées selon limites officielles
 
-**Dernière mise à jour** : 15 Décembre 2025
+**Dernière mise à jour** : 26 Janvier 2026

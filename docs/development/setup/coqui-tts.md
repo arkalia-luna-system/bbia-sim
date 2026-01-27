@@ -1,6 +1,6 @@
 # 🎤 Migration vers Coqui TTS - Guide Complet
 
-**Dernière mise à jour : 15 Décembre 2025  
+**Dernière mise à jour** : 26 Janvier 2026  
 **Version** : 1.0  
 **Objectif** : Remplacer pyttsx3 par Coqui TTS pour résoudre blocages macOS
 
@@ -328,4 +328,4 @@ if __name__ == "__main__":
 
 ---
 
-**Dernière mise à jour** : 8 Décembre 2025
+**Dernière mise à jour** : 26 Janvier 2026
