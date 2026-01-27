@@ -2,8 +2,8 @@
 
 **Date** : 26 Janvier 2026  
 **Dernière mise à jour** : 26 Janvier 2026  
-**Statut** : ✅ **TOUS LES MOTEURS REÇUS**  
-**Note** : ✅ **5 moteurs reçus au total** : 4x QC 2549 + 1x QC 2548
+**Statut** : ✅ **INSTALLATION MOTEURS 1, 2, 4 EFFECTUÉE**  
+**Note** : Slots 1 et 2 = QC 2549, Slot 4 = QC 2548 (ou 2549). Anciens 2543/2544 retirés.
 
 ---
 
@@ -31,12 +31,17 @@
 - ✅ **Code quality** : Ruff, Black OK
 - ✅ **Git** : Tout poussé sur develop
 
+### ✅ **Installation moteurs 1, 2, 4 : FAITE**
+
+- ✅ **Slot 1** (stewart_1) : Nouveau QC 2549
+- ✅ **Slot 2** (stewart_2) : Nouveau QC 2549
+- ✅ **Slot 4** (stewart_4) : Nouveau QC 2548 (ou 2549)
+- ✅ Anciens moteurs défectueux (2543, 2544) retirés et remplacés
+
 ### ⏳ **En attente**
 
-- ⏳ **Installation des moteurs** :
-  - Vérification mécanique de tous les moteurs
-  - Installation moteurs 1, 2, 4 (remplacement défectueux)
-  - Décision pour moteurs supplémentaires (3, 5, 6 si nécessaire)
+- ⏳ **Rallumage et validation** : Premier allumage, vérification LEDs, script de validation
+- ⏳ **Moteurs 3, 5, 6** : Inchangés (remplacement préventif optionnel plus tard)
 
 ---
 
@@ -273,4 +278,4 @@
 ---
 
 **Dernière mise à jour** : 26 Janvier 2026  
-**Statut** : ✅ **100% PRÊT - TOUS LES MOTEURS REÇUS - PRÊT POUR INSTALLATION**
+**Statut** : ✅ **INSTALLATION MOTEURS 1, 2, 4 EFFECTUÉE** — En attente de premier rallumage et validation

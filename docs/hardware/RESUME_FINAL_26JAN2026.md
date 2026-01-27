@@ -1,27 +1,24 @@
 # 📋 Résumé Final - 26 Janvier 2026
 
 **Date** : 26 Janvier 2026  
-**Statut** : ✅ **TOUT EST PRÊT - EN ATTENTE INSTALLATION MOTEURS**
+**Statut** : ✅ **INSTALLATION MOTEURS 1, 2, 4 EFFECTUÉE**
 
 ---
 
-## ✅ **CE QUI RESTE À FAIRE** (hormis démonter/remonter)
+## ✅ **INSTALLATION RÉALISÉE** (moteurs 1, 2, 4)
 
-### **1. Tests mécaniques des moteurs** ⏳
-- [ ] Tester chaque moteur **débranché** (doit tourner smooth)
-- [ ] Vérifier qu'il n'y a pas de bruit anormal
-- [ ] Vérifier qu'il n'y a pas de dommages visibles
-- [ ] Noter les numéros QC de chaque moteur (pour référence)
+**Configuration actuelle** (vérifiée) :
 
-### **2. Préparation avant installation** ⏳
-- [ ] Exécuter `python examples/reachy_mini/check_before_motor_installation.py`
-- [ ] Lire les guides d'installation
-- [ ] Préparer les outils (tournevis, documentation)
-- [ ] Prendre des photos du câblage actuel (pour référence)
+- **Slot 1** (stewart_1) : Nouveau moteur **QC 2549** ✅
+- **Slot 2** (stewart_2) : Nouveau moteur **QC 2549** ✅
+- **Slot 4** (stewart_4) : Nouveau moteur **QC 2548** (ou 2549) ✅
 
-### **3. Après installation** ⏳
-- [ ] Allumer le robot
-- [ ] Exécuter `python examples/reachy_mini/validate_motor_installation.py`
+Les anciens moteurs défectueux (QC 2543 en slot 1, QC 2544 en slots 2 et 4) ont été remplacés par des moteurs neufs reçus (2549 / 2548). Aucune erreur de montage.
+
+### **Prochaines étapes après installation** ⏳
+- [ ] Allumer le robot et attendre 1–2 min (sans lancer logiciel)
+- [ ] Vérifier les LEDs (pas de rouge persistant)
+- [ ] Puis : SSH, mise à jour SDK si besoin, `validate_motor_installation.py`
 - [ ] Vérifier les logs : `journalctl -u reachy-mini-daemon -f`
 - [ ] Effectuer les tests manuels (mouvements de la tête)
 
@@ -77,8 +74,8 @@
 
 ## 🎯 **RÉSUMÉ ULTRA-RAPIDE**
 
-1. ⏳ **Test mécanique** de chaque moteur (doit tourner smooth)
-2. ⏳ **Installation** : Moteurs 1, 2, 4 dans les slots 1, 2, 4 (peu importe quel QC 2549/2548)
-3. ⏳ **Validation** : Exécuter le script de validation après installation
+1. ✅ **Installation faite** : Slots 1, 2, 4 = nouveaux QC 2549 (x2) + QC 2548 (x1)
+2. ⏳ **Rallumage** : Brancher, ON, attendre 1–2 min, vérifier LEDs
+3. ⏳ **Validation** : Exécuter `validate_motor_installation.py` après démarrage
 
-**C'est tout !** 🎉
+**Installation moteurs 1, 2, 4 : terminée.** 🎉

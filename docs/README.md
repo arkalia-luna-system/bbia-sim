@@ -2,7 +2,7 @@
 
 **Dernière mise à jour :** 26 Janvier 2026  
 **Version** : v1.4.0  
-**Statut Robot** : ✅ Reçu le 18 déc 2025, monté le 20 déc 2025, **5 moteurs reçus** (QC 2549, QC 2548, QC 2542, QC 2543, QC 2544) - Prêts pour installation  
+**Statut Robot** : ✅ Reçu le 18 déc 2025, monté le 20 déc 2025. **Installation moteurs 1, 2, 4 effectuée** (slots 1 et 2 = QC 2549, slot 4 = QC 2548). En attente de premier rallumage et validation.  
 **SDK Reachy Mini** : Version installée 1.2.3 (dernière version officielle : v1.2.13 - 21 janvier 2026)  
 **Nouvelles fonctionnalités v1.2.13 intégrées** : ✅ Outils calibration caméra, documentation reflash Pi macOS
 

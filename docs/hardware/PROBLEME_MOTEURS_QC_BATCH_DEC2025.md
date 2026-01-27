@@ -203,6 +203,11 @@ Si vous avez des moteurs QC 2542 (moteurs 5 et 6) :
 - **21 Janvier 2026** : ✅ **Numéro QC vérifié** : **QC 2549**
   - ✅ Batch sain (pas dans les batches problématiques 2542/2543/2544)
   - ✅ Moteurs sécurisés pour installation
+- **26 Janvier 2026** : ✅ **Installation effectuée**
+  - Slot 1 (stewart_1) : nouveau QC 2549 — ancien QC 2543 retiré
+  - Slot 2 (stewart_2) : nouveau QC 2549 — ancien QC 2544 retiré
+  - Slot 4 (stewart_4) : nouveau QC 2548 (ou 2549) — ancien QC 2544 retiré
+  - En attente de premier rallumage et validation
 
 ---
 
