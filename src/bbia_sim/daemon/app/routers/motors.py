@@ -1,13 +1,13 @@
 """Router pour les endpoints de contrôle des moteurs (conforme SDK officiel)."""
 
 import logging
-from enum import Enum
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 
 from bbia_sim.daemon.app.backend_adapter import BackendAdapter, get_backend_adapter
+from bbia_sim.utils.enum_compat import StrEnum
 
 logger = logging.getLogger(__name__)
 
@@ -17,7 +17,7 @@ router = APIRouter(prefix="/motors")
 # Compatible avec reachy_mini.daemon.backend.abstract.MotorControlMode
 
 
-class MotorControlMode(str, Enum):
+class MotorControlMode(StrEnum):
     """Mode de contrôle des moteurs (conforme SDK officiel)."""
 
     Enabled = "enabled"

@@ -5,6 +5,7 @@ Découverte automatique robots sur réseau local.
 """
 
 import logging
+import os
 from typing import Any
 
 logger = logging.getLogger(__name__)
@@ -47,10 +48,12 @@ class RobotRegistry:
                 logger.error("Zenoh non disponible")
                 return []
 
-            # Configuration Zenoh pour découverte
+            # Configuration Zenoh pour découverte (host configurable: WSL2/Wireless, issues Pollen #709 #677)
+            connect_url = os.environ.get("REACHY_ZENOH_CONNECT") or os.environ.get("BBIA_ZENOH_CONNECT") or "tcp://localhost:7447"
+            connect_list = [e.strip() for e in connect_url.split(",") if e.strip()]
             config = Config()
             config.insert_json5("mode", '"client"')
-            config.insert_json5("connect", '["tcp://localhost:7447"]')
+            config.insert_json5("connect", "[" + ", ".join(f'"{e}"' for e in connect_list) + "]")
 
             # Ouvrir session Zenoh
             self.session = zenoh.open(config)
@@ -129,8 +132,6 @@ class RobotRegistry:
                 logger.debug("Découverte Zenoh incomplète: %s", e)
 
             # Fallback: robots configurés via variables d'environnement
-            import os
-
             robot_id = os.environ.get("BBIA_ROBOT_ID")
             if robot_id:
                 discovered_robots.append(

@@ -639,12 +639,16 @@ class BBIAVision:
             return cast("npt.NDArray[np.uint8]", image)
 
         except (AttributeError, RuntimeError, OSError) as e:
-            logger.debug("Erreur capture caméra SDK: %s", e)
+            logger.warning(
+                "Caméra SDK indisponible: %s. Vérifier câble, daemon reachy-mini ou redémarrer l'app.",
+                e,
+            )
         except (TypeError, IndexError, KeyError) as e:
             logger.debug("Erreur capture caméra SDK (type/index/key): %s", e)
         except Exception as e:  # noqa: BLE001
-            logger.debug(
-                "Erreur inattendue capture caméra SDK (fallback simulation): %s", e
+            logger.warning(
+                "Caméra SDK erreur inattendue: %s. Vérifier que le daemon et la caméra sont opérationnels.",
+                e,
             )
 
         return None

@@ -30,6 +30,7 @@
 
 ### 🔍 Analyse et Documentation Technique
 
+- **[Issues Pollen impact BBIA](ISSUES_POLLEN_IMPACT_BBIA.md)** - Issues ouvertes Pollen, impact et mitigations BBIA
 - **[Analyse Repo Officiel](ANALYSE_REPO_OFFICIEL_JANVIER_2026.md)** - Analyse du repo officiel
 - **[Impression 3D Stewart Arms](IMPRESSION_3D_STEWART_ARMS.md)** - Guide impression 3D
 - **[Analyse 3MF Stewart Arm](ANALYSE_3MF_STEWART_ARM.md)** - Analyse fichier 3MF

@@ -2,7 +2,6 @@
 
 import logging
 from datetime import datetime
-from enum import Enum
 from typing import Annotated, Any
 
 from fastapi import APIRouter, HTTPException, Query
@@ -11,6 +10,7 @@ from pydantic import BaseModel
 from bbia_sim.daemon.models import HeadControl, JointPosition, MotionCommand, Pose
 from bbia_sim.daemon.simulation_service import simulation_service
 from bbia_sim.sim.joints import clamp_joint_angle, validate_joint_name
+from bbia_sim.utils.enum_compat import StrEnum
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +20,7 @@ router = APIRouter()
 # Les modèles sont maintenant importés depuis models.py
 
 
-class InterpolationMode(str, Enum):
+class InterpolationMode(StrEnum):
     """Mode d'interpolation pour les mouvements."""
 
     LINEAR = "linear"

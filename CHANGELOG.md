@@ -7,6 +7,12 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+### 📌 **Issues Pollen : mitigations BBIA** (7 Février 2026)
+
+- **Zenoh configurable** (#709, #677) : `REACHY_ZENOH_CONNECT` ou `BBIA_ZENOH_CONNECT` pour WSL2 / Reachy Wireless (ex: `tcp://<IP>:7447`). Fichiers : `daemon/bridge.py`, `robot_registry.py`.
+- **Messages caméra** (#771) : messages d’erreur plus clairs dans `bbia_vision` si caméra SDK indisponible.
+- **Doc** : [docs/hardware/ISSUES_POLLEN_IMPACT_BBIA.md](docs/hardware/ISSUES_POLLEN_IMPACT_BBIA.md) — issues ouvertes Pollen, impact et mitigations (l’essentiel).
+
 ### 📌 **Alignement Pollen v1.3.0 + corrections « À surveiller »** (7 Février 2026)
 
 - **SDK** : Projet aligné sur **reachy-mini v1.3.0** (même niveau que Pollen). Dépendances `pyproject.toml` alignées sur le [pyproject officiel](https://github.com/pollen-robotics/reachy_mini) : `reachy_mini_motor_controller>=1.5.3`, `eclipse-zenoh>=1.7.0,<1.8.0`, `reachy-mini-rust-kinematics>=1.0.3`, `huggingface-hub>=1.3.0`, `scipy>=1.15.3,<2.0.0`, `websockets>=12,<16`, `sounddevice>=0.5.1,<0.6`.

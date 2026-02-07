@@ -6,6 +6,7 @@ Permet l'intégration entre l'architecture FastAPI de BBIA-SIM et le daemon Zeno
 import asyncio
 import json
 import logging
+import os
 import time
 from functools import lru_cache
 from typing import Any, cast
@@ -17,7 +18,7 @@ from fastapi import (  # type: ignore[import-untyped]
     WebSocket,
     WebSocketDisconnect,
 )
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from bbia_sim.utils.types import (
     GotoTargetParams,
@@ -54,11 +55,19 @@ except ImportError:
     create_head_pose = cast("Any", None)
 
 
+def _default_zenoh_connect() -> list[str]:
+    """Connect Zenoh depuis env (WSL2/Wireless: REACHY_ZENOH_CONNECT ou BBIA_ZENOH_CONNECT)."""
+    s = os.environ.get("REACHY_ZENOH_CONNECT") or os.environ.get("BBIA_ZENOH_CONNECT")
+    if s:
+        return [e.strip() for e in s.split(",") if e.strip()]
+    return ["tcp://localhost:7447"]
+
+
 class ZenohConfig(BaseModel):
-    """Configuration Zenoh."""
+    """Configuration Zenoh (host/IP configurable pour WSL2 et Reachy Wireless, voir issues Pollen #709, #677)."""
 
     mode: str = "client"
-    connect: list[str] = ["tcp://localhost:7447"]
+    connect: list[str] = Field(default_factory=_default_zenoh_connect)
     timeout: int = 1000
     retry_attempts: int = 3
 
