@@ -12,4 +12,5 @@ else:
 
         pass
 
+
 __all__ = ["StrEnum"]

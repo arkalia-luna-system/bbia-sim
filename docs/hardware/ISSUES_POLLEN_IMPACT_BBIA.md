@@ -17,6 +17,8 @@
 - **#764** GStreamer macOS → Doc Pollen ; BBIA utilise WebSocket/OpenCV, pas GStreamer pour le flux principal.
 - **#694** Conflit Matplotlib segfault → Si crash avec matplotlib, mettre à jour matplotlib / éviter usage concurrent avec backend GUI.
 - **#762 #758 #738** Apps / audio → Côté daemon officiel ; BBIA utilise son propre dashboard et API.
+- **#770** (Lite/macOS) Micro retourne silence jusqu'à reboot XMOS → Si détection tactile/audio sur Mac, redémarrer le module audio ou contourner.
+- **#765** GStreamer segfault sur GPU NVIDIA Blackwell (RTX 5080/5090) → Côté flux officiel ; BBIA utilise WebSocket/OpenCV.
 
 ## Variables d’environnement utiles
 

@@ -49,11 +49,17 @@ class RobotRegistry:
                 return []
 
             # Configuration Zenoh pour découverte (host configurable: WSL2/Wireless, issues Pollen #709 #677)
-            connect_url = os.environ.get("REACHY_ZENOH_CONNECT") or os.environ.get("BBIA_ZENOH_CONNECT") or "tcp://localhost:7447"
+            connect_url = (
+                os.environ.get("REACHY_ZENOH_CONNECT")
+                or os.environ.get("BBIA_ZENOH_CONNECT")
+                or "tcp://localhost:7447"
+            )
             connect_list = [e.strip() for e in connect_url.split(",") if e.strip()]
             config = Config()
             config.insert_json5("mode", '"client"')
-            config.insert_json5("connect", "[" + ", ".join(f'"{e}"' for e in connect_list) + "]")
+            config.insert_json5(
+                "connect", "[" + ", ".join(f'"{e}"' for e in connect_list) + "]"
+            )
 
             # Ouvrir session Zenoh
             self.session = zenoh.open(config)

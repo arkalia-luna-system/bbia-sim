@@ -32,7 +32,7 @@ dependencies = [
     # BBIA Core Dependencies
     "pyttsx3>=2.90",
     "SpeechRecognition>=3.10.0",
-    "sounddevice>=0.5.1,<0.6",                # Officiel v1.3.0
+    "sounddevice>=0.5.5,<0.6",                # Officiel v1.3.0 ; Dependabot #20 → 0.5.5
     "numpy>=1.26.4",
     "opencv-python>=4.8.0",
     "Pillow>=10.0.0",
