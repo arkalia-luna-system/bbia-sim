@@ -8,6 +8,10 @@
 
 ### 🤖 Reachy Mini - Installation et Maintenance
 
+- **[Fiche technique Reachy Mini](FICHE_TECHNIQUE_REACHY_MINI.md)** - Spec officielle (dimensions, moteurs, électronique)
+- **[Diagnostic moteurs (officiel)](DIAGNOSTIC_MOTEURS_OFFICIEL.md)** - Testbench, symptômes, reflash, inversion bras, lot QC 2544
+- **[Description problème et composants](DESCRIPTION_PROBLEME_ET_COMPOSANTS_REACHY_MINI.md)** - Diagnostic moteurs 12/14, commande pièces, procédure reconfig
+- **[Sans rien acheter – réparer](SANS_ACHETER_RIEN_REPARER.md)** - Reconfigurer les moteurs via SSH (sans U2D2)
 - **[Guide Installation Moteurs](GUIDE_INSTALLATION_MOTEURS_ETAPE_PAR_ETAPE.md)** - Guide complet d'installation
 - **[Guide Prévention Problèmes](GUIDE_PREVENTION_PROBLEMES_MOTEURS.md)** - Prévention et surveillance
 - **[Problèmes Moteurs QC Batch](PROBLEME_MOTEURS_QC_BATCH_DEC2025.md)** - Historique des problèmes
@@ -38,5 +42,6 @@
 
 ---
 
-**Dernière mise à jour** : 26 Janvier 2026  
+**Dernière mise à jour** : 7 Février 2026  
+**SDK Officiel Latest** : v1.3.0 (5 fév. 2026) — [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini)  
 **Statut Robot** : ✅ Reçu le 18 déc 2025, monté le 20 déc 2025. **Installation moteurs 1, 2, 4 effectuée** : slots 1 et 2 = QC 2549, slot 4 = QC 2548 (ou 2549). En attente de premier rallumage et validation.

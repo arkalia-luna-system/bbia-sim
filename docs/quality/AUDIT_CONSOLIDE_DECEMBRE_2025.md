@@ -3,7 +3,7 @@
 **Dernière mise à jour :** 26 Janvier 2026  
 **Version BBIA** : 1.4.0  
 **Version SDK Installée** : 1.2.3  
-**Version SDK Officiel Latest** : v1.2.13 (21 janvier 2026) ⚠️
+**Version SDK Officiel Latest** : v1.3.0 (5 février 2026) ⚠️
 
 ## 📦 STATUT ROBOT PHYSIQUE
 
@@ -31,7 +31,7 @@
 
 | Catégorie | Statut | Détails |
 |-----------|--------|---------|
-| **SDK Conformité** | ✅ 100% | Version 1.2.3 (v1.2.13 disponible) |
+| **SDK Conformité** | ✅ 100% | Version 1.2.3 (v1.3.0 disponible) |
 | **Fonctionnalités** | ✅ 95% | Parité + innovations |
 | **Tests** | ✅ 1,785+ | +42 nouveaux tests couverture |
 | **Documentation** | ✅ 219 MD | Complète |
@@ -45,9 +45,9 @@
 ### ⚠️ SDK - Mise à jour recommandée
 - Version installée : `1.2.3` (10 versions de retard)
 - Dernière version officielle : `v1.2.13` (21 janvier 2026)
-- Action recommandée : `pip install --upgrade reachy-mini` → `v1.2.13` (après installation des nouveaux moteurs)
+- Action recommandée : `pip install --upgrade reachy-mini` → `v1.3.0` (après installation des nouveaux moteurs)
 - Tests : Import SDK OK ✅ avec v1.2.3
-- Nouvelles fonctionnalités v1.2.4 → v1.2.13 : Outils calibration caméra, améliorations WebRTC, documentation reflash Pi macOS
+- Nouvelles fonctionnalités v1.2.4 → v1.3.0 : Outils calibration caméra, WebRTC, HF auth dashboard, SDK simplifié (remote → app), reflash Pi macOS
 
 ### ✅ Synchronisation Fine Mouvements Émotionnels
 - Module créé : `src/bbia_sim/bbia_emotional_sync.py`

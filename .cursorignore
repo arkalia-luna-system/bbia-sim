@@ -1,0 +1,30 @@
+# Cursor : ne pas indexer (réduit charge / bugs)
+venv/
+venv-voice/
+venv-vision/
+venv-vision-py310/
+venv-*/
+.venv/
+log/
+logs/
+*.log
+htmlcov/
+htmlcov_*/
+.coverage
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+artifacts/
+dist/
+build/
+__pycache__/
+*.pyc
+*.pt
+*.pth
+.DS_Store
+._*
+# Dossiers lourds (décommenter si encore lent)
+assets/
+tests/
+# presentation/
+# docs/

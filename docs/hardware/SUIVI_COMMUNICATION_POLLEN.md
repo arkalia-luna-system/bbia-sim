@@ -1,6 +1,6 @@
 # 📧 Suivi Communication avec Pollen Robotics
 
-**Dernière mise à jour** : 26 Janvier 2026
+**Dernière mise à jour** : 7 Février 2026
 
 ---
 

@@ -2,7 +2,7 @@
 
 **Dernière mise à jour** : 26 Janvier 2026  
 **Source** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini)  
-**Version SDK Officiel** : v1.2.13 (Latest - vérifié 26 Jan 2026)  
+**Version SDK Officiel** : v1.3.0 (Latest - vérifié 7 Fév 2026)  
 **Version SDK Installée BBIA** : 1.2.3 ⚠️  
 **Version BBIA** : 1.4.0  
 **Objectif** : Audit exhaustif des changements récents, conformité BBIA, analyse testeurs bêta, analyse de toutes les branches
@@ -16,7 +16,7 @@
 | Catégorie | Reachy Mini Officiel | BBIA-SIM | Statut |
 |-----------|---------------------|----------|--------|
 | **SDK Conformité** | ✅ 100% | ✅ 100% | ✅ **ÉGAL** |
-| **Version SDK** | ✅ v1.2.13 (Latest) | ⚠️ **1.2.3** | ⚠️ **10 versions de retard** |
+| **Version SDK** | ✅ v1.3.0 (Latest) | ⚠️ **1.2.3** | ⚠️ **11 versions de retard** |
 | **Émotions** | ✅ 6 émotions | ✅ **12 émotions** | ✅ **Différent** |
 | **Vision** | ⚠️ Basique | ✅ **YOLO + MediaPipe + SmolVLM2** | ✅ **Différent** |
 | **Voice** | ⚠️ Basique | ✅ **Whisper STT + pyttsx3 TTS** | ✅ **Différent** |
@@ -52,10 +52,10 @@
 
 ### Versions SDK Récentes
 
-**Dernière version** : **v1.2.13** (vérifié 26 Jan 2026)
+**Dernière version** : **v1.3.0** (vérifié 7 Fév 2026)
 
 **Releases disponibles** :
-- **v1.2.13** (Latest) - 21 janvier 2026
+- **v1.3.0** (Latest) - 5 février 2026
   - Fix apps installation, amélioration erreurs, documentation reflash Pi macOS
 - **v1.2.12** - Non publiée
 - **v1.2.11** - 14 janvier 2026
@@ -79,7 +79,7 @@
 **Statut BBIA** :
 1. ⚠️ Version installée : `1.2.3` (10 versions de retard)
 2. ✅ Compatibilité : Testée et validée avec v1.2.3
-3. ⚠️ Nouvelles fonctionnalités v1.2.4 → v1.2.13 non disponibles
+3. ⚠️ Nouvelles fonctionnalités v1.2.4 → v1.3.0 non disponibles
 
 ---
 
@@ -213,13 +213,13 @@
 #### 1. Version SDK
 
 **BBIA actuel** : Version installée **1.2.3** ⚠️ (10 versions de retard)  
-**SDK officiel** : v1.2.13 (Latest - 26 Jan 2026)
+**SDK officiel** : v1.3.0 (Latest - 7 Fév 2026)
 
 **Statut** :
 - ⚠️ Version installée : `1.2.3` (dernière version disponible : v1.2.13)
-- ⚠️ Mise à jour recommandée vers v1.2.13 après installation des nouveaux moteurs
+- ⚠️ Mise à jour recommandée vers v1.3.0 après installation des nouveaux moteurs
 - ✅ Compatibilité : Validée et testée avec v1.2.3
-- ⚠️ Nouvelles fonctionnalités v1.2.4 → v1.2.13 non disponibles (outils calibration caméra, améliorations WebRTC, etc.)
+- ⚠️ Nouvelles fonctionnalités v1.2.4 → v1.3.0 non disponibles (outils calibration caméra, WebRTC, HF auth, SDK simplifié, etc.)
 - ✅ Compatibilité : Validée et testée
 - ✅ Test compatibilité : Import SDK OK ✅
 

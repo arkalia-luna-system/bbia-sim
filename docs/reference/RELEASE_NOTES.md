@@ -1,6 +1,20 @@
 # Notes de version - BBIA-SIM
 
-**Dernière mise à jour :** 26 Janvier 2026
+**Dernière mise à jour :** 7 Février 2026
+
+## SDK Officiel Reachy Mini — v1.3.0 (5 février 2026)
+
+**Dernière version Pollen** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini) **v1.3.0** (5 fév. 2026).
+
+- **HF Space auth** sur le dashboard web
+- **WebRTC** : intégration pour apps JavaScript pures dans le navigateur
+- **SDK simplifié** : code de contrôle à distance déplacé dans une app (impact possible si vous utilisiez le remote côté SDK)
+- Documentation migrée sur Hugging Face ; ancienne doc supprimée
+- Calibration caméra améliorée, guide wireless, Ubuntu 22, portaudio, etc.
+
+**Recommandation BBIA** : Mettre à jour vers `pip install --upgrade reachy-mini` (v1.3.0) après installation des nouveaux moteurs. Vérifier compatibilité du contrôle à distance.
+
+---
 
 ## Version 1.4.1 - Intégration SDK v1.2.13 (26 Janvier 2026)
 
@@ -58,7 +72,7 @@ Intégration complète des nouvelles fonctionnalités du SDK Reachy Mini v1.2.13
 - ✅ **Robot Reachy Mini Wireless reçu** : 18 Décembre 2025
 - ✅ **Montage effectué** : 20 Décembre 2025
 - ✅ **5 moteurs reçus** : 17 Janvier 2026 (QC 2549) + 26 Janvier 2026 (QC 2548, QC 2542, QC 2543, QC 2544)
-- ✅ **SDK Reachy Mini** : Version installée 1.2.3 (dernière version officielle : v1.2.13 - 21 janvier 2026)
+- ✅ **SDK Reachy Mini** : Version installée 1.2.3 (dernière version officielle : v1.3.0 - 5 février 2026)
 - ✅ **Scripts de diagnostic créés** : Voir `examples/reachy_mini/`
 
 ## Version 1.4.0 - 100% d'exploitation des capacités

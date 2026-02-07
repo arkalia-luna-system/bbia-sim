@@ -142,7 +142,7 @@ Version 1.4.0 – Simulation complète avec exemples fonctionnels, tests et docu
 - 44 exemples disponibles
 - Qualité code vérifiée (Black, Ruff, MyPy, Bandit)
 
-Ce projet fournit une simulation du robot Reachy Mini dans MuJoCo, avec une intégration des modules BBIA (Bio-Inspired Artificial Intelligence) et une conformité avec le SDK officiel de Pollen Robotics (Oct / Nov. 2025).
+Ce projet fournit une simulation du robot Reachy Mini dans MuJoCo, avec une intégration des modules BBIA (Bio-Inspired Artificial Intelligence) et une conformité avec le SDK officiel de Pollen Robotics. **Aligné Pollen v1.3.0** (5 fév. 2026) : dépendances alignées, prêt pour le robot physique (Reachy Mini Wireless/Lite — démonter pour accès remote si besoin). Installer le SDK avec `pip install --upgrade reachy-mini` pour être au même niveau que Pollen.
 
 ## 🚀 Quick Start
 
@@ -1024,4 +1024,4 @@ Le robot Reachy Mini est simulé avec une fidélité élevée aux spécification
 
 ---
 
-*Dernière mise à jour : 26 Janvier 2026*
+*Dernière mise à jour : 7 Février 2026*

@@ -5,12 +5,12 @@
 **🎯 Validation complète de la conformité SDK officiel**  
 *21 méthodes implémentées • 37 tests passants • 100% conforme*
 
-**Version** : BBIA-SIM v1.4.0 • **Dernière mise à jour** : 26 Janvier 2026  
+**Version** : BBIA-SIM v1.4.0 • **Dernière mise à jour** : 7 Février 2026  
 **SDK Cible** : `reachy_mini` (Pollen Robotics × Hugging Face)  
 **Version SDK Installée** : 1.2.3  
-**Version SDK Officiel Latest** : v1.2.13 (21 janvier 2026)
+**Version SDK Officiel Latest** : v1.3.0 (5 février 2026)
 
-**État SDK** : Utiliser la **dernière version stable** de `reachy-mini` publiée sur PyPI (mise à jour régulière recommandée). Version actuelle BBIA : 1.2.3 (10 versions de retard). Mise à jour recommandée vers v1.2.13 après installation des nouveaux moteurs.
+**État SDK** : **Aligné Pollen v1.3.0** — Dépendances du projet (`pyproject.toml`) alignées sur le SDK officiel (motor_controller ≥1.5.3, zenoh ~1.7, kinematics ≥1.0.3, huggingface-hub ≥1.3.0, scipy &lt;2, websockets &lt;16, sounddevice 0.5.x). Installer le SDK avec `pip install --upgrade reachy-mini` pour être au même niveau que Pollen. En v1.3.0 le contrôle à distance a été déplacé dans une app (à prendre en compte si usage remote). **Projet prêt pour Reachy Mini physique** (démonter pour accès remote si besoin).
 
 Référence officielle: `pollen-robotics/reachy_mini` (GitHub) — voir `README` et instructions d’installation
 ([lien](https://github.com/pollen-robotics/reachy_mini)).
@@ -18,6 +18,15 @@ Référence officielle: `pollen-robotics/reachy_mini` (GitHub) — voir `README`
 [📚 Guide de démarrage](../guides/GUIDE_DEMARRAGE.md) • [🔍 Audit complet](../INDEX_AUDITS.md)
 
 </div>
+
+---
+
+### ✅ Alignement Pollen v1.3.0 (7 Février 2026)
+
+- **SDK cible** : `reachy-mini` **v1.3.0** (5 fév. 2026). Plus de décalage volontaire : le projet vise le même niveau que Pollen.
+- **Dépendances** : `pyproject.toml` aligné sur [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini) (motor_controller, zenoh, kinematics, huggingface-hub, scipy, websockets, sounddevice).
+- **Robot physique** : Projet prêt pour Reachy Mini (Wireless/Lite). Démonter le robot pour accès remote si besoin (maintenance, câblage).
+- **Documentation Cursor/lenteur** : Un seul guide de référence → [docs/development/ACCELERER_CURSOR.md](../development/ACCELERER_CURSOR.md). Les anciens MD à la racine redirigent vers lui.
 
 ---
 
