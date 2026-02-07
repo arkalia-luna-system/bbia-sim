@@ -77,7 +77,7 @@
 - **v1.0.0** - 30 octobre 2025 (Version stable initiale)
 
 **Statut BBIA** :
-1. ⚠️ Version installée : `1.2.3` (10 versions de retard)
+1. ⚠️ Version installée : `1.2.3` (11 versions de retard)
 2. ✅ Compatibilité : Testée et validée avec v1.2.3
 3. ⚠️ Nouvelles fonctionnalités v1.2.4 → v1.3.0 non disponibles
 
@@ -212,11 +212,11 @@
 
 #### 1. Version SDK
 
-**BBIA actuel** : Version installée **1.2.3** ⚠️ (10 versions de retard)  
+**BBIA actuel** : Version installée **1.2.3** ⚠️ (11 versions de retard)  
 **SDK officiel** : v1.3.0 (Latest - 7 Fév 2026)
 
 **Statut** :
-- ⚠️ Version installée : `1.2.3` (dernière version disponible : v1.2.13)
+- ⚠️ Version installée : `1.2.3` (dernière version disponible : v1.3.0)
 - ⚠️ Mise à jour recommandée vers v1.3.0 après installation des nouveaux moteurs
 - ✅ Compatibilité : Validée et testée avec v1.2.3
 - ⚠️ Nouvelles fonctionnalités v1.2.4 → v1.3.0 non disponibles (outils calibration caméra, WebRTC, HF auth, SDK simplifié, etc.)

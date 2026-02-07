@@ -43,8 +43,8 @@
 ## Actions Complétées
 
 ### ⚠️ SDK - Mise à jour recommandée
-- Version installée : `1.2.3` (10 versions de retard)
-- Dernière version officielle : `v1.2.13` (21 janvier 2026)
+- Version installée : `1.2.3` (11 versions de retard)
+- Dernière version officielle : `v1.3.0` (5 février 2026)
 - Action recommandée : `pip install --upgrade reachy-mini` → `v1.3.0` (après installation des nouveaux moteurs)
 - Tests : Import SDK OK ✅ avec v1.2.3
 - Nouvelles fonctionnalités v1.2.4 → v1.3.0 : Outils calibration caméra, WebRTC, HF auth dashboard, SDK simplifié (remote → app), reflash Pi macOS
