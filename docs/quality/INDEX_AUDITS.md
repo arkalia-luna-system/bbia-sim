@@ -1,46 +1,17 @@
-# Index des Audits - Janvier 2026
+# Index des Audits
 
-**Dernière mise à jour** : 21 Janvier 2026
-
----
-
-## Documents Principaux
-
-### 1. Audit Consolidé
-
-- **`AUDIT_CONSOLIDE_DECEMBRE_2025.md`** - Document unique consolidé
-  - Statut global + audit sécurité janvier 2026
-  - Actions complétées
-  - Ce qui manque (optionnel)
-  - Forces BBIA
-
-### 2. Audit Sécurité (21 Janvier 2026)
-
-- **53 vulnérabilités corrigées** dans les dépendances
-- **42 nouveaux tests** de couverture ajoutés
-- Modules `telemetry`, `model_optimizer`, `mapping_reachy` : 0% → ~100%
-
-### 3. Ce Qui Manque
-
-- **`CE_QUI_MANQUE_BBIA_DEC2025.md`** - Détails fonctionnalités manquantes (document consolidé)
-  - Synchronisation fine : FAIT
-  - Fluidité conversationnelle : FAIT
-  - WebRTC/MCP/DoA : Optionnel
-
-### 4. Audit Reachy Mini
-
-- **`AUDIT_REACHY_MINI_DECEMBRE_2025.md`** - Audit complet Reachy Mini
-  - Comparaison officiel vs BBIA
-  - Conformité SDK
-  - Fonctionnalités
+**Dernière mise à jour** : 7 Février 2026
 
 ---
 
-## Documents de Référence
+## Documents principaux
 
-- **`MISE_A_JOUR_REACHY_MINI_NOVEMBRE_2025.md`** - Mise à jour novembre
+- **[AUDIT_CONSOLIDE_DECEMBRE_2025.md](AUDIT_CONSOLIDE_DECEMBRE_2025.md)** — Statut global, sécurité, actions complétées
+- **[audits/AUDIT_REACHY_MINI_DECEMBRE_2025.md](audits/AUDIT_REACHY_MINI_DECEMBRE_2025.md)** — Audit Reachy Mini (conformité SDK, officiel vs BBIA)
+- **[compliance/CONFORMITE_REACHY_MINI_COMPLETE.md](compliance/CONFORMITE_REACHY_MINI_COMPLETE.md)** — Conformité SDK complète
+- **[compliance/CHECKLIST_FINALE_CONFORMITE.md](compliance/CHECKLIST_FINALE_CONFORMITE.md)** — Checklist conformité
 
 ---
 
-**Dernière mise à jour** : 21 Janvier 2026
+**Retour** : [README Qualité](README.md) • [Documentation](../README.md)
 

@@ -15,13 +15,9 @@
 | **Dashboard** | `python src/bbia_sim/dashboard_advanced.py` | Instant | [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) |
 | **Premier robot** | Voir guide | 5 min | [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) ⭐ |
 
-**Configuration :** Python 3.11+ requis • **Version** : v1.4.0 • **Dernière mise à jour** : 26 Janvier 2026
+**Version** : v1.4.0 • **Dernière mise à jour** : 7 Février 2026
 
-**Mise à jour 26 Janvier 2026** :
-- 44 exemples disponibles
-- Comportements, endpoints et modules avec exemples dédiés
-
-> **💡 Astuce** : Si vous êtes perdu, consultez d'abord le [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) qui vous guidera étape par étape.
+> **💡 Départ** : [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md)
 
 ---
 
@@ -108,9 +104,8 @@
 
 ### ⚡ Performance
 
-- [Optimisations Performance](quality/performance/OPTIMISATIONS_PERFORMANCE_DEC2025.md) — Optimisations complètes
-- [Résumé Performance](quality/performance/RESUME_PERFORMANCE_CORRECTIONS_2025.md) — Résumé optimisations
-- [Watchdog Implementation](quality/performance/WATCHDOG_IMPLEMENTATION.md) — Implémentation watchdog
+- [Optimisations Performance](quality/performance/OPTIMISATIONS_PERFORMANCE_DEC2025.md) — Optimisations
+- [Watchdog](quality/performance/WATCHDOG_IMPLEMENTATION.md) — Implémentation watchdog
 
 ### 🎯 Simulation
 
@@ -118,16 +113,10 @@
 - [Guide MuJoCo](simulations/MUJOCO_SIMULATION_GUIDE.md) — Simulation 3D
 - [Observabilité](observabilite/OBSERVABILITE.md) — Logs, metrics, santé
 
-### 📊 Analyses & Rapports
+### 📊 Qualité & Audits
 
-- [Analyse Modules Non Prioritaires](quality/audits/modules-non-prioritaires.md) — Analyse modules
-- [Analyse Coverage](quality/audits/AUDIT_COVERAGE_IMPORTS.md) — Analyse code coverage
-- [Analyse Unity AR](quality/audits/unity-ar.md) — Évaluation Unity AR
-- [Guide Dashboard](dashboard/README.md) — Documentation dashboard
-
-### 🔧 Corrections & Améliorations
-
-- [Index Audits](quality/INDEX_AUDITS.md) — Tous les audits et corrections
+- [Index Audits](quality/INDEX_AUDITS.md) — Audits et conformité
+- [Guide Dashboard](dashboard/README.md) — Dashboard
 
 ### 📋 Références
 
@@ -175,24 +164,6 @@ export BBIA_TELEMETRY_TIMEOUT=1.0
 
 ---
 
-**Note :** Ce fichier est l'index principal de la documentation. Tous les documents sont organisés dans des sous-dossiers par catégorie.
+**Retour** : [README](README.md) • [Index Thématique](reference/INDEX_THEMATIQUE.md)
 
----
-
-## 📋 Organisation de la Documentation
-
-La documentation a été réorganisée le **26 Janvier 2026** pour une meilleure navigation :
-
-- ✅ **Dossiers vides supprimés** : `rapports/`, `semaines/`
-- ✅ **Fichiers obsolètes archivés** : Voir `docs/_archive/`
-- ✅ **Doublons fusionnés** : Style guides, tâches restantes
-- ✅ **README créés** : Tous les dossiers principaux ont maintenant un README
-
----
-
-## 🎯 Navigation
-
-**Retour à** : [README Documentation](README.md)
-**Voir aussi** : [Index Thématique](reference/INDEX_THEMATIQUE.md)
-
-**Dernière mise à jour** : 26 Janvier 2026
+**Dernière mise à jour** : 7 Février 2026

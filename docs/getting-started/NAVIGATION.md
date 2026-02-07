@@ -72,7 +72,6 @@ docs/
 **Performance**
 
 - [Optimisations Performance](../quality/performance/OPTIMISATIONS_PERFORMANCE_DEC2025.md)
-- [Résumé Performance](../quality/performance/RESUME_PERFORMANCE_CORRECTIONS_2025.md)
 
 ---
 

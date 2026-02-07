@@ -72,7 +72,7 @@ Intégration complète des nouvelles fonctionnalités du SDK Reachy Mini v1.2.13
 - ✅ **Robot Reachy Mini Wireless reçu** : 18 Décembre 2025
 - ✅ **Montage effectué** : 20 Décembre 2025
 - ✅ **5 moteurs reçus** : 17 Janvier 2026 (QC 2549) + 26 Janvier 2026 (QC 2548, QC 2542, QC 2543, QC 2544)
-- ✅ **SDK Reachy Mini** : Version installée 1.2.3 (dernière version officielle : v1.3.0 - 5 février 2026)
+- ✅ **SDK Reachy Mini** : Version installée **v1.3.0** (7 février 2026) — à jour avec Pollen
 - ✅ **Scripts de diagnostic créés** : Voir `examples/reachy_mini/`
 
 ## Version 1.4.0 - 100% d'exploitation des capacités

@@ -2,7 +2,7 @@
 
 **Dernière mise à jour :** 26 Janvier 2026  
 **Version BBIA** : 1.4.0  
-**Version SDK Installée** : 1.2.3  
+**Version SDK Installée** : **v1.3.0** (7 fév. 2026)  
 **Version SDK Officiel Latest** : v1.3.0 (5 février 2026) ⚠️
 
 ## 📦 STATUT ROBOT PHYSIQUE
@@ -31,7 +31,7 @@
 
 | Catégorie | Statut | Détails |
 |-----------|--------|---------|
-| **SDK Conformité** | ✅ 100% | Version 1.2.3 (v1.3.0 disponible) |
+| **SDK Conformité** | ✅ 100% | Version v1.3.0 (7 fév. 2026) — à jour Pollen |
 | **Fonctionnalités** | ✅ 95% | Parité + innovations |
 | **Tests** | ✅ 1,785+ | +42 nouveaux tests couverture |
 | **Documentation** | ✅ 219 MD | Complète |
@@ -43,10 +43,10 @@
 ## Actions Complétées
 
 ### ⚠️ SDK - Mise à jour recommandée
-- Version installée : `1.2.3` (11 versions de retard)
+- Version installée : **v1.3.0** (7 fév. 2026) — à jour avec Pollen
 - Dernière version officielle : `v1.3.0` (5 février 2026)
 - Action recommandée : `pip install --upgrade reachy-mini` → `v1.3.0` (après installation des nouveaux moteurs)
-- Tests : Import SDK OK ✅ avec v1.2.3
+- Tests : Import SDK OK ✅ avec v1.3.0
 - Nouvelles fonctionnalités v1.2.4 → v1.3.0 : Outils calibration caméra, WebRTC, HF auth dashboard, SDK simplifié (remote → app), reflash Pi macOS
 
 ### ✅ Synchronisation Fine Mouvements Émotionnels

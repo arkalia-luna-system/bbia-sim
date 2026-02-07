@@ -7,7 +7,7 @@
 
 **Version** : BBIA-SIM v1.4.0 • **Dernière mise à jour** : 7 Février 2026  
 **SDK Cible** : `reachy_mini` (Pollen Robotics × Hugging Face)  
-**Version SDK Installée** : 1.2.3  
+**Version SDK Installée** : **v1.3.0** (7 fév. 2026)  
 **Version SDK Officiel Latest** : v1.3.0 (5 février 2026)
 
 **État SDK** : **Aligné Pollen v1.3.0** — Dépendances du projet (`pyproject.toml`) alignées sur le SDK officiel (motor_controller ≥1.5.3, zenoh ~1.7, kinematics ≥1.0.3, huggingface-hub ≥1.3.0, scipy &lt;2, websockets &lt;16, sounddevice 0.5.x). Installer le SDK avec `pip install --upgrade reachy-mini` pour être au même niveau que Pollen. En v1.3.0 le contrôle à distance a été déplacé dans une app (à prendre en compte si usage remote). **Projet prêt pour Reachy Mini physique** (démonter pour accès remote si besoin).

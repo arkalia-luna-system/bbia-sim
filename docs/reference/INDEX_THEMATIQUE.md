@@ -17,7 +17,7 @@
 
 - État par axe (référence): `docs/reference/project-status.md`
 - Observabilité (logs JSON, /metrics, liveness/readiness): `docs/observabilite/OBSERVABILITE.md`
-- Performance (analyses, optimisations): `docs/quality/performance/OPTIMISATIONS_PERFORMANCE_DEC2025.md`, `docs/quality/performance/RESUME_PERFORMANCE_CORRECTIONS_2025.md`
+- Performance (analyses, optimisations): `docs/quality/performance/OPTIMISATIONS_PERFORMANCE_DEC2025.md`
 
 ## API / SDK / Front
 

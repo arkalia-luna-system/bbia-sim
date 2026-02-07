@@ -4,9 +4,9 @@
 **Dernière vérification** : 7 Février 2026  
 **Repo analysé** : https://github.com/pollen-robotics/reachy_mini  
 **Dernière version** : **v1.3.0** (5 février 2026)  
-**Version précédente** : v1.2.13 (21 janvier 2026)  
-**Version installée BBIA** : 1.2.3  
-**Note** : 11 versions de retard (v1.2.3 → v1.3.0)
+**Version précédente** : v1.2.13 (21 janvier 2026) — BBIA à jour en v1.3.0 (7 fév. 2026)  
+**Version installée BBIA** : **1.3.0** (7 février 2026)  
+**Note** : À jour avec Pollen (v1.3.0)
 
 ---
 
@@ -27,9 +27,9 @@
 | **v1.2.6** | 3 janvier 2026 | ⚠️ Problèmes connus | Crashes, erreurs IK |
 | **v1.2.5** | 26 décembre 2025 | ✅ Stable | - |
 | **v1.2.4** | 22 décembre 2025 | ✅ Stable | - |
-| **v1.2.3** | 18 décembre 2025 | ✅ Stable | Version installée BBIA |
+| **v1.2.3** | 18 décembre 2025 | ✅ Stable | - |
 
-**⚠️ IMPORTANT** : Vous êtes sur v1.2.3, la dernière version stable est **v1.3.0** (5 fév. 2026). **Mise à jour recommandée** après installation des nouveaux moteurs.
+**✅ À JOUR** : BBIA utilise **v1.3.0** (5 fév. 2026). Sur le robot physique (Pi), mettre à jour après installation des moteurs : `pip install --upgrade reachy-mini`.
 
 ---
 
@@ -163,11 +163,11 @@
 
 ### **1. Versions SDK**
 
-**Vous avez** : v1.2.3  
+**Vous avez** : **v1.3.0** (7 fév. 2026) ✅  
 **Dernière version** : **v1.3.0** (5 fév. 2026)  
-**Différence** : 11 versions de retard (v1.2.3 → … → v1.2.13 → v1.3.0)
+**Différence** : À jour avec Pollen.
 
-**Recommandation** : Mettre à jour vers **v1.3.0** après installation des nouveaux moteurs. Vérifier la compatibilité du « remote control » (déplacé dans une app en v1.3.0).
+**Recommandation** : Sur le robot physique (Pi), exécuter `pip install --upgrade reachy-mini` après installation des moteurs. Vérifier la compatibilité du « remote control » (déplacé dans une app en v1.3.0).
 
 ### **2. Outils de diagnostic**
 
@@ -270,7 +270,7 @@
 
 ---
 
-**En résumé** : Vous avez 11 versions de retard (v1.2.3 → v1.3.0). La dernière version (**v1.3.0**, 5 fév. 2026) apporte auth HF sur le dashboard, WebRTC pour apps navigateur, SDK simplifié (remote déplacé en app), et les améliorations moteurs/caméra des v1.2.x. Mise à jour recommandée après installation des nouveaux moteurs ; vérifier l’usage du contrôle à distance. 🚀
+**En résumé** : BBIA est à jour en **v1.3.0** (7 fév. 2026). La dernière version officielle (5 fév. 2026) apporte auth HF sur le dashboard, WebRTC pour apps navigateur, SDK simplifié (remote déplacé en app), et les améliorations moteurs/caméra des v1.2.x. Sur le Pi (robot physique), faire `pip install --upgrade reachy-mini` après installation des moteurs. 🚀
 
 ---
 
