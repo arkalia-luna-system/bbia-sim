@@ -1,12 +1,12 @@
 # 🔍 Analyse Complète du Repo Officiel Reachy Mini - Janvier / Février 2026
 
 **Date d'analyse** : 26 Janvier 2026  
-**Dernière vérification** : 7 Février 2026  
+**Dernière vérification** : 9 Mars 2026  
 **Repo analysé** : https://github.com/pollen-robotics/reachy_mini  
-**Dernière version** : **v1.3.0** (5 février 2026)  
-**Version précédente** : v1.2.13 (21 janvier 2026) — BBIA à jour en v1.3.0 (7 fév. 2026)  
-**Version installée BBIA** : **1.3.0** (7 février 2026)  
-**Note** : À jour avec Pollen (v1.3.0)
+**Dernière version** : **v1.5.0** (5 mars 2026)  
+**Version précédente** : v1.3.0 (5 février 2026) — série v1.2.x analysée ci‑dessous  
+**Version installée BBIA (référence)** : **1.3.0+** (environnement compatible, deps critiques alignées v1.5.0)  
+**Note** : BBIA suit la branche stable Pollen (v1.5.0) pour les dépendances clés (numpy 2.x, motor_controller ≥1.5.5, kinematics, zenoh, websockets, huggingface-hub).
 
 ---
 
@@ -16,7 +16,8 @@
 
 | Version | Date | Statut | Notes |
 |---------|------|--------|-------|
-| **v1.3.0** | 5 février 2026 | ✅ **Latest** | Dernière version stable (HF auth, WebRTC, SDK simplifié) |
+| **v1.5.0** | 5 mars 2026 | ✅ **Latest** | Dernière version stable (mise à jour deps : numpy 2.x, motor_controller ≥1.5.5, nouveaux paquets système, uv, gstreamer-bundle, etc.) |
+| **v1.3.0** | 5 février 2026 | ✅ Stable | HF auth dashboard, WebRTC, SDK simplifié (remote → app) |
 | **v1.2.13** | 21 janvier 2026 | ✅ Stable | - |
 | **v1.2.12** | - | ✅ Stable | - |
 | **v1.2.11** | 14 janvier 2026 | ✅ Stable | - |

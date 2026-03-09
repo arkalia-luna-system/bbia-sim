@@ -1,6 +1,6 @@
 # Fiche technique du matériel Reachy Mini
 
-**Source** : Documentation officielle Reachy Mini (Hugging Face / Pollen Robotics), v1.3.0 (5 fév. 2026).
+**Source** : Documentation officielle Reachy Mini (Hugging Face / Pollen Robotics), v1.5.0 (5 mars 2026).
 
 ---
 

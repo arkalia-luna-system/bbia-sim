@@ -2,9 +2,9 @@
 # ═══════════════════════════════════════════════════════════════════════════
 # À exécuter UNIQUEMENT SUR LE ROBOT (en SSH), pas sur ton Mac.
 # ═══════════════════════════════════════════════════════════════════════════
-# 1. Sur ton Mac :  ssh pollen@192.168.129.64
+# 1. Sur ton Mac :  ssh pollen@<ROBOT_IP>   (remplacer par l'IP réelle du robot)
 # 2. Sur le robot : bash install_and_run_testbench_on_robot.sh
-# 3. Sur ton Mac, dans le navigateur : http://192.168.129.64:8042
+# 3. Sur ton Mac, navigateur : http://<ROBOT_IP>:8042
 #    (PAS http://0.0.0.0:8042 — 0.0.0.0 ne s'ouvre pas dans le navigateur.)
 # ═══════════════════════════════════════════════════════════════════════════
 
@@ -13,7 +13,7 @@ set -e
 # Vérifier qu'on est bien sur le robot (systemd existe, pas sur macOS)
 if ! command -v systemctl >/dev/null 2>&1; then
   echo "❌ ERREUR: Ce script doit être exécuté SUR LE ROBOT (en SSH), pas sur ton Mac."
-  echo "   Sur ton Mac lance:  ssh pollen@192.168.129.64"
+  echo "   Sur ton Mac lance:  ssh pollen@<ROBOT_IP>"
   echo "   Puis sur le robot: bash install_and_run_testbench_on_robot.sh"
   exit 1
 fi
@@ -58,7 +58,7 @@ echo "   Pour les diagnostics moteurs: arrêter le démon (sudo systemctl stop r
 echo ""
 echo "🚀 Lancement de l'app (port 8042) SUR CE ROBOT..."
 echo ""
-echo "   Depuis ton Mac, ouvre dans le navigateur:  http://192.168.129.64:8042"
-echo "   (remplace 192.168.129.64 par l'IP du robot si différente)"
+echo "   Depuis ton Mac, ouvre:  http://<ROBOT_IP>:8042"
+echo "   (remplace <ROBOT_IP> par l'IP réelle du robot)"
 echo ""
 python -m reachy_mini_testbench.main

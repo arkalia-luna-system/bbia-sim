@@ -90,3 +90,8 @@ installed_apps/
 
 # Archive de documentation (fichiers redondants/obsolètes)
 docs/_archive/
+
+# Captures d'écran / diagnostics (peuvent contenir IP, infos perso)
+assets/Capture*.png
+assets/*screenshot*
+assets/*capture*

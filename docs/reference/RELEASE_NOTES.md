@@ -2,9 +2,9 @@
 
 **Dernière mise à jour :** 7 Février 2026
 
-## SDK Officiel Reachy Mini — v1.3.0 (5 février 2026)
+## SDK Officiel Reachy Mini — v1.5.0 (5 mars 2026)
 
-**Dernière version Pollen** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini) **v1.3.0** (5 fév. 2026).
+**Dernière version Pollen** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini) **v1.5.0** (5 mars 2026).
 
 - **HF Space auth** sur le dashboard web
 - **WebRTC** : intégration pour apps JavaScript pures dans le navigateur
@@ -12,7 +12,7 @@
 - Documentation migrée sur Hugging Face ; ancienne doc supprimée
 - Calibration caméra améliorée, guide wireless, Ubuntu 22, portaudio, etc.
 
-**Recommandation BBIA** : Mettre à jour vers `pip install --upgrade reachy-mini` (v1.3.0) après installation des nouveaux moteurs. Vérifier compatibilité du contrôle à distance.
+**Recommandation BBIA** : Mettre à jour vers `pip install --upgrade reachy-mini` (v1.5.0) après installation des nouveaux moteurs. Vérifier compatibilité du contrôle à distance (remote déplacé dans une app depuis v1.3.0).
 
 ---
 

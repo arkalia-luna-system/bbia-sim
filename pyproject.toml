@@ -33,7 +33,7 @@ dependencies = [
     "pyttsx3>=2.90",
     "SpeechRecognition>=3.10.0",
     "sounddevice>=0.5.5,<0.6",                # Officiel v1.3.0 ; Dependabot #20 → 0.5.5
-    "numpy>=1.26.4",
+    "numpy>=2.2.5",
     "opencv-python>=4.8.0",
     "Pillow>=10.0.0",
     "mujoco>=2.1.0",
@@ -44,8 +44,8 @@ dependencies = [
     "pydantic-settings>=2.0.0",
     "python-multipart>=0.0.18",
     
-    # SDK Officiel Reachy Mini — aligné Pollen v1.3.0 (5 fév. 2026)
-    "reachy_mini_motor_controller>=1.5.3",   # Officiel v1.3.0
+    # SDK Officiel Reachy Mini — aligné Pollen v1.5.0 (5 mars 2026)
+    "reachy_mini_motor_controller>=1.5.5",   # Officiel v1.5.0
     "eclipse-zenoh>=1.7.0,<1.8.0",          # Officiel ~=1.7.0
     "reachy-mini-rust-kinematics>=1.0.3",   # Officiel v1.3.0
     "cv2_enumerate_cameras>=1.2.1",

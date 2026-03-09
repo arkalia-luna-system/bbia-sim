@@ -5,7 +5,7 @@ Si depuis le Mac tu as « Timeout while waiting for connection with the server �
 lance ce script : il copie et exécute la procédure directement sur le robot.
 
 Usage (depuis le Mac, même réseau que le robot) :
-    python3 examples/reachy_mini/fix_motors_1_2_overload_ssh.py --robot-ip 192.168.129.64
+    python3 examples/reachy_mini/fix_motors_1_2_overload_ssh.py --robot-ip <ROBOT_IP>
     python3 examples/reachy_mini/fix_motors_1_2_overload_ssh.py --robot-ip reachy-mini.local
 
 Ou en SSH sur le robot :
@@ -34,7 +34,7 @@ except ImportError:
     sys.exit(1)
 
 # IP du robot (passée en env par le launcher) pour que Zenoh trouve le daemon sur le réseau local
-ROBOT_IP = os.environ.get("REACHY_ROBOT_IP", "192.168.129.64")
+ROBOT_IP = os.environ.get("REACHY_ROBOT_IP", "reachy-mini.local")
 
 print("🔧 DÉBLOCAGE MOTEURS 1 ET 2 (surcharge)")
 print("=" * 60)
@@ -104,8 +104,8 @@ def main() -> None:
     parser.add_argument(
         "--robot-ip",
         type=str,
-        default="192.168.129.64",
-        help="IP ou hostname du robot (défaut: 192.168.129.64)",
+        default="reachy-mini.local",
+        help="IP ou hostname du robot (ex: reachy-mini.local ou 192.168.x.x)",
     )
     parser.add_argument(
         "--user",
@@ -116,7 +116,7 @@ def main() -> None:
     args = parser.parse_args()
 
     if args.robot_ip == "<ROBOT_IP>" or not args.robot_ip.strip():
-        print("❌ Indique l'IP du robot: --robot-ip 192.168.129.64 (ou reachy-mini.local)")
+        print("❌ Indique l'IP du robot: --robot-ip <IP> ou --robot-ip reachy-mini.local")
         sys.exit(1)
 
     print("🔧 DÉBLOCAGE MOTEURS 1 ET 2 – Via SSH")

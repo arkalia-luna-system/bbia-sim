@@ -4,6 +4,8 @@
 **Robot** : Reachy Mini Wireless (Pollen Robotics)  
 **Objectif** : Décrire le problème et lister les composants (moteurs, câbles, connecteurs) pour pouvoir commander des pièces de rechange (AliExpress, Robotis, etc.).
 
+> **Note** : Dans ce doc, `<ROBOT_IP>` est un placeholder. Remplace par l’IP réelle de ton robot (ex. `192.168.x.x`) quand tu exécutes les commandes. Ne pas versionner ton IP sur GitHub.
+
 ---
 
 ## Récap complet – ce qui s’est passé et pourquoi ça va ou ça ne va pas
@@ -15,14 +17,14 @@
 3. **Reflash** : Au début le reflash échouait au moteur 12. Après démontage/remontage complet, **`reachy-mini-reflash-motors`** a réussi : **tous les moteurs 10 à 18** sont détectés et reconfigurés (offsets, limites, etc.) ✅
 4. **Après reflash** : Au wakeup (allumage / ouverture dashboard), le robot **essaie de se lever**, **se tord**, **tous les moteurs clignotent une ou deux fois**, puis **plus rien** (plus de mouvement). Tu n’as pas encore pu le faire bouger correctement à la main.
 5. **Script de déblocage** : On a un script (`fix_motors_1_2_overload_ssh.py`) qui doit désactiver les moteurs 5 s, réactiver, puis envoyer un mouvement très lent vers neutre. **Problème** : quand tu le lances depuis le Mac, il copie le script sur le robot et l’exécute en SSH, mais **sur le robot le script ne trouve pas le daemon** (connexion Zenoh timeout). Donc le script ne peut pas piloter le robot.
-6. **Réseau** : Chez toi **`reachy-mini.local`** ne se résout pas (Unknown host). Il faut utiliser **l’IP** : **192.168.129.64**. Avec cette IP : ping OK, SSH OK, daemon actif.
+6. **Réseau** : **`reachy-mini.local`** peut ne pas se résoudre (mDNS). Utiliser **l’IP du robot** (ex. `192.168.x.x`). Avec cette IP : ping OK, SSH OK, daemon actif. *(Ne pas versionner ton IP réelle : utiliser `<ROBOT_IP>` dans les exemples.)*
 
 ### Ce qui va ✅
 
 | Élément | Statut |
 |--------|--------|
-| **Robot allumé, même WiFi que le Mac** | OK (ping 192.168.129.64 répond) |
-| **SSH sur le robot** | OK (`ssh pollen@192.168.129.64`, mot de passe) |
+| **Robot allumé, même WiFi que le Mac** | OK (ping \<ROBOT_IP\> répond) |
+| **SSH sur le robot** | OK (`ssh pollen@<ROBOT_IP>`, mot de passe utilisateur robot) |
 | **Daemon Reachy Mini** | OK (`systemctl status reachy-mini-daemon` → active (running)) |
 | **Reflash moteurs** | OK – tous les moteurs 10–18 détectés et configurés |
 | **Bus moteurs (câbles, connecteurs)** | OK – sinon le reflash n’aurait pas vu tous les moteurs |
@@ -32,19 +34,19 @@
 | Problème | Cause probable | Où on en est |
 |----------|-----------------|--------------|
 | **Au wakeup : robot se tord, moteurs clignotent, puis plus rien** | La **pose par défaut** (neutre / « look ahead ») envoyée au réveil ne correspond pas à la géométrie réelle (offsets pas parfaits après remplacement moteurs) → les moteurs forcent → **surcharge** → clignotement puis arrêt. | Pas résolu. Il faudrait soit une **calibration/offsets** (outil Pollen), soit réussir à envoyer un mouvement plus doux avant (notre script). |
-| **Script de déblocage ne peut pas piloter le robot** | Le script s’exécute **sur le robot** et se connecte au **daemon via Zenoh**. Sur ton setup, le **client Zenoh** (SDK dans le script) ne trouve pas le **serveur Zenoh** du daemon (timeout). Soit le daemon n’expose Zenoh qu’en WiFi et pas en localhost, soit autre config réseau. | On a modifié le script pour utiliser `localhost_only=False` sur le robot (pour chercher le daemon sur le réseau local). **À retester** : relancer `fix_motors_1_2_overload_ssh.py --robot-ip 192.168.129.64` et voir si ça connecte. |
-| **Depuis le Mac : timeout si on lance le script direct** | Le SDK Reachy (Zenoh) depuis le Mac ne trouve pas le robot sur le réseau (découverte Zenoh ne résout pas 192.168.129.64). | Contournement : on utilise la **version SSH** du script (le script tourne sur le robot, pas sur le Mac). |
-| **`reachy-mini.local` ne marche pas** | mDNS (Bonjour) ne résout pas ce nom sur ton réseau. | Utiliser **192.168.129.64** partout (SSH, script, dashboard). |
-| **Testbench (port 8042) affiche « DÉMON OFF »** | L’app Testbench (Hugging Face) se connecte au démon avec `connection_mode="localhost_only"`. Sur **Reachy Wireless**, le démon écoute sur l’**IP WiFi** (ex. 192.168.129.64), pas sur 127.0.0.1, donc le client ne le trouve jamais. | Le script `install_and_run_testbench_on_robot.sh` applique un patch : il remplace `localhost_only` par `network` dans le code du Testbench. Relancer l’install + l’app après un `git pull` du repo Testbench si le patch a été écrasé. **Même avec le patch**, si tu vois « Network connection attempt failed » : **démarre le démon avant** le Testbench (`sudo systemctl start reachy-mini-daemon`), puis lance le script. Sur certains robots la découverte Zenoh ne trouve pas le démon sur la même machine ; dans ce cas le dashboard 8000 reste la voie pour piloter le robot. |
-| **Testbench : scan / positions / check_all en 503** | Les endpoints « moteurs » (scan, positions, check_all, scan_baudrates) ont besoin du **port série** en accès exclusif. Quand le **démon Reachy Mini tourne**, il garde le port ouvert → le Testbench ne peut pas l’ouvrir → 503. | C’est normal : **soit** le démon tourne (dashboard 8000 + éventuellement DÉMON ON sur 8042), **soit** tu arrêtes le démon pour utiliser les diagnostics moteurs du Testbench (`sudo systemctl stop reachy-mini-daemon` puis relancer le Testbench). Tu ne peux pas avoir les deux en même temps sur le même port. |
-| **`curl localhost:8000` ne retourne rien (sur le robot)** | Sur Reachy Wireless le démon écoute souvent sur l’**IP WiFi** (ex. 192.168.129.64), pas sur 127.0.0.1. | Tester depuis le robot : `curl -sS http://192.168.129.64:8000/api/daemon/status` (avec l’IP du robot). Ou depuis le Mac : ouvrir http://192.168.129.64:8000 dans le navigateur. |
-| **Après wakeup sur le 8000 : le robot n’est plus détecté / plus de réponse** | Le wakeup peut mettre le démon dans un mauvais état (erreurs IK, « Head is not… FK » dans les logs). | **Redémarrer le démon** sur le robot : `sudo systemctl restart reachy-mini-daemon`. Attendre ~10 s, puis réessayer le dashboard 8000 ou le Testbench 8042. |
-| **Testbench lancé sur le Mac au lieu du robot (0.0.0.0:8042)** | Le script doit être exécuté **sur le robot** en SSH. Si tu le lances sur le Mac, l’app écoute sur le Mac et tu ne vois pas le robot. | **Sur le Mac** : `ssh pollen@192.168.129.64`. **Sur le robot** : `bash install_and_run_testbench_on_robot.sh`. **Puis sur le Mac** : ouvrir **http://192.168.129.64:8042** (pas http://0.0.0.0:8042). |
+| **Script de déblocage ne peut pas piloter le robot** | Le script s’exécute **sur le robot** et se connecte au **daemon via Zenoh**. Le **client Zenoh** peut ne pas trouver le **serveur Zenoh** du daemon (timeout). | Utiliser `localhost_only=False` sur le robot. **À retester** : `fix_motors_1_2_overload_ssh.py --robot-ip <ROBOT_IP>`. |
+| **Depuis le Mac : timeout si on lance le script direct** | Le SDK (Zenoh) depuis le Mac ne trouve pas le robot sur le réseau. | Contournement : **version SSH** du script (exécution sur le robot). |
+| **`reachy-mini.local` ne marche pas** | mDNS (Bonjour) ne résout pas ce nom. | Utiliser **l’IP du robot** partout (SSH, script, dashboard). |
+| **Testbench (port 8042) affiche « DÉMON OFF »** | Sur **Reachy Wireless** le démon écoute sur l’**IP WiFi**, pas sur 127.0.0.1. | Script `install_and_run_testbench_on_robot.sh` : patch `localhost_only` → `network`. Démarrer le démon avant le Testbench. Sinon dashboard http://\<ROBOT_IP\>:8000. |
+| **Testbench : scan / positions / check_all en 503** | Le démon garde le port série en exclusivité. | **Soit** démon actif (dashboard 8000), **soit** `sudo systemctl stop reachy-mini-daemon` puis Testbench pour diagnostic moteurs. |
+| **`curl localhost:8000` ne retourne rien (sur le robot)** | Sur Reachy Wireless le démon écoute sur l’**IP WiFi**. | Depuis le robot : `curl -sS http://<ROBOT_IP>:8000/api/daemon/status`. Depuis le Mac : http://\<ROBOT_IP\>:8000. |
+| **Après wakeup sur le 8000 : le robot n’est plus détecté** | Wakeup peut mettre le démon dans un mauvais état. | **Redémarrer** : `sudo systemctl restart reachy-mini-daemon`, attendre ~10 s. |
+| **Testbench lancé sur le Mac au lieu du robot** | L’app doit tourner **sur le robot** en SSH. | **Mac** : `ssh pollen@<ROBOT_IP>`. **Robot** : `bash install_and_run_testbench_on_robot.sh`. **Mac** : http://\<ROBOT_IP\>:8042. |
 
 ### En résumé
 
 - **Côté matériel / bus / reflash** : tout est OK (moteurs vus, reflash réussi).
-- **Côté logiciel / utilisation** : au réveil le robot envoie une pose qui provoque surcharge et clignotement ; on n’a pas encore réussi à faire tourner le script de déblocage jusqu’au bout parce que la **connexion Zenoh** (script sur le robot → daemon) timeout. Prochaine étape logique : **retester le script** avec la dernière version (`localhost_only=False` sur le robot). Si ça timeout encore, il restera soit d’utiliser le **dashboard en HTTP** (http://192.168.129.64:8000) pour envoyer à la main des mouvements doux, soit une procédure **calibration/offsets** côté Pollen.
+- **Côté logiciel / utilisation** : au réveil le robot envoie une pose qui provoque surcharge et clignotement ; on n’a pas encore réussi à faire tourner le script de déblocage jusqu’au bout parce que la **connexion Zenoh** (script sur le robot → daemon) timeout. Prochaine étape logique : **retester le script** avec la dernière version (`localhost_only=False` sur le robot). Si ça timeout encore, il restera soit d’utiliser le **dashboard en HTTP** (http://\<ROBOT_IP\>:8000) pour envoyer à la main des mouvements doux, soit une procédure **calibration/offsets** côté Pollen.
 
 ---
 
@@ -300,7 +302,7 @@ Après démontage/remontage (sans capot si besoin).
 1. **Même réseau** : ton Mac et le Reachy sur le **même Wi‑Fi**.
 2. **Dans le navigateur** :
    - `http://reachy-mini.local:8000`  
-   - ou `http://192.168.129.64:8000` (remplace par l’IP du robot si différente).
+   - ou `http://<ROBOT_IP>:8000` (remplace \<ROBOT_IP\> par l’IP réelle du robot).
 3. **Dashboard** : tu devrais voir l’interface Reachy Mini (état, applications, etc.).
 
 ### 9.3 Vérifier que tout fonctionne
@@ -308,7 +310,7 @@ Après démontage/remontage (sans capot si besoin).
 - **Pas d’erreur** type « Missing motors » ou « No motor found » → OK.
 - **Si erreur** : noter le message (ex. quels moteurs manquants), puis en SSH sur le robot :
   ```bash
-  ssh pollen@192.168.129.64
+  ssh pollen@<ROBOT_IP>
   # mot de passe : root
   reachy-mini-reflash-motors
   ```
@@ -339,7 +341,7 @@ D’après la doc officielle et le dépôt :
      Désactive 5 s, puis petits mouvements ±5°.  
    - **À éviter** : `fix_head_tilted.py` (corrections très fortes, peut aggraver la surcharge).
 
-**Si timeout « Timeout while waiting for connection with the server »** : utiliser la version SSH (script exécuté sur le robot) : `python3 examples/reachy_mini/fix_motors_1_2_overload_ssh.py --robot-ip <IP>` (ex. `--robot-ip 192.168.129.64` ou `reachy-mini.local`).
+**Si timeout « Timeout while waiting for connection with the server »** : utiliser la version SSH (script exécuté sur le robot) : `python3 examples/reachy_mini/fix_motors_1_2_overload_ssh.py --robot-ip <IP>` (ex. `--robot-ip <ROBOT_IP>` ou `reachy-mini.local`).
 
 **Ordre conseillé** : 1) Lancer **une fois** `fix_motors_1_2_overload.py` ou en cas de timeout `fix_motors_1_2_overload_ssh.py --robot-ip <IP>`. 2) Rouvrir le dashboard et tester. **Si les moteurs 1 et 2 clignotent encore** : cause très probablement **calibration / offsets côté Pollen** (ils ont l'outil ou la procédure). Voir **§ Où trouver la calibration Pollen** ci-dessous.
 
