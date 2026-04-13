@@ -95,7 +95,7 @@ dev = [
     "pre-commit>=3.0.0",
     "pip-audit>=2.6.0",
     "safety>=2.3.5",
-    "python-dotenv>=1.0.0",
+    "python-dotenv>=1.2.2",
     "httpx>=0.25.0",
 ]
 docs = [
