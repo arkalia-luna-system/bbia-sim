@@ -44,6 +44,6 @@
 
 ---
 
-**Dernière mise à jour** : 9 Mars 2026  
-**SDK Officiel Latest** : v1.5.0 (5 mars 2026) — [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini)  
+**Dernière mise à jour** : 27 Avril 2026  
+**SDK Officiel Latest** : v1.7.0 (22 avr. 2026) — [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini)  
 **Statut Robot** : ✅ Reçu le 18 déc 2025, monté le 20 déc 2025. **Installation moteurs 1, 2, 4 effectuée** : slots 1 et 2 = QC 2549, slot 4 = QC 2548 (ou 2549). En attente de premier rallumage et validation.
