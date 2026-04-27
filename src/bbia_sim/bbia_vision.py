@@ -459,9 +459,7 @@ class BBIAVision:
         except (TypeError, ValueError, OSError) as e:
             logger.warning("⚠️ MediaPipe Pose non disponible (type/value/os): %s", e)
         except Exception as e:  # noqa: BLE001
-            logger.warning(
-                "⚠️ MediaPipe Pose non disponible (erreur inattendue): %s", e
-            )
+            logger.warning("⚠️ MediaPipe Pose non disponible (erreur inattendue): %s", e)
 
     def _capture_image_from_camera(self) -> npt.NDArray[np.uint8] | None:
         """Capture une image depuis robot.media.camera si disponible,

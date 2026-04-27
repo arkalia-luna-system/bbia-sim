@@ -28,12 +28,14 @@ class TestHeadlessRobustness:
         print("=" * 60)
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
-            f.write("""<?xml version="1.0"?>
+            f.write(
+                """<?xml version="1.0"?>
 <mujoco model="test">
   <worldbody>
     <geom name="floor" type="plane" size="1 1 0.1"/>
   </worldbody>
-</mujoco>""")
+</mujoco>"""
+            )
             temp_model = f.name
 
         try:
@@ -83,12 +85,14 @@ class TestHeadlessRobustness:
         print("=" * 60)
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
-            f.write("""<?xml version="1.0"?>
+            f.write(
+                """<?xml version="1.0"?>
 <mujoco model="test">
   <worldbody>
     <geom name="floor" type="plane" size="1 1 0.1"/>
   </worldbody>
-</mujoco>""")
+</mujoco>"""
+            )
             temp_model = f.name
 
         try:
@@ -141,12 +145,14 @@ class TestHeadlessRobustness:
         print("=" * 60)
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
-            f.write("""<?xml version="1.0"?>
+            f.write(
+                """<?xml version="1.0"?>
 <mujoco model="test">
   <worldbody>
     <geom name="floor" type="plane" size="1 1 0.1"/>
   </worldbody>
-</mujoco>""")
+</mujoco>"""
+            )
             temp_model = f.name
 
         try:
@@ -173,12 +179,14 @@ class TestHeadlessRobustness:
         print("=" * 60)
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
-            f.write("""<?xml version="1.0"?>
+            f.write(
+                """<?xml version="1.0"?>
 <mujoco model="test">
   <worldbody>
     <geom name="floor" type="plane" size="1 1 0.1"/>
   </worldbody>
-</mujoco>""")
+</mujoco>"""
+            )
             temp_model = f.name
 
         try:
@@ -235,12 +243,14 @@ class TestHeadlessRobustness:
         print("=" * 60)
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
-            f.write("""<?xml version="1.0"?>
+            f.write(
+                """<?xml version="1.0"?>
 <mujoco model="test">
   <worldbody>
     <geom name="floor" type="plane" size="1 1 0.1"/>
   </worldbody>
-</mujoco>""")
+</mujoco>"""
+            )
             temp_model = f.name
 
         try:
@@ -335,12 +345,14 @@ class TestHeadlessRobustness:
             with tempfile.NamedTemporaryFile(
                 mode="w", suffix=".xml", delete=False
             ) as f:
-                f.write("""<?xml version="1.0"?>
+                f.write(
+                    """<?xml version="1.0"?>
 <mujoco model="test">
   <worldbody>
     <geom name="floor" type="plane" size="1 1 0.1"/>
   </worldbody>
-</mujoco>""")
+</mujoco>"""
+                )
                 temp_model = f.name
 
             try:
