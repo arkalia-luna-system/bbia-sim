@@ -7,6 +7,14 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+### 🔧 Maintenance & alignement SDK (27 Avril 2026)
+
+- CI renforcée contre flaky: ajout de `pytest-rerunfailures` et `--reruns 2` sur jobs `test` et `test-slow`.
+- CI homogénéisée: migration complète `codecov/codecov-action` vers `v6`.
+- Dépendances synchronisées sur les mises à jour prioritaires (requests, aiohttp, psutil, matplotlib, mkdocs, python-dotenv, onnxruntime, gradio, zenoh).
+- Documentation clé rafraîchie: `README.md`, `docs/deployment/PIPELINE_CI.md`, `docs/reference/RELEASE_NOTES.md`.
+- Outillage local fiabilisé: `quick_start.sh` modernisé vers les scripts réellement présents; `.pre-commit-config.yaml` aligné Python 3.11.
+
 ### 📌 **Issues Pollen : mitigations BBIA** (7 Février 2026)
 
 - **Zenoh configurable** (#709, #677) : `REACHY_ZENOH_CONNECT` ou `BBIA_ZENOH_CONNECT` pour WSL2 / Reachy Wireless (ex: `tcp://<IP>:7447`). Fichiers : `daemon/bridge.py`, `robot_registry.py`.
