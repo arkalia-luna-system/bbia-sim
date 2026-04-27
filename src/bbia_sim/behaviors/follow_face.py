@@ -61,7 +61,7 @@ class FollowFaceBehavior(BBIABehavior):
 
         # Initialiser émotions si disponible
         if BBIAEmotions is not None:
-            self.emotions = BBIAEmotions()
+            self.emotions: BBIAEmotions | None = BBIAEmotions()
         else:
             self.emotions = None
 

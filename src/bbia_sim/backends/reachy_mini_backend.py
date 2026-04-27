@@ -37,7 +37,7 @@ STEWART_LEGACY_COUNT = 12  # Structure legacy (anciennes versions SDK)
 JOINT_POSITIONS_TUPLE_SIZE = 2  # Tuple (head_positions, antenna_positions)
 
 # Constantes poses SDK officiel (conformes reachy_mini.reachy_mini)
-INIT_HEAD_POSE = np.eye(4, dtype=np.float64)
+INIT_HEAD_POSE: npt.NDArray[np.float64] = np.eye(4, dtype=np.float64)
 
 SLEEP_HEAD_JOINT_POSITIONS = [
     0,
@@ -1868,7 +1868,7 @@ class ReachyMiniBackend(RobotAPI):
                 yaw = 0.0
 
             # Créer matrice de rotation 4x4 (pose de la tête)
-            pose = np.eye(4, dtype=np.float64)
+            pose: npt.NDArray[np.float64] = np.eye(4, dtype=np.float64)
             # Rotation autour de Y (pitch) puis Z (yaw)
             cos_pitch = np.cos(pitch)
             sin_pitch = np.sin(pitch)
