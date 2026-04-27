@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[![Version](https://img.shields.io/badge/version-1.3.2-blue.svg)](https://github.com/arkalia-luna-system/bbia-sim)
+[![Version](https://img.shields.io/badge/version-1.4.0-blue.svg)](https://github.com/arkalia-luna-system/bbia-sim)
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://python.org)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![CI Status](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml/badge.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml)
@@ -10,7 +10,7 @@
 [![Code Quality](https://img.shields.io/badge/code%20quality-A%2B-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim)
 [![SDK Conformity](https://img.shields.io/badge/SDK%20conformity-100%25-brightgreen.svg)](https://github.com/pollen-robotics/reachy_mini)
 [![Documentation](https://img.shields.io/badge/docs-mkdocs-blue.svg)](docs/)
-[![Coverage](https://img.shields.io/badge/coverage-68.86%25-brightgreen)](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim)
+[![Coverage](https://img.shields.io/badge/coverage-tracked%20in%20Codecov-brightgreen)](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim)
 
 </div>
 
@@ -50,7 +50,7 @@
 | ✅ **Official SDK** | 100% compliant with Pollen Robotics |
 | 🔄 **Unified Backend** | Simulation ↔ Real robot |
 | 🧪 **Automated Tests** | 1,743 tests (unit + E2E) |
-| 📚 **Documentation** | 219 Markdown files |
+| 📚 **Documentation** | 209 Markdown files in `docs/` |
 | ⚡ **Performance** | Optimized AI caches |
 | 🔒 **Pro CI/CD** | Black, Ruff, MyPy, Bandit |
 | 🌟 **Open Source** | MIT License |
@@ -63,12 +63,12 @@
 - **Test files**: 163 files (38,935 lines)
 - **Test functions**: 1,804 tests identified
 - **Collected tests**: 1,743 tests (GitHub Actions CI)
-- **Global coverage**: 68.86% ([Codecov](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim))
+- **Coverage tracking**: maintained in [Codecov](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim)
 - **Core modules coverage**: ~50% (relevant measure)
 - **BBIA modules**: 15+ specialized modules
 - **Behaviors**: 21 intelligent behaviors
-- **Documentation**: 219+ Markdown files
-- **Git commits**: 423 commits
+- **Documentation**: 209 Markdown files in `docs/`
+- **Git commits**: 1,296+ commits
 
 ## 🏆 Code Quality
 
@@ -85,9 +85,9 @@ BBIA-SIM maintains strict quality standards:
 
 ---
 
-Version 1.3.2 – Complete branch alignment, expanded tests (perf/watchdog), enriched documentation, stable release.
+Version 1.4.0 – Unified simulation/real backend, expanded tests and docs, active maintenance.
 
-This project provides a faithful simulation of the Reachy Mini robot in MuJoCo, with integration of BBIA (Bio-Inspired Artificial Intelligence) modules and validated compliance with the official Pollen Robotics SDK (November 21, 2025).
+This project provides a faithful simulation of the Reachy Mini robot in MuJoCo, with integration of BBIA (Bio-Inspired Artificial Intelligence) modules and maintained alignment with the official Pollen Robotics ecosystem (tracked up to v1.7.0 on April 2026).
 
 ---
 
@@ -194,7 +194,7 @@ open htmlcov/index.html
 **Test Results**:
 - ✅ **1,743 tests collected** (1,805 total, 62 deselected)
 - ✅ **47 SDK conformity tests** (100% passing)
-- ✅ **68.86% coverage** (excellent for open source)
+- ✅ **Coverage tracked continuously in Codecov**
 
 ---
 
@@ -231,5 +231,5 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 **Made with ❤️ by Arkalia Luna System**
 
-*Last updated: November 21, 2025*
+*Last updated: April 27, 2026*
 

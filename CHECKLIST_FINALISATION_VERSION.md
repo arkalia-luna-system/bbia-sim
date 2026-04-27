@@ -1,7 +1,7 @@
 # ✅ CHECKLIST FINALISATION VERSION PROFESSIONNELLE
 
 **Date vérification :** 26 Novembre 2025  
-**Dernière mise à jour :** 26 Janvier 2026 (Audit complet documentation + 100% exploitation)  
+**Dernière mise à jour :** 27 Avril 2026 (maintenance CI/dépendances/docs)  
 **Version cible :** 1.4.0
 
 ---
@@ -26,7 +26,7 @@
 ### 1. ✅ Tests Complets
 - **Unitaires** : 1743/1805 tests collectés (62 désélectionnés)
 - **E2E** : Tests end-to-end présents
-- **Coverage** : 68.86% (bon niveau)
+- **Coverage** : suivi continu via Codecov (voir badge/rapport CI)
 - **Tests de non-régression** : Golden tests présents
 - **Statut** : ✅ **EXCELLENT**
 
@@ -158,7 +158,7 @@
 1. ✅ **Version __init__.py corrigée** : `1.4.0` (cohérent avec pyproject.toml)
 
 ### Priorité 🟢 BASSE (Optionnel)
-2. Augmenter coverage tests (68.86% → 70%+)
+2. Augmenter coverage tests (objectif progressif par module)
 3. Ajouter tests de performance automatisés dans CI
 
 ---
@@ -175,7 +175,7 @@
 - ✅ Tests complets
 
 **Points à améliorer (optionnel) :**
-- Augmenter coverage tests (68.86% → 70%+)
+- Augmenter coverage tests (objectif progressif par module)
 - Ajouter tests de performance automatisés dans CI
 
 **Verdict :** 🎯 **Projet prêt pour release - Toutes les versions cohérentes**
