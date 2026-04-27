@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# 🚀 Script de démarrage rapide pour Reachy Mini Wireless
-# Options d'installation et de test pour BBIA
+# 🚀 Script de démarrage rapide BBIA-SIM
+# Menu orienté scripts réellement présents dans ce dépôt.
 
 set -e
 
@@ -19,47 +19,46 @@ show_menu() {
     clear
     echo -e "${CYAN}🤖 === BBIA Reachy Mini Wireless - Menu Principal ===${NC}"
     echo ""
-    echo -e "${YELLOW}Votre Reachy Mini Wireless arrive fin 2025 !${NC}"
-    echo -e "${YELLOW}Préparez-vous dès maintenant avec BBIA !${NC}"
+    echo -e "${YELLOW}Menu rapide pour simulation, diagnostic et maintenance locale.${NC}"
     echo ""
     echo -e "${GREEN}Options disponibles:${NC}"
     echo ""
-    echo -e "${BLUE}1.${NC} 🧪 ${CYAN}Tester BBIA (simulation rapide)${NC}"
-    echo -e "${BLUE}2.${NC} 🛠️  ${CYAN}Installation complète de l'environnement${NC}"
-    echo -e "${BLUE}3.${NC} 📚 ${CYAN}Afficher la documentation complète${NC}"
+    echo -e "${BLUE}1.${NC} 🧪 ${CYAN}Diagnostic environnement (bbia_doctor)${NC}"
+    echo -e "${BLUE}2.${NC} 🎮 ${CYAN}Lancer une démo simulation rapide${NC}"
+    echo -e "${BLUE}3.${NC} 📚 ${CYAN}Ouvrir la documentation principale${NC}"
     echo -e "${BLUE}4.${NC} 🔗 ${CYAN}Liens utiles (Discord, GitHub, etc.)${NC}"
     echo -e "${BLUE}5.${NC} 📋 ${CYAN}Spécifications du robot${NC}"
-    echo -e "${BLUE}6.${NC} 🎮 ${CYAN}Lancer le simulateur Unity (si configuré)${NC}"
-    echo -e "${BLUE}7.${NC} 🧪 ${CYAN}Tester la configuration Unity${NC}"
-    echo -e "${BLUE}8.${NC} 🔧 ${CYAN}Corriger les avertissements Unity${NC}"
+    echo -e "${BLUE}6.${NC} 🌐 ${CYAN}Lancer le serveur dashboard BBIA${NC}"
+    echo -e "${BLUE}7.${NC} ✅ ${CYAN}Vérifier la documentation (liens/structure)${NC}"
+    echo -e "${BLUE}8.${NC} 🔧 ${CYAN}Lancer API publique en mode check${NC}"
     echo -e "${BLUE}9.${NC} 🧹 ${CYAN}Nettoyer l'environnement${NC}"
-    echo -e "${BLUE}10.${NC} 🚀 ${CYAN}Installer tous les dépôts GitHub Reachy${NC}"
+    echo -e "${BLUE}10.${NC} 🚀 ${CYAN}Afficher procédure install dépôts Reachy${NC}"
     echo -e "${BLUE}0.${NC} 🚪 ${RED}Quitter${NC}"
     echo ""
-    echo -e "${PURPLE}Choisissez une option (0-9):${NC} "
+    echo -e "${PURPLE}Choisissez une option (0-10):${NC} "
 }
 
-# Option 1: Tester BBIA
+# Option 1: Diagnostic environnement
 test_bbia() {
-    echo -e "${GREEN}🧪 Lancement du test BBIA...${NC}"
+    echo -e "${GREEN}🧪 Diagnostic environnement BBIA...${NC}"
     echo ""
-    python3 test_bbia_reachy.py
+    python3 scripts/bbia_doctor.py || true
     echo ""
     echo -e "${YELLOW}Appuyez sur Entrée pour continuer...${NC}"
     read
 }
 
-# Option 2: Installation complète
+# Option 2: Démo simulation rapide
 install_environment() {
-    echo -e "${GREEN}🛠️ Installation complète de l'environnement...${NC}"
-    echo -e "${YELLOW}Cette opération peut prendre plusieurs minutes.${NC}"
+    echo -e "${GREEN}🎮 Lancement démo simulation rapide...${NC}"
+    echo -e "${YELLOW}Commande: bash scripts/run_demo_sim.sh happy 8${NC}"
     echo ""
-    echo -e "${CYAN}Voulez-vous continuer ? (y/n):${NC} "
+    echo -e "${CYAN}Continuer ? (y/n):${NC} "
     read -r response
     if [[ "$response" =~ ^[Yy]$ ]]; then
-        ./setup_reachy_environment.sh
+        bash scripts/run_demo_sim.sh happy 8 || true
     else
-        echo -e "${YELLOW}Installation annulée.${NC}"
+        echo -e "${YELLOW}Démo annulée.${NC}"
     fi
     echo ""
     echo -e "${YELLOW}Appuyez sur Entrée pour continuer...${NC}"
@@ -70,17 +69,17 @@ install_environment() {
 show_documentation() {
     echo -e "${GREEN}📚 Affichage de la documentation...${NC}"
     echo ""
-    if [ -f "REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md" ]; then
+    if [ -f "README.md" ]; then
         echo -e "${CYAN}Documentation trouvée !${NC}"
-        echo -e "${YELLOW}Ouvrez le fichier REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md dans votre éditeur.${NC}"
+        echo -e "${YELLOW}Consultez README.md et docs/guides/GUIDE_DEMARRAGE.md${NC}"
         echo ""
         echo -e "${BLUE}Ou utilisez:${NC}"
-        echo -e "${CYAN}cat REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md | less${NC}"
+        echo -e "${CYAN}less README.md${NC}"
         echo ""
         echo -e "${CYAN}Voulez-vous l'afficher maintenant ? (y/n):${NC} "
         read -r response
         if [[ "$response" =~ ^[Yy]$ ]]; then
-            cat REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md | less
+            less README.md
         fi
     else
         echo -e "${RED}Documentation non trouvée.${NC}"
@@ -157,57 +156,36 @@ show_specs() {
     read
 }
 
-# Option 6: Lancer le simulateur Unity
+# Option 6: Lancer serveur dashboard
 launch_unity() {
-    echo -e "${GREEN}🎮 Lancement du simulateur Unity...${NC}"
+    echo -e "${GREEN}🌐 Lancement du dashboard BBIA...${NC}"
     echo ""
-    if [ -d "reachy-bbia-unity" ]; then
-        echo -e "${CYAN}Projet Unity trouvé !${NC}"
-        echo -e "${YELLOW}Lancement en cours...${NC}"
-        echo ""
-        echo -e "${CYAN}Pour lancer Unity :${NC}"
-        echo -e "${BLUE}1. Ouvrez Unity Hub${NC}"
-        echo -e "${BLUE}2. Cliquez sur 'Open'${NC}"
-        echo -e "${BLUE}3. Sélectionnez le dossier: reachy-bbia-unity${NC}"
-        echo -e "${BLUE}4. Le projet se chargera automatiquement${NC}"
-        echo ""
-        echo -e "${YELLOW}Ou utilisez la commande :${NC}"
-        echo -e "${CYAN}open -a 'Unity Hub' reachy-bbia-unity${NC}"
-        echo ""
-        echo -e "${CYAN}Voulez-vous lancer Unity Hub maintenant ? (y/n):${NC} "
-        read -r response
-        if [[ "$response" =~ ^[Yy]$ ]]; then
-            echo -e "${YELLOW}Lancement d'Unity Hub...${NC}"
-            if [ -f "launch_unity.sh" ]; then
-                ./launch_unity.sh
-            else
-                open -a "Unity Hub" reachy-bbia-unity
-            fi
-        fi
-    else
-        echo -e "${RED}Projet Unity non trouvé.${NC}"
-        echo -e "${YELLOW}Le dossier reachy-bbia-unity n'existe pas.${NC}"
+    echo -e "${YELLOW}Commande: python src/bbia_sim/dashboard_advanced.py --port 8000${NC}"
+    echo -e "${CYAN}Continuer ? (y/n):${NC} "
+    read -r response
+    if [[ "$response" =~ ^[Yy]$ ]]; then
+        python src/bbia_sim/dashboard_advanced.py --port 8000 || true
     fi
     echo ""
     echo -e "${YELLOW}Appuyez sur Entrée pour continuer...${NC}"
     read
 }
 
-# Option 7: Tester la configuration Unity
+# Option 7: Vérifier documentation
 test_unity_config() {
-    echo -e "${GREEN}🧪 Test de la configuration Unity...${NC}"
+    echo -e "${GREEN}✅ Vérification documentation...${NC}"
     echo ""
-    ./test_unity_setup.sh
+    python scripts/verify_documentation.py --consistency || true
     echo ""
     echo -e "${YELLOW}Appuyez sur Entrée pour continuer...${NC}"
     read
 }
 
-# Option 8: Corriger les avertissements Unity
+# Option 8: API publique check
 fix_unity_warnings() {
-    echo -e "${GREEN}🔧 Correction des avertissements Unity...${NC}"
+    echo -e "${GREEN}🔧 Vérification API publique...${NC}"
     echo ""
-    ./fix_unity_warnings.sh
+    python scripts/start_public_api.py --check || true
     echo ""
     echo -e "${YELLOW}Appuyez sur Entrée pour continuer...${NC}"
     read
@@ -217,16 +195,13 @@ fix_unity_warnings() {
 clean_environment() {
     echo -e "${GREEN}🧹 Nettoyage de l'environnement...${NC}"
     echo ""
-    echo -e "${YELLOW}Cette opération va supprimer:${NC}"
-    echo -e "${RED}  • Environnement virtuel reachy_env${NC}"
-    echo -e "${RED}  • Dossier reachy-bbia-project${NC}"
-    echo -e "${RED}  • Dossier external_repos${NC}"
+    echo -e "${YELLOW}Cette opération va lancer cleanup_all.sh --yes${NC}"
     echo ""
     echo -e "${CYAN}Êtes-vous sûr ? (y/n):${NC} "
     read -r response
     if [[ "$response" =~ ^[Yy]$ ]]; then
         echo -e "${YELLOW}Nettoyage en cours...${NC}"
-        rm -rf reachy_env reachy-bbia-project external_repos
+        bash scripts/cleanup_all.sh --yes || true
         echo -e "${GREEN}Nettoyage terminé !${NC}"
     else
         echo -e "${YELLOW}Nettoyage annulé.${NC}"
@@ -236,32 +211,13 @@ clean_environment() {
     read
 }
 
-# Option 10: Installer tous les dépôts GitHub Reachy
+# Option 10: Procédure installation dépôts Reachy
 install_reachy_repos() {
-    echo -e "${GREEN}🚀 Installation de tous les dépôts GitHub Reachy...${NC}"
+    echo -e "${GREEN}🚀 Procédure installation dépôts Reachy...${NC}"
     echo ""
-    echo -e "${YELLOW}Cette opération va installer:${NC}"
-    echo -e "${CYAN}  • reachy-docs (Documentation officielle)${NC}"
-    echo -e "${CYAN}  • pollen-vision (Vision par ordinateur)${NC}"
-    echo -e "${CYAN}  • emotion_inference_hub (Détection d'émotions)${NC}"
-    echo -e "${CYAN}  • reachy2-sdk-audio-server-rs (Serveur audio)${NC}"
-    echo -e "${CYAN}  • reachy2-behaviors-dev (Comportements)${NC}"
-    echo -e "${CYAN}  • reachy-dashboard (Interface web)${NC}"
-    echo -e "${CYAN}  • reachy-face-tracking (Suivi de visage)${NC}"
-    echo ""
-    echo -e "${CYAN}Voulez-vous continuer ? (y/n):${NC} "
-    read -r response
-    if [[ "$response" =~ ^[Yy]$ ]]; then
-        if [ -f "install_all_reachy_repos.sh" ]; then
-            echo -e "${YELLOW}Lancement de l'installation...${NC}"
-            ./install_all_reachy_repos.sh
-        else
-            echo -e "${RED}Script d'installation non trouvé.${NC}"
-            echo -e "${YELLOW}Veuillez d'abord créer le script install_all_reachy_repos.sh${NC}"
-        fi
-    else
-        echo -e "${YELLOW}Installation annulée.${NC}"
-    fi
+    echo -e "${CYAN}Ce dépôt ne fournit plus d'installateur global unique des repos Reachy.${NC}"
+    echo -e "${CYAN}Utilisez plutôt le repo officiel: https://github.com/pollen-robotics/reachy_mini${NC}"
+    echo -e "${CYAN}Et le package: pip install -U reachy-mini${NC}"
     echo ""
     echo -e "${YELLOW}Appuyez sur Entrée pour continuer...${NC}"
     read
@@ -317,7 +273,7 @@ main() {
 }
 
 # Vérifier si on est dans le bon répertoire
-if [ ! -f "test_bbia_reachy.py" ]; then
+if [ ! -f "pyproject.toml" ]; then
     echo -e "${RED}❌ Erreur: Ce script doit être exécuté depuis le répertoire du projet.${NC}"
     exit 1
 fi
