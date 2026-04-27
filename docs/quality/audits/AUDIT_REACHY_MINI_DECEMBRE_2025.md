@@ -1,5 +1,13 @@
 # 🔍 AUDIT COMPLET REACHY MINI - DÉCEMBRE 2025
 
+> ⚠️ **Document historique (snapshot d'audit)**  
+> Ce document reflète l'état analysé à la date de l'audit.  
+> Des versions/chiffres peuvent être obsolètes aujourd'hui.  
+> Pour l'état courant, se référer à :
+> - `docs/reference/project-status.md`
+> - `docs/reference/RELEASE_NOTES.md`
+> - `docs/quality/VERIFICATION_ALIGNEMENT_POLLEN.md`
+
 **Dernière mise à jour** : 26 Janvier 2026 (audit initial) • Vérif alignement : 9 Mars 2026  
 **Source** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini)  
 **Version SDK Officiel (référence)** : v1.5.0 (Latest - vérifié 9 Mars 2026)  

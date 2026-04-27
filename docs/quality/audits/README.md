@@ -1,6 +1,13 @@
 # Audits
 
-**Dernière mise à jour** : 7 Février 2026
+**Dernière mise à jour** : 27 Avril 2026
+
+> ⚠️ **Contexte historique**  
+> Les audits de ce dossier sont des snapshots datés.  
+> Pour l'état courant (versions SDK/tests/CI), utiliser d'abord :
+> - `docs/reference/project-status.md`
+> - `docs/reference/RELEASE_NOTES.md`
+> - `docs/quality/VERIFICATION_ALIGNEMENT_POLLEN.md`
 
 Voir **[../INDEX_AUDITS.md](../INDEX_AUDITS.md)** pour l’index des audits.
 
