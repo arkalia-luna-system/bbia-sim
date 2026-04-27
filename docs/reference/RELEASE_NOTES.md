@@ -1,6 +1,20 @@
 # Notes de version - BBIA-SIM
 
-**Dernière mise à jour :** 7 Février 2026
+**Dernière mise à jour :** 27 Avril 2026
+
+## SDK Officiel Reachy Mini — v1.7.0 (22 avril 2026)
+
+**Dernière version Pollen** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini) **v1.7.0** (22 avril 2026).
+
+### ✅ Alignements BBIA-SIM (27 avril 2026)
+
+- CI: migration `codecov/codecov-action` vers `v6`
+- CI: migration `actions/upload-artifact` vers `v7`
+- CI: durcissement anti-flaky (`pytest-rerunfailures`, `--reruns 2`) sur jobs `test` et `test-slow`
+- Dépendances synchronisées (`aiohttp`, `psutil`, `requests`, `matplotlib`, `mkdocs`, `python-dotenv`, `onnxruntime`, `gradio`)
+- README rafraîchi (tests, docs, date de mise à jour, positionnement Pollen)
+
+---
 
 ## SDK Officiel Reachy Mini — v1.5.0 (5 mars 2026)
 
