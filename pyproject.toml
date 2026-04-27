@@ -44,9 +44,9 @@ dependencies = [
     "pydantic-settings>=2.0.0",
     "python-multipart>=0.0.18",
     
-    # SDK Officiel Reachy Mini — aligné Pollen v1.5.0 (5 mars 2026)
-    "reachy_mini_motor_controller>=1.5.5",   # Officiel v1.5.0
-    "eclipse-zenoh>=1.7.0,<1.8.0",          # Officiel ~=1.7.0
+    # SDK Officiel Reachy Mini — alignement continu avec releases Pollen
+    "reachy_mini_motor_controller>=1.5.5",
+    "eclipse-zenoh>=1.9.0",
     "reachy-mini-rust-kinematics>=1.0.3",   # Officiel v1.3.0
     "cv2_enumerate_cameras>=1.2.1",
     "soundfile>=0.13.1",
@@ -54,10 +54,10 @@ dependencies = [
     "log-throttling>=0.0.3",
     "scipy>=1.15.3,<2.0.0",                 # Officiel (éviter scipy 2.x pour compat)
     "asgiref>=3.7.0",
-    "aiohttp>=3.13.3",
-    "psutil>=5.9.0",
+    "aiohttp>=3.13.5",
+    "psutil>=5.9.8",
     "jinja2>=3.1.6",
-    "requests>=2.32.4",
+    "requests>=2.33.1",
     "starlette>=0.40.0",
     "pyserial>=3.5",
     # IA / Vision / Audio (utilisés dans le code)
@@ -67,7 +67,7 @@ dependencies = [
     "ultralytics>=8.0.0",
     "openai-whisper>=20231117",
     "scikit-learn>=1.3.0",
-    "matplotlib>=3.7.0",
+    "matplotlib>=3.10.8",
     # NLP amélioré (optionnel, chargé à la demande)
     "sentence-transformers>=2.2.0",
     # LLM Conversationnel (Phi-2, TinyLlama)
@@ -95,11 +95,11 @@ dev = [
     "pre-commit>=3.0.0",
     "pip-audit>=2.6.0",
     "safety>=2.3.5",
-    "python-dotenv>=1.0.0",
+    "python-dotenv>=1.2.2",
     "httpx>=0.25.0",
 ]
 docs = [
-    "mkdocs>=1.4.0",
+    "mkdocs>=1.6.1",
     "mkdocs-material>=9.0.0",
 ]
 test = [

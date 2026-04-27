@@ -1,7 +1,7 @@
 # Requirements pour Dashboard Gradio
 # Interface no-code simple pour tester BBIA
 
-gradio>=4.0.0
+gradio>=4.44.1
 # Gradio nécessite aussi les dépendances base BBIA
 # Installer depuis venv principal ou venv-vision selon besoins
 
