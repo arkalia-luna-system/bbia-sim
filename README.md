@@ -118,6 +118,19 @@ BBIA utilise une stack IA pour permettre des interactions naturelles. Voici pour
 **🎨 [Voir tous les logos →](http://localhost:8000/test-logos)** *(Lancez le dashboard d'abord)*
 **Documentation** : [`assets/logos/bbia/README.md`](assets/logos/bbia/README.md)
 
+## 📦 Branding Assets
+
+Les assets historiques du dépôt `bbia_branding` sont désormais consolidés dans ce repository :
+
+- `assets/branding/bbia_branding/logo_2d/`
+- `assets/branding/bbia_branding/style_guide/`
+- `assets/branding/bbia_branding/variants/`
+- `assets/branding/bbia_branding/docs/`
+
+Un README de provenance est disponible ici : `assets/branding/bbia_branding/README.md`
+
+Le dépôt `bbia_branding` est désormais déprécié et destiné à l'archivage en lecture seule.
+
 ## 🏆 Qualité Code
 
 BBIA-SIM suit des standards de qualité:

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exemple d'utilisation - BBIA Logo</title>
+    <link rel="icon" href="../../logo_2d/final/bbia_favicon_32x32.png" type="image/png">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 40px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #008181;
+            /* BBIA Blue (selon COULEURS_OFFICIELLES.md) */
+            margin-bottom: 30px;
+        }
+
+        .logo-example {
+            margin: 40px 0;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 4px;
+        }
+
+        .logo-example h2 {
+            margin-top: 0;
+            color: #020202;
+            /* BBIA Black Dark (selon COULEURS_OFFICIELLES.md) */
+        }
+
+        .logo-display {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+        }
+
+        pre {
+            background: #2D2D2D;
+            color: #FFFFFF;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+
+        .dark-bg {
+            background: #1A1A1A;
+            padding: 20px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🎨 Exemples d'utilisation du logo BBIA</h1>
+
+        <div class="logo-example">
+            <h2>1. Logo dans le header</h2>
+            <div class="logo-display">
+                <img src="../../logo_2d/final/bbia_logo_horizontal.png" alt="BBIA Logo" width="200">
+            </div>
+            <pre><code>&lt;img src="bbia_logo_horizontal.png" alt="BBIA Logo" width="200"&gt;</code></pre>
+        </div>
+
+        <div class="logo-example">
+            <h2>2. Favicon</h2>
+            <p>Le favicon apparaît dans l'onglet du navigateur (voir en haut de cette page).</p>
+            <pre><code>&lt;link rel="icon" href="bbia_favicon_32x32.png" type="image/png"&gt;</code></pre>
+        </div>
+
+        <div class="logo-example">
+            <h2>3. Logo sur fond sombre</h2>
+            <div class="dark-bg logo-display">
+                <img src="../../logo_2d/final/bbia_mark_only_512x512.png" alt="BBIA Mark" width="128">
+            </div>
+            <pre><code>&lt;div style="background: #1A1A1A; padding: 20px;"&gt;
+  &lt;img src="bbia_mark_only_512x512.png" alt="BBIA Mark" width="128"&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+
+        <div class="logo-example">
+            <h2>4. Logo centré avec CSS</h2>
+            <div class="logo-display">
+                <img src="../../logo_2d/final/bbia_logo_vertical_v2.png" alt="BBIA Logo Vertical" width="150">
+            </div>
+            <pre><code>&lt;div style="text-align: center;"&gt;
+  &lt;img src="bbia_logo_vertical_v2.png" alt="BBIA Logo" width="150"&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+
+        <div class="logo-example">
+            <h2>5. Logo responsive</h2>
+            <div class="logo-display">
+                <img src="../../logo_2d/final/bbia_logo_horizontal.png" alt="BBIA Logo"
+                    style="max-width: 100%; height: auto;">
+            </div>
+            <pre><code>&lt;img src="bbia_logo_horizontal.png" 
+     alt="BBIA Logo" 
+     style="max-width: 100%; height: auto;"&gt;</code></pre>
+        </div>
+    </div>
+</body>
+
+</html>
