@@ -2,7 +2,7 @@
 # Installer dans venv-vision-py310 (recommandé pour éviter conflits)
 
 # DeepFace (reconnaissance visage + émotions)
-deepface>=0.0.79
+deepface>=0.0.99
 
 # Backends DeepFace (optionnel, pour performance)
 # ONNX backend (recommandé pour Raspberry Pi 5 - plus rapide)
