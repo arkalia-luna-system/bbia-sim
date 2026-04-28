@@ -46,7 +46,7 @@ matplotlib>=3.7.0
 # pyaudio
 
 # Export docs (PDF via pypandoc; fallback HTML)
-pypandoc-binary>=1.11
+pypandoc-binary>=1.17
 
 # === VISION / DÉTECTION ===
 ultralytics>=8.0.0
