@@ -460,7 +460,7 @@ jobs:
           # Installer torch séparément avec timeout augmenté (gros package ~900MB)
           pip install --no-cache-dir --default-timeout=600 torch>=2.0.0 || echo "torch installation failed, continuing..."
           pip install --no-cache-dir --default-timeout=600 -e .[test]
-          pip install --no-cache-dir pytest-asyncio pytest-timeout
+          pip install --no-cache-dir pytest-asyncio pytest-timeout pytest-rerunfailures
           # Installation optionnelle de pyaudio si disponible
           pip install --no-cache-dir pyaudio || echo "pyaudio non disponible, continuons sans"
           python -m pip cache purge || true
