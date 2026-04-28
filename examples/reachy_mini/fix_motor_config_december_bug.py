@@ -169,9 +169,20 @@ def fix_motor_configuration(
         )
         config = parse_yaml_config(config_file_path)
 
-        # Trouver la configuration du moteur stewart_1
-        motor_name = "stewart_1"  # Le moteur problématique
-        if motor_name not in config.motors:
+        # Trouver la configuration du moteur correspondant à motor_id
+        MOTOR_ID_TO_NAME = {
+            10: "yaw_body",
+            11: "stewart_1",
+            12: "stewart_2",
+            13: "stewart_3",
+            14: "stewart_4",
+            15: "stewart_5",
+            16: "stewart_6",
+            17: "left_antenna",
+            18: "right_antenna",
+        }
+        motor_name = MOTOR_ID_TO_NAME.get(motor_id)
+        if not motor_name or motor_name not in config.motors:
             print(f"   ❌ Moteur '{motor_name}' non trouvé dans la configuration")
             return False
 

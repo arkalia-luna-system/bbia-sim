@@ -1,0 +1,51 @@
+{
+  "folders": [
+    {
+      "name": "bbia-reachy-sim (light)",
+      "path": "."
+    }
+  ],
+  "settings": {
+    "python.analysis.diagnosticMode": "openFiles",
+    "files.exclude": {
+      "**/venv": true,
+      "**/venv-voice": true,
+      "**/venv-vision": true,
+      "**/venv-vision-py310": true,
+      "**/venv-*": true,
+      "**/log": true,
+      "**/logs": true,
+      "**/artifacts": true,
+      "**/htmlcov": true,
+      "**/__pycache__": true,
+      "**/.pytest_cache": true,
+      "**/.mypy_cache": true,
+      "**/assets": true,
+      "**/tests": true,
+      "**/docs": true,
+      "**/presentation": true
+    },
+    "files.watcherExclude": {
+      "**/venv/**": true,
+      "**/venv-voice/**": true,
+      "**/venv-vision*/**": true,
+      "**/log/**": true,
+      "**/artifacts/**": true,
+      "**/assets/**": true,
+      "**/tests/**": true,
+      "**/docs/**": true,
+      "**/presentation/**": true
+    },
+    "search.exclude": {
+      "**/venv": true,
+      "**/venv-voice": true,
+      "**/venv-vision*": true,
+      "**/log": true,
+      "**/artifacts": true,
+      "**/assets": true,
+      "**/tests": true,
+      "**/docs": true,
+      "**/presentation": true
+    }
+  }
+}

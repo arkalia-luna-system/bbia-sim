@@ -1,7 +1,7 @@
 # 📸 Outils de Calibration Caméra - Reachy Mini
 
 **Dernière mise à jour** : 26 Janvier 2026  
-**Compatibilité** : SDK Reachy Mini v1.2.13+  
+**Compatibilité** : SDK Reachy Mini v1.2.13+ (v1.3.0 recommandée)  
 **Version BBIA** : 1.4.0
 
 ## 🎯 Vue d'ensemble
@@ -15,7 +15,7 @@ Ces outils permettent de calibrer la caméra du Reachy Mini en utilisant des **C
 pip install opencv-python opencv-contrib-python numpy
 
 # Pour utiliser avec le SDK Reachy Mini
-pip install reachy-mini>=1.2.13
+pip install reachy-mini>=1.2.13  # v1.3.0 recommandée (5 fév. 2026)
 ```
 
 ## 🛠️ Scripts disponibles
@@ -160,7 +160,7 @@ Pour chaque résolution, les intrinsics peuvent être mises à l'échelle avec `
 ## 📚 Références
 
 - [OpenCV Charuco Calibration](https://docs.opencv.org/3.4/da/d13/tutorial_aruco_calibration.html)
-- [SDK Reachy Mini v1.2.13](https://github.com/pollen-robotics/reachy_mini)
+- [SDK Reachy Mini v1.3.0](https://github.com/pollen-robotics/reachy_mini) (5 fév. 2026)
 - [Documentation Hugging Face](https://huggingface.co/docs/reachy_mini/)
 
 ---

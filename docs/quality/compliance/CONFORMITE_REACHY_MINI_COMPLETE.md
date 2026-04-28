@@ -5,12 +5,12 @@
 **🎯 Validation complète de la conformité SDK officiel**  
 *21 méthodes implémentées • 37 tests passants • 100% conforme*
 
-**Version** : BBIA-SIM v1.4.0 • **Dernière mise à jour** : 26 Janvier 2026  
+**Version** : BBIA-SIM v1.4.0 • **Dernière mise à jour** : 9 Mars 2026  
 **SDK Cible** : `reachy_mini` (Pollen Robotics × Hugging Face)  
-**Version SDK Installée** : 1.2.3  
-**Version SDK Officiel Latest** : v1.2.13 (21 janvier 2026)
+**Version SDK Installée (référence)** : **v1.3.0+** (7 fév. 2026, environnement compatible 1.3.0+)  
+**Version SDK Officiel Latest** : v1.5.0 (5 mars 2026)
 
-**État SDK** : Utiliser la **dernière version stable** de `reachy-mini` publiée sur PyPI (mise à jour régulière recommandée). Version actuelle BBIA : 1.2.3 (10 versions de retard). Mise à jour recommandée vers v1.2.13 après installation des nouveaux moteurs.
+**État SDK** : **Aligné Pollen v1.5.0** — Dépendances critiques du projet (`pyproject.toml`) alignées sur le SDK officiel (numpy 2.x, motor_controller ≥1.5.5, zenoh ~1.7, kinematics ≥1.0.3, huggingface-hub ≥1.3.0, scipy &lt;2, websockets &lt;16). Installer le SDK avec `pip install --upgrade reachy-mini` pour cibler v1.5.0 sur le robot physique. En v1.3.0 le contrôle à distance a été déplacé dans une app (toujours valable en 1.5.0). **Projet prêt pour Reachy Mini physique** (démonter pour accès remote si besoin).
 
 Référence officielle: `pollen-robotics/reachy_mini` (GitHub) — voir `README` et instructions d’installation
 ([lien](https://github.com/pollen-robotics/reachy_mini)).
@@ -18,6 +18,15 @@ Référence officielle: `pollen-robotics/reachy_mini` (GitHub) — voir `README`
 [📚 Guide de démarrage](../guides/GUIDE_DEMARRAGE.md) • [🔍 Audit complet](../INDEX_AUDITS.md)
 
 </div>
+
+---
+
+### ✅ Alignement Pollen v1.5.0 (9 Mars 2026)
+
+- **SDK cible** : `reachy-mini` **v1.5.0** (5 mars 2026). Plus de décalage volontaire : le projet vise le même niveau que Pollen tout en restant compatible 1.3.0+.
+- **Dépendances** : `pyproject.toml` aligné sur [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini) pour les briques critiques (numpy 2.x, motor_controller ≥1.5.5, zenoh, kinematics, huggingface-hub, scipy, websockets).
+- **Robot physique** : Projet prêt pour Reachy Mini (Wireless/Lite). Démonter le robot pour accès remote si besoin (maintenance, câblage).
+- **Documentation Cursor/lenteur** : Un seul guide de référence → [docs/development/ACCELERER_CURSOR.md](../development/ACCELERER_CURSOR.md). Les anciens MD à la racine redirigent vers lui.
 
 ---
 

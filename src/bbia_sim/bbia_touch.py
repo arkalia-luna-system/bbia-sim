@@ -18,10 +18,11 @@ Usage:
 import logging
 import os
 from collections import deque
-from enum import Enum
 from typing import Any
 
 import numpy as np
+
+from bbia_sim.utils.enum_compat import StrEnum
 
 logger = logging.getLogger(__name__)
 
@@ -35,7 +36,7 @@ except ImportError:
     logger.warning("sounddevice non disponible (détection tactile désactivée)")
 
 
-class TouchType(str, Enum):
+class TouchType(StrEnum):
     """Types d'interactions tactiles détectées."""
 
     TAP = "tap"  # Tap rapide

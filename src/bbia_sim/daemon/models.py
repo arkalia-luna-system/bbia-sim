@@ -5,6 +5,7 @@ from typing import Any
 from uuid import UUID
 
 import numpy as np
+import numpy.typing as npt
 from pydantic import BaseModel, Field, field_validator
 
 try:
@@ -51,7 +52,7 @@ class AnyPose(BaseModel):
         )
 
         # Matrice 4x4 complète
-        pose = np.eye(4, dtype=np.float64)
+        pose: npt.NDArray[np.float64] = np.eye(4, dtype=np.float64)
         pose[:3, :3] = R
         pose[:3, 3] = [self.x, self.y, self.z]
 

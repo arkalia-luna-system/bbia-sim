@@ -1,11 +1,12 @@
-# 🔍 Analyse Complète du Repo Officiel Reachy Mini - Janvier 2026
+# 🔍 Analyse Complète du Repo Officiel Reachy Mini - Janvier / Février 2026
 
 **Date d'analyse** : 26 Janvier 2026  
-**Dernière vérification** : 26 Janvier 2026  
+**Dernière vérification** : 9 Mars 2026  
 **Repo analysé** : https://github.com/pollen-robotics/reachy_mini  
-**Dernière version** : v1.2.13 (21 janvier 2026)  
-**Version installée BBIA** : 1.2.3  
-**Note** : 10 versions de retard (v1.2.3 → v1.2.13)
+**Dernière version** : **v1.5.0** (5 mars 2026)  
+**Version précédente** : v1.3.0 (5 février 2026) — série v1.2.x analysée ci‑dessous  
+**Version installée BBIA (référence)** : **1.3.0+** (environnement compatible, deps critiques alignées v1.5.0)  
+**Note** : BBIA suit la branche stable Pollen (v1.5.0) pour les dépendances clés (numpy 2.x, motor_controller ≥1.5.5, kinematics, zenoh, websockets, huggingface-hub).
 
 ---
 
@@ -15,7 +16,9 @@
 
 | Version | Date | Statut | Notes |
 |---------|------|--------|-------|
-| **v1.2.13** | 21 janvier 2026 | ✅ Latest | Dernière version stable |
+| **v1.5.0** | 5 mars 2026 | ✅ **Latest** | Dernière version stable (mise à jour deps : numpy 2.x, motor_controller ≥1.5.5, nouveaux paquets système, uv, gstreamer-bundle, etc.) |
+| **v1.3.0** | 5 février 2026 | ✅ Stable | HF auth dashboard, WebRTC, SDK simplifié (remote → app) |
+| **v1.2.13** | 21 janvier 2026 | ✅ Stable | - |
 | **v1.2.12** | - | ✅ Stable | - |
 | **v1.2.11** | 14 janvier 2026 | ✅ Stable | - |
 | **v1.2.10** | - | ✅ Stable | - |
@@ -25,9 +28,9 @@
 | **v1.2.6** | 3 janvier 2026 | ⚠️ Problèmes connus | Crashes, erreurs IK |
 | **v1.2.5** | 26 décembre 2025 | ✅ Stable | - |
 | **v1.2.4** | 22 décembre 2025 | ✅ Stable | - |
-| **v1.2.3** | 18 décembre 2025 | ✅ Stable | Version installée BBIA |
+| **v1.2.3** | 18 décembre 2025 | ✅ Stable | - |
 
-**⚠️ IMPORTANT** : Vous êtes sur v1.2.3, la dernière version stable est v1.2.13. **Mise à jour recommandée** après installation des nouveaux moteurs.
+**✅ À JOUR** : BBIA utilise **v1.3.0** (5 fév. 2026). Sur le robot physique (Pi), mettre à jour après installation des moteurs : `pip install --upgrade reachy-mini`.
 
 ---
 
@@ -78,9 +81,26 @@
 
 ---
 
-## 📦 **NOUVELLES FONCTIONNALITÉS (v1.2.3 → v1.2.13)**
+## 📦 **NOUVELLES FONCTIONNALITÉS (v1.2.3 → v1.3.0)**
 
-### **v1.2.13** (21 janvier 2026) - Latest
+### **v1.3.0** (5 février 2026) - **Latest**
+
+**Changements majeurs** :
+- **HF Space auth sur webdashboard** : Authentification Hugging Face sur le dashboard web
+- **WebRTC** : Intégration complète en cours pour apps JavaScript pures dans le navigateur
+- **SDK simplifié** : Code de contrôle à distance déplacé dans une app (PR #781) — impact possible sur les scripts qui utilisaient le remote côté SDK
+- **Documentation** : Ancienne doc supprimée (#754), tout sur Hugging Face
+- **Calibration caméra** : Fix/amélioration (#741)
+- **App assistant** : Vérifie le layout "src", nom d’app peut différer du nom du package (#763)
+- **Création d’apps** : Option `--template conversation` pour forker l’app conversation (#780)
+- **Apps forkées** : Noms de package Python uniques pour les apps conversation forkées (#785)
+- **Install** : Instructions portaudio (#769), custom install (#705), instructions Ubuntu 22 (#776)
+- **Wireless** : Guide développeur wireless (#775)
+- **Logs** : Amélioration des logs (#793)
+- **HF auth** : Nettoyage auth Hugging Face (#790, #796)
+- **WebRTC data** : (#797)
+
+### **v1.2.13** (21 janvier 2026)
 
 **Améliorations** :
 - Fix: Apps not showing as Installed when entry point name differs from Hugging Face space name
@@ -144,11 +164,11 @@
 
 ### **1. Versions SDK**
 
-**Vous avez** : v1.2.3  
-**Dernière version** : v1.2.13  
-**Différence** : 10 versions de retard (v1.2.3 → v1.2.4 → v1.2.5 → v1.2.6 → v1.2.7 → v1.2.8 → v1.2.9 → v1.2.10 → v1.2.11 → v1.2.12 → v1.2.13)
+**Vous avez** : **v1.3.0** (7 fév. 2026) ✅  
+**Dernière version** : **v1.3.0** (5 fév. 2026)  
+**Différence** : À jour avec Pollen.
 
-**Recommandation** : Mettre à jour vers v1.2.13 après installation des nouveaux moteurs.
+**Recommandation** : Sur le robot physique (Pi), exécuter `pip install --upgrade reachy-mini` après installation des moteurs. Vérifier la compatibilité du « remote control » (déplacé dans une app en v1.3.0).
 
 ### **2. Outils de diagnostic**
 
@@ -203,7 +223,7 @@
 
 ### **Court terme (après installation moteurs)**
 
-1. **Mettre à jour vers v1.2.13**
+1. **Mettre à jour vers v1.3.0**
    ```bash
    pip install --upgrade reachy-mini
    ```
@@ -245,24 +265,25 @@
 ## ⚠️ **IMPORTANT**
 
 - **Ne pas mettre à jour** vers v1.2.6 (problèmes connus)
-- **Mettre à jour** vers v1.2.13 après installation des nouveaux moteurs
-- **Tester** en environnement de développement avant production
+- **Mettre à jour** vers **v1.3.0** après installation des nouveaux moteurs
+- **Tester** en environnement de développement avant production (notamment contrôle à distance / remote)
 - **Documenter** tout problème rencontré
 
 ---
 
-**En résumé** : Vous avez 10 versions de retard (v1.2.3 → v1.2.13). La dernière version (v1.2.13) contient de nombreuses améliorations pour les moteurs, la caméra (calibration améliorée), et la stabilité. Mise à jour recommandée après installation des nouveaux moteurs ! 🚀
+**En résumé** : BBIA est à jour en **v1.3.0** (7 fév. 2026). La dernière version officielle (5 fév. 2026) apporte auth HF sur le dashboard, WebRTC pour apps navigateur, SDK simplifié (remote déplacé en app), et les améliorations moteurs/caméra des v1.2.x. Sur le Pi (robot physique), faire `pip install --upgrade reachy-mini` après installation des moteurs. 🚀
 
 ---
 
-## 📅 **MISE À JOUR 26 JANVIER 2026**
+## 📅 **MISE À JOUR 7 FÉVRIER 2026**
 
-**Vérification complète effectuée** : 26 Janvier 2026  
-**Dernière vérification repo officiel** : 26 Janvier 2026
+**Vérification complète effectuée** : 7 Février 2026  
+**Dernière vérification repo officiel** : 7 Février 2026
 
 ### **Résultat de la vérification**
 
-✅ **Nouvelle version SDK** : v1.2.13 (21 janvier 2026)  
+✅ **Dernière version SDK** : **v1.3.0** (5 février 2026) — HF auth dashboard, WebRTC, SDK simplifié (remote → app)  
+✅ **Version précédente** : v1.2.13 (21 janvier 2026)  
 ✅ **Dernier commit officiel** : 26 janvier 2026 (Fix/Improve camera calibration #741 - `set_resolution()` pour WebRTC)  
 ✅ **Toutes les branches analysées** : develop, main, et branches liées aux moteurs  
 ✅ **Nouvelles fonctionnalités** : Outils calibration caméra, amélioration WebRTC (`set_resolution()`), support Windows GStreamer  
@@ -279,7 +300,7 @@
 - Firmware moteurs basé sur Rust (meilleure précision pour plateforme Stewart 6-DDL)
 - Gestion temps réel améliorée
 
-**Note** : Ces informations sont déjà intégrées dans le SDK v1.2.13 et n'affectent pas directement les moteurs ou leur installation.
+**Note** : Ces informations sont déjà intégrées dans le SDK v1.2.13 / v1.3.0 et n'affectent pas directement les moteurs ou leur installation.
 
 ### **Nouvelles fonctionnalités v1.2.12 → v1.2.13**
 

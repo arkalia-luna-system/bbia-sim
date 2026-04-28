@@ -1,6 +1,6 @@
 # 🔄 Pipeline CI/CD
 
-**Dernière mise à jour** : 26 Janvier 2026  
+**Dernière mise à jour** : 27 Avril 2026  
 **Version** : 1.4.0  
 **Compatibilité Python** : 3.11+ ✅ **Matrice 3.12 ajoutée** (24 Nov. 2025)
 
@@ -12,7 +12,7 @@
 
 ## État actuel
 
-- **GitHub Actions** : `.github/workflows/ci.yml`, Python 3.11
+- **GitHub Actions** : `.github/workflows/ci.yml`, Python 3.11/3.12 selon jobs
 - **Phases** : lint (ruff/black/mypy), tests, e2e headless, artifacts, codecov
 
 ### Architecture Pipeline CI/CD
@@ -25,7 +25,7 @@ flowchart TB
     TRIGGER -->|PR| LINT
     
     LINT --> LINT_OK{Succès?}
-    LINT_OK -->|Oui| TESTS[Phase Tests<br/>pytest 1362 tests]
+    LINT_OK -->|Oui| TESTS[Phase Tests<br/>pytest ~1743 tests collectés]
     LINT_OK -->|Non| FAIL[❌ Échec]
     
     TESTS --> TESTS_OK{Succès?}
@@ -61,7 +61,7 @@ sequenceDiagram
     Lint-->>GitHub: ✅ Lint OK
     
     GitHub->>Tests: Déclencher tests
-    Tests->>Tests: pytest 1362 tests
+    Tests->>Tests: pytest (~1743 tests collectés)
     Tests-->>GitHub: ✅ Tests OK
     
     GitHub->>E2E: Déclencher E2E
@@ -122,7 +122,7 @@ sequenceDiagram
 
 ---
 
-**Dernière mise à jour** : 26 Janvier 2026
+**Dernière mise à jour** : 27 Avril 2026
 
 ## Pré-commit (optionnel)
 

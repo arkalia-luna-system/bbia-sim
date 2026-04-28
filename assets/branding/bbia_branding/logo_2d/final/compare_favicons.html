@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparaison Favicons BBIA - Versions Améliorées</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: #f5f5f5;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #008181;
+            margin-bottom: 30px;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .favicon-card {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .favicon-card h3 {
+            color: #333;
+            margin-top: 0;
+        }
+
+        .favicon-display {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .favicon-32 {
+            width: 32px;
+            height: 32px;
+            border: 2px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .favicon-32 img {
+            width: 32px;
+            height: 32px;
+        }
+
+        .favicon-128 {
+            width: 128px;
+            height: 128px;
+            border: 2px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .favicon-128 img {
+            width: 128px;
+            height: 128px;
+        }
+
+        .info {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+
+        .recommended {
+            border: 3px solid #4CAF50;
+            background: #f1f8f4;
+        }
+
+        .recommended h3:after {
+            content: " ⭐ RECOMMANDÉ";
+            color: #4CAF50;
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🔍 Comparaison Favicons BBIA - Versions Améliorées</h1>
+
+        <div class="info">
+            <strong>Objectif :</strong> Comparer les différentes versions du favicon pour choisir la plus lisible
+        </div>
+
+        <div class="comparison">
+            <div class="favicon-card">
+                <h3>Version Originale</h3>
+                <div class="favicon-display">
+                    <div class="favicon-32">
+                        <img src="bbia_favicon_32x32.png" alt="Original 32px">
+                    </div>
+                    <p><strong>32x32px</strong></p>
+                    <p style="color: #666; font-size: 0.9em;">Version actuelle</p>
+                </div>
+            </div>
+
+            <div class="favicon-card">
+                <h3>Version Améliorée</h3>
+                <div class="favicon-display">
+                    <div class="favicon-32">
+                        <img src="bbia_favicon_32x32_improved.png" alt="Improved 32px">
+                    </div>
+                    <p><strong>32x32px</strong></p>
+                    <p style="color: #666; font-size: 0.9em;">Contraste +50%, Luminosité +20%</p>
+                </div>
+            </div>
+
+            <div class="favicon-card recommended">
+                <h3>Version Simplifiée</h3>
+                <div class="favicon-display">
+                    <div class="favicon-32">
+                        <img src="bbia_favicon_32x32_simplified.png" alt="Simplified 32px">
+                    </div>
+                    <p><strong>32x32px</strong></p>
+                    <p style="color: #666; font-size: 0.9em;">Contraste +150%, Optimisé pour 32px</p>
+                </div>
+            </div>
+
+            <div class="favicon-card">
+                <h3>Version Haute Résolution</h3>
+                <div class="favicon-display">
+                    <div class="favicon-128">
+                        <img src="bbia_favicon_128x128_comparison.png" alt="Large 128px">
+                    </div>
+                    <p><strong>128x128px</strong></p>
+                    <p style="color: #666; font-size: 0.9em;">Pour comparaison (4x agrandi)</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="info">
+            <h2>📋 Questions à se poser :</h2>
+            <ul>
+                <li><strong>Quelle version est la plus lisible à 32px ?</strong></li>
+                <li><strong>Le robot est-il reconnaissable dans chaque version ?</strong></li>
+                <li><strong>Les détails (yeux, forme) sont-ils visibles ?</strong></li>
+                <li><strong>Le contraste est-il suffisant ?</strong></li>
+            </ul>
+        </div>
+
+        <div class="info">
+            <h2>💡 Recommandation</h2>
+            <p>La <strong>Version Simplifiée</strong> est optimisée spécifiquement pour 32x32px avec un contraste
+                maximal. Elle devrait être la plus lisible.</p>
+            <p>Si cette version est meilleure, remplacez <code>bbia_favicon_32x32.png</code> par
+                <code>bbia_favicon_32x32_simplified.png</code>
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>

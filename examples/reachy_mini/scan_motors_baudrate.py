@@ -474,6 +474,21 @@ Note: Ce script nécessite:
 
     # Vérifier les dépendances
     use_sdk_method = not MOTOR_CONTROLLER_AVAILABLE
+    serialport = args.serialport
+
+    # Si l'utilisateur a passé --serialport (ex: sur le robot, daemon arrêté) mais
+    # motor_controller n'est pas dispo → ne pas utiliser la méthode SDK (elle a
+    # besoin du daemon = timeout). Dire d'utiliser reachy-mini-reflash-motors.
+    if serialport and not MOTOR_CONTROLLER_AVAILABLE:
+        print("⚠️  Module motor_controller non disponible")
+        print("   Le scan direct du bus (--serialport) nécessite reachy_mini_motor_controller")
+        print()
+        print("💡 Sur le robot, utilisez plutôt le script officiel:")
+        print("   sudo systemctl start reachy-mini-daemon   # redémarrer le daemon d'abord")
+        print("   reachy-mini-reflash-motors")
+        print()
+        print("   (reachy-mini-reflash-motors gère le port série et la reconfiguration.)")
+        sys.exit(1)
 
     if use_sdk_method:
         print("⚠️  Module motor_controller non disponible")
@@ -481,7 +496,10 @@ Note: Ce script nécessite:
         print(f"   Erreur: {error_msg}")
         print()
         print("💡 Le script utilisera la méthode alternative (SDK reachy_mini)")
-        print("   Cette méthode ne nécessite pas de port série")
+        print("   Cette méthode nécessite que le DAEMON SOIT DÉMARRÉ (connexion Zenoh).")
+        print("   Si vous avez arrêté le daemon pour le scan, relancez-le:")
+        print("      sudo systemctl start reachy-mini-daemon")
+        print("   puis relancez ce script SANS --serialport.")
         print()
     else:
         print("✅ Module motor_controller disponible")

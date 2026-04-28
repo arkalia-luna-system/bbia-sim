@@ -6,7 +6,7 @@
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://python.org)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![CI Status](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml/badge.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml)
-[![Tests](https://img.shields.io/badge/tests-1362-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions)
+[![Tests](https://img.shields.io/badge/tests-1743-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions)
 [![Code Quality](https://img.shields.io/badge/code%20quality-A%2B-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim)
 [![SDK Conformity](https://img.shields.io/badge/SDK%20conformity-100%25-brightgreen.svg)](https://github.com/pollen-robotics/reachy_mini)
 [![Documentation](https://img.shields.io/badge/docs-mkdocs-blue.svg)](docs/)
@@ -68,8 +68,8 @@
 |:---:|:---|
 | ✅ **SDK Officiel** | Conforme Pollen Robotics |
 | 🔄 **Backend Unifié** | Simulation ↔ Robot réel |
-| 🧪 **Tests Automatisés** | 1362 tests (unitaires + E2E) |
-| 📚 **Documentation** | 128 fichiers Markdown |
+| 🧪 **Tests Automatisés** | 1743 tests collectés (unitaires + E2E) |
+| 📚 **Documentation** | 217 fichiers docs (209 Markdown) |
 | ⚡ **Performance** | Caches IA optimisés |
 | 🔒 **CI/CD** | Black, Ruff, MyPy, Bandit |
 | 🌟 **Open Source** | License MIT |
@@ -102,7 +102,7 @@ BBIA utilise une stack IA pour permettre des interactions naturelles. Voici pour
 - **Modules BBIA**: 15+ modules spécialisés
 - **Comportements**: 21 comportements (7 de base + 14 étendus)
 - **Exemples**: 44 exemples disponibles
-- **Documentation**: 219 fichiers Markdown (dans `docs/`)
+- **Documentation**: 217 fichiers docs dont 209 Markdown (dans `docs/`)
 - **Identité visuelle**: 10 variantes émotionnelles, 3 formats de logos, interface live interactive
 
 ## 🎨 Identité Visuelle BBIA
@@ -117,6 +117,19 @@ BBIA utilise une stack IA pour permettre des interactions naturelles. Voici pour
 **Note** : Les logos sont un **gadget visuel** pour l'identité de BBIA. La **simulation principale** utilise MuJoCo (voir section "Voir le robot en 3D").
 **🎨 [Voir tous les logos →](http://localhost:8000/test-logos)** *(Lancez le dashboard d'abord)*
 **Documentation** : [`assets/logos/bbia/README.md`](assets/logos/bbia/README.md)
+
+## 📦 Branding Assets
+
+Les assets historiques du dépôt `bbia_branding` sont désormais consolidés dans ce repository :
+
+- `assets/branding/bbia_branding/logo_2d/`
+- `assets/branding/bbia_branding/style_guide/`
+- `assets/branding/bbia_branding/variants/`
+- `assets/branding/bbia_branding/docs/`
+
+Un README de provenance est disponible ici : `assets/branding/bbia_branding/README.md`
+
+Le dépôt `bbia_branding` est désormais déprécié et destiné à l'archivage en lecture seule.
 
 ## 🏆 Qualité Code
 
@@ -135,14 +148,13 @@ BBIA-SIM suit des standards de qualité:
 
 Version 1.4.0 – Simulation complète avec exemples fonctionnels, tests et documentation.
 
-**Mise à jour 26 Novembre 2025** :
-- 19 issues Reachy officiel traitées
-- Optimisations logging (performance améliorée)
-- Nouveaux exemples (sleeping_pose, collision, registry)
-- 44 exemples disponibles
-- Qualité code vérifiée (Black, Ruff, MyPy, Bandit)
+**Mise à jour 27 Avril 2026** :
+- Dépendances critiques synchronisées (Dependabot batch)
+- CI GitHub Actions modernisée (`upload-artifact@v7`, `codecov-action@v6`)
+- Alignement suivi avec l'écosystème Reachy Mini officiel
+- Qualité code maintenue (Black, Ruff, MyPy, Bandit)
 
-Ce projet fournit une simulation du robot Reachy Mini dans MuJoCo, avec une intégration des modules BBIA (Bio-Inspired Artificial Intelligence) et une conformité avec le SDK officiel de Pollen Robotics (Oct / Nov. 2025).
+Ce projet fournit une simulation du robot Reachy Mini dans MuJoCo, avec une intégration des modules BBIA (Bio-Inspired Artificial Intelligence) et une conformité avec le SDK officiel de Pollen Robotics. **Alignement suivi jusqu'à Pollen v1.7.0** (22 avr. 2026) : dépendances et CI revues pour réduire la dette technique et garder une base merge-ready. Installer le SDK avec `pip install --upgrade reachy-mini` pour rester au niveau officiel.
 
 ## 🚀 Quick Start
 
@@ -1024,4 +1036,4 @@ Le robot Reachy Mini est simulé avec une fidélité élevée aux spécification
 
 ---
 
-*Dernière mise à jour : 26 Janvier 2026*
+*Dernière mise à jour : 27 Avril 2026*

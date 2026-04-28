@@ -7,6 +7,32 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+### 🔧 Maintenance & alignement SDK (27 Avril 2026)
+
+- CI renforcée contre flaky: ajout de `pytest-rerunfailures` et `--reruns 2` sur jobs `test` et `test-slow`.
+- CI homogénéisée: migration complète `codecov/codecov-action` vers `v6`.
+- Dépendances synchronisées sur les mises à jour prioritaires (requests, aiohttp, psutil, matplotlib, mkdocs, python-dotenv, onnxruntime, gradio, zenoh).
+- Documentation clé rafraîchie: `README.md`, `docs/deployment/PIPELINE_CI.md`, `docs/reference/RELEASE_NOTES.md`.
+- Outillage local fiabilisé: `quick_start.sh` modernisé vers les scripts réellement présents; `.pre-commit-config.yaml` aligné Python 3.11.
+
+### 📌 **Issues Pollen : mitigations BBIA** (7 Février 2026)
+
+- **Zenoh configurable** (#709, #677) : `REACHY_ZENOH_CONNECT` ou `BBIA_ZENOH_CONNECT` pour WSL2 / Reachy Wireless (ex: `tcp://<IP>:7447`). Fichiers : `daemon/bridge.py`, `robot_registry.py`.
+- **Messages caméra** (#771) : messages d’erreur plus clairs dans `bbia_vision` si caméra SDK indisponible.
+- **Doc** : [docs/hardware/ISSUES_POLLEN_IMPACT_BBIA.md](docs/hardware/ISSUES_POLLEN_IMPACT_BBIA.md) — issues ouvertes Pollen, impact et mitigations (l’essentiel).
+
+### 📌 **Alignement Pollen v1.3.0 + corrections « À surveiller »** (7 Février 2026)
+
+- **SDK** : Projet aligné sur **reachy-mini v1.3.0** (même niveau que Pollen). Dépendances `pyproject.toml` alignées sur le [pyproject officiel](https://github.com/pollen-robotics/reachy_mini) : `reachy_mini_motor_controller>=1.5.3`, `eclipse-zenoh>=1.7.0,<1.8.0`, `reachy-mini-rust-kinematics>=1.0.3`, `huggingface-hub>=1.3.0`, `scipy>=1.15.3,<2.0.0`, `websockets>=12,<16`, `sounddevice>=0.5.1,<0.6`.
+- **Robot physique** : Projet prêt pour Reachy Mini (démonter pour accès remote si besoin). Doc conformité et README mises à jour.
+- **Documentation Cursor/lenteur** : Un seul guide de référence → `docs/development/ACCELERER_CURSOR.md`. `CURSOR_LENTEUR_CAUSES_ET_SOLUTIONS.md` et `GUIDE_ETAPES_LENTEUR.md` à la racine deviennent des redirections vers ce document.
+
+### 📌 **Veille SDK Pollen — v1.3.0** (7 Février 2026)
+
+- **Dernière version officielle** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini) **v1.3.0** (5 fév. 2026)
+- **Changements majeurs** : HF Space auth sur dashboard web, WebRTC pour apps navigateur, SDK simplifié (contrôle à distance déplacé dans une app), doc sur Hugging Face
+- **Documentation BBIA** : Tous les MD concernés mis à jour (hardware, quality, reference) avec v1.3.0 et date 7 fév. 2026
+
 ### 🎯 **Intégration SDK v1.2.13** (26 Janvier 2026)
 
 #### **Outils de calibration caméra** ✅

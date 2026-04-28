@@ -438,17 +438,29 @@ if STATIC_DIR.exists() and TEMPLATES_DIR.exists():
     @app.get("/", response_class=HTMLResponse)
     async def dashboard(request: Request) -> HTMLResponse:
         """Render the dashboard (conforme SDK officiel)."""
-        return templates.TemplateResponse("index.html", {"request": request})
+        return templates.TemplateResponse(
+            request=request,
+            name="index.html",
+            context={},
+        )
 
     @app.get("/test-logos", response_class=HTMLResponse)
     async def test_logos(request: Request) -> HTMLResponse:
         """Page de test pour voir tous les logos BBIA."""
-        return templates.TemplateResponse("test_logos.html", {"request": request})
+        return templates.TemplateResponse(
+            request=request,
+            name="test_logos.html",
+            context={},
+        )
 
     @app.get("/bbia-interface", response_class=HTMLResponse)
     async def bbia_interface(request: Request) -> HTMLResponse:
         """Interface live BBIA avec animations et contrôles."""
-        return templates.TemplateResponse("bbia_interface.html", {"request": request})
+        return templates.TemplateResponse(
+            request=request,
+            name="bbia_interface.html",
+            context={},
+        )
 
 else:
     logger.warning(

@@ -75,7 +75,7 @@ Ce guide fournit une **checklist complète** et des **procédures de prévention
 
 - [ ] **SDK à jour**
   - Vérifier la version SDK : `pip show reachy-mini`
-  - **Recommandé** : v1.2.11 (dernière version stable)
+  - **Recommandé** : v1.3.0 (dernière version stable — 7 fév. 2026)
   - **Minimum** : v1.2.4 (reflash automatique)
 
 - [ ] **Reflash automatique**

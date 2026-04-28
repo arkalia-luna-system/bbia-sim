@@ -459,9 +459,7 @@ class BBIAVision:
         except (TypeError, ValueError, OSError) as e:
             logger.warning("⚠️ MediaPipe Pose non disponible (type/value/os): %s", e)
         except Exception as e:  # noqa: BLE001
-            logger.warning(
-                "⚠️ MediaPipe Pose non disponible (erreur inattendue): %s", e
-            )
+            logger.warning("⚠️ MediaPipe Pose non disponible (erreur inattendue): %s", e)
 
     def _capture_image_from_camera(self) -> npt.NDArray[np.uint8] | None:
         """Capture une image depuis robot.media.camera si disponible,
@@ -639,12 +637,16 @@ class BBIAVision:
             return cast("npt.NDArray[np.uint8]", image)
 
         except (AttributeError, RuntimeError, OSError) as e:
-            logger.debug("Erreur capture caméra SDK: %s", e)
+            logger.warning(
+                "Caméra SDK indisponible: %s. Vérifier câble, daemon reachy-mini ou redémarrer l'app.",
+                e,
+            )
         except (TypeError, IndexError, KeyError) as e:
             logger.debug("Erreur capture caméra SDK (type/index/key): %s", e)
         except Exception as e:  # noqa: BLE001
-            logger.debug(
-                "Erreur inattendue capture caméra SDK (fallback simulation): %s", e
+            logger.warning(
+                "Caméra SDK erreur inattendue: %s. Vérifier que le daemon et la caméra sont opérationnels.",
+                e,
             )
 
         return None

@@ -12,7 +12,6 @@ import asyncio
 import logging
 from collections.abc import Coroutine
 from datetime import datetime
-from enum import Enum
 from typing import Annotated, Any
 from uuid import UUID, uuid4
 
@@ -20,6 +19,8 @@ import numpy as np
 from fastapi import APIRouter, Depends, HTTPException, WebSocket, WebSocketDisconnect
 from huggingface_hub.errors import RepositoryNotFoundError
 from pydantic import BaseModel
+
+from bbia_sim.utils.enum_compat import StrEnum
 
 try:
     from reachy_mini.motion.recorded_move import RecordedMoves
@@ -58,7 +59,7 @@ move_listeners: list[WebSocket] = []
 _MAX_MOVE_LISTENERS = 20
 
 
-class InterpolationMode(str, Enum):
+class InterpolationMode(StrEnum):
     """Mode d'interpolation pour les mouvements."""
 
     LINEAR = "linear"

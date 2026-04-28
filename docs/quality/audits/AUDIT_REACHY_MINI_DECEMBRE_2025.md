@@ -1,9 +1,17 @@
 # 🔍 AUDIT COMPLET REACHY MINI - DÉCEMBRE 2025
 
-**Dernière mise à jour** : 26 Janvier 2026  
+> ⚠️ **Document historique (snapshot d'audit)**  
+> Ce document reflète l'état analysé à la date de l'audit.  
+> Des versions/chiffres peuvent être obsolètes aujourd'hui.  
+> Pour l'état courant, se référer à :
+> - `docs/reference/project-status.md`
+> - `docs/reference/RELEASE_NOTES.md`
+> - `docs/quality/VERIFICATION_ALIGNEMENT_POLLEN.md`
+
+**Dernière mise à jour** : 26 Janvier 2026 (audit initial) • Vérif alignement : 9 Mars 2026  
 **Source** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini)  
-**Version SDK Officiel** : v1.2.13 (Latest - vérifié 26 Jan 2026)  
-**Version SDK Installée BBIA** : 1.2.3 ⚠️  
+**Version SDK Officiel (référence)** : v1.5.0 (Latest - vérifié 9 Mars 2026)  
+**Version SDK Installée BBIA (référence)** : **v1.3.0+** (environnement compatible, deps critiques alignées v1.5.0)  
 **Version BBIA** : 1.4.0  
 **Objectif** : Audit exhaustif des changements récents, conformité BBIA, analyse testeurs bêta, analyse de toutes les branches
 
@@ -16,7 +24,7 @@
 | Catégorie | Reachy Mini Officiel | BBIA-SIM | Statut |
 |-----------|---------------------|----------|--------|
 | **SDK Conformité** | ✅ 100% | ✅ 100% | ✅ **ÉGAL** |
-| **Version SDK** | ✅ v1.2.13 (Latest) | ⚠️ **1.2.3** | ⚠️ **10 versions de retard** |
+| **Version SDK** | ✅ v1.3.0 (Latest) | ✅ **1.3.0** | ✅ **À jour** (7 fév. 2026) |
 | **Émotions** | ✅ 6 émotions | ✅ **12 émotions** | ✅ **Différent** |
 | **Vision** | ⚠️ Basique | ✅ **YOLO + MediaPipe + SmolVLM2** | ✅ **Différent** |
 | **Voice** | ⚠️ Basique | ✅ **Whisper STT + pyttsx3 TTS** | ✅ **Différent** |
@@ -52,10 +60,10 @@
 
 ### Versions SDK Récentes
 
-**Dernière version** : **v1.2.13** (vérifié 26 Jan 2026)
+**Dernière version** : **v1.3.0** (vérifié 7 Fév 2026)
 
 **Releases disponibles** :
-- **v1.2.13** (Latest) - 21 janvier 2026
+- **v1.3.0** (Latest) - 5 février 2026
   - Fix apps installation, amélioration erreurs, documentation reflash Pi macOS
 - **v1.2.12** - Non publiée
 - **v1.2.11** - 14 janvier 2026
@@ -70,16 +78,16 @@
   - ⚠️ Problèmes connus (crashes, erreurs IK)
 - **v1.2.5** - 26 décembre 2025
 - **v1.2.4** - 22 décembre 2025
-- **v1.2.3** - 18 décembre 2025 (Version installée BBIA)
+- **v1.2.3** - 18 décembre 2025
 - **v1.2.0** - 12 décembre 2025
 - **v1.1.1** - 25 novembre 2025
 - **v1.1.0** - 20 novembre 2025 (Première production série)
 - **v1.0.0** - 30 octobre 2025 (Version stable initiale)
 
 **Statut BBIA** :
-1. ⚠️ Version installée : `1.2.3` (10 versions de retard)
-2. ✅ Compatibilité : Testée et validée avec v1.2.3
-3. ⚠️ Nouvelles fonctionnalités v1.2.4 → v1.2.13 non disponibles
+1. ✅ Version installée : **v1.3.0** (7 février 2026) — à jour avec Pollen
+2. ✅ Compatibilité : Testée et validée avec v1.3.0
+3. ✅ Nouvelles fonctionnalités v1.2.4 → v1.3.0 disponibles
 
 ---
 
@@ -128,7 +136,7 @@
 
 **Résultats** :
 - ✅ **Conformité SDK** : 100% compatible avec toutes les branches
-- ✅ **Version installée** : 1.2.3 (dernière version stable)
+- ✅ **Version installée** : v1.3.0 (7 fév. 2026) — à jour Pollen
 - ✅ **Fonctionnalités** : Toutes les fonctionnalités critiques présentes
 - ⚠️ **Branches feature** : Suivi optionnel pour fonctionnalités futures
 
@@ -212,14 +220,14 @@
 
 #### 1. Version SDK
 
-**BBIA actuel** : Version installée **1.2.3** ⚠️ (10 versions de retard)  
-**SDK officiel** : v1.2.13 (Latest - 26 Jan 2026)
+**BBIA actuel** : Version installée **v1.3.0** ✅ (7 fév. 2026)  
+**SDK officiel** : v1.3.0 (Latest - 7 Fév 2026)
 
 **Statut** :
-- ⚠️ Version installée : `1.2.3` (dernière version disponible : v1.2.13)
-- ⚠️ Mise à jour recommandée vers v1.2.13 après installation des nouveaux moteurs
-- ✅ Compatibilité : Validée et testée avec v1.2.3
-- ⚠️ Nouvelles fonctionnalités v1.2.4 → v1.2.13 non disponibles (outils calibration caméra, améliorations WebRTC, etc.)
+- ✅ Version installée : **v1.3.0** (7 fév. 2026)
+- ⚠️ Mise à jour recommandée vers v1.3.0 après installation des nouveaux moteurs
+- ✅ Compatibilité : Validée et testée avec v1.3.0
+- ✅ Nouvelles fonctionnalités v1.2.4 → v1.3.0 disponibles (outils calibration caméra, WebRTC, HF auth, SDK simplifié, etc.)
 - ✅ Compatibilité : Validée et testée
 - ✅ Test compatibilité : Import SDK OK ✅
 
@@ -244,7 +252,7 @@
 "pyserial>=3.5",                         ✅
 ```
 
-**Action** : ✅ Dépendances vérifiées et à jour (v1.2.3)
+**Action** : ✅ Dépendances vérifiées et à jour (v1.3.0)
 
 ---
 
@@ -263,7 +271,7 @@
 - ✅ `look_at_world()` - Conforme
 - ✅ `look_at_image()` - Conforme
 
-**Action** : ✅ Méthodes SDK vérifiées et conformes (v1.2.3)
+**Action** : ✅ Méthodes SDK vérifiées et conformes (v1.3.0)
 
 ---
 
@@ -386,11 +394,11 @@
 
 ### Actions Immédiates (Avant réception robot) ✅ COMPLÉTÉ
 
-1. ✅ **Mise à jour SDK** - Version installée `1.2.3` ✅
+1. ✅ **Mise à jour SDK** - Version installée **v1.3.0** ✅ (7 fév. 2026)
    ```bash
-   pip show reachy-mini  # Version: 1.2.3 ✅
+   pip show reachy-mini  # Version: 1.3.0 ✅
    ```
-   **Statut** : ✅ **À JOUR** (v1.2.3 installée - dernière version disponible)
+   **Statut** : ✅ **À JOUR** (v1.3.0 installée - 7 fév. 2026)
    **Impact** : Compatibilité garantie avec robot physique
 
 2. ✅ **Comparer dépendances**
@@ -407,7 +415,7 @@
 
 ### Actions Court Terme (1-2 semaines)
 
-4. ✅ **Audit changelog v1.2.3**
+4. ✅ **Audit changelog v1.3.0**
    - ✅ Nouvelles fonctionnalités identifiées
    - ✅ Breaking changes vérifiés (aucun)
    - ✅ Différences documentées
@@ -458,7 +466,7 @@
 ### Résumé
 
 **Reachy Mini Officiel** :
-- ✅ Version v1.2.3 (Latest - 22 Dec 2025)
+- ✅ Version v1.3.0 (Latest - 5 fév. 2026)
 - ✅ Première production en série version sans fil (v1.1.0)
 - ✅ Communauté testeurs bêta active
 - ✅ Projets communautaires (plugin, MCP)
@@ -466,7 +474,7 @@
 
 **BBIA-SIM** :
 - ⚠️ 1 développeur principal (à développer)
-- ✅ Version SDK : **1.2.3** ✅ (dernière version disponible)
+- ✅ Version SDK : **v1.3.0** ✅ (7 fév. 2026)
 - ✅ Documentation/exemples/tests supérieurs
 - ✅ Conformité SDK 100%
 - ✅ Innovations uniques (RobotAPI, 12 émotions, IA avancée)
@@ -482,7 +490,7 @@
 
 ### Points à Améliorer
 
-1. ✅ **Version SDK** : **1.2.3** ✅ (à jour)
+1. ✅ **Version SDK** : **v1.3.0** ✅ (7 fév. 2026)
 2. ⚠️ **Communauté** : À développer
 3. ⚠️ **Testeurs bêta** : À créer
 4. ⚠️ **Visibilité** : À améliorer (Hugging Face Spaces, etc.)
@@ -491,7 +499,7 @@
 ### Verdict
 
 **BBIA-SIM a une base technique solide :**
-1. ✅ Version SDK : **1.2.3** ✅ (dernière version disponible)
+1. ✅ Version SDK : **v1.3.0** ✅ (7 fév. 2026)
 2. ✅ Synchronisation fine mouvements émotionnels ↔ parole implémentée
 3. ⚠️ Développer sa communauté (en cours)
 4. ⚠️ Créer programme testeurs bêta (en cours)

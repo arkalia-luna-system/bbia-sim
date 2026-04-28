@@ -4,6 +4,7 @@
 version: 2
 updates:
   # Mise à jour des dépendances Python (requirements.txt, pyproject.toml)
+  # Labels "dependencies" / "python" : les créer dans GitHub (Settings → Labels) si besoin
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
@@ -11,9 +12,6 @@ updates:
       day: "monday"
       time: "09:00"
     open-pull-requests-limit: 10
-    labels:
-      - "dependencies"
-      - "python"
     commit-message:
       prefix: "chore"
       include: "scope"
@@ -45,9 +43,6 @@ updates:
       day: "monday"
       time: "09:00"
     open-pull-requests-limit: 5
-    labels:
-      - "dependencies"
-      - "github-actions"
     commit-message:
       prefix: "ci"
       include: "scope"

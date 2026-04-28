@@ -1,6 +1,6 @@
 # 🌐 Guide Communauté BBIA-SIM
 
-**Dernière mise à jour** : 26 Janvier 2026  
+**Dernière mise à jour** : 27 Avril 2026  
 **Objectif** : Visibilité et engagement communautaire pour BBIA-SIM
 
 ---
@@ -41,7 +41,7 @@
 
 4. **Qualité et Tests** (300 mots)
    - 1,743 tests automatisés
-   - Coverage 68.86%
+   - Coverage suivi en continu via Codecov
    - CI/CD
 
 5. **Démonstration** (200 mots)
@@ -121,7 +121,7 @@
 ✅ 21 comportements
 ✅ Advanced AI: YOLO, Whisper, Transformers
 ✅ 100% SDK compliant with Pollen Robotics
-✅ 1,743 automated tests, 68.86% coverage
+✅ 1,743+ automated tests, coverage tracked continuously in Codecov
 
 🔗 Links:
 - GitHub: https://github.com/arkalia-luna-system/bbia-sim
@@ -171,7 +171,7 @@ Key features:
 - Advanced AI: YOLO (object detection), Whisper (speech), Transformers (LLM)
 - 100% compliant with Pollen Robotics official SDK
 - Unified backend: same code for simulation and real hardware
-- 1,743 automated tests, 68.86% coverage
+- 1,743+ automated tests, coverage tracked continuously in Codecov
 
 Tech stack: Python 3.11+, MuJoCo, FastAPI, Hugging Face Transformers
 
@@ -181,7 +181,7 @@ Would love feedback from the robotics community!
 ```
 
 #### 2. r/Python
-**Titre** : "Building a cognitive robot with Python: BBIA-SIM (1,743 tests, 68.86% coverage)"
+**Titre** : "Building a cognitive robot with Python: BBIA-SIM (1,743+ tests, production-grade CI)"
 
 **Contenu** :
 ```
@@ -190,7 +190,7 @@ I built BBIA-SIM, a Python cognitive engine for robotics with:
 - Advanced AI integration (YOLO, Whisper, Transformers)
 - 100% SDK compliance validation
 - Professional CI/CD (Black, Ruff, MyPy, Bandit)
-- 1,743 automated tests, 68.86% coverage
+- 1,743+ automated tests, coverage tracked continuously in Codecov
 
 The project demonstrates:
 - Clean architecture (Factory pattern, ABC)
@@ -234,7 +234,7 @@ BBIA-SIM is a great learning resource for:
 - CI/CD setup (GitHub Actions)
 - Documentation (219 Markdown files)
 
-1,743 tests with 68.86% coverage - all code is well-documented.
+1,743+ tests with continuous coverage tracking in Codecov - all code is well-documented.
 
 GitHub: https://github.com/arkalia-luna-system/bbia-sim
 
@@ -346,8 +346,7 @@ Good for learning advanced Python!
 
 ---
 
-**Dernière mise à jour** : 26 Janvier 2026  
-**Dernière mise à jour** : 26 Janvier 2026
+**Dernière mise à jour** : 27 Avril 2026
 
 ---
 

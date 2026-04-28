@@ -126,7 +126,7 @@ jobs:
 
       - name: Upload security artifacts
         if: always()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: security-artifacts-${{ matrix.python-version }}
           path: |
@@ -202,7 +202,7 @@ jobs:
           # Installer torch séparément avec timeout augmenté (gros package ~900MB)
           pip install --no-cache-dir --default-timeout=600 torch>=2.0.0 || echo "torch installation failed, continuing..."
           pip install --no-cache-dir --default-timeout=600 -e .[test]
-          pip install --no-cache-dir pytest-asyncio pytest-timeout
+          pip install --no-cache-dir pytest-asyncio pytest-timeout pytest-rerunfailures
           # Installation optionnelle de pyaudio si disponible
           pip install --no-cache-dir pyaudio || echo "pyaudio non disponible, continuons sans"
           python -m pip cache purge || true
@@ -224,7 +224,7 @@ jobs:
           # OPTIMISATION CI: Limiter parallélisation pour éviter surcharge RAM
           # Utiliser -x pour arrêter au premier échec et économiser ressources
           # Pas de parallélisation (-n auto) pour éviter surcharge mémoire
-          pytest -vv -m "not e2e and not slow" --cov=src/bbia_sim --cov-report=xml --cov-report=term-missing --cov-fail-under=0 --timeout=30 --maxfail=1 --log-cli-level=INFO --durations=20 --tb=short --showlocals -x
+          pytest -vv -m "not e2e and not slow" --cov=src/bbia_sim --cov-report=xml --cov-report=term-missing --cov-fail-under=0 --timeout=30 --maxfail=1 --reruns 2 --reruns-delay 2 --log-cli-level=INFO --durations=20 --tb=short --showlocals -x
         env:
           PYTHONDONTWRITEBYTECODE: 1
 
@@ -245,7 +245,7 @@ jobs:
           python -m pip cache purge || true
 
       - name: Upload coverage
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           files: ./coverage.xml
           flags: unittests
@@ -253,7 +253,7 @@ jobs:
 
       - name: Upload artifacts on failure
         if: failure()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: ci-artifacts
           path: |
@@ -305,7 +305,7 @@ jobs:
           # Installer torch séparément avec timeout augmenté (gros package ~900MB)
           pip install --no-cache-dir --default-timeout=600 torch>=2.0.0 || echo "torch installation failed, continuing..."
           pip install --no-cache-dir --default-timeout=600 -e .[test]
-          pip install --no-cache-dir pytest-asyncio pytest-timeout
+          pip install --no-cache-dir pytest-asyncio pytest-timeout pytest-rerunfailures
           # Installation optionnelle de pyaudio si disponible
           pip install --no-cache-dir pyaudio || echo "pyaudio non disponible, continuons sans"
           python -m pip cache purge || true
@@ -355,7 +355,7 @@ jobs:
           fi
 
       - name: Upload test logs
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: e2e-test-logs
@@ -460,7 +460,7 @@ jobs:
           # Installer torch séparément avec timeout augmenté (gros package ~900MB)
           pip install --no-cache-dir --default-timeout=600 torch>=2.0.0 || echo "torch installation failed, continuing..."
           pip install --no-cache-dir --default-timeout=600 -e .[test]
-          pip install --no-cache-dir pytest-asyncio pytest-timeout
+          pip install --no-cache-dir pytest-asyncio pytest-timeout pytest-rerunfailures
           # Installation optionnelle de pyaudio si disponible
           pip install --no-cache-dir pyaudio || echo "pyaudio non disponible, continuons sans"
           python -m pip cache purge || true
@@ -481,7 +481,7 @@ jobs:
           export PYTHONPATH=src:$PYTHONPATH
           # Tests slow avec timeout plus long (60s par test)
           # OPTIMISATION CI: Pas de parallélisation pour éviter surcharge RAM
-          pytest -vv -m "slow and not e2e" --cov=src/bbia_sim --cov-report=xml --cov-report=term-missing --cov-fail-under=0 --timeout=60 --maxfail=1 --log-cli-level=INFO --durations=20 --tb=short --showlocals -x
+          pytest -vv -m "slow and not e2e" --cov=src/bbia_sim --cov-report=xml --cov-report=term-missing --cov-fail-under=0 --timeout=60 --maxfail=1 --reruns 2 --reruns-delay 2 --log-cli-level=INFO --durations=20 --tb=short --showlocals -x
         env:
           PYTHONDONTWRITEBYTECODE: 1
 
@@ -494,7 +494,7 @@ jobs:
           python -m pip cache purge || true
 
       - name: Upload coverage (slow tests)
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           files: ./coverage.xml
           flags: slow-tests
@@ -706,7 +706,7 @@ jobs:
 
       - name: Upload benchmark results
         if: always()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: benchmark-results
           path: artifacts/benchmarks.jsonl

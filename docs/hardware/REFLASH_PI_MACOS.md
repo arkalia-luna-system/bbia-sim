@@ -1,7 +1,7 @@
 # 🔄 Reflash Pi Reachy Mini depuis macOS
 
 **Dernière mise à jour** : 26 Janvier 2026  
-**Compatibilité** : SDK Reachy Mini v1.2.13+  
+**Compatibilité** : SDK Reachy Mini v1.2.13+ (v1.5.0 recommandée, 1.3.0+ compatible)  
 **Version BBIA** : 1.4.0
 
 ## 🎯 Vue d'ensemble
@@ -170,7 +170,7 @@ cat /etc/os-release
 
 ## 📚 Références
 
-- [SDK Reachy Mini v1.2.13](https://github.com/pollen-robotics/reachy_mini)
+- [SDK Reachy Mini v1.5.0](https://github.com/pollen-robotics/reachy_mini) (5 mars 2026)
 - [Documentation balenaEtcher](https://www.balena.io/etcher/)
 - [Documentation macOS diskutil](https://developer.apple.com/library/archive/documentation/SystemAdministration/Conceptual/ManPages_iPhoneOS/man8/diskutil.8.html)
 
@@ -190,4 +190,4 @@ pip install --upgrade reachy-mini
 ---
 
 **Dernière mise à jour** : 26 Janvier 2026  
-**Compatibilité** : SDK Reachy Mini v1.2.13+
+**Compatibilité** : SDK Reachy Mini v1.2.13+ (v1.5.0 recommandée, 1.3.0+ compatible)
