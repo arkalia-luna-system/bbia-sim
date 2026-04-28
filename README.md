@@ -69,7 +69,7 @@
 | ✅ **SDK Officiel** | Conforme Pollen Robotics |
 | 🔄 **Backend Unifié** | Simulation ↔ Robot réel |
 | 🧪 **Tests Automatisés** | 1743 tests collectés (unitaires + E2E) |
-| 📚 **Documentation** | 217 fichiers docs (209 Markdown) |
+| 📚 **Documentation** | 113 fichiers docs (109 Markdown) |
 | ⚡ **Performance** | Caches IA optimisés |
 | 🔒 **CI/CD** | Black, Ruff, MyPy, Bandit |
 | 🌟 **Open Source** | License MIT |
@@ -102,7 +102,7 @@ BBIA utilise une stack IA pour permettre des interactions naturelles. Voici pour
 - **Modules BBIA**: 15+ modules spécialisés
 - **Comportements**: 21 comportements (7 de base + 14 étendus)
 - **Exemples**: 44 exemples disponibles
-- **Documentation**: 217 fichiers docs dont 209 Markdown (dans `docs/`)
+- **Documentation**: 113 fichiers docs dont 109 Markdown (dans `docs/`)
 - **Identité visuelle**: 10 variantes émotionnelles, 3 formats de logos, interface live interactive
 
 ## 🎨 Identité Visuelle BBIA
