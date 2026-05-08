@@ -1,5 +1,7 @@
 """Tests de non-regression pour BackendAdapter."""
 
+from typing import Any, cast
+
 import pytest
 from fastapi import HTTPException
 
@@ -28,14 +30,14 @@ class _DummyRobot:
 
 
 def test_connect_if_needed_raises_when_connect_returns_false():
-    adapter = BackendAdapter(robot=_DummyRobot(connect_result=False))
+    adapter = BackendAdapter(robot=cast(Any, _DummyRobot(connect_result=False)))
     with pytest.raises(HTTPException) as exc:
         adapter.connect_if_needed()
     assert exc.value.status_code == 503
 
 
 def test_connect_if_needed_raises_when_connect_throws():
-    adapter = BackendAdapter(robot=_DummyRobot(raise_on_connect=RuntimeError("boom")))
+    adapter = BackendAdapter(robot=cast(Any, _DummyRobot(raise_on_connect=RuntimeError("boom"))))
     with pytest.raises(HTTPException) as exc:
         adapter.connect_if_needed()
     assert exc.value.status_code == 503
@@ -43,7 +45,7 @@ def test_connect_if_needed_raises_when_connect_throws():
 
 def test_connect_if_needed_connects_only_once():
     robot = _DummyRobot(connect_result=True)
-    adapter = BackendAdapter(robot=robot)
+    adapter = BackendAdapter(robot=cast(Any, robot))
     adapter.connect_if_needed()
     adapter.connect_if_needed()
     assert robot.connect_calls == 1
@@ -51,7 +53,7 @@ def test_connect_if_needed_connects_only_once():
 
 def test_close_resets_connection_flag_even_after_connect():
     robot = _DummyRobot(connect_result=True)
-    adapter = BackendAdapter(robot=robot)
+    adapter = BackendAdapter(robot=cast(Any, robot))
     adapter.connect_if_needed()
     adapter.close()
     assert robot.disconnect_calls == 1
