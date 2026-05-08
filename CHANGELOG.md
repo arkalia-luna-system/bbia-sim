@@ -7,6 +7,13 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+### 🔎 Audit qualité & alignement Pollen (8 Mai 2026)
+
+- Audit comparatif effectué contre le dépôt officiel [`pollen-robotics/reachy_mini`](https://github.com/pollen-robotics/reachy_mini) (version upstream observée: `1.7.1`).
+- Correction de robustesse dans `robot_registry`: fallback environnement `BBIA_ROBOT_ID` utilisable même si Zenoh n'est pas installé.
+- Vérifications qualité relancées localement: `ruff` (OK) et `mypy` (OK sur `src/bbia_sim`).
+- README harmonisé avec des valeurs observées localement au 8 mai 2026 (tests collectés et date de mise à jour), et alignement upstream mis à jour en v1.7.1.
+
 ### 🔧 Maintenance & alignement SDK (27 Avril 2026)
 
 - CI renforcée contre flaky: ajout de `pytest-rerunfailures` et `--reruns 2` sur jobs `test` et `test-slow`.
