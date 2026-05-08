@@ -18,6 +18,36 @@ class RobotFactory:
     """Factory pour créer les backends RobotAPI."""
 
     @staticmethod
+    def _normalize_backend_type(backend_type: Any, default: str = "mujoco") -> str:
+        """Normalise backend_type vers une chaine exploitable."""
+        if backend_type is None:
+            return default
+
+        if isinstance(backend_type, str):
+            return backend_type.lower()
+
+        backend_type_str = str(backend_type)
+        if "Query" in backend_type_str or not backend_type_str or backend_type_str.startswith(
+            "<"
+        ):
+            if hasattr(backend_type, "default") and backend_type.default is not None:
+                return str(backend_type.default).lower()
+            return default
+
+        return backend_type_str.lower()
+
+    @staticmethod
+    def _is_real_robot_backend(backend: Any) -> bool:
+        """Indique si le backend représente un robot réel effectivement connecté."""
+        return bool(
+            backend
+            and hasattr(backend, "is_connected")
+            and backend.is_connected
+            and hasattr(backend, "robot")
+            and backend.robot is not None
+        )
+
+    @staticmethod
     def create_backend(
         backend_type: str = "mujoco",
         **kwargs: Any,
@@ -35,32 +65,7 @@ class RobotFactory:
 
         """
         try:
-            # Normaliser backend_type en chaîne (gère les cas où c'est un objet Query FastAPI)
-            if backend_type is None:
-                backend_type = "mujoco"
-            elif not isinstance(backend_type, str):
-                # Convertir en chaîne si ce n'est pas déjà une chaîne
-                # Si c'est un objet Query FastAPI, utiliser la valeur par défaut
-                backend_type_str = str(backend_type)
-                # Détecter si c'est une représentation d'objet Query
-                if (
-                    "Query" in backend_type_str
-                    or not backend_type_str
-                    or backend_type_str.startswith("<")
-                ):
-                    # Essayer d'extraire la valeur par défaut de Query si disponible
-                    if (
-                        hasattr(backend_type, "default")
-                        and backend_type.default is not None
-                    ):
-                        backend_type = str(backend_type.default)
-                    else:
-                        backend_type = "mujoco"  # Fallback vers défaut
-                else:
-                    backend_type = backend_type_str
-
-            # Normaliser en minuscules pour comparaisons
-            backend_type = backend_type.lower()
+            backend_type = RobotFactory._normalize_backend_type(backend_type)
 
             # NOUVEAU: Support mode "auto" - détection automatique robot réel
             if backend_type == "auto":
@@ -88,19 +93,11 @@ class RobotFactory:
                                 use_sim=False,
                                 **kwargs,
                             )
-                            if (
-                                backend
-                                and hasattr(backend, "is_connected")
-                                and backend.is_connected
-                            ):
-                                if (
-                                    hasattr(backend, "robot")
-                                    and backend.robot is not None
-                                ):
-                                    logger.info(
-                                        "✅ Robot réel connecté via découverte automatique"
-                                    )
-                                    return backend
+                            if RobotFactory._is_real_robot_backend(backend):
+                                logger.info(
+                                    "✅ Robot réel connecté via découverte automatique"
+                                )
+                                return backend
                         except Exception as e:
                             logger.debug("Connexion robot découvert échouée: %s", e)
                 except Exception as e:
@@ -113,17 +110,11 @@ class RobotFactory:
                         use_sim=False,
                         **kwargs,
                     )
-                    # Vérifier que le backend est connecté à un robot réel
-                    if (
-                        backend
-                        and hasattr(backend, "is_connected")
-                        and backend.is_connected
-                    ):
-                        # Vérifier que ce n'est pas juste le mode simulation
-                        if hasattr(backend, "robot") and backend.robot is not None:
-                            logger.info("✅ Robot réel détecté et connecté")
-                            return backend
-                        # Si robot est None mais is_connected=True, c'est mode sim
+                    if RobotFactory._is_real_robot_backend(backend):
+                        logger.info("✅ Robot réel détecté et connecté")
+                        return backend
+                    if backend and hasattr(backend, "is_connected") and backend.is_connected:
+                        # Si robot est None mais is_connected=True, c'est généralement mode sim
                         logger.debug("Robot en mode simulation, fallback vers MuJoCo")
                 except Exception as e:
                     logger.debug("Robot réel non disponible: %s", e)
@@ -172,7 +163,7 @@ class RobotFactory:
         return ["mujoco", "reachy", "reachy_mini", "auto"]
 
     @staticmethod
-    def get_backend_info(backend_type: str) -> dict[str, Any]:
+    def get_backend_info(backend_type: Any) -> dict[str, Any]:
         """Retourne les informations sur un backend."""
         info = {
             "mujoco": {
@@ -206,29 +197,10 @@ class RobotFactory:
                 "real_robot": False,  # Peut être robot réel ou sim
             },
         }
-
-        # Normaliser backend_type en chaîne (gère les cas où c'est un objet Query FastAPI)
-        if backend_type is None:
+        normalized = RobotFactory._normalize_backend_type(backend_type, default="")
+        if not normalized:
             return {}
-        if not isinstance(backend_type, str):
-            backend_type_str = str(backend_type)
-            # Détecter si c'est une représentation d'objet Query
-            if (
-                "Query" in backend_type_str
-                or not backend_type_str
-                or backend_type_str.startswith("<")
-            ):
-                # Essayer d'extraire la valeur par défaut de Query si disponible
-                if (
-                    hasattr(backend_type, "default")
-                    and backend_type.default is not None
-                ):
-                    backend_type = str(backend_type.default)
-                else:
-                    return {}  # Pas de valeur par défaut, retourner dict vide
-            else:
-                backend_type = backend_type_str
-        return info.get(backend_type.lower(), {})
+        return info.get(normalized, {})
 
     @staticmethod
     def create_robot_registry() -> dict[str, Any]:
@@ -276,7 +248,8 @@ class RobotFactory:
 
         """
         if backends is None:
-            backends = RobotFactory.get_available_backends()
+            # Evite l'effet de bord du mode "auto" en création multi-backends.
+            backends = [name for name in RobotFactory.get_available_backends() if name != "auto"]
 
         multi_backends: dict[str, RobotAPI | None] = {}
 
