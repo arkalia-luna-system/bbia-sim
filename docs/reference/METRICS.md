@@ -35,7 +35,7 @@ Voir `docs/observabilite/OBSERVABILITE.md` pour plus de détails.
 
 ### Coverage
 
-- - **Coverage global** : **68.86% (estimé)** ([Codecov](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim))
+- - **Coverage global** : valeur de référence suivie sur [Codecov](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim) (variable selon périmètre de tests)
 - **Coverage modules core** : ~50% (mesure pertinente)
 
 ### Coverage par module (modules critiques)
