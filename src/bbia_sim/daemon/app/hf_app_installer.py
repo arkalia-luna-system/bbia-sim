@@ -2,12 +2,15 @@
 
 import asyncio
 import logging
+import re
 import shutil
 import subprocess
 from pathlib import Path
 from typing import Any
 
 logger = logging.getLogger(__name__)
+
+_APP_NAME_RE = re.compile(r"^[A-Za-z0-9._-]+$")
 
 # Répertoire pour stocker les apps installées
 INSTALLED_APPS_DIR = Path("installed_apps")
@@ -25,6 +28,23 @@ class HFAppInstaller:
         """
         self.apps_dir = apps_dir or INSTALLED_APPS_DIR
         self.apps_dir.mkdir(parents=True, exist_ok=True)
+        self.apps_dir = self.apps_dir.resolve()
+
+    @staticmethod
+    def _normalize_space_name(name: str) -> str:
+        """Normalise et valide un nom d'app local."""
+        normalized = (name or "").strip()
+        if not normalized or not _APP_NAME_RE.fullmatch(normalized):
+            raise ValueError(f"Nom d'application invalide: {name!r}")
+        return normalized
+
+    def _safe_app_path(self, app_name: str) -> Path:
+        """Construit un chemin d'app confiné dans apps_dir."""
+        safe_name = self._normalize_space_name(app_name)
+        candidate = (self.apps_dir / safe_name).resolve()
+        if self.apps_dir not in candidate.parents:
+            raise ValueError(f"Chemin d'application invalide: {app_name!r}")
+        return candidate
 
     async def install_app(
         self,
@@ -47,8 +67,8 @@ class HFAppInstaller:
         if not hf_space_id or "/" not in hf_space_id:
             raise ValueError(f"HF Space ID invalide: {hf_space_id}")
 
-        app_name = app_name or hf_space_id.split("/")[-1]
-        app_path = self.apps_dir / app_name
+        app_name = self._normalize_space_name(app_name or hf_space_id.split("/")[-1])
+        app_path = self._safe_app_path(app_name)
 
         # Vérifier si déjà installé
         if app_path.exists():
@@ -170,7 +190,7 @@ class HFAppInstaller:
         Raises:
             ValueError: Si l'app n'est pas installée
         """
-        app_path = self.apps_dir / app_name
+        app_path = self._safe_app_path(app_name)
 
         if not app_path.exists():
             raise ValueError(f"App {app_name} non installée")
@@ -220,15 +240,24 @@ class HFAppInstaller:
         Returns:
             True si installée, False sinon
         """
-        # Essayer d'abord avec le nom complet
-        app_path = self.apps_dir / app_name
+        normalized = app_name.strip()
+        if not normalized:
+            return False
+
+        try:
+            app_path = self._safe_app_path(normalized)
+        except ValueError:
+            return False
         if app_path.exists() and app_path.is_dir():
             return True
 
         # Essayer avec juste le nom du space (sans username/)
-        if "/" in app_name:
-            space_name = app_name.split("/")[-1]
-            app_path = self.apps_dir / space_name
+        if "/" in normalized:
+            space_name = normalized.split("/")[-1]
+            try:
+                app_path = self._safe_app_path(space_name)
+            except ValueError:
+                return False
             if app_path.exists() and app_path.is_dir():
                 return True
 
@@ -241,7 +270,7 @@ class HFAppInstaller:
             setup_py = installed_dir / "setup.py"
             if setup_py.exists():
                 try:
-                    with open(setup_py) as f:
+                    with open(setup_py, encoding="utf-8") as f:
                         content = f.read()
                         # Chercher le nom de l'app dans setup.py
                         if (
