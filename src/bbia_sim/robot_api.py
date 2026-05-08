@@ -227,6 +227,9 @@ class RobotAPI(ABC):
         if not self.is_connected:
             logger.error("Robot non connecté")
             return False
+        if duration <= 0:
+            logger.error("Durée invalide pour run_behavior: %s", duration)
+            return False
 
         valid_behaviors = {
             "wake_up",
@@ -266,9 +269,15 @@ class RobotAPI(ABC):
         logger.warning("Comportement %s non implémenté", behavior_name)
         return False
 
+    @staticmethod
+    def _compute_behavior_steps(duration: float) -> int:
+        """Calcule un nombre d'etapes valide pour les comportements."""
+        # Evite les divisions par zero pour les durees tres courtes.
+        return max(1, int(duration * BEHAVIOR_STEPS_PER_SECOND))
+
     def _execute_wake_up(self, duration: float) -> bool:
         """Exécute le comportement de réveil."""
-        steps = int(duration * BEHAVIOR_STEPS_PER_SECOND)
+        steps = self._compute_behavior_steps(duration)
         for step in range(steps):
             t = step / steps
             # Amplitude réduite à 0.15 pour respecter la limite safe_amplitude_limit (0.3 rad)
@@ -282,7 +291,7 @@ class RobotAPI(ABC):
 
     def _execute_greeting(self, duration: float) -> bool:
         """Exécute le comportement de salutation."""
-        steps = int(duration * BEHAVIOR_STEPS_PER_SECOND)
+        steps = self._compute_behavior_steps(duration)
         for step in range(steps):
             t = step / steps
             angle = 0.2 * math.sin(4 * math.pi * t)  # Mouvement de salutation
@@ -294,7 +303,7 @@ class RobotAPI(ABC):
 
     def _execute_nod(self, duration: float) -> bool:
         """Exécute un hochement de tête."""
-        steps = int(duration * BEHAVIOR_STEPS_PER_SECOND)
+        steps = self._compute_behavior_steps(duration)
         for step in range(steps):
             t = step / steps
             # Mouvement de hochement (pitch)
@@ -313,7 +322,7 @@ class RobotAPI(ABC):
             return self.set_sleeping_pose(duration=duration)
 
         # Fallback: méthode simplifiée
-        steps = int(duration * BEHAVIOR_STEPS_PER_SECOND)
+        steps = self._compute_behavior_steps(duration)
         for step in range(steps):
             t = step / steps
             # Mouvement lent vers position neutre
@@ -348,15 +357,21 @@ class RobotAPI(ABC):
             body_yaw = -0.1  # Légère rotation gauche
 
             if hasattr(self, "goto_target"):
-                self.goto_target(
-                    head=head_pose,
-                    antennas=antennas,
-                    body_yaw=body_yaw,
-                    duration=duration,
-                    method="minjerk",
-                )
-                logger.info("✅ Pose sommeil définie (Issue #410)")
-                return True
+                try:
+                    self.goto_target(
+                        head=head_pose,
+                        antennas=antennas,
+                        body_yaw=body_yaw,
+                        duration=duration,
+                        method="minjerk",
+                    )
+                    logger.info("✅ Pose sommeil définie (Issue #410)")
+                    return True
+                except NotImplementedError:
+                    logger.debug(
+                        "goto_target non implémente pour %s, fallback set_joint_pos",
+                        self.__class__.__name__,
+                    )
 
             # Fallback: utiliser set_joint_pos si goto_target non disponible
             if hasattr(self, "set_joint_pos"):
@@ -378,7 +393,7 @@ class RobotAPI(ABC):
 
     def _execute_exploration(self, duration: float) -> bool:
         """Exécute le comportement d'exploration."""
-        steps = int(duration * BEHAVIOR_STEPS_PER_SECOND)
+        steps = self._compute_behavior_steps(duration)
         for step in range(steps):
             t = step / steps
             # Mouvement d'exploration (balayage)
@@ -391,7 +406,7 @@ class RobotAPI(ABC):
 
     def _execute_interaction(self, duration: float) -> bool:
         """Exécute le comportement d'interaction."""
-        steps = int(duration * BEHAVIOR_STEPS_PER_SECOND)
+        steps = self._compute_behavior_steps(duration)
         for step in range(steps):
             t = step / steps
             # Mouvement d'interaction (petits mouvements)
@@ -404,7 +419,7 @@ class RobotAPI(ABC):
 
     def _execute_demo(self, duration: float) -> bool:
         """Exécute le comportement de démonstration."""
-        steps = int(duration * BEHAVIOR_STEPS_PER_SECOND)
+        steps = self._compute_behavior_steps(duration)
         for step in range(steps):
             t = step / steps
             # Séquence de démonstration (combinaison de mouvements)
