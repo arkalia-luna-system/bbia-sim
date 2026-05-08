@@ -18,7 +18,7 @@ from uuid import UUID, uuid4
 import numpy as np
 from fastapi import APIRouter, Depends, HTTPException, WebSocket, WebSocketDisconnect
 from huggingface_hub.errors import RepositoryNotFoundError
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from bbia_sim.utils.enum_compat import StrEnum
 
@@ -73,8 +73,8 @@ class GotoModelRequest(BaseModel):
 
     head_pose: AnyPose | None = None
     antennas: tuple[float, float] | None = None
-    duration: float
-    interpolation: InterpolationMode = InterpolationMode.MINJERK
+    duration: Annotated[float, Field(gt=0)]
+    interpolation: str = Field(default=InterpolationMode.MINJERK)
 
     model_config = {
         "json_schema_extra": {
@@ -155,10 +155,11 @@ def create_move_task(coro: Coroutine[Any, Any, None]) -> MoveUUID:
             await notify_listeners("move_started")
             await coro
             await notify_listeners("move_completed")
-        except Exception as e:
-            await notify_listeners("move_failed", details=str(e))
         except asyncio.CancelledError:
             await notify_listeners("move_cancelled")
+            raise
+        except Exception as e:
+            await notify_listeners("move_failed", details=str(e))
         finally:
             move_tasks.pop(uuid, None)
 
@@ -182,6 +183,23 @@ async def stop_move_task(uuid: UUID) -> dict[str, str]:
     if task and task.cancel():
         with contextlib.suppress(asyncio.CancelledError):
             await task
+        # Notification de cancellation garantie meme si la task n'a pas eu le temps
+        # d'entrer dans wrap_coro().
+        disconnected = []
+        for ws in move_listeners:
+            try:
+                await ws.send_json(
+                    {
+                        "type": "move_cancelled",
+                        "uuid": str(uuid),
+                        "details": "",
+                    },
+                )
+            except (RuntimeError, WebSocketDisconnect, Exception):
+                disconnected.append(ws)
+        for ws in disconnected:
+            if ws in move_listeners:
+                move_listeners.remove(ws)
 
     return {"message": f"Stopped move with UUID: {uuid}"}
 
@@ -416,10 +434,21 @@ async def batch_movements(
     batch_processor = get_batch_processor()
     movement_uuids: list[str] = []
 
+    valid_move_types = {"goto", "wake_up", "goto_sleep", "set_target"}
     for movement_data in batch_req.movements:
         # Capturer les variables dans la closure pour éviter warnings
         move_type = movement_data.get("type", "goto")
         m_data = movement_data.copy()  # Copie pour éviter référence mutée
+        if move_type not in valid_move_types:
+            raise HTTPException(
+                status_code=422,
+                detail=f"Type de mouvement inconnu: {move_type}",
+            )
+        if move_type == "goto" and float(m_data.get("duration", 1.0)) <= 0:
+            raise HTTPException(
+                status_code=422,
+                detail="duration doit etre > 0 pour un mouvement goto",
+            )
 
         async def create_movement_func(
             m_type: str = move_type, m_d: dict[str, Any] = m_data
