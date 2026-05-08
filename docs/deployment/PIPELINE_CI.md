@@ -1,6 +1,6 @@
 # 🔄 Pipeline CI/CD
 
-**Dernière mise à jour** : 27 Avril 2026  
+**Dernière mise à jour** : 8 Mai 2026  
 **Version** : 1.4.0  
 **Compatibilité Python** : 3.11+ ✅ **Matrice 3.12 ajoutée** (24 Nov. 2025)
 
@@ -25,7 +25,7 @@ flowchart TB
     TRIGGER -->|PR| LINT
     
     LINT --> LINT_OK{Succès?}
-    LINT_OK -->|Oui| TESTS[Phase Tests<br/>pytest ~1743 tests collectés]
+    LINT_OK -->|Oui| TESTS[Phase Tests<br/>pytest ~2311 tests collectés]
     LINT_OK -->|Non| FAIL[❌ Échec]
     
     TESTS --> TESTS_OK{Succès?}
@@ -61,7 +61,7 @@ sequenceDiagram
     Lint-->>GitHub: ✅ Lint OK
     
     GitHub->>Tests: Déclencher tests
-    Tests->>Tests: pytest (~1743 tests collectés)
+    Tests->>Tests: pytest (~2311 tests collectés)
     Tests-->>GitHub: ✅ Tests OK
     
     GitHub->>E2E: Déclencher E2E
@@ -122,7 +122,7 @@ sequenceDiagram
 
 ---
 
-**Dernière mise à jour** : 27 Avril 2026
+**Dernière mise à jour** : 8 Mai 2026
 
 ## Pré-commit (optionnel)
 

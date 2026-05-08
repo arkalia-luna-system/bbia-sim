@@ -6,7 +6,7 @@
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://python.org)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![CI Status](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml/badge.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml)
-[![Tests](https://img.shields.io/badge/tests-1743-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions)
+[![Tests](https://img.shields.io/badge/tests-pytest%20collect--only-blue.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions)
 [![Code Quality](https://img.shields.io/badge/code%20quality-A%2B-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim)
 [![SDK Conformity](https://img.shields.io/badge/SDK%20conformity-100%25-brightgreen.svg)](https://github.com/pollen-robotics/reachy_mini)
 [![Documentation](https://img.shields.io/badge/docs-mkdocs-blue.svg)](docs/)
@@ -49,7 +49,7 @@
 |:---:|:---|
 | ✅ **Official SDK** | 100% compliant with Pollen Robotics |
 | 🔄 **Unified Backend** | Simulation ↔ Real robot |
-| 🧪 **Automated Tests** | 1,743 tests (unit + E2E) |
+| 🧪 **Automated Tests** | 2,311 tests collected (2,201 active + 110 deselected) |
 | 📚 **Documentation** | 209 Markdown files in `docs/` |
 | ⚡ **Performance** | Optimized AI caches |
 | 🔒 **Pro CI/CD** | Black, Ruff, MyPy, Bandit |
@@ -62,7 +62,7 @@
 - **Python source files**: 92 files (35,988 lines)
 - **Test files**: 163 files (38,935 lines)
 - **Test functions**: 1,804 tests identified
-- **Collected tests**: 1,743 tests (GitHub Actions CI)
+- **Collected tests (local snapshot, May 8 2026)**: 2,311 tests (2,201 active + 110 deselected)
 - **Coverage tracking**: maintained in [Codecov](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim)
 - **Core modules coverage**: ~50% (relevant measure)
 - **BBIA modules**: 15+ specialized modules
@@ -87,7 +87,7 @@ BBIA-SIM maintains strict quality standards:
 
 Version 1.4.0 – Unified simulation/real backend, expanded tests and docs, active maintenance.
 
-This project provides a faithful simulation of the Reachy Mini robot in MuJoCo, with integration of BBIA (Bio-Inspired Artificial Intelligence) modules and maintained alignment with the official Pollen Robotics ecosystem (tracked up to v1.7.0 on April 2026).
+This project provides a faithful simulation of the Reachy Mini robot in MuJoCo, with integration of BBIA (Bio-Inspired Artificial Intelligence) modules and maintained alignment with the official Pollen Robotics ecosystem (tracked up to v1.7.1 on May 2026).
 
 ---
 
@@ -192,7 +192,7 @@ open htmlcov/index.html
 ```
 
 **Test Results**:
-- ✅ **1,743 tests collected** (1,805 total, 62 deselected)
+- ✅ **2,311 tests collected** (2,201 active, 110 deselected)
 - ✅ **47 SDK conformity tests** (100% passing)
 - ✅ **Coverage tracked continuously in Codecov**
 

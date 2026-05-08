@@ -148,7 +148,7 @@ BBIA-SIM suit des standards de qualité:
 
 Version 1.4.0 – Simulation complète avec exemples fonctionnels, tests et documentation.
 
-**Mise à jour 27 Avril 2026** :
+**Mise à jour 8 Mai 2026** :
 - Dépendances critiques synchronisées (Dependabot batch)
 - CI GitHub Actions modernisée (`upload-artifact@v7`, `codecov-action@v6`)
 - Alignement suivi avec l'écosystème Reachy Mini officiel

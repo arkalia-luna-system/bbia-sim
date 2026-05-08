@@ -1,10 +1,10 @@
 # 📚 Documentation BBIA-SIM — Navigation Rapide
 
-**Dernière mise à jour :** 27 Avril 2026  
+**Dernière mise à jour :** 8 Mai 2026
 **Version** : v1.4.0  
 **Statut Robot** : ✅ Reçu le 18 déc 2025, monté le 20 déc 2025. **Installation moteurs 1, 2, 4 effectuée** (slots 1 et 2 = QC 2549, slot 4 = QC 2548). En attente de premier rallumage et validation.  
-**SDK Reachy Mini (référence)** : **v1.7.0** (22 avr. 2026) — aligné sur Pollen ([reachy_mini](https://github.com/pollen-robotics/reachy_mini))  
-**Alignement v1.7.0** : ✅ Dépendances critiques alignées (numpy 2.x, motor_controller ≥1.5.5, zenoh, kinematics, websockets, huggingface-hub)
+**SDK Reachy Mini (référence)** : **v1.7.1** (4 mai 2026) — aligné sur Pollen ([reachy_mini](https://github.com/pollen-robotics/reachy_mini))
+**Alignement v1.7.1** : ✅ Dépendances critiques alignées (numpy 2.x, motor_controller ≥1.5.5, zenoh, kinematics, websockets, huggingface-hub)
 
 > **Moteur cognitif Python pour robot Reachy Mini**
 > *Simulation • IA • SDK conforme*
@@ -123,4 +123,4 @@ flowchart TB
 
 **💡 Aide** : [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) • [Troubleshooting](getting-started/troubleshooting.md)
 
-**Dernière mise à jour** : 27 Avril 2026
+**Dernière mise à jour** : 8 Mai 2026
