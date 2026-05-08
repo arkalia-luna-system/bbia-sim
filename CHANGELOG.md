@@ -2,6 +2,10 @@
 
 Toutes les modifications notables de ce projet seront documentées dans ce fichier.
 
+> ℹ️ **Note de lecture**  
+> Les entrées reflètent l'état au moment de leur publication.  
+> Pour l'état courant (versions, métriques, alignement SDK), se référer à `docs/reference/project-status.md` et `docs/reference/RELEASE_NOTES.md`.
+
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
