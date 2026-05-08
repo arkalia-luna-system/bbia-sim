@@ -227,7 +227,9 @@ async def get_full_state(
 
     if with_target_head_pose:
         target_pose = backend.target_head_pose
-        result["target_head_pose"] = as_any_pose(target_pose) if target_pose is not None else None
+        result["target_head_pose"] = (
+            as_any_pose(target_pose) if target_pose is not None else None
+        )
     if with_head_joints:
         result["head_joints"] = backend.get_present_head_joint_positions()
     if with_target_head_joints:

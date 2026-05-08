@@ -40,7 +40,9 @@ class RobotRegistry:
             Liste des robots découverts avec leurs informations
         """
         if not ZENOH_AVAILABLE:
-            logger.warning("Zenoh non disponible - utilisation du fallback environnement")
+            logger.warning(
+                "Zenoh non disponible - utilisation du fallback environnement"
+            )
             env_robot = self._discover_from_environment()
             return [env_robot] if env_robot else []
 

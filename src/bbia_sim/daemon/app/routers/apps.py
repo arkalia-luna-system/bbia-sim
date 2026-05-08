@@ -474,7 +474,7 @@ async def _run_installation_job(
         _append_job_log(
             job,
             f"❌ Erreur ({error_type}): {error_msg}. "
-            f"Vérifiez les logs serveur pour plus de détails."
+            f"Vérifiez les logs serveur pour plus de détails.",
         )
         job["error"] = f"{error_type}: {error_msg}"
 

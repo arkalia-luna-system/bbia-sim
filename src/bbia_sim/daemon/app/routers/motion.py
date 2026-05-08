@@ -113,7 +113,9 @@ async def goto_pose(
             try:
                 robot.disconnect()
             except Exception as disconnect_error:
-                logger.debug("Erreur lors de la déconnexion du robot: %s", disconnect_error)
+                logger.debug(
+                    "Erreur lors de la déconnexion du robot: %s", disconnect_error
+                )
 
 
 @router.post("/home")
@@ -290,7 +292,9 @@ async def wake_up() -> dict[str, Any]:
             try:
                 robot.disconnect()
             except Exception as disconnect_error:
-                logger.debug("Erreur lors de la déconnexion du robot: %s", disconnect_error)
+                logger.debug(
+                    "Erreur lors de la déconnexion du robot: %s", disconnect_error
+                )
 
 
 @router.post("/goto_sleep")
@@ -338,7 +342,9 @@ async def goto_sleep() -> dict[str, Any]:
             try:
                 robot.disconnect()
             except Exception as disconnect_error:
-                logger.debug("Erreur lors de la déconnexion du robot: %s", disconnect_error)
+                logger.debug(
+                    "Erreur lors de la déconnexion du robot: %s", disconnect_error
+                )
 
 
 class EmotionRequest(BaseModel):
@@ -407,7 +413,9 @@ async def set_emotion(emotion_request: EmotionRequest) -> dict[str, Any]:
             try:
                 robot.disconnect()
             except Exception as disconnect_error:
-                logger.debug("Erreur lors de la déconnexion du robot: %s", disconnect_error)
+                logger.debug(
+                    "Erreur lors de la déconnexion du robot: %s", disconnect_error
+                )
 
 
 @router.post("/stop")

@@ -28,7 +28,9 @@ def test_create_multi_backend_default_excludes_auto(monkeypatch) -> None:
         calls.append(backend_type)
         return object()
 
-    monkeypatch.setattr(RobotFactory, "create_backend", staticmethod(_fake_create_backend))
+    monkeypatch.setattr(
+        RobotFactory, "create_backend", staticmethod(_fake_create_backend)
+    )
     created = RobotFactory.create_multi_backend()
 
     assert "auto" not in calls

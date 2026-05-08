@@ -27,8 +27,10 @@ class RobotFactory:
             return backend_type.lower()
 
         backend_type_str = str(backend_type)
-        if "Query" in backend_type_str or not backend_type_str or backend_type_str.startswith(
-            "<"
+        if (
+            "Query" in backend_type_str
+            or not backend_type_str
+            or backend_type_str.startswith("<")
         ):
             if hasattr(backend_type, "default") and backend_type.default is not None:
                 return str(backend_type.default).lower()
@@ -113,7 +115,11 @@ class RobotFactory:
                     if RobotFactory._is_real_robot_backend(backend):
                         logger.info("✅ Robot réel détecté et connecté")
                         return backend
-                    if backend and hasattr(backend, "is_connected") and backend.is_connected:
+                    if (
+                        backend
+                        and hasattr(backend, "is_connected")
+                        and backend.is_connected
+                    ):
                         # Si robot est None mais is_connected=True, c'est généralement mode sim
                         logger.debug("Robot en mode simulation, fallback vers MuJoCo")
                 except Exception as e:
@@ -249,7 +255,9 @@ class RobotFactory:
         """
         if backends is None:
             # Evite l'effet de bord du mode "auto" en création multi-backends.
-            backends = [name for name in RobotFactory.get_available_backends() if name != "auto"]
+            backends = [
+                name for name in RobotFactory.get_available_backends() if name != "auto"
+            ]
 
         multi_backends: dict[str, RobotAPI | None] = {}
 

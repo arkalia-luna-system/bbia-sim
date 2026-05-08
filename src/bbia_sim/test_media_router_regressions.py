@@ -32,7 +32,9 @@ class _DummyMedia:
 
 
 @pytest.mark.asyncio
-async def test_get_media_status_clamps_robot_values(monkeypatch: pytest.MonkeyPatch) -> None:
+async def test_get_media_status_clamps_robot_values(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     monkeypatch.setattr(media, "_get_robot_media", lambda: _DummyMedia())
     status = await media.get_media_status()
     assert status.speaker_volume == 1.0

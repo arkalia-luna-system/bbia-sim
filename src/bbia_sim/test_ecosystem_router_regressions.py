@@ -37,9 +37,13 @@ async def test_start_demo_mode_disconnects_robot_even_when_emotion_fails(
 ) -> None:
     robot = _DummyRobot(fail_on_set=True)
     monkeypatch.setattr(ecosystem, "BBIAEmotions", _DummyEmotions)
-    monkeypatch.setattr(ecosystem.RobotFactory, "create_backend", lambda *_args, **_kwargs: robot)
+    monkeypatch.setattr(
+        ecosystem.RobotFactory, "create_backend", lambda *_args, **_kwargs: robot
+    )
 
-    result = await ecosystem.start_demo_mode(mode="robot_real", duration=0.01, emotion="happy")
+    result = await ecosystem.start_demo_mode(
+        mode="robot_real", duration=0.01, emotion="happy"
+    )
     assert result["status"] == "started"
     assert "emotion_error" in result
     assert robot.connect_calls == 1
@@ -47,10 +51,16 @@ async def test_start_demo_mode_disconnects_robot_even_when_emotion_fails(
 
 
 @pytest.mark.asyncio
-async def test_start_demo_mode_applies_trimmed_emotion(monkeypatch: pytest.MonkeyPatch) -> None:
+async def test_start_demo_mode_applies_trimmed_emotion(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     robot = _DummyRobot(fail_on_set=False)
     monkeypatch.setattr(ecosystem, "BBIAEmotions", _DummyEmotions)
-    monkeypatch.setattr(ecosystem.RobotFactory, "create_backend", lambda *_args, **_kwargs: robot)
+    monkeypatch.setattr(
+        ecosystem.RobotFactory, "create_backend", lambda *_args, **_kwargs: robot
+    )
 
-    result = await ecosystem.start_demo_mode(mode="robot_real", duration=0.01, emotion="  HAPPY ")
+    result = await ecosystem.start_demo_mode(
+        mode="robot_real", duration=0.01, emotion="  HAPPY "
+    )
     assert result.get("emotion_applied") == "happy"

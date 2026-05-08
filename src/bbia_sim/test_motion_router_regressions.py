@@ -9,7 +9,9 @@ from bbia_sim.daemon.app.routers.motion import EmotionRequest, goto_pose, set_em
 
 
 class _DummyRobot:
-    def __init__(self, fail_on_goto: bool = False, set_emotion_result: bool = True) -> None:
+    def __init__(
+        self, fail_on_goto: bool = False, set_emotion_result: bool = True
+    ) -> None:
         self.fail_on_goto = fail_on_goto
         self.set_emotion_result = set_emotion_result
         self.connect_calls = 0
@@ -32,7 +34,9 @@ class _DummyRobot:
 
 
 @pytest.mark.asyncio
-async def test_goto_pose_disconnects_robot_even_on_failure(monkeypatch: pytest.MonkeyPatch):
+async def test_goto_pose_disconnects_robot_even_on_failure(
+    monkeypatch: pytest.MonkeyPatch,
+):
     robot = _DummyRobot(fail_on_goto=True)
 
     class _Factory:
