@@ -52,6 +52,19 @@ _speaker_active: bool = True
 _microphone_active: bool = True
 
 
+def _clamp_unit_interval(value: Any, fallback: float) -> float:
+    """Convertit en float et borne dans [0.0, 1.0]."""
+    try:
+        numeric = float(value)
+    except (TypeError, ValueError):
+        return fallback
+    if numeric < 0.0:
+        return 0.0
+    if numeric > 1.0:
+        return 1.0
+    return numeric
+
+
 def _get_robot_media() -> Any | None:
     """Récupère robot.media si disponible.
 
@@ -259,13 +272,19 @@ async def get_media_status() -> MediaStatusResponse:
             if speaker:
                 try:
                     if hasattr(speaker, "get_volume"):
-                        speaker_volume = float(speaker.get_volume())
+                        speaker_volume = _clamp_unit_interval(
+                            speaker.get_volume(),
+                            speaker_volume,
+                        )
                     elif hasattr(speaker, "volume"):
-                        speaker_volume = float(speaker.volume)
+                        speaker_volume = _clamp_unit_interval(
+                            speaker.volume,
+                            speaker_volume,
+                        )
                     if hasattr(speaker, "is_active"):
-                        speaker_active = speaker.is_active()
+                        speaker_active = bool(speaker.is_active())
                     elif hasattr(speaker, "active"):
-                        speaker_active = speaker.active
+                        speaker_active = bool(speaker.active)
                 except Exception as e:
                     logger.debug("Erreur lecture statut speaker: %s", e)
 
@@ -274,13 +293,19 @@ async def get_media_status() -> MediaStatusResponse:
             if microphone:
                 try:
                     if hasattr(microphone, "get_volume"):
-                        microphone_volume = float(microphone.get_volume())
+                        microphone_volume = _clamp_unit_interval(
+                            microphone.get_volume(),
+                            microphone_volume,
+                        )
                     elif hasattr(microphone, "volume"):
-                        microphone_volume = float(microphone.volume)
+                        microphone_volume = _clamp_unit_interval(
+                            microphone.volume,
+                            microphone_volume,
+                        )
                     if hasattr(microphone, "is_active"):
-                        microphone_active = microphone.is_active()
+                        microphone_active = bool(microphone.is_active())
                     elif hasattr(microphone, "active"):
-                        microphone_active = microphone.active
+                        microphone_active = bool(microphone.active)
                 except Exception as e:
                     logger.debug("Erreur lecture statut microphone: %s", e)
 
@@ -289,9 +314,9 @@ async def get_media_status() -> MediaStatusResponse:
             if camera:
                 try:
                     if hasattr(camera, "is_enabled"):
-                        camera_enabled = camera.is_enabled()
+                        camera_enabled = bool(camera.is_enabled())
                     elif hasattr(camera, "enabled"):
-                        camera_enabled = camera.enabled
+                        camera_enabled = bool(camera.enabled)
                 except Exception as e:
                     logger.debug("Erreur lecture statut camera: %s", e)
 
