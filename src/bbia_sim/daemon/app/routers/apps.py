@@ -55,6 +55,28 @@ def _cleanup_old_jobs() -> None:
         )
 
 
+def _normalize_app_name(name: Any) -> str:
+    """Normalise un nom d'application et rejette les valeurs vides."""
+    normalized = str(name or "").strip()
+    if not normalized:
+        raise HTTPException(status_code=422, detail="Nom d'application invalide")
+    return normalized
+
+
+def _append_job_log(job: dict[str, Any], message: str) -> None:
+    """Ajoute un log job avec borne mémoire stricte."""
+    logs = job.get("logs")
+    if isinstance(logs, deque):
+        logs.append(message)
+        return
+    if isinstance(logs, list):
+        bounded_logs = deque(logs, maxlen=_MAX_JOB_LOGS)
+    else:
+        bounded_logs = deque(maxlen=_MAX_JOB_LOGS)
+    bounded_logs.append(message)
+    job["logs"] = bounded_logs
+
+
 class AppInfo:
     """Information sur une application."""
 
@@ -335,7 +357,7 @@ async def install_app(app_info: dict[str, Any]) -> dict[str, str]:
     Raises:
         HTTPException: Si l'installation échoue immédiatement (avant job)
     """
-    app_name = app_info.get("name", "unknown")
+    app_name = _normalize_app_name(app_info.get("name", ""))
     hf_space_id = app_info.get("hf_space") or app_info.get("name")
     source_kind = app_info.get("source_kind", "hf_space")
 
@@ -374,7 +396,7 @@ async def install_app(app_info: dict[str, Any]) -> dict[str, str]:
             "status": "running",
             "app_name": app_name,
             "hf_space_id": hf_space_id,
-            "logs": [],
+            "logs": deque(maxlen=_MAX_JOB_LOGS),
             "progress": 0,
         }
 
@@ -406,7 +428,7 @@ async def _run_installation_job(
         return
 
     try:
-        job["logs"].append(f"🚀 Démarrage installation {app_name}...")
+        _append_job_log(job, f"🚀 Démarrage installation {app_name}...")
         job["progress"] = 10
 
         # Installer l'app
@@ -415,7 +437,7 @@ async def _run_installation_job(
             app_name=app_name,
         )
 
-        job["logs"].append(f"✅ Installation terminée: {result['status']}")
+        _append_job_log(job, f"✅ Installation terminée: {result['status']}")
         job["progress"] = 100
         job["status"] = "completed"
 
@@ -449,7 +471,8 @@ async def _run_installation_job(
             error_msg,
         )
         job["status"] = "failed"
-        job["logs"].append(
+        _append_job_log(
+            job,
             f"❌ Erreur ({error_type}): {error_msg}. "
             f"Vérifiez les logs serveur pour plus de détails."
         )
@@ -474,16 +497,16 @@ async def _run_uninstallation_job(
         return
 
     try:
-        job["logs"].append(f"🗑️ Démarrage désinstallation {app_name}...")
+        _append_job_log(job, f"🗑️ Démarrage désinstallation {app_name}...")
         job["progress"] = 10
 
         # Vérifier si installée depuis HF Spaces
         if _hf_app_installer.is_installed(app_name):
             # Désinstaller l'app
             await _hf_app_installer.uninstall_app(app_name)
-            job["logs"].append("✅ Désinstallation terminée")
+            _append_job_log(job, "✅ Désinstallation terminée")
         else:
-            job["logs"].append("ℹ️ App non trouvée dans le système de fichiers")
+            _append_job_log(job, "ℹ️ App non trouvée dans le système de fichiers")
 
         job["progress"] = 50
 
@@ -502,7 +525,7 @@ async def _run_uninstallation_job(
 
         job["progress"] = 100
         job["status"] = "completed"
-        job["logs"].append(f"✅ App {app_name} supprimée avec succès")
+        _append_job_log(job, f"✅ App {app_name} supprimée avec succès")
 
         logger.info("✅ Job désinstallation %s terminé avec succès", job_id)
 
@@ -512,7 +535,7 @@ async def _run_uninstallation_job(
     except Exception as e:
         logger.exception("❌ Erreur job désinstallation %s: %s", job_id, e)
         job["status"] = "failed"
-        job["logs"].append(f"❌ Erreur: {str(e)}")
+        _append_job_log(job, f"❌ Erreur: {str(e)}")
         job["error"] = str(e)
 
         # OPTIMISATION RAM: Nettoyer les vieux jobs même en cas d'erreur
@@ -532,6 +555,7 @@ async def remove_app(app_name: str) -> dict[str, str]:
     Raises:
         HTTPException: Si l'app n'est pas installée
     """
+    app_name = _normalize_app_name(app_name)
     logger.info("Suppression de l'application: %s", app_name)
 
     # Vérifier si l'app est installée
@@ -552,7 +576,7 @@ async def remove_app(app_name: str) -> dict[str, str]:
     _installation_jobs[job_id] = {
         "status": "running",
         "app_name": app_name,
-        "logs": [],
+        "logs": deque(maxlen=_MAX_JOB_LOGS),
         "progress": 0,
     }
 
@@ -674,6 +698,8 @@ async def start_app(app_name: str) -> dict[str, Any]:
         HTTPException: Si l'app n'est pas installée ou erreur au démarrage
 
     """
+    app_name = _normalize_app_name(app_name)
+
     # Vérifier si l'app est installée
     installed = [app["name"] for app in _bbia_apps_manager["installed_apps"]] + [
         app["name"]
