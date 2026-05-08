@@ -96,7 +96,22 @@ class BackendAdapter:
     def connect_if_needed(self) -> None:
         """Connecte le backend si nécessaire."""
         if not self._connected:
-            self._robot.connect()
+            try:
+                connected = self._robot.connect()
+            except Exception as e:
+                self._connected = False
+                raise HTTPException(
+                    status_code=503,
+                    detail=f"Impossible de se connecter au backend: {e}",
+                ) from e
+
+            # Certains backends peuvent ne rien retourner (None) mais lever en cas d'echec.
+            if connected is False:
+                self._connected = False
+                raise HTTPException(
+                    status_code=503,
+                    detail="Impossible de se connecter au backend",
+                )
             self._connected = True
 
     def get_present_head_pose(self) -> npt.NDArray[np.float64]:
