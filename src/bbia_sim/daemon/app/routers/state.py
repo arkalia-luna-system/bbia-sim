@@ -409,11 +409,11 @@ async def start_simulation() -> dict[str, Any]:
             "message": "Échec du démarrage de la simulation",
             "timestamp": datetime.now().isoformat(),
         }
-    except Exception as e:
+    except Exception:
         logger.exception("Erreur lors du démarrage de la simulation ")
         return {
             "status": "error",
-            "message": f"Erreur : {e!s}",
+            "message": "Erreur interne lors du démarrage de la simulation",
             "timestamp": datetime.now().isoformat(),
         }
 
@@ -430,11 +430,11 @@ async def stop_simulation() -> dict[str, Any]:
             "message": "Simulation MuJoCo arrêtée avec succès",
             "timestamp": datetime.now().isoformat(),
         }
-    except Exception as e:
+    except Exception:
         logger.exception("Erreur lors de l'arrêt de la simulation")
         return {
             "status": "error",
-            "message": f"Erreur : {e!s}",
+            "message": "Erreur interne lors de l'arrêt de la simulation",
             "timestamp": datetime.now().isoformat(),
         }
 
@@ -695,7 +695,7 @@ async def list_robots() -> dict[str, Any]:
         return {
             "robots": [],
             "count": 0,
-            "error": str(e),
+            "error": "Erreur interne lors de la découverte des robots",
             "timestamp": datetime.now(UTC).isoformat(),
         }
 
@@ -735,7 +735,7 @@ async def list_multi_backends() -> dict[str, Any]:
         return {
             "backends": [],
             "count": 0,
-            "error": str(e),
+            "error": "Erreur interne lors de la récupération des backends",
             "timestamp": datetime.now(UTC).isoformat(),
         }
 
@@ -772,6 +772,6 @@ async def init_multi_backends(
         logger.exception("Erreur lors de l'initialisation des multi-backends: %s", e)
         return {
             "status": "error",
-            "error": str(e),
+            "error": "Erreur interne lors de l'initialisation des multi-backends",
             "timestamp": datetime.now(UTC).isoformat(),
         }
