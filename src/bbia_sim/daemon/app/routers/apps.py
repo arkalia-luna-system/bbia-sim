@@ -619,7 +619,9 @@ async def job_status(job_id: str) -> dict[str, Any]:
 
 
 @router.websocket("/ws/apps-manager/{job_id}")
-async def ws_apps_manager(websocket: WebSocket, job_id: str) -> None:
+async def ws_apps_manager(
+    websocket: WebSocket, job_id: str, token: str | None = None
+) -> None:
     """WebSocket pour streamer le statut/logs d'un job en temps réel.
 
     Args:
@@ -628,6 +630,14 @@ async def ws_apps_manager(websocket: WebSocket, job_id: str) -> None:
 
     """
     from fastapi import WebSocketDisconnect
+
+    from bbia_sim.daemon.config import settings
+
+    if settings.environment.lower() == "prod" and (
+        not token or token != settings.api_token
+    ):
+        await websocket.close(code=1008, reason="Invalid token")
+        return
 
     await websocket.accept()
 

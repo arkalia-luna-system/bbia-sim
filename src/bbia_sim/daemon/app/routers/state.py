@@ -574,8 +574,8 @@ async def ws_full_state(
     # Auth WebSocket via query param (optionnel en dev)
     from bbia_sim.daemon.config import settings
 
-    if token and settings.environment.lower() == "prod":
-        if token != settings.api_token:
+    if settings.environment.lower() == "prod":
+        if not token or token != settings.api_token:
             await websocket.close(code=1008, reason="Invalid token")
             return
     if frequency <= 0:

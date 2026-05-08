@@ -220,8 +220,16 @@ manager = ConnectionManager()
 
 
 @router.websocket("/telemetry")
-async def websocket_endpoint(websocket: WebSocket) -> None:
+async def websocket_endpoint(websocket: WebSocket, token: str | None = None) -> None:
     """Endpoint WebSocket pour la télémétrie temps réel."""
+    from bbia_sim.daemon.config import settings
+
+    if settings.environment.lower() == "prod" and (
+        not token or token != settings.api_token
+    ):
+        await websocket.close(code=1008, reason="Invalid token")
+        return
+
     await manager.connect(websocket)
 
     try:

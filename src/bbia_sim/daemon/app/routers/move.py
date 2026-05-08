@@ -353,8 +353,16 @@ async def stop_move(uuid: MoveUUID) -> dict[str, str]:
 
 
 @router.websocket("/ws/updates")
-async def ws_move_updates(websocket: WebSocket) -> None:
+async def ws_move_updates(websocket: WebSocket, token: str | None = None) -> None:
     """WebSocket pour streamer les mises à jour de mouvements."""
+    from bbia_sim.daemon.config import settings
+
+    if settings.environment.lower() == "prod" and (
+        not token or token != settings.api_token
+    ):
+        await websocket.close(code=1008, reason="Invalid token")
+        return
+
     # OPTIMISATION RAM: Limiter nombre de connexions simultanées
     if len(move_listeners) >= _MAX_MOVE_LISTENERS:
         logger.warning(
@@ -395,9 +403,17 @@ async def set_target(
 
 
 @router.websocket("/ws/set_target")
-async def ws_set_target(websocket: WebSocket) -> None:
+async def ws_set_target(websocket: WebSocket, token: str | None = None) -> None:
     """WebSocket pour streamer les appels set_target - conforme SDK."""
     import json
+
+    from bbia_sim.daemon.config import settings
+
+    if settings.environment.lower() == "prod" and (
+        not token or token != settings.api_token
+    ):
+        await websocket.close(code=1008, reason="Invalid token")
+        return
 
     await websocket.accept()
     # Créer backend adapter directement (pas de Depends pour WebSockets)
