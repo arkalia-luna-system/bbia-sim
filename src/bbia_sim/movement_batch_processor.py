@@ -26,6 +26,13 @@ class MovementBatchProcessor:
             max_batch_size: Taille maximale d'un batch
             batch_timeout: Timeout pour remplir un batch (secondes)
         """
+        if max_batch_size <= 0:
+            msg = "max_batch_size doit etre > 0"
+            raise ValueError(msg)
+        if batch_timeout < 0:
+            msg = "batch_timeout doit etre >= 0"
+            raise ValueError(msg)
+
         self.max_batch_size = max_batch_size
         self.batch_timeout = batch_timeout
         self.batch_queue: list[dict[str, Any]] = []
@@ -47,10 +54,11 @@ class MovementBatchProcessor:
         Returns:
             Dictionnaire avec status et batch_id
         """
+        loop = asyncio.get_running_loop()
         movement_data = {
             "func": movement_func,
-            "id": movement_id or f"move_{asyncio.get_event_loop().time()}",
-            "added_at": asyncio.get_event_loop().time(),
+            "id": movement_id or f"move_{loop.time()}",
+            "added_at": loop.time(),
         }
 
         async with self.batch_lock:
@@ -72,7 +80,7 @@ class MovementBatchProcessor:
         while True:
             try:
                 # Attendre un peu pour remplir le batch
-                await asyncio.sleep(self.batch_timeout)
+                await asyncio.sleep(self.batch_timeout if self.batch_timeout > 0 else 0)
 
                 async with self.batch_lock:
                     if not self.batch_queue:
@@ -128,11 +136,32 @@ class MovementBatchProcessor:
 
     async def flush(self) -> None:
         """Force l'exécution immédiate de tous les mouvements en attente."""
+        batch: list[dict[str, Any]] = []
         async with self.batch_lock:
             if self.batch_queue:
                 batch = self.batch_queue.copy()
                 self.batch_queue.clear()
-                await self._execute_batch(batch)
+
+        if batch:
+            await self._execute_batch(batch)
+
+    async def wait_for_idle(self, timeout: float = 2.0) -> bool:
+        """Attend que le processeur ait fini tout le travail en cours."""
+        start = asyncio.get_running_loop().time()
+        while True:
+            async with self.batch_lock:
+                queue_empty = not self.batch_queue
+                running = self.is_running
+                task = self.batch_task
+
+            if queue_empty and not running:
+                return True
+            if task and task.done():
+                return True
+
+            if asyncio.get_running_loop().time() - start > timeout:
+                return False
+            await asyncio.sleep(0.01)
 
     def get_queue_size(self) -> int:
         """Retourne la taille actuelle de la queue."""
@@ -145,6 +174,7 @@ class MovementBatchProcessor:
             "max_batch_size": self.max_batch_size,
             "batch_timeout": self.batch_timeout,
             "is_running": self.is_running,
+            "task_active": self.batch_task is not None and not self.batch_task.done(),
         }
 
 
