@@ -11,7 +11,7 @@ except ImportError:
     UTC = timezone.utc  # Fallback Python 3.10  # noqa: UP035, UP017
 from typing import Annotated, Any, cast
 
-from fastapi import APIRouter, Depends, WebSocket, WebSocketDisconnect
+from fastapi import APIRouter, Depends, HTTPException, WebSocket, WebSocketDisconnect
 from pydantic import BaseModel
 
 from bbia_sim.daemon.app.backend_adapter import (
@@ -227,12 +227,7 @@ async def get_full_state(
 
     if with_target_head_pose:
         target_pose = backend.target_head_pose
-        if target_pose is None:
-            msg = "target_head_pose is None but with_target_head_pose is True"
-            raise ValueError(
-                msg,
-            )
-        result["target_head_pose"] = as_any_pose(target_pose)
+        result["target_head_pose"] = as_any_pose(target_pose) if target_pose is not None else None
     if with_head_joints:
         result["head_joints"] = backend.get_present_head_joint_positions()
     if with_target_head_joints:
@@ -530,8 +525,10 @@ async def get_present_antenna_joint_positions(
     """
     pos = backend.get_present_antenna_joint_positions()
     if len(pos) != 2:
-        msg = f"Expected 2 antenna positions, got {len(pos)}"
-        raise ValueError(msg)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Expected 2 antenna positions, got {len(pos)}",
+        )
     # Retourner dans format attendu par tests (antennas ou left/right)
     return {
         "antennas": [float(pos[0]), float(pos[1])],
@@ -581,6 +578,9 @@ async def ws_full_state(
         if token != settings.api_token:
             await websocket.close(code=1008, reason="Invalid token")
             return
+    if frequency <= 0:
+        await websocket.close(code=1008, reason="frequency must be > 0")
+        return
     await websocket.accept()
     # Créer backend adapter directement (pas de Depends pour WebSockets)
     backend = ws_get_backend_adapter(websocket)
