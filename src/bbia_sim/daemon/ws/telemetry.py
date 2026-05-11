@@ -209,10 +209,9 @@ class ConnectionManager:
             "simulation_ready"
         ] = simulation_service.is_simulation_ready()
 
-        # Retourner copie pour éviter mutations simultanées
-        import copy
-
-        return copy.deepcopy(template)
+        # Pas de deepcopy: la sérialisation JSON est faite immédiatement
+        # dans la boucle de broadcast avant toute nouvelle mutation.
+        return template
 
 
 # Instance globale du gestionnaire de connexions
