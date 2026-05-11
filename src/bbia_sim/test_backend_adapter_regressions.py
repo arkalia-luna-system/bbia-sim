@@ -37,7 +37,9 @@ def test_connect_if_needed_raises_when_connect_returns_false():
 
 
 def test_connect_if_needed_raises_when_connect_throws():
-    adapter = BackendAdapter(robot=cast(Any, _DummyRobot(raise_on_connect=RuntimeError("boom"))))
+    adapter = BackendAdapter(
+        robot=cast(Any, _DummyRobot(raise_on_connect=RuntimeError("boom")))
+    )
     with pytest.raises(HTTPException) as exc:
         adapter.connect_if_needed()
     assert exc.value.status_code == 503

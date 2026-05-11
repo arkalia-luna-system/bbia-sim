@@ -85,7 +85,9 @@ def test_api_ecosystem_status(api_client: TestClient) -> None:
 @pytest.mark.fast
 def test_api_emotions_available(api_client: TestClient) -> None:
     """Test endpoint emotions disponibles."""
-    response = api_client.get("/api/ecosystem/emotions/available", headers=auth_headers())
+    response = api_client.get(
+        "/api/ecosystem/emotions/available", headers=auth_headers()
+    )
     assert response.status_code == 200
     data = response.json()
     # Devrait retourner une liste d'émotions
@@ -97,7 +99,9 @@ def test_api_emotions_available(api_client: TestClient) -> None:
 @pytest.mark.fast
 def test_api_behaviors_available(api_client: TestClient) -> None:
     """Test endpoint behaviors disponibles."""
-    response = api_client.get("/api/ecosystem/behaviors/available", headers=auth_headers())
+    response = api_client.get(
+        "/api/ecosystem/behaviors/available", headers=auth_headers()
+    )
     assert response.status_code == 200
     data = response.json()
     # Devrait retourner une liste de comportements
@@ -132,7 +136,11 @@ def test_api_endpoints_signatures_stable(api_client: TestClient) -> None:
     ]
 
     for method, endpoint in endpoints:
-        response = api_client.request(method, endpoint, headers=auth_headers() if endpoint.startswith("/api/ecosystem/") else None)
+        response = api_client.request(
+            method,
+            endpoint,
+            headers=auth_headers() if endpoint.startswith("/api/ecosystem/") else None,
+        )
         # Tous devraient retourner 200 (pas 404, 500, etc.)
         assert response.status_code == 200, f"Endpoint {endpoint} échoué"
 
@@ -149,7 +157,10 @@ def test_api_response_formats(api_client: TestClient) -> None:
     ]
 
     for endpoint in endpoints:
-        response = api_client.get(endpoint, headers=auth_headers() if endpoint.startswith("/api/ecosystem/") else None)
+        response = api_client.get(
+            endpoint,
+            headers=auth_headers() if endpoint.startswith("/api/ecosystem/") else None,
+        )
         assert response.status_code == 200
         data = response.json()
         # Devrait toujours être un dict pour ces endpoints

@@ -5,12 +5,14 @@ Tests des endpoints pour contrôler le volume des haut-parleurs,
 microphone, et activer/désactiver la caméra.
 """
 
-import pytest
 from fastapi.testclient import TestClient
 
 from bbia_sim.daemon.app.main import app
+from bbia_sim.daemon.config import settings
 
 client = TestClient(app)
+
+_AUTH = {"Authorization": f"Bearer {settings.api_token}"}
 
 
 class TestDashboardMediaEndpoints:
@@ -21,6 +23,7 @@ class TestDashboardMediaEndpoints:
         response = client.post(
             "/development/api/media/speaker/volume",
             json={"volume": 0.7},
+            headers=_AUTH,
         )
         assert response.status_code == 200
         data = response.json()
@@ -32,6 +35,7 @@ class TestDashboardMediaEndpoints:
         response = client.post(
             "/development/api/media/speaker/volume",
             json={"volume": 1.5},  # > 1.0
+            headers=_AUTH,
         )
         assert response.status_code == 422  # Validation error
 
@@ -40,6 +44,7 @@ class TestDashboardMediaEndpoints:
         response = client.post(
             "/development/api/media/speaker/volume",
             json={"volume": -0.1},  # < 0.0
+            headers=_AUTH,
         )
         assert response.status_code == 422  # Validation error
 
@@ -48,6 +53,7 @@ class TestDashboardMediaEndpoints:
         response = client.post(
             "/development/api/media/microphone/volume",
             json={"volume": 0.8},
+            headers=_AUTH,
         )
         assert response.status_code == 200
         data = response.json()
@@ -59,6 +65,7 @@ class TestDashboardMediaEndpoints:
         response = client.post(
             "/development/api/media/camera/toggle",
             json={"enabled": True},
+            headers=_AUTH,
         )
         assert response.status_code == 200
         data = response.json()
@@ -70,6 +77,7 @@ class TestDashboardMediaEndpoints:
         response = client.post(
             "/development/api/media/camera/toggle",
             json={"enabled": False},
+            headers=_AUTH,
         )
         assert response.status_code == 200
         data = response.json()
@@ -78,7 +86,7 @@ class TestDashboardMediaEndpoints:
 
     def test_get_media_status(self):
         """Test récupération statut media."""
-        response = client.get("/development/api/media/status")
+        response = client.get("/development/api/media/status", headers=_AUTH)
         assert response.status_code == 200
         data = response.json()
         assert "speaker_volume" in data
@@ -96,6 +104,7 @@ class TestDashboardMediaEndpoints:
         response = client.post(
             "/development/api/media/speaker/volume",
             json={"volume": 0.0},
+            headers=_AUTH,
         )
         assert response.status_code == 200
 
@@ -103,5 +112,6 @@ class TestDashboardMediaEndpoints:
         response = client.post(
             "/development/api/media/speaker/volume",
             json={"volume": 1.0},
+            headers=_AUTH,
         )
         assert response.status_code == 200
