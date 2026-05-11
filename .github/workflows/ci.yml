@@ -240,7 +240,29 @@ jobs:
           # OPTIMISATION CI: Limiter parallélisation pour éviter surcharge RAM
           # Utiliser -x pour arrêter au premier échec et économiser ressources
           # Pas de parallélisation (-n auto) pour éviter surcharge mémoire
-          pytest -vv -m "not e2e and not slow" --cov=src/bbia_sim --cov-report=xml --cov-report=term-missing --cov-fail-under=0 --timeout=30 --maxfail=1 --reruns 2 --reruns-delay 2 --log-cli-level=INFO --durations=20 --tb=short --showlocals -x
+          # Réduction des SKIP structurels en CI Linux (audio/hardware/sdk/LLM réels)
+          # afin d'accélérer l'exécution sans modifier les tests locaux.
+          pytest -vv -m "not e2e and not slow" \
+            --ignore=tests/benchmarks/test_performance.py \
+            --ignore=tests/sim/test_cli_help.py \
+            --ignore=tests/test_audio_buffer_stability.py \
+            --ignore=tests/test_audio_latency_e2e.py \
+            --ignore=tests/test_audio_latency_loopback.py \
+            --ignore=tests/test_bbia_chat_llm.py \
+            --ignore=tests/test_bbia_tools.py \
+            --ignore=tests/test_camera_sdk_latency_real.py \
+            --ignore=tests/test_emergency_stop.py \
+            --ignore=tests/test_motion_repeatability.py \
+            --ignore=tests/test_performance_optimizations.py \
+            --ignore=tests/test_reachy_mini_backend.py \
+            --ignore=tests/test_reachy_mini_full_conformity_official.py \
+            --ignore=tests/test_reachy_mini_strict_conformity.py \
+            --ignore=tests/test_robot_api_smoke.py \
+            --ignore=tests/test_sdk_dependencies.py \
+            --ignore=tests/test_sdk_surface_compat.py \
+            --cov=src/bbia_sim --cov-report=xml --cov-report=term-missing \
+            --cov-fail-under=0 --timeout=30 --maxfail=1 --reruns 2 --reruns-delay 2 \
+            --log-cli-level=INFO --durations=20 --tb=short --showlocals -x
         env:
           PYTHONDONTWRITEBYTECODE: 1
 
