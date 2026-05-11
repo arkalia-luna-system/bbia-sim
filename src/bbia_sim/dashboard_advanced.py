@@ -3288,11 +3288,11 @@ if FASTAPI_AVAILABLE:
         """Test interactif de la caméra."""
         try:
             result = test_camera()
+            ok = isinstance(result, dict) and result.get("status") == "ok"
             return {
-                "success": result.get("status") == "ok",
+                "success": ok,
                 "result": {
-                    "status": result.get("status", "unknown"),
-                    "fix": result.get("fix", ""),
+                    "status": "ok" if ok else "error",
                 },
             }
         except (OSError, RuntimeError, AttributeError, ImportError):
@@ -3312,11 +3312,11 @@ if FASTAPI_AVAILABLE:
         """Test interactif de l'audio."""
         try:
             result = test_audio()
+            ok = isinstance(result, dict) and result.get("status") == "ok"
             return {
-                "success": result.get("status") == "ok",
+                "success": ok,
                 "result": {
-                    "status": result.get("status", "unknown"),
-                    "fix": result.get("fix", ""),
+                    "status": "ok" if ok else "error",
                 },
             }
         except (OSError, RuntimeError, AttributeError, ImportError):
@@ -3336,11 +3336,11 @@ if FASTAPI_AVAILABLE:
         """Test interactif du réseau."""
         try:
             result = test_network_ping(host)
+            ok = isinstance(result, dict) and result.get("status") == "ok"
             return {
-                "success": result.get("status") == "ok",
+                "success": ok,
                 "result": {
-                    "status": result.get("status", "unknown"),
-                    "fix": result.get("fix", ""),
+                    "status": "ok" if ok else "error",
                 },
             }
         except (

@@ -86,12 +86,6 @@ async def get_stl_file(filename: str) -> Response:
     if safe_filename != filename:
         raise HTTPException(status_code=400, detail="Nom de fichier STL invalide")
 
-    if not (STL_ASSETS_DIR / safe_filename).exists():
-        raise HTTPException(
-            status_code=404,
-            detail=f"Fichier STL non trouvé: {safe_filename}",
-        )
-
     try:
         # Utiliser le cache lazy pour charger le STL
         content = get_cached_stl(safe_filename)
