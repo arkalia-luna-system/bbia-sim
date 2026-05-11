@@ -19,44 +19,19 @@ _ALLOWED_STL_FILES: dict[str, Path] = {
 }
 
 
-def get_cached_stl(stl_name: str) -> bytes:
-    """Récupère un fichier STL autorisé depuis le cache ou le charge si absent.
-
-    Args:
-        stl_name: Nom du fichier STL (ex: body_down_3dprint.stl)
-
-    Returns:
-        Contenu binaire du fichier STL
-
-    Raises:
-        FileNotFoundError: Si le fichier STL n'existe pas
-        OSError: Si le fichier ne peut pas être lu
-    """
-    safe_name = Path(stl_name).name
-    if safe_name != stl_name:
-        logger.warning("Nom STL invalide refusé: %s", stl_name)
-        raise FileNotFoundError("Nom de fichier STL invalide")
-
-    stl_path_resolved = _ALLOWED_STL_FILES.get(safe_name)
-    if stl_path_resolved is None:
-        logger.warning("Fichier STL non autorisé: %s", safe_name)
-        raise FileNotFoundError("Fichier STL non autorisé")
-
+def _read_and_cache_stl(stl_path_resolved: Path) -> bytes:
+    """Lit un STL depuis le disque avec cache LRU."""
     stl_path_str = str(stl_path_resolved)
 
-    # Vérifier si le STL est déjà en cache
     if stl_path_str in _stl_cache:
-        # Déplacer en fin (LRU)
         _stl_cache.move_to_end(stl_path_str)
         logger.debug("✅ STL récupéré depuis cache: %s", stl_path_str)
         return _stl_cache[stl_path_str]
 
-    # Vérifier que le fichier existe
     if not stl_path_resolved.exists():
         logger.error("Fichier STL introuvable: %s", stl_path_resolved)
         raise FileNotFoundError(f"Fichier STL introuvable: {stl_path_resolved}")
 
-    # Charger le fichier STL
     logger.info("📦 Chargement STL: %s", stl_path_str)
     try:
         with open(stl_path_resolved, "rb") as f:
@@ -65,11 +40,9 @@ def get_cached_stl(stl_name: str) -> bytes:
         logger.error("Erreur lecture STL %s: %s", stl_path_resolved, e)
         raise
 
-    # Vérifier la taille du cache avant d'ajouter
     current_size = sum(len(content) for content in _stl_cache.values())
     stl_size = len(stl_content)
 
-    # Si le nouveau fichier dépasse la limite, évincer les plus anciens
     while (
         len(_stl_cache) >= _cache_max_size
         or (current_size + stl_size) > _cache_max_size_bytes
@@ -82,7 +55,6 @@ def get_cached_stl(stl_name: str) -> bytes:
         current_size -= evicted_size
         logger.debug("🗑️ STL évincé du cache: %s", oldest_key)
 
-    # Ajouter au cache
     _stl_cache[stl_path_str] = stl_content
     _stl_cache.move_to_end(stl_path_str)
     current_size += stl_size
@@ -95,6 +67,37 @@ def get_cached_stl(stl_name: str) -> bytes:
         _cache_max_size_bytes / (1024 * 1024),
     )
     return stl_content
+
+
+def get_cached_stl(stl_path: str | Path) -> bytes:
+    """Récupère un fichier STL depuis le cache (usage générique/tests).
+
+    Args:
+        stl_path: Chemin STL (absolu ou relatif)
+
+    Returns:
+        Contenu binaire du fichier STL
+
+    Raises:
+        FileNotFoundError: Si le fichier STL n'existe pas
+        OSError: Si le fichier ne peut pas être lu
+    """
+    return _read_and_cache_stl(Path(stl_path).resolve())
+
+
+def get_cached_official_stl(stl_name: str) -> bytes:
+    """Récupère un STL officiel autorisé (usage API publique)."""
+    safe_name = Path(stl_name).name
+    if safe_name != stl_name:
+        logger.warning("Nom STL invalide refusé: %s", stl_name)
+        raise FileNotFoundError("Nom de fichier STL invalide")
+
+    stl_path_resolved = _ALLOWED_STL_FILES.get(safe_name)
+    if stl_path_resolved is None:
+        logger.warning("Fichier STL non autorisé: %s", safe_name)
+        raise FileNotFoundError("Fichier STL non autorisé")
+
+    return _read_and_cache_stl(stl_path_resolved)
 
 
 def clear_stl_cache() -> None:
