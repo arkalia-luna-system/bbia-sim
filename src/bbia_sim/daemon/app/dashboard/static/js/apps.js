@@ -113,7 +113,7 @@ const installedApps = {
 
         const title = document.createElement('div');
         title.className = 'installed-app-title top-1/2 ';
-        title.innerHTML = app.name;
+        title.textContent = app.name;
         container.appendChild(title);
 
         const slider = document.createElement('div');
@@ -194,7 +194,7 @@ const installedApps = {
 
                 }
             } catch {
-                logsDiv.innerHTML += event.data + '\n';
+                logsDiv.textContent += `${event.data}\n`;
                 logsDiv.scrollTop = logsDiv.scrollHeight;
             }
         };

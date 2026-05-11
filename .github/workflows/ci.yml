@@ -13,6 +13,8 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    permissions:
+      contents: read
     strategy:
       matrix:
         python-version: ["3.11", "3.12"]
@@ -169,6 +171,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    permissions:
+      contents: read
     env:
       SEED: 42
       MUJOCO_GL: disable
@@ -274,6 +278,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     needs: [lint, test]
+    permissions:
+      contents: read
     env:
       MUJOCO_GL: disable
       DISPLAY: ""
@@ -428,6 +434,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: [lint, test]
     timeout-minutes: 45
+    permissions:
+      contents: read
     env:
       MUJOCO_GL: disable
       DISPLAY: ""
@@ -513,6 +521,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: [lint, test]
     timeout-minutes: 20
+    permissions:
+      contents: read
     env:
       MUJOCO_GL: disable
       DISPLAY: ""
@@ -581,6 +591,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: [lint, test, test-e2e, test-slow]
     timeout-minutes: 10
+    permissions:
+      contents: read
     env:
       PYTHONDONTWRITEBYTECODE: 1
     steps:
@@ -633,6 +645,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: [lint, test]
     timeout-minutes: 20
+    permissions:
+      contents: read
     env:
       MUJOCO_GL: disable
       DISPLAY: ""
@@ -727,6 +741,8 @@ jobs:
     needs: [test]
     if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main'
     timeout-minutes: 10
+    permissions:
+      contents: read
     env:
       PYTHONDONTWRITEBYTECODE: 1
       MUJOCO_GL: disable
