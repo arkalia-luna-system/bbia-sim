@@ -416,12 +416,12 @@ async def readyz() -> dict[str, Any]:
                 "memory": memory_ok,
             },
         }
-    except Exception as e:
+    except Exception:
         logger.exception("Erreur readiness check")
         return {
             "status": "not_ready",
             "timestamp": time.time(),
-            "error": str(e),
+            "error": "internal_error",
         }
 
 
@@ -464,10 +464,10 @@ async def health() -> dict[str, Any]:
             },
             "system": system_info,
         }
-    except Exception as e:
+    except Exception:
         logger.exception("Erreur health check")
         return {
             "status": "unhealthy",
             "timestamp": time.time(),
-            "error": str(e),
+            "error": "internal_error",
         }

@@ -22,8 +22,9 @@ def _reachy_alive() -> dict[str, Any]:
             "available_joints": backend.get_available_joints(),
         }
         return {"ok": ok, "status": status}
-    except Exception as e:  # noqa: BLE001
-        return {"ok": False, "error": str(e)}
+    except Exception:  # noqa: BLE001
+        logging.getLogger(__name__).exception("Erreur _reachy_alive")
+        return {"ok": False, "error": "internal_error"}
     finally:
         try:
             backend.disconnect()
@@ -52,8 +53,9 @@ async def sanity_emergency_stop() -> dict[str, Any]:
         backend.connect()
         ok = backend.emergency_stop()
         return {"ok": ok, "ts": datetime.now().isoformat()}
-    except Exception as e:  # noqa: BLE001
-        return {"ok": False, "error": str(e)}
+    except Exception:  # noqa: BLE001
+        logging.getLogger(__name__).exception("Erreur sanity_emergency_stop")
+        return {"ok": False, "error": "internal_error"}
     finally:
         try:
             backend.disconnect()

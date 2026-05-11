@@ -11,6 +11,9 @@ logger = logging.getLogger(__name__)
 _stl_cache: OrderedDict[str, bytes] = OrderedDict()
 _cache_max_size: int = 20  # Maximum 20 fichiers STL en cache
 _cache_max_size_bytes: int = 50 * 1024 * 1024  # 50 MB max
+_STL_ROOT_DIR = (
+    Path(__file__).resolve().parent / "sim" / "assets" / "reachy_official"
+).resolve()
 
 
 def get_cached_stl(stl_path: str | Path) -> bytes:
@@ -27,7 +30,16 @@ def get_cached_stl(stl_path: str | Path) -> bytes:
         OSError: Si le fichier ne peut pas être lu
     """
     stl_path_obj = Path(stl_path)
-    stl_path_str = str(stl_path_obj.resolve())
+    stl_path_resolved = stl_path_obj.resolve()
+
+    # Sécurité: garantir que les STL viennent uniquement du dossier assets officiel.
+    try:
+        stl_path_resolved.relative_to(_STL_ROOT_DIR)
+    except ValueError as exc:
+        logger.warning("Accès STL hors dossier autorisé refusé: %s", stl_path_obj)
+        raise FileNotFoundError("Fichier STL hors dossier autorisé") from exc
+
+    stl_path_str = str(stl_path_resolved)
 
     # Vérifier si le STL est déjà en cache
     if stl_path_str in _stl_cache:
@@ -37,17 +49,17 @@ def get_cached_stl(stl_path: str | Path) -> bytes:
         return _stl_cache[stl_path_str]
 
     # Vérifier que le fichier existe
-    if not stl_path_obj.exists():
-        logger.error("Fichier STL introuvable: %s", stl_path_obj)
-        raise FileNotFoundError(f"Fichier STL introuvable: {stl_path_obj}")
+    if not stl_path_resolved.exists():
+        logger.error("Fichier STL introuvable: %s", stl_path_resolved)
+        raise FileNotFoundError(f"Fichier STL introuvable: {stl_path_resolved}")
 
     # Charger le fichier STL
     logger.info("📦 Chargement STL: %s", stl_path_str)
     try:
-        with open(stl_path_obj, "rb") as f:
+        with open(stl_path_resolved, "rb") as f:
             stl_content = f.read()
     except OSError as e:
-        logger.error("Erreur lecture STL %s: %s", stl_path_obj, e)
+        logger.error("Erreur lecture STL %s: %s", stl_path_resolved, e)
         raise
 
     # Vérifier la taille du cache avant d'ajouter

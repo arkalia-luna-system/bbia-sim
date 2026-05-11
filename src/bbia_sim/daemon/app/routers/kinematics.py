@@ -83,7 +83,14 @@ async def get_stl_file(filename: str) -> Response:
     from pathlib import Path
 
     safe_filename = Path(filename).name
-    file_path = STL_ASSETS_DIR / safe_filename
+    file_path = (STL_ASSETS_DIR / safe_filename).resolve()
+    allowed_root = STL_ASSETS_DIR.resolve()
+
+    # Défense en profondeur contre traversal via symlink/chemin ambigu.
+    try:
+        file_path.relative_to(allowed_root)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail="Chemin STL invalide") from exc
 
     if not file_path.exists():
         raise HTTPException(

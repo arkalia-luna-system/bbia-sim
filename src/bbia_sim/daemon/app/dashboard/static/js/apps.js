@@ -194,7 +194,8 @@ const installedApps = {
 
                 }
             } catch {
-                logsDiv.textContent += `${event.data}\n`;
+                // Préserver l'affichage texte sans interprétation HTML.
+                logsDiv.appendChild(document.createTextNode(`${event.data}\n`));
                 logsDiv.scrollTop = logsDiv.scrollHeight;
             }
         };
