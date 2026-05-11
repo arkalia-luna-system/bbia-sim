@@ -3188,7 +3188,7 @@ if FASTAPI_AVAILABLE:
                 return {"success": False, "error": "Failed to set emotion"}
 
             return {"success": False, "error": "Robot not connected"}
-        except (ValueError, AttributeError, RuntimeError, KeyError) as e:
+        except (ValueError, AttributeError, RuntimeError, KeyError):
             logger.exception("Erreur set_emotion")
             return {"success": False, "error": "internal_error"}
         except (TypeError, IndexError) as e:
@@ -3231,7 +3231,7 @@ if FASTAPI_AVAILABLE:
             return {"success": False, "error": "Robot not connected"}
         except HTTPException:
             raise
-        except (ValueError, AttributeError, RuntimeError, KeyError, IndexError) as e:
+        except (ValueError, AttributeError, RuntimeError, KeyError, IndexError):
             logger.exception("Erreur set_joint_position")
             return {"success": False, "error": "internal_error"}
         except TypeError as e:
@@ -3261,7 +3261,7 @@ if FASTAPI_AVAILABLE:
         try:
             results = check_all()
             return {"success": True, "results": results}
-        except (OSError, RuntimeError, AttributeError, ImportError) as e:
+        except (OSError, RuntimeError, AttributeError, ImportError):
             logger.exception("Erreur troubleshooting check")
             return {"success": False, "error": "internal_error"}
         except (TypeError, KeyError, IndexError) as e:
@@ -3279,7 +3279,7 @@ if FASTAPI_AVAILABLE:
         try:
             result = test_camera()
             return {"success": True, "result": result}
-        except (OSError, RuntimeError, AttributeError, ImportError) as e:
+        except (OSError, RuntimeError, AttributeError, ImportError):
             logger.exception("Erreur test caméra")
             return {"success": False, "error": "camera_error"}
         except (TypeError, KeyError, IndexError) as e:
@@ -3297,7 +3297,7 @@ if FASTAPI_AVAILABLE:
         try:
             result = test_audio()
             return {"success": True, "result": result}
-        except (OSError, RuntimeError, AttributeError, ImportError) as e:
+        except (OSError, RuntimeError, AttributeError, ImportError):
             logger.exception("Erreur test audio")
             return {"success": False, "error": "audio_error"}
         except (TypeError, KeyError, IndexError) as e:
@@ -3321,7 +3321,7 @@ if FASTAPI_AVAILABLE:
             AttributeError,
             ConnectionError,
             TimeoutError,
-        ) as e:
+        ):
             logger.exception("Erreur test réseau")
             return {"success": False, "error": "network_error"}
         except (TypeError, IndexError, KeyError) as e:
@@ -3344,7 +3344,7 @@ if FASTAPI_AVAILABLE:
                 name: f"{base_url}?path={path}" for name, path in links.items()
             }
             return {"success": True, "links": links_with_urls}
-        except (KeyError, AttributeError, RuntimeError) as e:
+        except (KeyError, AttributeError, RuntimeError):
             logger.exception("Erreur récupération docs")
             return {"success": False, "error": "internal_error"}
         except (TypeError, IndexError) as e:
@@ -4175,17 +4175,26 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
         # Envoyer mise à jour du statut
         await advanced_websocket_manager.send_complete_status()
 
-    except (ValueError, AttributeError, RuntimeError, KeyError, TypeError) as e:
+    except (ValueError, AttributeError, RuntimeError, KeyError, TypeError):
         logger.exception("❌ Erreur commande avancée")
-        await advanced_websocket_manager.send_log_message("error", f"Erreur: {e!s}")
+        await advanced_websocket_manager.send_log_message(
+            "error",
+            "Erreur interne pendant le traitement de la commande",
+        )
     except IndexError as e:
         logger.exception("❌ Erreur commande avancée (index): %s", e)
-        await advanced_websocket_manager.send_log_message("error", f"Erreur: {e!s}")
+        await advanced_websocket_manager.send_log_message(
+            "error",
+            "Erreur interne pendant le traitement de la commande",
+        )
     except (
         Exception
     ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
         logger.exception("❌ Erreur inattendue commande avancée: %s", e)
-        await advanced_websocket_manager.send_log_message("error", f"Erreur: {e!s}")
+        await advanced_websocket_manager.send_log_message(
+            "error",
+            "Erreur interne pendant le traitement de la commande",
+        )
 
 
 async def handle_chat_message(

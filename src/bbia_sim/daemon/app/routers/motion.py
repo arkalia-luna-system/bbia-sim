@@ -97,15 +97,15 @@ async def goto_pose(
             "estimated_time": duration,
             "timestamp": datetime.now().isoformat(),
         }
-    except Exception as e:
+    except Exception:
         logger.exception("Erreur lors du mouvement")
-        # Retourner quand même une réponse
+        # Retourner un message générique pour éviter l'exposition de détails internes
         return {
             "status": "error",
             "target_pose": pose.model_dump(),
             "duration": duration,
             "interpolation": str(interpolation),
-            "error": str(e),
+            "error": "Une erreur interne est survenue pendant l'execution du mouvement.",
             "timestamp": datetime.now().isoformat(),
         }
     finally:
@@ -280,11 +280,11 @@ async def wake_up() -> dict[str, Any]:
             "message": "Robot en cours de réveil",
             "timestamp": datetime.now().isoformat(),
         }
-    except Exception as e:
+    except Exception:
         logger.exception("Erreur lors du réveil")
         return {
             "status": "error",
-            "message": f"Erreur: {e!s}",
+            "message": "Une erreur interne est survenue pendant la sequence de reveil.",
             "timestamp": datetime.now().isoformat(),
         }
     finally:
@@ -330,11 +330,11 @@ async def goto_sleep() -> dict[str, Any]:
             "message": "Robot en cours de mise en veille",
             "timestamp": datetime.now().isoformat(),
         }
-    except Exception as e:
+    except Exception:
         logger.exception("Erreur lors de la mise en veille")
         return {
             "status": "error",
-            "message": f"Erreur: {e!s}",
+            "message": "Erreur interne lors de la mise en veille",
             "timestamp": datetime.now().isoformat(),
         }
     finally:
@@ -401,11 +401,11 @@ async def set_emotion(emotion_request: EmotionRequest) -> dict[str, Any]:
             "message": "Impossible de définir l'émotion",
             "timestamp": datetime.now().isoformat(),
         }
-    except Exception as e:
+    except Exception:
         logger.exception("Erreur lors de la définition de l'émotion")
         return {
             "status": "error",
-            "message": f"Erreur: {e!s}",
+            "message": "Erreur interne lors de la définition de l'émotion",
             "timestamp": datetime.now().isoformat(),
         }
     finally:
