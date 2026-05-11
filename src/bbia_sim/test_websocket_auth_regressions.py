@@ -55,7 +55,10 @@ async def test_move_ws_updates_requires_token_in_prod(
     ws = _DummyWebSocket()
     monkeypatch.setattr(settings, "environment", "prod")
     monkeypatch.setattr(settings, "api_token", "secret")
-    await ws_move_updates(websocket=cast(WebSocket, ws), token="wrong")
+    await ws_move_updates(
+        websocket=cast(WebSocket, ws),
+        token="wrong",  # nosec B106
+    )
     assert ws.closed is True
     assert ws.accepted is False
     assert ws.close_code == 1008
@@ -79,7 +82,11 @@ async def test_apps_ws_requires_token_in_prod(monkeypatch: pytest.MonkeyPatch) -
     ws = _DummyWebSocket()
     monkeypatch.setattr(settings, "environment", "prod")
     monkeypatch.setattr(settings, "api_token", "secret")
-    await ws_apps_manager(websocket=cast(WebSocket, ws), job_id="job-1", token="")
+    await ws_apps_manager(
+        websocket=cast(WebSocket, ws),
+        job_id="job-1",
+        token="",  # nosec B106
+    )
     assert ws.closed is True
     assert ws.accepted is False
     assert ws.close_code == 1008
@@ -92,7 +99,10 @@ async def test_telemetry_ws_requires_token_in_prod(
     ws = _DummyWebSocket()
     monkeypatch.setattr(settings, "environment", "prod")
     monkeypatch.setattr(settings, "api_token", "secret")
-    await websocket_endpoint(websocket=cast(WebSocket, ws), token="invalid")
+    await websocket_endpoint(
+        websocket=cast(WebSocket, ws),
+        token="invalid",  # nosec B106
+    )
     assert ws.closed is True
     assert ws.accepted is False
     assert ws.close_code == 1008
