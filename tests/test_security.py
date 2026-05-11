@@ -5,12 +5,13 @@ Tests de validation inputs, rate limiting, CORS, et protection
 contre injection (XSS, SQL injection, etc.).
 """
 
-import pytest
 from fastapi.testclient import TestClient
 
 from bbia_sim.daemon.app.main import app
+from bbia_sim.daemon.config import settings
 
 client = TestClient(app)
+AUTH_HEADERS = {"Authorization": f"Bearer {settings.api_token}"}
 
 
 class TestSecurityInputValidation:
@@ -22,6 +23,7 @@ class TestSecurityInputValidation:
         response = client.post(
             "/development/api/media/speaker/volume",
             json={"volume": 2.0},
+            headers=AUTH_HEADERS,
         )
         assert response.status_code == 422  # Validation error
 
@@ -29,6 +31,7 @@ class TestSecurityInputValidation:
         response = client.post(
             "/development/api/media/speaker/volume",
             json={"volume": -1.0},
+            headers=AUTH_HEADERS,
         )
         assert response.status_code == 422  # Validation error
 
@@ -39,6 +42,7 @@ class TestSecurityInputValidation:
         response = client.post(
             "/development/api/media/speaker/volume",
             json={"volume": 0.5, "comment": malicious_input},
+            headers=AUTH_HEADERS,
         )
         # Vérifier que script n'est pas exécuté (status 422 ou sanitized)
         assert response.status_code in [200, 422]
@@ -50,6 +54,7 @@ class TestSecurityInputValidation:
         response = client.post(
             "/development/api/media/speaker/volume",
             json={"volume": 0.5, "query": sql_injection},
+            headers=AUTH_HEADERS,
         )
         # Vérifier que requête est rejetée ou sanitized
         assert response.status_code in [200, 422]
@@ -74,6 +79,7 @@ class TestSecurityRateLimiting:
             response = client.post(
                 "/development/api/media/speaker/volume",
                 json={"volume": 0.5},
+                headers=AUTH_HEADERS,
             )
             # En production, devrait retourner 429 après limite
             # En dev, peut passer

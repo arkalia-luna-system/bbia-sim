@@ -6,7 +6,9 @@ from bbia_sim.daemon.app.routers import state
 
 
 @pytest.mark.asyncio
-async def test_start_simulation_error_message_is_sanitized(monkeypatch: pytest.MonkeyPatch) -> None:
+async def test_start_simulation_error_message_is_sanitized(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     class _FailingService:
         async def start_simulation(self, headless: bool = True) -> bool:
             raise RuntimeError("raw-internal-error")
@@ -21,7 +23,9 @@ async def test_start_simulation_error_message_is_sanitized(monkeypatch: pytest.M
 
 
 @pytest.mark.asyncio
-async def test_stop_simulation_error_message_is_sanitized(monkeypatch: pytest.MonkeyPatch) -> None:
+async def test_stop_simulation_error_message_is_sanitized(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     class _FailingService:
         async def stop_simulation(self) -> None:
             raise RuntimeError("raw-internal-error")
