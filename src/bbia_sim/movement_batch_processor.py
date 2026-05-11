@@ -10,6 +10,8 @@ logger = logging.getLogger(__name__)
 # Configuration batch processing
 BATCH_MAX_SIZE: int = 10  # Maximum 10 mouvements par batch
 BATCH_TIMEOUT: float = 0.1  # Attendre 100ms pour remplir le batch
+_MIN_BATCH_LOOP_SLEEP: float = 0.001  # Evite une boucle CPU si timeout=0
+_IDLE_POLL_INTERVAL: float = 0.05  # Polling léger pour ne pas saturer le CPU
 
 
 class MovementBatchProcessor:
@@ -80,7 +82,12 @@ class MovementBatchProcessor:
         while True:
             try:
                 # Attendre un peu pour remplir le batch
-                await asyncio.sleep(self.batch_timeout if self.batch_timeout > 0 else 0)
+                wait_delay = (
+                    self.batch_timeout
+                    if self.batch_timeout > 0
+                    else _MIN_BATCH_LOOP_SLEEP
+                )
+                await asyncio.sleep(wait_delay)
 
                 async with self.batch_lock:
                     if not self.batch_queue:
@@ -95,6 +102,10 @@ class MovementBatchProcessor:
                 if batch:
                     await self._execute_batch(batch)
 
+            except asyncio.CancelledError:
+                async with self.batch_lock:
+                    self.is_running = False
+                raise
             except Exception as e:
                 logger.exception("Erreur traitement batch: %s", e)
                 async with self.batch_lock:
@@ -161,7 +172,7 @@ class MovementBatchProcessor:
 
             if asyncio.get_running_loop().time() - start > timeout:
                 return False
-            await asyncio.sleep(0.01)
+            await asyncio.sleep(_IDLE_POLL_INTERVAL)
 
     def get_queue_size(self) -> int:
         """Retourne la taille actuelle de la queue."""
