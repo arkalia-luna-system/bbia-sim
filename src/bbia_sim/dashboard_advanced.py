@@ -3260,7 +3260,17 @@ if FASTAPI_AVAILABLE:
         """Exécute tous les checks de troubleshooting."""
         try:
             results = check_all()
-            return {"success": True, "results": results}
+            # Ne pas renvoyer les messages détaillés potentiellement issus d'exceptions.
+            sanitized_results: dict[str, dict[str, Any]] = {}
+            for name, payload in results.items():
+                if isinstance(payload, dict):
+                    sanitized_results[name] = {
+                        "status": payload.get("status", "unknown"),
+                        "fix": payload.get("fix", ""),
+                    }
+                else:
+                    sanitized_results[name] = {"status": "unknown", "fix": ""}
+            return {"success": True, "results": sanitized_results}
         except (OSError, RuntimeError, AttributeError, ImportError):
             logger.exception("Erreur troubleshooting check")
             return {"success": False, "error": "internal_error"}
@@ -3278,7 +3288,13 @@ if FASTAPI_AVAILABLE:
         """Test interactif de la caméra."""
         try:
             result = test_camera()
-            return {"success": True, "result": result}
+            return {
+                "success": result.get("status") == "ok",
+                "result": {
+                    "status": result.get("status", "unknown"),
+                    "fix": result.get("fix", ""),
+                },
+            }
         except (OSError, RuntimeError, AttributeError, ImportError):
             logger.exception("Erreur test caméra")
             return {"success": False, "error": "camera_error"}
@@ -3296,7 +3312,13 @@ if FASTAPI_AVAILABLE:
         """Test interactif de l'audio."""
         try:
             result = test_audio()
-            return {"success": True, "result": result}
+            return {
+                "success": result.get("status") == "ok",
+                "result": {
+                    "status": result.get("status", "unknown"),
+                    "fix": result.get("fix", ""),
+                },
+            }
         except (OSError, RuntimeError, AttributeError, ImportError):
             logger.exception("Erreur test audio")
             return {"success": False, "error": "audio_error"}
@@ -3314,7 +3336,13 @@ if FASTAPI_AVAILABLE:
         """Test interactif du réseau."""
         try:
             result = test_network_ping(host)
-            return {"success": True, "result": result}
+            return {
+                "success": result.get("status") == "ok",
+                "result": {
+                    "status": result.get("status", "unknown"),
+                    "fix": result.get("fix", ""),
+                },
+            }
         except (
             OSError,
             RuntimeError,
@@ -3368,15 +3396,16 @@ if FASTAPI_AVAILABLE:
         )
 
         try:
-            # Sécuriser le chemin pour éviter les accès non autorisés
-            doc_path = Path(path)
-            if ".." in str(doc_path) or doc_path.is_absolute():
-                raise HTTPException(status_code=400, detail="Chemin invalide")
-
-            # Construire le chemin complet depuis la racine du projet
+            # Restreindre strictement aux chemins de documentation connus.
             project_root = Path(__file__).resolve().parent.parent.parent
             docs_root = (project_root / "docs").resolve()
-            full_path = (project_root / doc_path).resolve()
+            allowed_docs = {
+                rel_path: (project_root / rel_path).resolve()
+                for rel_path in get_documentation_links().values()
+            }
+            full_path = allowed_docs.get(path)
+            if full_path is None:
+                raise HTTPException(status_code=404, detail="Fichier non trouvé")
 
             # Vérifier que le fichier existe et est dans le dossier docs
             if not full_path.exists():
@@ -3393,7 +3422,7 @@ if FASTAPI_AVAILABLE:
                 content = full_path.read_text(encoding="utf-8")
                 # Échapper le HTML et convertir les retours à la ligne en <br>
                 content_html = html.escape(content).replace("\n", "<br>\n")
-                safe_doc_name = html.escape(doc_path.name)
+                safe_doc_name = html.escape(full_path.name)
                 # Créer une page HTML simple avec le contenu
                 html_page = f"""
 <!DOCTYPE html>

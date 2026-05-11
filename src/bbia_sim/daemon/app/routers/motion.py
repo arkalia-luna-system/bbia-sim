@@ -97,17 +97,12 @@ async def goto_pose(
             "estimated_time": duration,
             "timestamp": datetime.now().isoformat(),
         }
-    except Exception:
+    except Exception as exc:
         logger.exception("Erreur lors du mouvement")
-        # Retourner un message générique pour éviter l'exposition de détails internes
-        return {
-            "status": "error",
-            "target_pose": pose.model_dump(),
-            "duration": duration,
-            "interpolation": str(interpolation),
-            "error": "Une erreur interne est survenue pendant l'execution du mouvement.",
-            "timestamp": datetime.now().isoformat(),
-        }
+        raise HTTPException(
+            status_code=500,
+            detail="Une erreur interne est survenue pendant l'execution du mouvement.",
+        ) from exc
     finally:
         if robot and connected:
             try:
@@ -280,13 +275,12 @@ async def wake_up() -> dict[str, Any]:
             "message": "Robot en cours de réveil",
             "timestamp": datetime.now().isoformat(),
         }
-    except Exception:
+    except Exception as exc:
         logger.exception("Erreur lors du réveil")
-        return {
-            "status": "error",
-            "message": "Une erreur interne est survenue pendant la sequence de reveil.",
-            "timestamp": datetime.now().isoformat(),
-        }
+        raise HTTPException(
+            status_code=500,
+            detail="Une erreur interne est survenue pendant la sequence de reveil.",
+        ) from exc
     finally:
         if robot and connected:
             try:
@@ -330,13 +324,12 @@ async def goto_sleep() -> dict[str, Any]:
             "message": "Robot en cours de mise en veille",
             "timestamp": datetime.now().isoformat(),
         }
-    except Exception:
+    except Exception as exc:
         logger.exception("Erreur lors de la mise en veille")
-        return {
-            "status": "error",
-            "message": "Erreur interne lors de la mise en veille",
-            "timestamp": datetime.now().isoformat(),
-        }
+        raise HTTPException(
+            status_code=500,
+            detail="Erreur interne lors de la mise en veille",
+        ) from exc
     finally:
         if robot and connected:
             try:
@@ -401,13 +394,12 @@ async def set_emotion(emotion_request: EmotionRequest) -> dict[str, Any]:
             "message": "Impossible de définir l'émotion",
             "timestamp": datetime.now().isoformat(),
         }
-    except Exception:
+    except Exception as exc:
         logger.exception("Erreur lors de la définition de l'émotion")
-        return {
-            "status": "error",
-            "message": "Erreur interne lors de la définition de l'émotion",
-            "timestamp": datetime.now().isoformat(),
-        }
+        raise HTTPException(
+            status_code=500,
+            detail="Erreur interne lors de la définition de l'émotion",
+        ) from exc
     finally:
         if robot and connected:
             try:

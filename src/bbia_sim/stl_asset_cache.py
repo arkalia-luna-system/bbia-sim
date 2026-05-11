@@ -14,13 +14,16 @@ _cache_max_size_bytes: int = 50 * 1024 * 1024  # 50 MB max
 _STL_ROOT_DIR = (
     Path(__file__).resolve().parent / "sim" / "assets" / "reachy_official"
 ).resolve()
+_ALLOWED_STL_FILES: dict[str, Path] = {
+    path.name: path.resolve() for path in _STL_ROOT_DIR.glob("*.stl") if path.is_file()
+}
 
 
-def get_cached_stl(stl_path: str | Path) -> bytes:
-    """Récupère un fichier STL depuis le cache ou le charge si absent.
+def get_cached_stl(stl_name: str) -> bytes:
+    """Récupère un fichier STL autorisé depuis le cache ou le charge si absent.
 
     Args:
-        stl_path: Chemin vers le fichier STL
+        stl_name: Nom du fichier STL (ex: body_down_3dprint.stl)
 
     Returns:
         Contenu binaire du fichier STL
@@ -29,15 +32,15 @@ def get_cached_stl(stl_path: str | Path) -> bytes:
         FileNotFoundError: Si le fichier STL n'existe pas
         OSError: Si le fichier ne peut pas être lu
     """
-    stl_path_obj = Path(stl_path)
-    stl_path_resolved = stl_path_obj.resolve()
+    safe_name = Path(stl_name).name
+    if safe_name != stl_name:
+        logger.warning("Nom STL invalide refusé: %s", stl_name)
+        raise FileNotFoundError("Nom de fichier STL invalide")
 
-    # Sécurité: garantir que les STL viennent uniquement du dossier assets officiel.
-    try:
-        stl_path_resolved.relative_to(_STL_ROOT_DIR)
-    except ValueError as exc:
-        logger.warning("Accès STL hors dossier autorisé refusé: %s", stl_path_obj)
-        raise FileNotFoundError("Fichier STL hors dossier autorisé") from exc
+    stl_path_resolved = _ALLOWED_STL_FILES.get(safe_name)
+    if stl_path_resolved is None:
+        logger.warning("Fichier STL non autorisé: %s", safe_name)
+        raise FileNotFoundError("Fichier STL non autorisé")
 
     stl_path_str = str(stl_path_resolved)
 

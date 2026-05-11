@@ -209,10 +209,9 @@ async def get_daemon_status() -> dict[str, Any]:
             error=None,
         )
         return status.dict()
-    except Exception:
+    except Exception as exc:
         logger.exception("Erreur lors de la récupération du statut")
-        return DaemonStatus(
-            status="error",
-            simulation_running=False,
-            error="Erreur interne lors de la récupération du statut",
-        ).dict()
+        raise HTTPException(
+            status_code=500,
+            detail="Erreur interne lors de la récupération du statut",
+        ) from exc

@@ -83,16 +83,10 @@ async def get_stl_file(filename: str) -> Response:
     from pathlib import Path
 
     safe_filename = Path(filename).name
-    file_path = (STL_ASSETS_DIR / safe_filename).resolve()
-    allowed_root = STL_ASSETS_DIR.resolve()
+    if safe_filename != filename:
+        raise HTTPException(status_code=400, detail="Nom de fichier STL invalide")
 
-    # Défense en profondeur contre traversal via symlink/chemin ambigu.
-    try:
-        file_path.relative_to(allowed_root)
-    except ValueError as exc:
-        raise HTTPException(status_code=400, detail="Chemin STL invalide") from exc
-
-    if not file_path.exists():
+    if not (STL_ASSETS_DIR / safe_filename).exists():
         raise HTTPException(
             status_code=404,
             detail=f"Fichier STL non trouvé: {safe_filename}",
@@ -100,7 +94,7 @@ async def get_stl_file(filename: str) -> Response:
 
     try:
         # Utiliser le cache lazy pour charger le STL
-        content = get_cached_stl(file_path)
+        content = get_cached_stl(safe_filename)
         return Response(content, media_type="model/stl")
     except FileNotFoundError as e:
         logger.warning("Fichier STL introuvable: %s", filename)
