@@ -209,10 +209,9 @@ class ConnectionManager:
             "simulation_ready"
         ] = simulation_service.is_simulation_ready()
 
-        # Retourner copie pour éviter mutations simultanées
-        import copy
-
-        return copy.deepcopy(template)
+        # Pas de deepcopy: la sérialisation JSON est faite immédiatement
+        # dans la boucle de broadcast avant toute nouvelle mutation.
+        return template
 
 
 # Instance globale du gestionnaire de connexions
@@ -220,8 +219,16 @@ manager = ConnectionManager()
 
 
 @router.websocket("/telemetry")
-async def websocket_endpoint(websocket: WebSocket) -> None:
+async def websocket_endpoint(websocket: WebSocket, token: str | None = None) -> None:
     """Endpoint WebSocket pour la télémétrie temps réel."""
+    from bbia_sim.daemon.config import settings
+
+    if settings.environment.lower() == "prod" and (
+        not token or token != settings.api_token
+    ):
+        await websocket.close(code=1008, reason="Invalid token")
+        return
+
     await manager.connect(websocket)
 
     try:

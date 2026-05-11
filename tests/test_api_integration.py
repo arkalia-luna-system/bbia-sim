@@ -109,19 +109,15 @@ class TestAPIIntegration:
 
     def test_state_full_without_auth(self, client):
         """Test endpoint state/full sans authentification."""
-        # Note: /api/state/full est maintenant accessible sans auth car dans router avec WebSockets
-        # Le test vérifie que l'endpoint fonctionne sans auth
+        # /api/state/full est protégé: sans token, l'API doit refuser la requête.
         response = client.get("/api/state/full")
-        # Accepte 200 (sans auth) ou 403 (si auth requise selon configuration)
-        assert response.status_code in [200, 403]
+        assert response.status_code == 401
 
     def test_state_full_invalid_token(self, client):
         """Test endpoint state/full avec token invalide."""
-        # Note: /api/state/full est maintenant accessible sans auth car dans router avec WebSockets
         headers = {"Authorization": "Bearer invalid-token"}
         response = client.get("/api/state/full", headers=headers)
-        # Accepte 200 (sans auth) ou 401 (si auth requise et token invalide)
-        assert response.status_code in [200, 401]
+        assert response.status_code == 401
 
     @patch("src.bbia_sim.daemon.app.main.simulation_service")
     def test_motion_joints_valid(self, mock_service, client):

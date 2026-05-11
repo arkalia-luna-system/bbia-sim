@@ -2,6 +2,7 @@
 """Router pour métriques et health checks."""
 
 import logging
+import math
 import os
 import time
 from collections import deque
@@ -195,10 +196,15 @@ _metrics_cache_lock = time.time()
 
 def _calculate_percentiles(latencies: list[float]) -> dict[str, float]:
     """Calcule les percentiles p50, p95, p99 depuis une liste de latences."""
-    if not latencies:
+    valid_latencies = [
+        lat
+        for lat in latencies
+        if isinstance(lat, int | float) and math.isfinite(lat) and lat >= 0.0
+    ]
+    if not valid_latencies:
         return {"p50": 0.0, "p95": 0.0, "p99": 0.0}
 
-    sorted_latencies = sorted(latencies)
+    sorted_latencies = sorted(valid_latencies)
     n = len(sorted_latencies)
 
     return {
@@ -210,6 +216,8 @@ def _calculate_percentiles(latencies: list[float]) -> dict[str, float]:
 
 def _record_latency(latency_ms: float) -> None:
     """Enregistre une latence dans l'historique."""
+    if not math.isfinite(latency_ms) or latency_ms < 0.0:
+        return
     # OPTIMISATION RAM: deque avec maxlen gère automatiquement la limite
     _latency_history.append(latency_ms)
 
@@ -301,7 +309,15 @@ async def get_prometheus_metrics() -> Response:
     except Exception as e:
         logger.warning("Erreur mise à jour métriques: %s", e)
 
-    return Response(content=generate_latest(), media_type="text/plain")
+    try:
+        return Response(content=generate_latest(), media_type="text/plain")
+    except Exception as e:
+        logger.warning("Impossible de générer les métriques Prometheus: %s", e)
+        return Response(
+            content="# Erreur génération métriques Prometheus",
+            media_type="text/plain",
+            status_code=503,
+        )
 
 
 @router.get("/performance")
@@ -400,12 +416,12 @@ async def readyz() -> dict[str, Any]:
                 "memory": memory_ok,
             },
         }
-    except Exception as e:
+    except Exception:
         logger.exception("Erreur readiness check")
         return {
             "status": "not_ready",
             "timestamp": time.time(),
-            "error": str(e),
+            "error": "internal_error",
         }
 
 
@@ -448,10 +464,10 @@ async def health() -> dict[str, Any]:
             },
             "system": system_info,
         }
-    except Exception as e:
+    except Exception:
         logger.exception("Erreur health check")
         return {
             "status": "unhealthy",
             "timestamp": time.time(),
-            "error": str(e),
+            "error": "internal_error",
         }

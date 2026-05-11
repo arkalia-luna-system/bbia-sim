@@ -230,9 +230,9 @@
 - **Durée** : 40s
 - **Contenu** :
   - Exécution tests pytest
-  - Affichage coverage 68.86%
+  - Affichage coverage (valeur CI/Codecov courante)
   - Badge CI/CD vert
-- **Script** : "1,743 tests automatisés avec coverage 68.86% et CI/CD complet."
+- **Script** : "tests automatisés + coverage suivi en CI/Codecov + pipeline CI/CD complet."
 
 ---
 

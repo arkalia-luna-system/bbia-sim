@@ -1,10 +1,10 @@
 # Notes de version - BBIA-SIM
 
-**Dernière mise à jour :** 27 Avril 2026
+**Dernière mise à jour :** 8 Mai 2026
 
-## SDK Officiel Reachy Mini — v1.7.0 (22 avril 2026)
+## SDK Officiel Reachy Mini — v1.7.1 (4 mai 2026)
 
-**Dernière version Pollen** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini) **v1.7.0** (22 avril 2026).
+**Dernière version Pollen** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini) **v1.7.1** (4 mai 2026).
 
 ### ✅ Alignements BBIA-SIM (27 avril 2026)
 
@@ -176,13 +176,13 @@ Mise à niveau centrée sur la robustesse (watchdog, arrêt d’urgence), le ren
 
 ### Documentation
 
-- README: badges de tests (**1362 tests sélectionnés** en CI), couverture **68.86%** validée en CI, Quick Start API publique, variables d'environnement utiles.
+- README: badges et métriques harmonisés avec l'état courant (tests collectés locaux + lien vers couverture CI), Quick Start API publique, variables d'environnement utiles.
 - Guides: Essentiel et Tests simplifiés; Portfolio One-Pager mis à jour (métriques non figées, v1.3.1).
 - Index et statuts: versions/chemins cohérents.
 
 ### Qualité et CI
 
-- Tests: **1362 tests sélectionnés** (1418 collectés, 56 deselected), **68.86%** coverage global.
+- Tests: snapshot local mis à jour (2311 collectés, dont 2201 actifs et 110 désélectionnés) ; couverture de référence suivie via CI/Codecov.
 - Couverture: validée en CI (`coverage.xml`, `htmlcov/`).
 - Outils: Black, Ruff, MyPy, Bandit.
 

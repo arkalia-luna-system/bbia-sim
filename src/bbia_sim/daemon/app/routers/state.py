@@ -11,7 +11,7 @@ except ImportError:
     UTC = timezone.utc  # Fallback Python 3.10  # noqa: UP035, UP017
 from typing import Annotated, Any, cast
 
-from fastapi import APIRouter, Depends, WebSocket, WebSocketDisconnect
+from fastapi import APIRouter, Depends, HTTPException, WebSocket, WebSocketDisconnect
 from pydantic import BaseModel
 
 from bbia_sim.daemon.app.backend_adapter import (
@@ -227,12 +227,9 @@ async def get_full_state(
 
     if with_target_head_pose:
         target_pose = backend.target_head_pose
-        if target_pose is None:
-            msg = "target_head_pose is None but with_target_head_pose is True"
-            raise ValueError(
-                msg,
-            )
-        result["target_head_pose"] = as_any_pose(target_pose)
+        result["target_head_pose"] = (
+            as_any_pose(target_pose) if target_pose is not None else None
+        )
     if with_head_joints:
         result["head_joints"] = backend.get_present_head_joint_positions()
     if with_target_head_joints:
@@ -412,11 +409,11 @@ async def start_simulation() -> dict[str, Any]:
             "message": "Échec du démarrage de la simulation",
             "timestamp": datetime.now().isoformat(),
         }
-    except Exception as e:
+    except Exception:
         logger.exception("Erreur lors du démarrage de la simulation ")
         return {
             "status": "error",
-            "message": f"Erreur : {e!s}",
+            "message": "Erreur interne lors du démarrage de la simulation",
             "timestamp": datetime.now().isoformat(),
         }
 
@@ -433,11 +430,11 @@ async def stop_simulation() -> dict[str, Any]:
             "message": "Simulation MuJoCo arrêtée avec succès",
             "timestamp": datetime.now().isoformat(),
         }
-    except Exception as e:
+    except Exception:
         logger.exception("Erreur lors de l'arrêt de la simulation")
         return {
             "status": "error",
-            "message": f"Erreur : {e!s}",
+            "message": "Erreur interne lors de l'arrêt de la simulation",
             "timestamp": datetime.now().isoformat(),
         }
 
@@ -530,8 +527,10 @@ async def get_present_antenna_joint_positions(
     """
     pos = backend.get_present_antenna_joint_positions()
     if len(pos) != 2:
-        msg = f"Expected 2 antenna positions, got {len(pos)}"
-        raise ValueError(msg)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Expected 2 antenna positions, got {len(pos)}",
+        )
     # Retourner dans format attendu par tests (antennas ou left/right)
     return {
         "antennas": [float(pos[0]), float(pos[1])],
@@ -577,10 +576,13 @@ async def ws_full_state(
     # Auth WebSocket via query param (optionnel en dev)
     from bbia_sim.daemon.config import settings
 
-    if token and settings.environment.lower() == "prod":
-        if token != settings.api_token:
+    if settings.environment.lower() == "prod":
+        if not token or token != settings.api_token:
             await websocket.close(code=1008, reason="Invalid token")
             return
+    if frequency <= 0:
+        await websocket.close(code=1008, reason="frequency must be > 0")
+        return
     await websocket.accept()
     # Créer backend adapter directement (pas de Depends pour WebSockets)
     backend = ws_get_backend_adapter(websocket)
@@ -693,7 +695,7 @@ async def list_robots() -> dict[str, Any]:
         return {
             "robots": [],
             "count": 0,
-            "error": str(e),
+            "error": "Erreur interne lors de la découverte des robots",
             "timestamp": datetime.now(UTC).isoformat(),
         }
 
@@ -733,7 +735,7 @@ async def list_multi_backends() -> dict[str, Any]:
         return {
             "backends": [],
             "count": 0,
-            "error": str(e),
+            "error": "Erreur interne lors de la récupération des backends",
             "timestamp": datetime.now(UTC).isoformat(),
         }
 
@@ -770,6 +772,6 @@ async def init_multi_backends(
         logger.exception("Erreur lors de l'initialisation des multi-backends: %s", e)
         return {
             "status": "error",
-            "error": str(e),
+            "error": "Erreur interne lors de l'initialisation des multi-backends",
             "timestamp": datetime.now(UTC).isoformat(),
         }

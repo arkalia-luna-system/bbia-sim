@@ -5,15 +5,15 @@
 **🎯 Vue d'ensemble de l'état du projet par axe**
 *Fiabilité • Performance • Sécurité • CI/CD • Plus*
 
-**Version** : 1.4.0 • **Dernière mise à jour** : 27 Avril 2026
+**Version** : 1.4.0 • **Dernière mise à jour** : 8 Mai 2026
 **Prêt pour arrivée robot** 🤖
 
 **Mise à jour 26 Janvier 2026** : 100% d'exploitation des capacités
 - 44 exemples disponibles (39 existants + 5 nouveaux créés 22 Nov. 2025)
 - Tous les comportements, endpoints et modules ont des exemples dédiés
 
-**Mise à jour 27 Avril 2026** : Alignement Pollen v1.7.0
-- SDK de référence **v1.7.0** ; dépendances critiques `pyproject.toml` alignées (numpy 2.x, motor_controller ≥1.5.5, zenoh, kinematics, huggingface-hub, scipy, websockets)
+**Mise à jour 8 Mai 2026** : Alignement Pollen v1.7.1
+- SDK de référence **v1.7.1** ; dépendances critiques `pyproject.toml` alignées (numpy 2.x, motor_controller ≥1.5.5, zenoh, kinematics, huggingface-hub, scipy, websockets)
 - Projet au même niveau que Pollen pour Reachy Mini (robot physique ; compatibilité maintenue avec environnements encore en 1.3.0+)
 - Guide Cursor/lenteur unifié → [docs/development/ACCELERER_CURSOR.md](../development/ACCELERER_CURSOR.md) (anciens MD racine redirigent)
 
@@ -40,8 +40,8 @@
 |:-------:|:-------------:|:------:|
 | **Python** | 3.11+ (3.12 testé) | ✅ Requis |
 | **CI/CD** | `.github/workflows/ci.yml` | ✅ GitHub Actions (Python 3.11 + 3.12) |
-| **SDK Référence** | `pollen-robotics/reachy_mini` **v1.7.0** (22 avr. 2026) | ✅ Aligné Pollen |
-| **SDK local** | `pip install --upgrade reachy-mini` → v1.7.0 recommandé | ✅ Dépendances projet alignées ([lien](https://github.com/pollen-robotics/reachy_mini)) |
+| **SDK Référence** | `pollen-robotics/reachy_mini` **v1.7.1** (4 mai 2026) | ✅ Aligné Pollen |
+| **SDK local** | `pip install --upgrade reachy-mini` → v1.7.1 recommandé | ✅ Dépendances projet alignées ([lien](https://github.com/pollen-robotics/reachy_mini)) |
 
 </div>
 
@@ -158,8 +158,8 @@ bandit -r src/
 |:-------:|:------------|:------------|
 | **Endpoints FastAPI** | ✅ En place | ➕ Améliorations |
 | **Watchdog/Emergency Stop** | ✅ Opérationnels | ➕ Monitoring |
-| **Métriques Prometheus** | ⚠️ Absentes | ➕ `/metrics` endpoint |
-| **Health Checks** | ⚠️ Basiques | ➕ `/healthz` & `/readyz` |
+| **Métriques Prometheus** | ✅ Disponibles | ➕ Compléter alerting/dashboards |
+| **Health Checks** | ✅ Disponibles (`healthz`/`readyz`) | ➕ Enrichir readiness métier |
 | **Logs Structurés** | ⚠️ Non uniformisés | ➕ JSON standardisé |
 
 </div>
@@ -183,7 +183,7 @@ bandit -r src/
 
 - État actuel:
   - Bandit + pip-audit en CI; clamp sécurité et validation JSON en place; pas de secrets versionnés détectés.
-  - CORS/ratelimiting/scopes OAuth non configurés; SBOM/semgrep/gitleaks absents.
+  - Semgrep/gitleaks/SBOM présents dans la pipeline; CORS/ratelimiting/scopes OAuth restent des axes à durcir selon l'exposition.
 - Axes futurs:
   - Activer CORS strict + ratelimiting; définir scopes basiques.
   - Générer SBOM (CycloneDX) + ajouter semgrep/gitleaks en CI.
@@ -191,8 +191,8 @@ bandit -r src/
 ### CI/CD
 
 - État actuel:
-  - Pipeline GitHub Actions unifié Python 3.11, codecov OK.
-  - Pas de matrice 3.12, pas de pré-commit, pas de sharding tests.
+  - Pipeline GitHub Actions actif Python 3.11/3.12, contrôles qualité/sécurité et reporting coverage.
+  - Stabilisation en cours sur quelques jobs flaky/non déterministes.
 - Axes futurs:
   - Étendre matrice (3.11/3.12); pré-commit (ruff/black/mypy); shards tests si durée ↑.
 

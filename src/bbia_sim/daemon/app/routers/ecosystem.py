@@ -549,21 +549,33 @@ async def start_demo_mode(
                     emotions_module = BBIAEmotions()
                     # Valider émotion - utiliser toutes les émotions disponibles
                     valid_emotions = list(emotions_module.emotions.keys())
-                    if emotion.lower() in valid_emotions:
+                    normalized_emotion = emotion.strip().lower()
+                    if normalized_emotion in valid_emotions:
                         # Créer robot pour appliquer émotion
                         robot = RobotFactory.create_backend(
                             "mujoco" if mode != "robot_real" else "reachy",
                         )
                         if robot:
-                            robot.connect()
-                            # Utiliser set_emotion du robot si disponible
-                            if hasattr(robot, "set_emotion"):
-                                robot.set_emotion(emotion.lower(), 0.7)
-                            else:
-                                # Sinon, mettre à jour état émotions
-                                emotions_module.set_emotion(emotion.lower(), 0.7)
-                            demo_info["emotion_applied"] = emotion.lower()
-                            robot.disconnect()
+                            connected = False
+                            try:
+                                robot.connect()
+                                connected = True
+                                # Utiliser set_emotion du robot si disponible
+                                if hasattr(robot, "set_emotion"):
+                                    robot.set_emotion(normalized_emotion, 0.7)
+                                else:
+                                    # Sinon, mettre à jour état émotions
+                                    emotions_module.set_emotion(normalized_emotion, 0.7)
+                                demo_info["emotion_applied"] = normalized_emotion
+                            finally:
+                                if connected:
+                                    try:
+                                        robot.disconnect()
+                                    except Exception as disconnect_error:
+                                        logger.debug(
+                                            "Erreur lors de la déconnexion robot en démo: %s",
+                                            disconnect_error,
+                                        )
                 except Exception as e:
                     logger.warning("Émotion non appliquée: %s", e)
                     demo_info["emotion_error"] = str(e)

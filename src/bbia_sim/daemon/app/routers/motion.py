@@ -35,9 +35,9 @@ async def goto_pose(
     duration: Annotated[
         float, Query(gt=0, description="Durée du mouvement en secondes")
     ] = 2.5,
-    interpolation: Annotated[
-        InterpolationMode, Query(description="Mode d'interpolation")
-    ] = InterpolationMode.MINJERK,
+    interpolation: Annotated[str, Query(description="Mode d'interpolation")] = (
+        InterpolationMode.MINJERK
+    ),
 ) -> dict[str, Any]:
     """Déplace le robot vers une position spécifique avec interpolation.
 
@@ -52,15 +52,18 @@ async def goto_pose(
     """
     logger.info(
         f"Mouvement vers la position : {pose.model_dump()}, "
-        f"duration={duration}, interpolation={interpolation.value}",
+        f"duration={duration}, interpolation={interpolation}",
     )
 
+    robot: Any | None = None
+    connected = False
     try:
         from bbia_sim.robot_factory import RobotFactory
 
         robot = RobotFactory.create_backend("mujoco")
         if robot:
             robot.connect()
+            connected = True
 
             # Convertir Pose en matrice 4x4 pour goto_target
             import numpy as np
@@ -80,33 +83,34 @@ async def goto_pose(
                     "ease": "ease_in_out",  # ou "ease" selon SDK
                     "cartoon": "cartoon",
                 }
-                method = interpolation_map.get(interpolation.value, "minjerk")
+                method = interpolation_map.get(str(interpolation), "minjerk")
                 robot.goto_target(head=pose_matrix, duration=duration, method=method)
             else:
                 # Fallback: utiliser set_joint_pos ou goto_pose
                 logger.warning("goto_target non disponible, utilisation fallback")
 
-            robot.disconnect()
-
         return {
             "status": "moving",
             "target_pose": pose.model_dump(),
             "duration": duration,
-            "interpolation": interpolation.value,
+            "interpolation": str(interpolation),
             "estimated_time": duration,
             "timestamp": datetime.now().isoformat(),
         }
-    except Exception as e:
+    except Exception as exc:
         logger.exception("Erreur lors du mouvement")
-        # Retourner quand même une réponse
-        return {
-            "status": "error",
-            "target_pose": pose.model_dump(),
-            "duration": duration,
-            "interpolation": interpolation.value,
-            "error": str(e),
-            "timestamp": datetime.now().isoformat(),
-        }
+        raise HTTPException(
+            status_code=500,
+            detail="Une erreur interne est survenue pendant l'execution du mouvement.",
+        ) from exc
+    finally:
+        if robot and connected:
+            try:
+                robot.disconnect()
+            except Exception as disconnect_error:
+                logger.debug(
+                    "Erreur lors de la déconnexion du robot: %s", disconnect_error
+                )
 
 
 @router.post("/home")
@@ -249,12 +253,15 @@ async def wake_up() -> dict[str, Any]:
 
     """
     logger.info("Réveil du robot")
+    robot: Any | None = None
+    connected = False
     try:
         from bbia_sim.robot_factory import RobotFactory
 
         robot = RobotFactory.create_backend("mujoco")
         if robot:
             robot.connect()
+            connected = True
             if hasattr(robot, "wake_up"):
                 robot.wake_up()
             else:
@@ -263,20 +270,25 @@ async def wake_up() -> dict[str, Any]:
 
                 behavior_manager = BBIABehaviorManager(robot_api=robot)
                 behavior_manager.execute_behavior("wake_up")
-            robot.disconnect()
-
         return {
             "status": "waking_up",
             "message": "Robot en cours de réveil",
             "timestamp": datetime.now().isoformat(),
         }
-    except Exception as e:
+    except Exception as exc:
         logger.exception("Erreur lors du réveil")
-        return {
-            "status": "error",
-            "message": f"Erreur: {e!s}",
-            "timestamp": datetime.now().isoformat(),
-        }
+        raise HTTPException(
+            status_code=500,
+            detail="Une erreur interne est survenue pendant la sequence de reveil.",
+        ) from exc
+    finally:
+        if robot and connected:
+            try:
+                robot.disconnect()
+            except Exception as disconnect_error:
+                logger.debug(
+                    "Erreur lors de la déconnexion du robot: %s", disconnect_error
+                )
 
 
 @router.post("/goto_sleep")
@@ -288,12 +300,15 @@ async def goto_sleep() -> dict[str, Any]:
 
     """
     logger.info("Mise en veille du robot")
+    robot: Any | None = None
+    connected = False
     try:
         from bbia_sim.robot_factory import RobotFactory
 
         robot = RobotFactory.create_backend("mujoco")
         if robot:
             robot.connect()
+            connected = True
             if hasattr(robot, "goto_sleep"):
                 robot.goto_sleep()
             else:
@@ -304,20 +319,25 @@ async def goto_sleep() -> dict[str, Any]:
                 # Si comportement goto_sleep existe
                 if "goto_sleep" in behavior_manager.behaviors:
                     behavior_manager.execute_behavior("goto_sleep")
-            robot.disconnect()
-
         return {
             "status": "going_to_sleep",
             "message": "Robot en cours de mise en veille",
             "timestamp": datetime.now().isoformat(),
         }
-    except Exception as e:
+    except Exception as exc:
         logger.exception("Erreur lors de la mise en veille")
-        return {
-            "status": "error",
-            "message": f"Erreur: {e!s}",
-            "timestamp": datetime.now().isoformat(),
-        }
+        raise HTTPException(
+            status_code=500,
+            detail="Erreur interne lors de la mise en veille",
+        ) from exc
+    finally:
+        if robot and connected:
+            try:
+                robot.disconnect()
+            except Exception as disconnect_error:
+                logger.debug(
+                    "Erreur lors de la déconnexion du robot: %s", disconnect_error
+                )
 
 
 class EmotionRequest(BaseModel):
@@ -342,23 +362,24 @@ async def set_emotion(emotion_request: EmotionRequest) -> dict[str, Any]:
 
     # Valider l'intensité
     if not 0.0 <= intensity <= 1.0:
-        return {
-            "status": "error",
-            "message": f"Intensité invalide: {intensity} (doit être entre 0.0 et 1.0)",
-            "timestamp": datetime.now().isoformat(),
-        }
+        raise HTTPException(
+            status_code=422,
+            detail=f"Intensité invalide: {intensity} (doit être entre 0.0 et 1.0)",
+        )
     logger.info("Définition émotion: %s avec intensité %s", emotion, intensity)
 
+    robot: Any | None = None
+    connected = False
     try:
         from bbia_sim.robot_factory import RobotFactory
 
         robot = RobotFactory.create_backend("mujoco")
         if robot:
             robot.connect()
+            connected = True
             if hasattr(robot, "set_emotion"):
                 success = robot.set_emotion(emotion, intensity)
                 if success:
-                    robot.disconnect()
                     return {
                         "status": "success",
                         "emotion": emotion,
@@ -368,20 +389,25 @@ async def set_emotion(emotion_request: EmotionRequest) -> dict[str, Any]:
                         ),
                         "timestamp": datetime.now().isoformat(),
                     }
-            robot.disconnect()
-
         return {
             "status": "error",
             "message": "Impossible de définir l'émotion",
             "timestamp": datetime.now().isoformat(),
         }
-    except Exception as e:
+    except Exception as exc:
         logger.exception("Erreur lors de la définition de l'émotion")
-        return {
-            "status": "error",
-            "message": f"Erreur: {e!s}",
-            "timestamp": datetime.now().isoformat(),
-        }
+        raise HTTPException(
+            status_code=500,
+            detail="Erreur interne lors de la définition de l'émotion",
+        ) from exc
+    finally:
+        if robot and connected:
+            try:
+                robot.disconnect()
+            except Exception as disconnect_error:
+                logger.debug(
+                    "Erreur lors de la déconnexion du robot: %s", disconnect_error
+                )
 
 
 @router.post("/stop")

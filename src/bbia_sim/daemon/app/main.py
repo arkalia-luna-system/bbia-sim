@@ -1,6 +1,7 @@
 """Application FastAPI principale pour BBIA-SIM."""
 
 import asyncio
+import hmac
 import logging
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
@@ -72,7 +73,7 @@ def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)) 
         HTTPException: Si le token est invalide
 
     """
-    if credentials.credentials != settings.api_token:
+    if not hmac.compare_digest(credentials.credentials, settings.api_token):
         # Log sécurisé sans exposer le token
         logger.warning(
             "Tentative d'authentification avec token invalide: %s",
@@ -335,31 +336,34 @@ api_router_http.include_router(motors.router)
 api_router_http.include_router(kinematics.router)
 app.include_router(api_router_http, dependencies=[Depends(verify_token)])
 
-# Router daemon SANS auth pour permettre l'accès depuis le dashboard
-# Note: Les endpoints daemon sont sécurisés mais le status doit être accessible
 app.include_router(
     daemon.router,
     prefix="/api",
-)  # Sans dépendance globale pour dashboard
+    dependencies=[Depends(verify_token)],
+)
 
-# Router media SANS auth pour permettre l'accès depuis le dashboard
-# Note: Les endpoints media sont accessibles depuis le dashboard
 app.include_router(
     media.router,
+    dependencies=[Depends(verify_token)],
 )  # Préfixe /development/api/media déjà défini dans le router
 
 # Routers AVEC WebSockets (auth via query params en prod)
 # Note: Les WebSockets ne supportent pas HTTPBearer
-# Les endpoints HTTP dans ces routers auront l'auth désactivée pour éviter conflits
 # Auth WebSocket implémentée via query param `token` (optionnel en dev, requis en prod)
-app.include_router(state.router, prefix="/api")  # Contient /ws/full + endpoints HTTP
+app.include_router(
+    state.router,
+    prefix="/api",
+    dependencies=[Depends(verify_token)],
+)  # Contient /ws/full + endpoints HTTP
 app.include_router(
     move.router,
     prefix="/api",
+    dependencies=[Depends(verify_token)],
 )  # Contient /ws/updates, /ws/set_target + endpoints HTTP
 app.include_router(
     apps.router,
     prefix="/api",
+    dependencies=[Depends(verify_token)],
 )  # Contient /ws/apps-manager/{job_id} + endpoints HTTP
 
 # Routers BBIA supplémentaires (extensions légitimes)
@@ -367,6 +371,7 @@ app.include_router(
     ecosystem.router,
     prefix="/api/ecosystem",
     tags=["ecosystem"],
+    dependencies=[Depends(verify_token)],
 )
 app.include_router(
     motion.router,
@@ -380,6 +385,7 @@ app.include_router(
     presets.router,
     prefix="/api/presets",
     tags=["presets"],
+    dependencies=[Depends(verify_token)],
 )  # /api/presets/*
 
 

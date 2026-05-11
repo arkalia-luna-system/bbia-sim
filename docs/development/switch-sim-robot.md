@@ -314,7 +314,7 @@ python examples/demo_emotion_ok.py --emotion happy
 ## 📊 Métriques v1.1.1
 
 - **Tests** : 441 tests passent (79% réussite)
-- **Coverage** : 68.86%
+- **Coverage** : suivre Codecov/CI pour la valeur de référence
 - **Performance** : <5s par test smoke
 - **Golden Tests** : 3 traces référence + validation
 - **Latence** : 0.0ms moyenne (cible <40ms) ✅

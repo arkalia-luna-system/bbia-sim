@@ -1,6 +1,6 @@
 # 🚀 Innovations BBIA-SIM - Documentation Complète
 
-**Dernière mise à jour** : 27 Avril 2026  
+**Dernière mise à jour** : 8 Mai 2026  
 **Version** : 1.4.0  
 **Objectif** : Documenter les fonctionnalités de BBIA-SIM
 
@@ -213,7 +213,7 @@ emotions.set_emotion("calm", intensity=0.6)
 
 **BBIA-SIM** maintient des standards :
 
-- ✅ **1,743 tests** collectés (vs standards)
+- ✅ **2,311 tests** collectés (2,201 actifs, 110 désélectionnés)
 - ✅ **Coverage global** suivi en continu via Codecov
 - ✅ **219 fichiers MD** documentation (exhaustif)
 - ✅ **67 exemples** fonctionnels (complet)
@@ -244,7 +244,7 @@ emotions.set_emotion("calm", intensity=0.6)
 | **Solution Gratuite** | ⚠️ Partiel | ✅ Gratuit | ✅ **Différent** |
 | **Émotions** | ✅ 6 émotions | ✅ 12 émotions | ✅ **Différent** |
 | **IA** | ⚠️ Basique | ✅ 15+ modules | ✅ **Différent** |
-| **Tests** | ✅ Standards | ✅ 1,743 tests | ✅ **Différent** |
+| **Tests** | ✅ Standards | ✅ 2,311 tests collectés | ✅ **Différent** |
 | **Documentation** | ✅ Complète | ✅ 219 fichiers MD | ✅ **Différent** |
 
 ---
@@ -300,5 +300,5 @@ emotions.set_emotion("calm", intensity=0.6)
 
 ---
 
-**Dernière mise à jour** : 27 Avril 2026
+**Dernière mise à jour** : 8 Mai 2026
 

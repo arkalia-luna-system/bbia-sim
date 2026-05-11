@@ -6,11 +6,11 @@
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://python.org)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![CI Status](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml/badge.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml)
-[![Tests](https://img.shields.io/badge/tests-1743-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions)
+[![Tests](https://img.shields.io/badge/tests-pytest%20collect--only-blue.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions)
 [![Code Quality](https://img.shields.io/badge/code%20quality-A%2B-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim)
 [![SDK Conformity](https://img.shields.io/badge/SDK%20conformity-100%25-brightgreen.svg)](https://github.com/pollen-robotics/reachy_mini)
 [![Documentation](https://img.shields.io/badge/docs-mkdocs-blue.svg)](docs/)
-[![Coverage](https://img.shields.io/badge/coverage-68.86%25-brightgreen)](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim)
+[![Coverage](https://img.shields.io/badge/coverage-live%20in%20CI-blue)](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim)
 [![Typing: mypy](https://img.shields.io/badge/typing-mypy-4B8BBE)](https://github.com/arkalia-luna-system/bbia-sim)
 [![Lint: ruff](https://img.shields.io/badge/lint-ruff-46A2F1)](https://github.com/arkalia-luna-system/bbia-sim)
 [![Security: bandit](https://img.shields.io/badge/security-bandit-2E5E82)](https://github.com/arkalia-luna-system/bbia-sim)
@@ -68,7 +68,7 @@
 |:---:|:---|
 | ✅ **SDK Officiel** | Conforme Pollen Robotics |
 | 🔄 **Backend Unifié** | Simulation ↔ Robot réel |
-| 🧪 **Tests Automatisés** | 1743 tests collectés (unitaires + E2E) |
+| 🧪 **Tests Automatisés** | 2311 tests collectés (2201 actifs + 110 désélectionnés) |
 | 📚 **Documentation** | 113 fichiers docs (109 Markdown) |
 | ⚡ **Performance** | Caches IA optimisés |
 | 🔒 **CI/CD** | Black, Ruff, MyPy, Bandit |
@@ -96,9 +96,9 @@ BBIA utilise une stack IA pour permettre des interactions naturelles. Voici pour
 
 - **Fichiers Python source**: 92 fichiers (35,988 lignes)
 - **Fichiers de tests**: 166 fichiers (39,200+ lignes)
-- **Tests collectés**: 1,743 tests
-- **Coverage global**: 68.86% ([Codecov](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim))
-- **Coverage modules core**: ~50%
+- **Tests collectés (local, 8 mai 2026)**: 2,311 tests (2,201 actifs + 110 désélectionnés via marqueurs)
+- **Coverage**: consulter Codecov pour la valeur CI de référence, et `python3 -m pytest --cov=src/bbia_sim --cov-report=term-missing` pour la mesure locale complète
+- **Coverage**: suivre la valeur de référence CI sur Codecov (la mesure locale varie selon le sous-ensemble de tests lancé)
 - **Modules BBIA**: 15+ modules spécialisés
 - **Comportements**: 21 comportements (7 de base + 14 étendus)
 - **Exemples**: 44 exemples disponibles
@@ -135,7 +135,7 @@ Le dépôt `bbia_branding` est désormais déprécié et destiné à l'archivage
 
 BBIA-SIM suit des standards de qualité:
 
-- **Tests de couverture**: 80% minimum
+- **Tests de couverture**: suivi continu en CI (pas de seuil global unique figé)
 - **Linting**: black, ruff, mypy, bandit
 - **Python**: 3.11+ (3.12 testé dans CI)
 - **CI/CD**: GitHub Actions avec vérifications automatiques (Python 3.11 + 3.12, gitleaks)
@@ -148,13 +148,13 @@ BBIA-SIM suit des standards de qualité:
 
 Version 1.4.0 – Simulation complète avec exemples fonctionnels, tests et documentation.
 
-**Mise à jour 27 Avril 2026** :
+**Mise à jour 8 Mai 2026** :
 - Dépendances critiques synchronisées (Dependabot batch)
 - CI GitHub Actions modernisée (`upload-artifact@v7`, `codecov-action@v6`)
 - Alignement suivi avec l'écosystème Reachy Mini officiel
 - Qualité code maintenue (Black, Ruff, MyPy, Bandit)
 
-Ce projet fournit une simulation du robot Reachy Mini dans MuJoCo, avec une intégration des modules BBIA (Bio-Inspired Artificial Intelligence) et une conformité avec le SDK officiel de Pollen Robotics. **Alignement suivi jusqu'à Pollen v1.7.0** (22 avr. 2026) : dépendances et CI revues pour réduire la dette technique et garder une base merge-ready. Installer le SDK avec `pip install --upgrade reachy-mini` pour rester au niveau officiel.
+Ce projet fournit une simulation du robot Reachy Mini dans MuJoCo, avec une intégration des modules BBIA (Bio-Inspired Artificial Intelligence) et une conformité avec le SDK officiel de Pollen Robotics. **Alignement suivi jusqu'à Pollen v1.7.1** (8 mai 2026): dépendances, CI et documentation revues pour garder une base merge-ready. Installer le SDK avec `pip install --upgrade reachy-mini` pour rester au niveau officiel.
 
 ## 🚀 Quick Start
 
@@ -331,7 +331,7 @@ python scripts/bbia_doctor.py
 <div align="center">
 
 [![CI Status](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml/badge.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml)
-[![Coverage](https://img.shields.io/badge/coverage-68.86%25-brightgreen)](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim)
+[![Coverage](https://img.shields.io/badge/coverage-live%20in%20CI-blue)](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim)
 [![Typing: mypy](https://img.shields.io/badge/typing-mypy-4B8BBE)](https://github.com/arkalia-luna-system/bbia-sim)
 [![Lint: ruff](https://img.shields.io/badge/lint-ruff-46A2F1)](https://github.com/arkalia-luna-system/bbia-sim)
 [![Security: bandit](https://img.shields.io/badge/security-bandit-2E5E82)](https://github.com/arkalia-luna-system/bbia-sim)
@@ -464,7 +464,7 @@ sequenceDiagram
 | **Modèle officiel** | `reachy_mini_REAL_OFFICIAL.xml` | ✅ |
 | **Articulations** | 16 total (9 contrôlables) | ✅ |
 | **Intégration BBIA** | 12 émotions + IA | ✅ |
-| **Coverage modules core** | ~50% | ✅ [📊 Rapport](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim) |
+| **Coverage (référence)** | Codecov CI | ✅ [📊 Rapport](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim) |
 | **API** | FastAPI + WebSocket | ✅ |
 
 </div>
@@ -929,17 +929,16 @@ python scripts/download_ALL_stl.py
 
 **Il existe DEUX mesures de coverage selon le périmètre analysé :**
 
-#### 1. **Coverage Modules Core** (~50%) ✅ **MESURE PERTINENTE**
+#### 1. **Coverage CI de référence (Codecov)** ✅ **MESURE PRINCIPALE**
 
 ```bash
-# Mesure sur src/bbia_sim/* (modules métier testés)
+# Mesure locale sur src/bbia_sim/*
 python -m pytest --cov=src/bbia_sim --cov-report=term
 ```
 
-- **Périmètre** : Modules core (`robot_api`, `bbia_*`, `backends/`)
-- **Résultat** : **~50% coverage** sur modules métier
-- **Statut** : ✅ **Niveau correct** pour projet open source
-- **C'est cette mesure qui compte** pour la qualité du code métier
+- **Périmètre** : dépend du sous-ensemble de tests exécuté localement
+- **Résultat** : variable selon la sélection (`-m`, `-k`, tests ciblés vs suite plus large)
+- **Référence projet** : badge/rapport Codecov en CI
 
 #### 2. **Coverage Global** (~6-7%) ⚠️ **MESURE CONTEXTUELLE**
 
@@ -985,9 +984,9 @@ pytest -q --disable-warnings \
 **📊 Qualité & Conformité :**
 
 - **Conformité SDK officiel** : Validée (47 tests de conformité) — [📊 Vérification](docs/quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md)
-- **Coverage global** : 68.86% — [📊 Rapport Codecov](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim) | [📁 Rapport HTML local](htmlcov/index.html)
-- **Coverage modules core** : ~50% — [📊 Rapport Codecov](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim) | [📁 Rapport HTML local](htmlcov/index.html)
-- **Tests totaux** : 1,743 tests collectés — [📊 Détails CI](https://github.com/arkalia-luna-system/bbia-sim/actions)
+- **Coverage** : valeur de référence sur Codecov (CI) ; utiliser `pytest --cov=src/bbia_sim` localement pour une mesure comparable
+- **Coverage** : valeur de référence sur Codecov (CI) — [📊 Rapport Codecov](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim) | [📁 Rapport HTML local](htmlcov/index.html)
+- **Tests totaux (snapshot local 8 mai 2026)** : 2,311 tests collectés — [📊 Détails CI](https://github.com/arkalia-luna-system/bbia-sim/actions)
 - **Fichiers Python** : 68 modules dans `src/bbia_sim/` — [📁 Source](src/bbia_sim)
 - **Qualité code** : Black, Ruff, MyPy, Bandit
 - **Tests** : Suite complète + SDK officiel
@@ -1036,4 +1035,4 @@ Le robot Reachy Mini est simulé avec une fidélité élevée aux spécification
 
 ---
 
-*Dernière mise à jour : 27 Avril 2026*
+*Dernière mise à jour : 8 Mai 2026*

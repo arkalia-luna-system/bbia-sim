@@ -12,6 +12,11 @@ import pytest
 from fastapi.testclient import TestClient
 
 from bbia_sim.daemon.app.main import app
+from bbia_sim.daemon.config import settings
+
+
+def _daemon_auth_headers() -> dict[str, str]:
+    return {"Authorization": f"Bearer {settings.api_token}"}
 
 
 class TestDashboardSlowConnection:
@@ -34,7 +39,9 @@ class TestDashboardSlowConnection:
         # Tester endpoint avec latence
         start_time = time.time()
         try:
-            response = self.client.get("/api/daemon/status", timeout=2.0)
+            _ = self.client.get(
+                "/api/daemon/status", timeout=2.0, headers=_daemon_auth_headers()
+            )
             elapsed = time.time() - start_time
             # La réponse devrait prendre au moins 0.5s
             assert elapsed >= 0.4  # Tolérance pour timing
@@ -49,7 +56,9 @@ class TestDashboardSlowConnection:
             mock_get.side_effect = TimeoutError("Request timeout")
 
             try:
-                response = self.client.get("/api/daemon/status", timeout=0.1)
+                _ = self.client.get(
+                    "/api/daemon/status", timeout=0.1, headers=_daemon_auth_headers()
+                )
             except Exception as e:
                 # Timeout devrait être géré
                 assert "timeout" in str(e).lower() or isinstance(e, TimeoutError)
@@ -69,7 +78,9 @@ class TestDashboardSlowConnection:
         with patch("fastapi.testclient.TestClient.get", mock_get_with_retry):
             # Le retry devrait fonctionner
             try:
-                response = self.client.get("/api/daemon/status")
+                _ = self.client.get(
+                    "/api/daemon/status", headers=_daemon_auth_headers()
+                )
                 assert call_count >= 2
             except Exception:
                 # Retry peut échouer en test, c'est acceptable
@@ -86,7 +97,13 @@ class TestDashboardSlowConnection:
         for endpoint in endpoints:
             try:
                 start_time = time.time()
-                response = self.client.get(endpoint, timeout=2.0)
+                _ = self.client.get(
+                    endpoint,
+                    timeout=2.0,
+                    headers=(
+                        _daemon_auth_headers() if endpoint.startswith("/api/") else None
+                    ),
+                )
                 elapsed = time.time() - start_time
                 # Chaque endpoint devrait répondre dans un délai raisonnable
                 assert elapsed < 2.0
@@ -104,7 +121,9 @@ class TestDashboardSlowConnection:
         def slow_request():
             try:
                 time.sleep(0.2)  # Simuler latence
-                response = self.client.get("/api/daemon/status", timeout=1.0)
+                response = self.client.get(
+                    "/api/daemon/status", timeout=1.0, headers=_daemon_auth_headers()
+                )
                 results.append(response.status_code)
             except Exception as e:
                 errors.append(str(e))
@@ -127,8 +146,6 @@ class TestDashboardSlowConnection:
     def test_large_payload_slow_connection(self, mock_settings):
         """Test payload large avec connexion lente."""
         # Simuler envoi de données volumineuses
-        large_data = {"data": "x" * 10000}  # 10KB de données
-
         try:
             response = self.client.post(
                 "/api/motion/emotion",
@@ -187,17 +204,20 @@ class TestDashboardNetworkResilience:
         # Simuler connexion qui se coupe et se reconnecte
         success_count = 0
         error_count = 0
+        headers = {"Authorization": f"Bearer {settings.api_token}"}
 
         for _ in range(3):
             try:
-                response = self.client.get("/api/daemon/status", timeout=1.0)
+                response = self.client.get(
+                    "/api/daemon/status", timeout=1.0, headers=headers
+                )
                 if response.status_code == 200:
                     success_count += 1
             except Exception:
                 error_count += 1
             time.sleep(0.1)
 
-        # Au moins une requête devrait réussir
+        # Au moins une requête devrait réussir (HTTP 200 avec auth)
         assert success_count + error_count > 0
 
     def test_partial_response_handling(self):
@@ -210,7 +230,9 @@ class TestDashboardNetworkResilience:
             mock_get.return_value = mock_response
 
             try:
-                response = self.client.get("/api/daemon/status")
+                _ = self.client.get(
+                    "/api/daemon/status", headers=_daemon_auth_headers()
+                )
                 # L'erreur devrait être gérée
                 pass
             except Exception:

@@ -2,7 +2,7 @@
 
 > **Scripts d'automatisation pour BBIA - Brain-Based Interactive Agent**
 
-**⚠️ Note maintenance (27 Avril 2026)**  
+**⚠️ Note maintenance (8 Mai 2026)**
 Ce document contient encore des sections historiques (Unity/setup legacy).  
 Pour une exécution fiable, privilégier les scripts actifs suivants:  
 `quick_start.sh`, `bbia_doctor.py`, `run_demo_sim.sh`, `hardware_dry_run_reachy_mini.py`, `start_public_api.py`, `cleanup_all.sh`, `verify_documentation.py`.

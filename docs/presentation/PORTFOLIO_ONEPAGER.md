@@ -41,7 +41,7 @@
 | **Fichiers de tests** | 183 fichiers | ✅ OK |
 | **Fonctions de test** | 1,804 tests | ✅ OK |
 | **Tests collectés** | 1,362 tests (CI) | ✅ OK |
-| **Coverage global** | 68.86% | ✅ OK |
+| **Coverage global** | Suivi CI/Codecov (variable selon périmètre) | ✅ OK |
 | **Coverage modules core** | ~50% | ✅ OK |
 | **Conformité SDK** | 100% (21/21 méthodes) | ✅ OK |
 | **Modules BBIA** | 15+ modules | ✅ OK |

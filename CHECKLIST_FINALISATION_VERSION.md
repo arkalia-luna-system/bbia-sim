@@ -1,7 +1,7 @@
 # ✅ CHECKLIST FINALISATION VERSION PROFESSIONNELLE
 
 **Date vérification :** 26 Novembre 2025  
-**Dernière mise à jour :** 27 Avril 2026 (maintenance CI/dépendances/docs)  
+**Dernière mise à jour :** 8 Mai 2026 (maintenance CI/dépendances/docs)
 **Version cible :** 1.4.0
 
 ---
@@ -10,7 +10,7 @@
 
 | Catégorie | Statut | Détails |
 |-----------|--------|---------|
-| **Tests** | ✅ 95% | 1743/1805 tests collectés |
+| **Tests** | ✅ 95% | 2311 tests collectés (2201 actifs, 110 désélectionnés) |
 | **Code Quality** | ✅ 100% | Black, Ruff, MyPy, Bandit OK |
 | **Version** | ✅ 100% | pyproject.toml=1.4.0, __init__.py=1.4.0 (cohérent) |
 | **Documentation** | ✅ 100% | Complète et à jour |
@@ -24,7 +24,7 @@
 ## ✅ POINTS RÉALISÉS (20/20)
 
 ### 1. ✅ Tests Complets
-- **Unitaires** : 1743/1805 tests collectés (62 désélectionnés)
+- **Unitaires** : 2311 tests collectés (2201 actifs, 110 désélectionnés)
 - **E2E** : Tests end-to-end présents
 - **Coverage** : suivi continu via Codecov (voir badge/rapport CI)
 - **Tests de non-régression** : Golden tests présents

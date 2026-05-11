@@ -2370,40 +2370,65 @@ class BBIAHuggingFace:
 
         """
         import math
-        import re
 
-        message_lower = message.lower()
+        # Limiter la taille pour éviter toute dérive sur entrée hostile très longue.
+        message_lower = message.lower()[:1000]
 
-        # Pattern 1: "X degrés" ou "X degrees" (OPTIMISATION: regex compilée)
-        pattern_deg = r"(\d+(?:\.\d+)?)\s*(?:degrés?|degrees?)"
-        match_deg = _get_compiled_regex(pattern_deg, flags=re.IGNORECASE).search(
-            message_lower,
-        )
-        if match_deg:
-            return float(match_deg.group(1))
-
-        # Pattern 2: "X radians" ou "pi/X radians" (OPTIMISATION: regex compilée)
-        pattern_rad = r"(?:(\d+(?:\.\d+)?)|pi\s*/\s*(\d+(?:\.\d+)?))\s*(?:radians?)"
-        match_rad = _get_compiled_regex(pattern_rad, flags=re.IGNORECASE).search(
-            message_lower,
-        )
-        if match_rad:
-            if match_rad.group(1):  # Nombre direct
-                angle_rad = float(match_rad.group(1))
-            elif match_rad.group(2):  # pi/X
-                angle_rad = math.pi / float(match_rad.group(2))
-            else:
+        def _extract_number_before(token: str) -> float | None:
+            idx = message_lower.find(token)
+            if idx <= 0:
                 return None
-            # Convertir radians → degrés
-            return math.degrees(angle_rad)
+            prefix = message_lower[:idx].rstrip()
+            chars: list[str] = []
+            for ch in reversed(prefix):
+                if ch.isdigit() or ch in {".", ","}:
+                    chars.append(ch)
+                    continue
+                if chars:
+                    break
+            if not chars:
+                return None
+            try:
+                return float("".join(reversed(chars)).replace(",", "."))
+            except ValueError:
+                return None
 
-        # Pattern 3: "à X%" (approximation angle) (OPTIMISATION: regex compilée)
-        pattern_pct = r"(\d+(?:\.\d+)?)%"
-        match_pct = _get_compiled_regex(pattern_pct).search(message_lower)
-        if match_pct:
-            pct = float(match_pct.group(1))
-            # 100% ≈ 90 degrés
-            return (pct / 100.0) * 90.0
+        # Pattern 1: "X degrés"/"X degrees" sans regex.
+        for token in ("degrés", "degré", "degrees", "degree"):
+            value = _extract_number_before(token)
+            if value is not None:
+                return value
+
+        # Pattern 2: "X radians" ou "pi/X radians" sans regex.
+        for token in ("radians", "radian"):
+            idx = message_lower.find(token)
+            if idx <= 0:
+                continue
+            expr = (
+                message_lower[:idx].strip().split()[-1]
+                if message_lower[:idx].strip()
+                else ""
+            )
+            if "/" in expr and "pi" in expr:
+                parts = expr.replace(" ", "").split("/", maxsplit=1)
+                if len(parts) == 2:
+                    try:
+                        denom = float(parts[1])
+                        if denom != 0:
+                            return math.degrees(math.pi / denom)
+                    except ValueError:
+                        pass
+            else:
+                try:
+                    return math.degrees(float(expr.replace(",", ".")))
+                except ValueError:
+                    pass
+
+        # Pattern 3: "à X%" (approximation angle) sans regex.
+        if "%" in message_lower:
+            pct = _extract_number_before("%")
+            if pct is not None:
+                return (pct / 100.0) * 90.0
 
         return None
 
@@ -2444,12 +2469,24 @@ class BBIAHuggingFace:
             if keyword in message_lower:
                 return intensity
 
-        # Pattern: "à X%" (intensité directe)
-        pattern = r"(\d+(?:\.\d+)?)%"
-        match = _get_compiled_regex(pattern).search(message_lower)
-        if match:
-            pct = float(match.group(1))
-            return min(pct / 100.0, 1.0)
+        # Pattern: "à X%" (intensité directe) sans regex.
+        msg = message_lower[:1000]
+        percent_idx = msg.find("%")
+        if percent_idx > 0:
+            prefix = msg[:percent_idx].rstrip()
+            chars: list[str] = []
+            for ch in reversed(prefix):
+                if ch.isdigit() or ch in {".", ","}:
+                    chars.append(ch)
+                    continue
+                if chars:
+                    break
+            if chars:
+                try:
+                    pct = float("".join(reversed(chars)).replace(",", "."))
+                    return min(pct / 100.0, 1.0)
+                except ValueError:
+                    pass
 
         return None
 

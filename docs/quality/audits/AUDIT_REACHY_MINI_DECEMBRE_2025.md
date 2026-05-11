@@ -3,6 +3,7 @@
 > ⚠️ **Document historique (snapshot d'audit)**  
 > Ce document reflète l'état analysé à la date de l'audit.  
 > Des versions/chiffres peuvent être obsolètes aujourd'hui.  
+> Ne pas utiliser ce fichier comme source de vérité des métriques actuelles.
 > Pour l'état courant, se référer à :
 > - `docs/reference/project-status.md`
 > - `docs/reference/RELEASE_NOTES.md`

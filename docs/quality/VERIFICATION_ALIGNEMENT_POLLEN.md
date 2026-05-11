@@ -1,7 +1,7 @@
 # Vérification alignement BBIA ↔ Pollen (tous domaines)
 
 **Date** : 27 avril 2026  
-**Référence** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini) **v1.7.0** (22 avr. 2026)
+**Référence** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini) **v1.7.1** (4 mai 2026)
 
 Ce document vérifie que BBIA est au même niveau que Pollen dans tous les domaines : SDK, fonctionnalités, outils, connexion, doc.
 
@@ -29,7 +29,7 @@ Légende : **✅ Même / Aligné** = au même niveau fonctionnel ou mieux ; **�
 
 ## 1. Version SDK et dépendances
 
-- **Pollen (v1.7.0)** : `reachy_mini` 1.7.0 sur PyPI, `reachy_mini_motor_controller` ≥1.5.5, numpy 2.x, websockets, zenoh, kinematics, huggingface-hub, etc. (voir `pyproject.toml` officiel).
+- **Pollen (v1.7.1)** : `reachy_mini` 1.7.1 sur PyPI, `reachy_mini_motor_controller` ≥1.5.5, numpy 2.x, websockets, zenoh, kinematics, huggingface-hub, etc. (voir `pyproject.toml` officiel).
 - **BBIA** : `pyproject.toml` aligné sur les versions critiques (numpy ≥2.2.5, motor_controller ≥1.5.5, zenoh, kinematics, websockets, huggingface-hub) ; compatibilité maintenue avec les environnements encore en 1.3.0+.
 
 **Verdict** : ✅ **Même niveau (référence 1.5.0, compatible 1.3.0+).**

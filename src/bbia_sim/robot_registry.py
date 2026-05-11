@@ -40,8 +40,11 @@ class RobotRegistry:
             Liste des robots découverts avec leurs informations
         """
         if not ZENOH_AVAILABLE:
-            logger.warning("Zenoh non disponible - découverte robots impossible")
-            return []
+            logger.warning(
+                "Zenoh non disponible - utilisation du fallback environnement"
+            )
+            env_robot = self._discover_from_environment()
+            return [env_robot] if env_robot else []
 
         try:
             if zenoh is None:
@@ -138,19 +141,9 @@ class RobotRegistry:
                 logger.debug("Découverte Zenoh incomplète: %s", e)
 
             # Fallback: robots configurés via variables d'environnement
-            robot_id = os.environ.get("BBIA_ROBOT_ID")
-            if robot_id:
-                discovered_robots.append(
-                    {
-                        "id": robot_id,
-                        "hostname": os.environ.get("BBIA_HOSTNAME", "localhost"),
-                        "port": int(os.environ.get("BBIA_PORT", "8080")),
-                        "status": "available",
-                        "discovery_method": (
-                            "environment"
-                        ),  # NOUVEAU: Indiquer méthode découverte
-                    }
-                )
+            env_robot = self._discover_from_environment()
+            if env_robot:
+                discovered_robots.append(env_robot)
 
             logger.info("Découverte %d robot(s)", len(discovered_robots))
             return discovered_robots
@@ -164,6 +157,20 @@ class RobotRegistry:
                     self.session.close()
                 except Exception:
                     pass
+
+    def _discover_from_environment(self) -> dict[str, Any] | None:
+        """Découvre un robot configuré via variables d'environnement."""
+        robot_id = os.environ.get("BBIA_ROBOT_ID")
+        if not robot_id:
+            return None
+
+        return {
+            "id": robot_id,
+            "hostname": os.environ.get("BBIA_HOSTNAME", "localhost"),
+            "port": int(os.environ.get("BBIA_PORT", "8080")),
+            "status": "available",
+            "discovery_method": "environment",
+        }
 
     def list_robots(self) -> list[dict[str, Any]]:
         """Liste les robots disponibles.

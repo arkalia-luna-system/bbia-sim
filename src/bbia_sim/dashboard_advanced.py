@@ -3188,17 +3188,17 @@ if FASTAPI_AVAILABLE:
                 return {"success": False, "error": "Failed to set emotion"}
 
             return {"success": False, "error": "Robot not connected"}
-        except (ValueError, AttributeError, RuntimeError, KeyError) as e:
+        except (ValueError, AttributeError, RuntimeError, KeyError):
             logger.exception("Erreur set_emotion")
-            return {"success": False, "error": str(e)}
+            return {"success": False, "error": "internal_error"}
         except (TypeError, IndexError) as e:
             logger.exception("Erreur set_emotion (type/index): %s", e)
-            return {"success": False, "error": str(e)}
+            return {"success": False, "error": "internal_error"}
         except (
             Exception
         ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
             logger.exception("Erreur inattendue set_emotion: %s", e)
-            return {"success": False, "error": str(e)}
+            return {"success": False, "error": "internal_error"}
 
     @app.post("/api/joint")
     async def set_joint_position(request: Request):
@@ -3231,17 +3231,17 @@ if FASTAPI_AVAILABLE:
             return {"success": False, "error": "Robot not connected"}
         except HTTPException:
             raise
-        except (ValueError, AttributeError, RuntimeError, KeyError, IndexError) as e:
+        except (ValueError, AttributeError, RuntimeError, KeyError, IndexError):
             logger.exception("Erreur set_joint_position")
-            return {"success": False, "error": str(e)}
+            return {"success": False, "error": "internal_error"}
         except TypeError as e:
             logger.exception("Erreur set_joint_position (type): %s", e)
-            return {"success": False, "error": str(e)}
+            return {"success": False, "error": "internal_error"}
         except (
             Exception
         ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
             logger.exception("Erreur inattendue set_joint_position: %s", e)
-            return {"success": False, "error": str(e)}
+            return {"success": False, "error": "internal_error"}
 
     @app.get("/healthz")
     async def health_check():
@@ -3260,78 +3260,106 @@ if FASTAPI_AVAILABLE:
         """Exécute tous les checks de troubleshooting."""
         try:
             results = check_all()
-            return {"success": True, "results": results}
-        except (OSError, RuntimeError, AttributeError, ImportError) as e:
+            # Ne pas renvoyer les messages détaillés potentiellement issus d'exceptions.
+            sanitized_results: dict[str, dict[str, Any]] = {}
+            for name, payload in results.items():
+                if isinstance(payload, dict):
+                    sanitized_results[name] = {
+                        "status": payload.get("status", "unknown"),
+                        "fix": payload.get("fix", ""),
+                    }
+                else:
+                    sanitized_results[name] = {"status": "unknown", "fix": ""}
+            return {"success": True, "results": sanitized_results}
+        except (OSError, RuntimeError, AttributeError, ImportError):
             logger.exception("Erreur troubleshooting check")
-            return {"success": False, "error": str(e)}
+            return {"success": False, "error": "internal_error"}
         except (TypeError, KeyError, IndexError) as e:
             logger.exception("Erreur troubleshooting check (type/key/index): %s", e)
-            return {"success": False, "error": str(e)}
+            return {"success": False, "error": "internal_error"}
         except (
             Exception
         ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
             logger.exception("Erreur inattendue troubleshooting check: %s", e)
-            return {"success": False, "error": str(e)}
+            return {"success": False, "error": "internal_error"}
 
     @app.post("/api/troubleshooting/test/camera")
     async def troubleshooting_test_camera():
         """Test interactif de la caméra."""
         try:
             result = test_camera()
-            return {"success": True, "result": result}
-        except (OSError, RuntimeError, AttributeError, ImportError) as e:
+            ok = isinstance(result, dict) and result.get("status") == "ok"
+            return {
+                "success": ok,
+                "result": {
+                    "status": "ok" if ok else "error",
+                },
+            }
+        except (OSError, RuntimeError, AttributeError, ImportError):
             logger.exception("Erreur test caméra")
-            return {"success": False, "error": str(e)}
+            return {"success": False, "error": "camera_error"}
         except (TypeError, KeyError, IndexError) as e:
             logger.exception("Erreur test caméra (type/key/index): %s", e)
-            return {"success": False, "error": str(e)}
+            return {"success": False, "error": "invalid_camera_request"}
         except (
             Exception
         ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
             logger.exception("Erreur inattendue test caméra: %s", e)
-            return {"success": False, "error": str(e)}
+            return {"success": False, "error": "internal_error"}
 
     @app.post("/api/troubleshooting/test/audio")
     async def troubleshooting_test_audio():
         """Test interactif de l'audio."""
         try:
             result = test_audio()
-            return {"success": True, "result": result}
-        except (OSError, RuntimeError, AttributeError, ImportError) as e:
+            ok = isinstance(result, dict) and result.get("status") == "ok"
+            return {
+                "success": ok,
+                "result": {
+                    "status": "ok" if ok else "error",
+                },
+            }
+        except (OSError, RuntimeError, AttributeError, ImportError):
             logger.exception("Erreur test audio")
-            return {"success": False, "error": str(e)}
+            return {"success": False, "error": "audio_error"}
         except (TypeError, KeyError, IndexError) as e:
             logger.exception("Erreur test audio (type/key/index): %s", e)
-            return {"success": False, "error": str(e)}
+            return {"success": False, "error": "invalid_audio_request"}
         except (
             Exception
         ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
             logger.exception("Erreur inattendue test audio: %s", e)
-            return {"success": False, "error": str(e)}
+            return {"success": False, "error": "internal_error"}
 
     @app.post("/api/troubleshooting/test/network")
     async def troubleshooting_test_network(host: str = "8.8.8.8"):
         """Test interactif du réseau."""
         try:
             result = test_network_ping(host)
-            return {"success": True, "result": result}
+            ok = isinstance(result, dict) and result.get("status") == "ok"
+            return {
+                "success": ok,
+                "result": {
+                    "status": "ok" if ok else "error",
+                },
+            }
         except (
             OSError,
             RuntimeError,
             AttributeError,
             ConnectionError,
             TimeoutError,
-        ) as e:
+        ):
             logger.exception("Erreur test réseau")
-            return {"success": False, "error": str(e)}
+            return {"success": False, "error": "network_error"}
         except (TypeError, IndexError, KeyError) as e:
             logger.exception("Erreur test réseau (type/index/key): %s", e)
-            return {"success": False, "error": str(e)}
+            return {"success": False, "error": "invalid_network_request"}
         except (
             Exception
         ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
             logger.exception("Erreur inattendue test réseau: %s", e)
-            return {"success": False, "error": str(e)}
+            return {"success": False, "error": "internal_error"}
 
     @app.get("/api/troubleshooting/docs")
     async def troubleshooting_docs():
@@ -3344,17 +3372,17 @@ if FASTAPI_AVAILABLE:
                 name: f"{base_url}?path={path}" for name, path in links.items()
             }
             return {"success": True, "links": links_with_urls}
-        except (KeyError, AttributeError, RuntimeError) as e:
+        except (KeyError, AttributeError, RuntimeError):
             logger.exception("Erreur récupération docs")
-            return {"success": False, "error": str(e)}
+            return {"success": False, "error": "internal_error"}
         except (TypeError, IndexError) as e:
             logger.exception("Erreur récupération docs (type/index): %s", e)
-            return {"success": False, "error": str(e)}
+            return {"success": False, "error": "internal_error"}
         except (
             Exception
         ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
             logger.exception("Erreur inattendue récupération docs: %s", e)
-            return {"success": False, "error": str(e)}
+            return {"success": False, "error": "internal_error"}
 
     @app.get("/api/docs/view")
     async def view_documentation(path: str):
@@ -3368,26 +3396,33 @@ if FASTAPI_AVAILABLE:
         )
 
         try:
-            # Sécuriser le chemin pour éviter les accès non autorisés
-            doc_path = Path(path)
-            if ".." in str(doc_path) or doc_path.is_absolute():
-                raise HTTPException(status_code=400, detail="Chemin invalide")
-
-            # Construire le chemin complet depuis la racine du projet
-            project_root = Path(__file__).parent.parent.parent
-            full_path = project_root / doc_path
+            # Restreindre strictement aux chemins de documentation connus.
+            project_root = Path(__file__).resolve().parent.parent.parent
+            docs_root = (project_root / "docs").resolve()
+            allowed_docs = {
+                rel_path: (project_root / rel_path).resolve()
+                for rel_path in get_documentation_links().values()
+            }
+            full_path = allowed_docs.get(path)
+            if full_path is None:
+                raise HTTPException(status_code=404, detail="Fichier non trouvé")
 
             # Vérifier que le fichier existe et est dans le dossier docs
-            if not full_path.exists() or not str(full_path).startswith(
-                str(project_root / "docs"),
-            ):
+            if not full_path.exists():
                 raise HTTPException(status_code=404, detail="Fichier non trouvé")
+            try:
+                full_path.relative_to(docs_root)
+            except ValueError as exc:
+                raise HTTPException(
+                    status_code=404, detail="Fichier non trouvé"
+                ) from exc
 
             # Si c'est un fichier markdown, convertir en HTML
             if full_path.suffix == ".md":
                 content = full_path.read_text(encoding="utf-8")
                 # Échapper le HTML et convertir les retours à la ligne en <br>
                 content_html = html.escape(content).replace("\n", "<br>\n")
+                safe_doc_name = html.escape(full_path.name)
                 # Créer une page HTML simple avec le contenu
                 html_page = f"""
 <!DOCTYPE html>
@@ -3395,7 +3430,7 @@ if FASTAPI_AVAILABLE:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Documentation - {doc_path.name}</title>
+    <title>Documentation - {safe_doc_name}</title>
     <style>
         body {{
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
@@ -3435,7 +3470,7 @@ if FASTAPI_AVAILABLE:
     </style>
 </head>
 <body>
-    <h1>📚 {doc_path.name}</h1>
+    <h1>📚 {safe_doc_name}</h1>
     <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
         <pre style="white-space: pre-wrap; font-family: inherit;">{content_html}</pre>
     </div>
@@ -3455,7 +3490,7 @@ if FASTAPI_AVAILABLE:
             )
             raise HTTPException(
                 status_code=500,
-                detail=f"Erreur lecture fichier: {e}",
+                detail="Erreur interne lors de la lecture du fichier",
             ) from e
         except (
             Exception
@@ -3463,7 +3498,7 @@ if FASTAPI_AVAILABLE:
             logger.exception("Erreur lecture documentation %s: %s", path, e)
             raise HTTPException(
                 status_code=500,
-                detail=f"Erreur lecture fichier: {e}",
+                detail="Erreur interne lors de la lecture du fichier",
             ) from e
 
     @app.get("/api/camera/stream")
@@ -4169,17 +4204,26 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
         # Envoyer mise à jour du statut
         await advanced_websocket_manager.send_complete_status()
 
-    except (ValueError, AttributeError, RuntimeError, KeyError, TypeError) as e:
+    except (ValueError, AttributeError, RuntimeError, KeyError, TypeError):
         logger.exception("❌ Erreur commande avancée")
-        await advanced_websocket_manager.send_log_message("error", f"Erreur: {e!s}")
+        await advanced_websocket_manager.send_log_message(
+            "error",
+            "Erreur interne pendant le traitement de la commande",
+        )
     except IndexError as e:
         logger.exception("❌ Erreur commande avancée (index): %s", e)
-        await advanced_websocket_manager.send_log_message("error", f"Erreur: {e!s}")
+        await advanced_websocket_manager.send_log_message(
+            "error",
+            "Erreur interne pendant le traitement de la commande",
+        )
     except (
         Exception
     ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
         logger.exception("❌ Erreur inattendue commande avancée: %s", e)
-        await advanced_websocket_manager.send_log_message("error", f"Erreur: {e!s}")
+        await advanced_websocket_manager.send_log_message(
+            "error",
+            "Erreur interne pendant le traitement de la commande",
+        )
 
 
 async def handle_chat_message(

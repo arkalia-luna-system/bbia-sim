@@ -92,9 +92,12 @@ async def start_daemon(
         }
     except HTTPException:
         raise
-    except Exception as e:
+    except Exception as exc:
         logger.exception("Erreur lors du démarrage du daemon")
-        raise HTTPException(status_code=500, detail=f"Erreur: {e!s}") from e
+        raise HTTPException(
+            status_code=500,
+            detail="Erreur interne lors du démarrage du daemon",
+        ) from exc
 
 
 @router.post("/stop")
@@ -138,9 +141,12 @@ async def stop_daemon(
             "goto_sleep": goto_sleep,
             "timestamp": datetime.now().isoformat(),
         }
-    except Exception as e:
+    except Exception as exc:
         logger.exception("Erreur lors de l'arrêt du daemon")
-        raise HTTPException(status_code=500, detail=f"Erreur: {e!s}") from e
+        raise HTTPException(
+            status_code=500,
+            detail="Erreur interne lors de l'arrêt du daemon",
+        ) from exc
 
 
 @router.post("/restart")
@@ -179,9 +185,12 @@ async def restart_daemon() -> dict[str, Any]:
         }
     except HTTPException:
         raise
-    except Exception as e:
+    except Exception as exc:
         logger.exception("Erreur lors du redémarrage du daemon")
-        raise HTTPException(status_code=500, detail=f"Erreur: {e!s}") from e
+        raise HTTPException(
+            status_code=500,
+            detail="Erreur interne lors du redémarrage du daemon",
+        ) from exc
 
 
 @router.get("/status")
@@ -200,10 +209,9 @@ async def get_daemon_status() -> dict[str, Any]:
             error=None,
         )
         return status.dict()
-    except Exception as e:
+    except Exception as exc:
         logger.exception("Erreur lors de la récupération du statut")
-        return DaemonStatus(
-            status="error",
-            simulation_running=False,
-            error=str(e),
-        ).dict()
+        raise HTTPException(
+            status_code=500,
+            detail="Erreur interne lors de la récupération du statut",
+        ) from exc
