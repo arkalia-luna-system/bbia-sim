@@ -98,7 +98,7 @@ BBIA utilise une stack IA pour permettre des interactions naturelles. Voici pour
 - **Fichiers de tests**: 166 fichiers (39,200+ lignes)
 - **Tests collectés (local, 8 mai 2026)**: 2,311 tests (2,201 actifs + 110 désélectionnés via marqueurs)
 - **Coverage**: consulter Codecov pour la valeur CI de référence, et `python3 -m pytest --cov=src/bbia_sim --cov-report=term-missing` pour la mesure locale complète
-- **Coverage modules core**: ~50%
+- **Coverage**: suivre la valeur de référence CI sur Codecov (la mesure locale varie selon le sous-ensemble de tests lancé)
 - **Modules BBIA**: 15+ modules spécialisés
 - **Comportements**: 21 comportements (7 de base + 14 étendus)
 - **Exemples**: 44 exemples disponibles
@@ -135,7 +135,7 @@ Le dépôt `bbia_branding` est désormais déprécié et destiné à l'archivage
 
 BBIA-SIM suit des standards de qualité:
 
-- **Tests de couverture**: 80% minimum
+- **Tests de couverture**: suivi continu en CI (pas de seuil global unique figé)
 - **Linting**: black, ruff, mypy, bandit
 - **Python**: 3.11+ (3.12 testé dans CI)
 - **CI/CD**: GitHub Actions avec vérifications automatiques (Python 3.11 + 3.12, gitleaks)
@@ -464,7 +464,7 @@ sequenceDiagram
 | **Modèle officiel** | `reachy_mini_REAL_OFFICIAL.xml` | ✅ |
 | **Articulations** | 16 total (9 contrôlables) | ✅ |
 | **Intégration BBIA** | 12 émotions + IA | ✅ |
-| **Coverage modules core** | ~50% | ✅ [📊 Rapport](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim) |
+| **Coverage (référence)** | Codecov CI | ✅ [📊 Rapport](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim) |
 | **API** | FastAPI + WebSocket | ✅ |
 
 </div>
@@ -929,17 +929,16 @@ python scripts/download_ALL_stl.py
 
 **Il existe DEUX mesures de coverage selon le périmètre analysé :**
 
-#### 1. **Coverage Modules Core** (~50%) ✅ **MESURE PERTINENTE**
+#### 1. **Coverage CI de référence (Codecov)** ✅ **MESURE PRINCIPALE**
 
 ```bash
-# Mesure sur src/bbia_sim/* (modules métier testés)
+# Mesure locale sur src/bbia_sim/*
 python -m pytest --cov=src/bbia_sim --cov-report=term
 ```
 
-- **Périmètre** : Modules core (`robot_api`, `bbia_*`, `backends/`)
-- **Résultat** : **~50% coverage** sur modules métier
-- **Statut** : ✅ **Niveau correct** pour projet open source
-- **C'est cette mesure qui compte** pour la qualité du code métier
+- **Périmètre** : dépend du sous-ensemble de tests exécuté localement
+- **Résultat** : variable selon la sélection (`-m`, `-k`, tests ciblés vs suite plus large)
+- **Référence projet** : badge/rapport Codecov en CI
 
 #### 2. **Coverage Global** (~6-7%) ⚠️ **MESURE CONTEXTUELLE**
 
@@ -986,7 +985,7 @@ pytest -q --disable-warnings \
 
 - **Conformité SDK officiel** : Validée (47 tests de conformité) — [📊 Vérification](docs/quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md)
 - **Coverage** : valeur de référence sur Codecov (CI) ; utiliser `pytest --cov=src/bbia_sim` localement pour une mesure comparable
-- **Coverage modules core** : ~50% — [📊 Rapport Codecov](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim) | [📁 Rapport HTML local](htmlcov/index.html)
+- **Coverage** : valeur de référence sur Codecov (CI) — [📊 Rapport Codecov](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim) | [📁 Rapport HTML local](htmlcov/index.html)
 - **Tests totaux (snapshot local 8 mai 2026)** : 2,311 tests collectés — [📊 Détails CI](https://github.com/arkalia-luna-system/bbia-sim/actions)
 - **Fichiers Python** : 68 modules dans `src/bbia_sim/` — [📁 Source](src/bbia_sim)
 - **Qualité code** : Black, Ruff, MyPy, Bandit

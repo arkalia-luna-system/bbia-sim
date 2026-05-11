@@ -86,7 +86,9 @@ jobs:
 
       - name: Dependency audit with pip-audit
         run: |
-          pip-audit --desc --format=json > audit-results.json
+          # pip-audit retourne un exit code non-zero dès qu'une vulnérabilité existe.
+          # On force la génération du JSON puis on bloque explicitement sur HIGH/CRITICAL.
+          pip-audit --desc --format=json > audit-results.json || true
           # Bloquer sur HIGH/CRITICAL (pipeline sécurité)
           python - <<'PY'
           import json

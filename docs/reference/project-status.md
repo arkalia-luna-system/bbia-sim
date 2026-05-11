@@ -158,8 +158,8 @@ bandit -r src/
 |:-------:|:------------|:------------|
 | **Endpoints FastAPI** | ✅ En place | ➕ Améliorations |
 | **Watchdog/Emergency Stop** | ✅ Opérationnels | ➕ Monitoring |
-| **Métriques Prometheus** | ⚠️ Absentes | ➕ `/metrics` endpoint |
-| **Health Checks** | ⚠️ Basiques | ➕ `/healthz` & `/readyz` |
+| **Métriques Prometheus** | ✅ Disponibles | ➕ Compléter alerting/dashboards |
+| **Health Checks** | ✅ Disponibles (`healthz`/`readyz`) | ➕ Enrichir readiness métier |
 | **Logs Structurés** | ⚠️ Non uniformisés | ➕ JSON standardisé |
 
 </div>
@@ -183,7 +183,7 @@ bandit -r src/
 
 - État actuel:
   - Bandit + pip-audit en CI; clamp sécurité et validation JSON en place; pas de secrets versionnés détectés.
-  - CORS/ratelimiting/scopes OAuth non configurés; SBOM/semgrep/gitleaks absents.
+  - Semgrep/gitleaks/SBOM présents dans la pipeline; CORS/ratelimiting/scopes OAuth restent des axes à durcir selon l'exposition.
 - Axes futurs:
   - Activer CORS strict + ratelimiting; définir scopes basiques.
   - Générer SBOM (CycloneDX) + ajouter semgrep/gitleaks en CI.
@@ -191,8 +191,8 @@ bandit -r src/
 ### CI/CD
 
 - État actuel:
-  - Pipeline GitHub Actions unifié Python 3.11, codecov OK.
-  - Pas de matrice 3.12, pas de pré-commit, pas de sharding tests.
+  - Pipeline GitHub Actions actif Python 3.11/3.12, contrôles qualité/sécurité et reporting coverage.
+  - Stabilisation en cours sur quelques jobs flaky/non déterministes.
 - Axes futurs:
   - Étendre matrice (3.11/3.12); pré-commit (ruff/black/mypy); shards tests si durée ↑.
 
