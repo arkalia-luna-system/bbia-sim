@@ -283,7 +283,7 @@ jobs:
           python -m pip cache purge || true
 
       - name: Upload coverage
-        uses: codecov/codecov-action@v6
+        uses: codecov/codecov-action@v7
         with:
           files: ./coverage.xml
           flags: unittests
@@ -536,7 +536,7 @@ jobs:
           python -m pip cache purge || true
 
       - name: Upload coverage (slow tests)
-        uses: codecov/codecov-action@v6
+        uses: codecov/codecov-action@v7
         with:
           files: ./coverage.xml
           flags: slow-tests
