@@ -1,40 +1,16 @@
-# <img src="assets/logos/bbia/identity/bbia-speaking-512.svg" alt="BBIA" width="96" height="96" style="display: inline-block; vertical-align: -0.5em; margin-right: 0.3em;"> BBIA Reachy Mini Simulation
+# BBIA — simulation Reachy Mini
 
-<div align="center">
+Moteur cognitif / simulation Python pour [Reachy Mini](https://github.com/pollen-robotics/reachy_mini) (émotions, vision, MuJoCo).
 
 [![Version](https://img.shields.io/badge/version-1.4.0-blue.svg)](https://github.com/arkalia-luna-system/bbia-sim)
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://python.org)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![CI Status](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml/badge.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml)
-[![Tests](https://img.shields.io/badge/tests-pytest%20collect--only-blue.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions)
-[![Code Quality](https://img.shields.io/badge/code%20quality-A%2B-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim)
-[![SDK Conformity](https://img.shields.io/badge/SDK%20conformity-100%25-brightgreen.svg)](https://github.com/pollen-robotics/reachy_mini)
-[![Documentation](https://img.shields.io/badge/docs-mkdocs-blue.svg)](docs/)
-[![Coverage](https://img.shields.io/badge/coverage-live%20in%20CI-blue)](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim)
-[![Typing: mypy](https://img.shields.io/badge/typing-mypy-4B8BBE)](https://github.com/arkalia-luna-system/bbia-sim)
-[![Lint: ruff](https://img.shields.io/badge/lint-ruff-46A2F1)](https://github.com/arkalia-luna-system/bbia-sim)
-[![Security: bandit](https://img.shields.io/badge/security-bandit-2E5E82)](https://github.com/arkalia-luna-system/bbia-sim)
 [![Release](https://img.shields.io/github/v/release/arkalia-luna-system/bbia-sim)](https://github.com/arkalia-luna-system/bbia-sim/releases)
 
-[![Stars](https://img.shields.io/github/stars/arkalia-luna-system/bbia-sim?style=social)](https://github.com/arkalia-luna-system/bbia-sim)
-[![Forks](https://img.shields.io/github/forks/arkalia-luna-system/bbia-sim?style=social)](https://github.com/arkalia-luna-system/bbia-sim)
-[![Issues](https://img.shields.io/github/issues/arkalia-luna-system/bbia-sim)](https://github.com/arkalia-luna-system/bbia-sim/issues)
-[![PRs](https://img.shields.io/github/issues-pr/arkalia-luna-system/bbia-sim)](https://github.com/arkalia-luna-system/bbia-sim/pulls)
+## Moteur cognitif Python pour robot Reachy Mini
 
-</div>
-
-<div align="center">
-
-## 🧠 Moteur Cognitif Python pour Robot Reachy Mini
-
-### Simulation • IA • SDK Conforme
-
-[![🚀 Quick Start](https://img.shields.io/badge/🚀-Quick%20Start-green)](#-démarrage-rapide)
-[![📚 Documentation](https://img.shields.io/badge/📚-Documentation-blue)](docs/)
-[![🤖 Try Demo](https://img.shields.io/badge/🤖-Try%20Demo-orange)](#-voir-le-robot-en-3d)
-[![🔧 Installation](https://img.shields.io/badge/🔧-Installation-purple)](#-démarrage-rapide)
-
-</div>
+Simulation · IA · SDK Reachy Mini
 
 ---
 
