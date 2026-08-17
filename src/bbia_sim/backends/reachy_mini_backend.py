@@ -51,6 +51,9 @@ SLEEP_HEAD_JOINT_POSITIONS = [
 
 SLEEP_ANTENNAS_JOINT_POSITIONS = np.array([-3.05, 3.05], dtype=np.float64)
 
+# Offset ~10° pour réduire le tremblement à la verticale (SDK officiel 1.9+)
+INIT_ANTENNAS_JOINT_POSITIONS = np.array([-0.1745, 0.1745], dtype=np.float64)
+
 SLEEP_HEAD_POSE = np.array(
     [
         [0.911, 0.004, 0.413, -0.021],
@@ -158,7 +161,7 @@ class ReachyMiniBackend(RobotAPI):
         spawn_daemon: bool = False,
         use_sim: bool = False,
         timeout: float = 5.0,
-        automatic_body_yaw: bool = False,
+        automatic_body_yaw: bool = True,
         log_level: str = "INFO",
         media_backend: str = "default",
     ) -> None:
@@ -207,6 +210,10 @@ class ReachyMiniBackend(RobotAPI):
         # Mapping joints officiel Reachy-Mini (noms réels du modèle MuJoCo)
         # 6 joints tête + 2 antennes + 1 corps = 9 joints total
         self.joint_mapping = JOINT_MAPPING_STATIC
+
+        # Presets antennes officiels (init ~10° / sleep)
+        self.init_antennas_positions = INIT_ANTENNAS_JOINT_POSITIONS
+        self.sleep_antennas_positions = SLEEP_ANTENNAS_JOINT_POSITIONS
 
         # Limites officielles Reachy-Mini (en radians) - LIMITES EXACTES
         # Source: reachy_mini_REAL_OFFICIAL.xml - valeurs exactes du modèle physique
@@ -261,15 +268,27 @@ class ReachyMiniBackend(RobotAPI):
 
         """
         try:
-            self.robot = ReachyMini(
-                localhost_only=self.localhost_only,
-                spawn_daemon=self.spawn_daemon,
-                use_sim=False,  # Essayer la connexion réelle
-                timeout=min(self.timeout, 3.0),  # Max 3 secondes
-                automatic_body_yaw=self.automatic_body_yaw,
-                log_level=self.log_level,
-                media_backend=self.media_backend,
-            )
+            # SDK 1.9+ : connection_mode ("auto" | "localhost_only" | "network")
+            # localhost_only reste accepté en compatibilité descendante.
+            connection_mode = "localhost_only" if self.localhost_only else "auto"
+            connect_kwargs: dict[str, Any] = {
+                "spawn_daemon": self.spawn_daemon,
+                "use_sim": False,  # Essayer la connexion réelle
+                "timeout": min(self.timeout, 3.0),  # Max 3 secondes
+                "automatic_body_yaw": self.automatic_body_yaw,
+                "log_level": self.log_level,
+                "media_backend": self.media_backend,
+            }
+            try:
+                self.robot = ReachyMini(
+                    connection_mode=connection_mode,
+                    **connect_kwargs,
+                )
+            except TypeError:
+                self.robot = ReachyMini(
+                    localhost_only=self.localhost_only,
+                    **connect_kwargs,
+                )
             self.is_connected = True
             self.start_time = time.time()
             self._last_heartbeat = time.time()

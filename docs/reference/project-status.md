@@ -5,12 +5,14 @@
 **🎯 Vue d'ensemble de l'état du projet par axe**
 *Fiabilité • Performance • Sécurité • CI/CD • Plus*
 
-**Version** : 1.4.0 • **Dernière mise à jour** : 8 Mai 2026
+**Version** : 1.4.0 • **Dernière mise à jour** : 17 Août 2026
 **Prêt pour arrivée robot** 🤖
 
-**Mise à jour 26 Janvier 2026** : 100% d'exploitation des capacités
-- 44 exemples disponibles (39 existants + 5 nouveaux créés 22 Nov. 2025)
-- Tous les comportements, endpoints et modules ont des exemples dédiés
+**Mise à jour 17 Août 2026** : Alignement Pollen v1.9.0
+- SDK de référence **v1.9.0** (PyPI) ; dépôt officiel `main` en 1.10.0.dev0
+- Backend : `connection_mode` (`localhost_only` / `auto`), `automatic_body_yaw=True` (défaut officiel)
+- Extra optionnel : `pip install -e ".[reachy]"` → `reachy-mini>=1.9.0`
+- CI : job unitaire n’exécute plus `tests/e2e` ni `tests/benchmarks` (correction pipeline #1831)
 
 **Mise à jour 8 Mai 2026** : Alignement Pollen v1.7.1
 - SDK de référence **v1.7.1** ; dépendances critiques `pyproject.toml` alignées (numpy 2.x, motor_controller ≥1.5.5, zenoh, kinematics, huggingface-hub, scipy, websockets)
@@ -40,8 +42,8 @@
 |:-------:|:-------------:|:------:|
 | **Python** | 3.11+ (3.12 testé) | ✅ Requis |
 | **CI/CD** | `.github/workflows/ci.yml` | ✅ GitHub Actions (Python 3.11 + 3.12) |
-| **SDK Référence** | `pollen-robotics/reachy_mini` **v1.7.1** (4 mai 2026) | ✅ Aligné Pollen |
-| **SDK local** | `pip install --upgrade reachy-mini` → v1.7.1 recommandé | ✅ Dépendances projet alignées ([lien](https://github.com/pollen-robotics/reachy_mini)) |
+| **SDK Référence** | `pollen-robotics/reachy_mini` **v1.9.0** (PyPI, 17 août 2026) | ✅ Aligné Pollen |
+| **SDK local** | `pip install --upgrade reachy-mini` → v1.9.0 recommandé | ✅ Extra `.[reachy]` + deps critiques ([lien](https://github.com/pollen-robotics/reachy_mini)) |
 
 </div>
 

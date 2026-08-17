@@ -1,6 +1,6 @@
 # 🔄 Pipeline CI/CD
 
-**Dernière mise à jour** : 8 Mai 2026  
+**Dernière mise à jour** : 17 Août 2026  
 **Version** : 1.4.0  
 **Compatibilité Python** : 3.11+ ✅ **Matrice 3.12 ajoutée** (24 Nov. 2025)
 
@@ -13,7 +13,8 @@
 ## État actuel
 
 - **GitHub Actions** : `.github/workflows/ci.yml`, Python 3.11/3.12 selon jobs
-- **Phases** : lint (ruff/black/mypy), tests, e2e headless, artifacts, codecov
+- **Phases** : lint (ruff/black/mypy), tests unitaires (hors `tests/e2e` et `tests/benchmarks`), e2e headless, artifacts, codecov
+- **Correction 17 août 2026** : le job `test` ignorait mal le dossier e2e (tests non marqués `@pytest.mark.e2e`) → échec pipeline #1831 (`pytest-asyncio` AssertionError). Désormais `--ignore=tests/e2e` + `--ignore=tests/benchmarks`.
 
 ### Architecture Pipeline CI/CD
 
@@ -122,7 +123,7 @@ sequenceDiagram
 
 ---
 
-**Dernière mise à jour** : 8 Mai 2026
+**Dernière mise à jour** : 17 Août 2026
 
 ## Pré-commit (optionnel)
 

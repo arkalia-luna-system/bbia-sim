@@ -1,7 +1,7 @@
 # Vérification alignement BBIA ↔ Pollen (tous domaines)
 
-**Date** : 27 avril 2026  
-**Référence** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini) **v1.7.1** (4 mai 2026)
+**Date** : 17 août 2026  
+**Référence** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini) **v1.9.0** (PyPI ; `main` = 1.10.0.dev0)
 
 Ce document vérifie que BBIA est au même niveau que Pollen dans tous les domaines : SDK, fonctionnalités, outils, connexion, doc.
 
@@ -11,8 +11,8 @@ Ce document vérifie que BBIA est au même niveau que Pollen dans tous les domai
 
 | Domaine | Niveau BBIA vs Pollen | Détail |
 |--------|------------------------|--------|
-| **Version SDK** | ✅ Même | reachy-mini **1.7.0** (référence), compatibilité maintenue 1.3.0+ |
-| **Dépendances (pyproject)** | ✅ Aligné | numpy ≥2.2.5, motor_controller ≥1.5.5, zenoh ~1.7, kinematics ≥1.0.3, huggingface-hub ≥1.3.0, scipy &lt;2, websockets &lt;16 |
+| **Version SDK** | ✅ Même | reachy-mini **1.9.0** (référence PyPI), extra `.[reachy]` |
+| **Dépendances (pyproject)** | ✅ Aligné | huggingface-hub ≥1.17, websockets &lt;16, aiohttp ≥3.14, pydantic ≥2.12.5, motor_controller ≥1.5.5, kinematics ≥1.0.3 |
 | **API robot (méthodes SDK)** | ✅ Même | 21 méthodes implémentées, 37 tests conformité passants |
 | **Moteurs / reflash / scan** | ✅ Compatible | Utilise le même SDK ; reflash/scan documentés et CLI officiels utilisables |
 | **Caméra / calibration** | ✅ Même niveau | Outils calibration (acquire, calibrate, scale, visualize) ; messages d’erreur clairs (issue #771) |
@@ -29,10 +29,10 @@ Légende : **✅ Même / Aligné** = au même niveau fonctionnel ou mieux ; **�
 
 ## 1. Version SDK et dépendances
 
-- **Pollen (v1.7.1)** : `reachy_mini` 1.7.1 sur PyPI, `reachy_mini_motor_controller` ≥1.5.5, numpy 2.x, websockets, zenoh, kinematics, huggingface-hub, etc. (voir `pyproject.toml` officiel).
-- **BBIA** : `pyproject.toml` aligné sur les versions critiques (numpy ≥2.2.5, motor_controller ≥1.5.5, zenoh, kinematics, websockets, huggingface-hub) ; compatibilité maintenue avec les environnements encore en 1.3.0+.
+- **Pollen (v1.9.0)** : `reachy_mini` 1.9.0 sur PyPI, Python ≥3.11, `connection_mode`, huggingface-hub 1.17+, websockets &lt;16, zeroconf, rustypot (voir `pyproject.toml` officiel).
+- **BBIA** : extra `reachy-mini>=1.9.0` ; floors critiques alignés ; `ReachyMiniBackend` passe `connection_mode` (repli `localhost_only` si SDK plus ancien).
 
-**Verdict** : ✅ **Même niveau (référence 1.5.0, compatible 1.3.0+).**
+**Verdict** : ✅ **Même niveau (référence 1.9.0).**
 
 ---
 

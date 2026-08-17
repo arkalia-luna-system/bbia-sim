@@ -1,0 +1,6 @@
+{
+  "pythonVersion": "3.11",
+  "stubPath": "typings",
+  "reportMissingTypeStubs": false,
+  "exclude": ["venv", "venv-*", ".venv", "htmlcov", "logs"]
+}

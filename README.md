@@ -124,13 +124,12 @@ BBIA-SIM suit des standards de qualité:
 
 Version 1.4.0 – Simulation complète avec exemples fonctionnels, tests et documentation.
 
-**Mise à jour 8 Mai 2026** :
-- Dépendances critiques synchronisées (Dependabot batch)
-- CI GitHub Actions modernisée (`upload-artifact@v7`, `codecov-action@v6`)
-- Alignement suivi avec l'écosystème Reachy Mini officiel
-- Qualité code maintenue (Black, Ruff, MyPy, Bandit)
+**Mise à jour 17 Août 2026** :
+- Alignement SDK officiel [Pollen Reachy Mini **v1.9.0**](https://github.com/pollen-robotics/reachy_mini) (`connection_mode`, `automatic_body_yaw=True`, extra `pip install -e ".[reachy]"`)
+- CI : les tests e2e/benchmarks ne s’exécutent plus dans le job unitaire (échec pipeline #1831)
+- Stub Pylance : dossier `typings/` pour supprimer l’erreur `stubPath is not a valid directory`
 
-Ce projet fournit une simulation du robot Reachy Mini dans MuJoCo, avec une intégration des modules BBIA (Bio-Inspired Artificial Intelligence) et une conformité avec le SDK officiel de Pollen Robotics. **Alignement suivi jusqu'à Pollen v1.7.1** (8 mai 2026): dépendances, CI et documentation revues pour garder une base merge-ready. Installer le SDK avec `pip install --upgrade reachy-mini` pour rester au niveau officiel.
+Ce projet fournit une simulation du robot Reachy Mini dans MuJoCo, avec une intégration des modules BBIA (Bio-Inspired Artificial Intelligence) et une conformité avec le SDK officiel de Pollen Robotics. **Alignement suivi jusqu'à Pollen v1.9.0** (17 août 2026). Installer le SDK avec `pip install --upgrade reachy-mini` (Python 3.11+) pour rester au niveau officiel.
 
 ## 🚀 Quick Start
 
@@ -1011,4 +1010,4 @@ Le robot Reachy Mini est simulé avec une fidélité élevée aux spécification
 
 ---
 
-*Dernière mise à jour : 8 Mai 2026*
+*Dernière mise à jour : 17 Août 2026*

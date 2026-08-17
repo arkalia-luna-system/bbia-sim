@@ -1,6 +1,6 @@
 # 🌐 Guide Communauté BBIA-SIM
 
-**Dernière mise à jour** : 8 Mai 2026  
+**Dernière mise à jour** : 17 Août 2026  
 **Objectif** : Visibilité et engagement communautaire pour BBIA-SIM
 
 ---
@@ -346,7 +346,7 @@ Good for learning advanced Python!
 
 ---
 
-**Dernière mise à jour** : 8 Mai 2026
+**Dernière mise à jour** : 17 Août 2026
 
 ---
 

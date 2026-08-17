@@ -151,7 +151,7 @@ class RobotFactory:
                     spawn_daemon=kwargs.get("spawn_daemon", False),
                     use_sim=kwargs.get("use_sim", True),  # Par défaut mode simulation
                     timeout=kwargs.get("timeout", 3.0),  # Timeout réduit à 3s
-                    automatic_body_yaw=kwargs.get("automatic_body_yaw", False),
+                    automatic_body_yaw=kwargs.get("automatic_body_yaw", True),
                     log_level=kwargs.get("log_level", "INFO"),
                     media_backend=kwargs.get("media_backend", "default"),
                 )

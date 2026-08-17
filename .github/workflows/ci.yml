@@ -218,7 +218,7 @@ jobs:
           # Installer torch séparément avec timeout augmenté (gros package ~900MB)
           pip install --no-cache-dir --default-timeout=600 torch>=2.0.0 || echo "torch installation failed, continuing..."
           pip install --no-cache-dir --default-timeout=600 -e .[test]
-          pip install --no-cache-dir pytest-asyncio pytest-timeout pytest-rerunfailures
+          pip install --no-cache-dir "pytest-asyncio>=0.23.0,<2.0.0" pytest-timeout pytest-rerunfailures
           # Installation optionnelle de pyaudio si disponible
           pip install --no-cache-dir pyaudio || echo "pyaudio non disponible, continuons sans"
           python -m pip cache purge || true
@@ -243,6 +243,8 @@ jobs:
           # Réduction des SKIP structurels en CI Linux (audio/hardware/sdk/LLM réels)
           # afin d'accélérer l'exécution sans modifier les tests locaux.
           pytest -vv -m "not e2e and not slow" \
+            --ignore=tests/e2e \
+            --ignore=tests/benchmarks \
             --ignore=tests/benchmarks/test_performance.py \
             --ignore=tests/sim/test_cli_help.py \
             --ignore=tests/test_audio_buffer_stability.py \
@@ -345,7 +347,7 @@ jobs:
           # Installer torch séparément avec timeout augmenté (gros package ~900MB)
           pip install --no-cache-dir --default-timeout=600 torch>=2.0.0 || echo "torch installation failed, continuing..."
           pip install --no-cache-dir --default-timeout=600 -e .[test]
-          pip install --no-cache-dir pytest-asyncio pytest-timeout pytest-rerunfailures
+          pip install --no-cache-dir "pytest-asyncio>=0.23.0,<2.0.0" pytest-timeout pytest-rerunfailures
           # Installation optionnelle de pyaudio si disponible
           pip install --no-cache-dir pyaudio || echo "pyaudio non disponible, continuons sans"
           python -m pip cache purge || true
@@ -502,7 +504,7 @@ jobs:
           # Installer torch séparément avec timeout augmenté (gros package ~900MB)
           pip install --no-cache-dir --default-timeout=600 torch>=2.0.0 || echo "torch installation failed, continuing..."
           pip install --no-cache-dir --default-timeout=600 -e .[test]
-          pip install --no-cache-dir pytest-asyncio pytest-timeout pytest-rerunfailures
+          pip install --no-cache-dir "pytest-asyncio>=0.23.0,<2.0.0" pytest-timeout pytest-rerunfailures
           # Installation optionnelle de pyaudio si disponible
           pip install --no-cache-dir pyaudio || echo "pyaudio non disponible, continuons sans"
           python -m pip cache purge || true

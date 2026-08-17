@@ -8,6 +8,8 @@
     "python.linting.ruffEnabled": true,
     "python.formatting.provider": "black",
     "python.languageServer": "Pylance",
+    "python.analysis.stubPath": "${workspaceFolder}/typings",
+    "cursorpyright.analysis.stubPath": "${workspaceFolder}/typings",
     "files.exclude": {
         "**/__pycache__": true,
         "**/*.pyc": true,

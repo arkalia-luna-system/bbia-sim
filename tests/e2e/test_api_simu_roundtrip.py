@@ -16,6 +16,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "src"))
 from bbia_sim.daemon.app.main import app, lifespan
 
 
+@pytest.mark.e2e
 class TestAPISimuRoundtrip:
     """Tests E2E pour l'API ↔ Simu roundtrip."""
 

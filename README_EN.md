@@ -87,7 +87,7 @@ BBIA-SIM maintains strict quality standards:
 
 Version 1.4.0 – Unified simulation/real backend, expanded tests and docs, active maintenance.
 
-This project provides a faithful simulation of the Reachy Mini robot in MuJoCo, with integration of BBIA (Bio-Inspired Artificial Intelligence) modules and maintained alignment with the official Pollen Robotics ecosystem (tracked up to v1.7.1 on May 2026).
+This project provides a faithful simulation of the Reachy Mini robot in MuJoCo, with integration of BBIA (Bio-Inspired Artificial Intelligence) modules and maintained alignment with the official Pollen Robotics ecosystem (tracked up to **v1.9.0** on 17 August 2026).
 
 ---
 

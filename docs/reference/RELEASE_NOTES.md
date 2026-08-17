@@ -1,6 +1,19 @@
 # Notes de version - BBIA-SIM
 
-**Dernière mise à jour :** 8 Mai 2026
+**Dernière mise à jour :** 17 Août 2026
+
+## SDK Officiel Reachy Mini — v1.9.0 (17 août 2026)
+
+**Dernière version Pollen stable** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini) **v1.9.0** (PyPI). Le dépôt `main` pointe vers **1.10.0.dev0**.
+
+### Alignements BBIA-SIM (17 août 2026)
+
+- API : `ReachyMini(connection_mode="auto"|"localhost_only"|"network")` — `localhost_only` conservé en repli
+- Défaut officiel `automatic_body_yaw=True` repris dans `ReachyMiniBackend` et `RobotFactory`
+- Extra : `pip install -e ".[reachy]"` installe `reachy-mini>=1.9.0`
+- Floors : huggingface-hub ≥1.17, websockets &lt;16, aiohttp ≥3.14, pydantic ≥2.12.5
+- CI : les tests du dossier `tests/e2e/` restent dans le job `test-e2e` (plus dans le job unitaire)
+- Doc Python officielle : [huggingface.co/docs/reachy_mini/SDK/python-sdk](https://huggingface.co/docs/reachy_mini/SDK/python-sdk)
 
 ## SDK Officiel Reachy Mini — v1.7.1 (4 mai 2026)
 
