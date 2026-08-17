@@ -10,6 +10,7 @@
 
 - API : `ReachyMini(connection_mode="auto"|"localhost_only"|"network")` — `localhost_only` conservé en repli
 - Défaut officiel `automatic_body_yaw=True` repris dans `ReachyMiniBackend` et `RobotFactory`
+- Surface 1.10 (dépôt `main`) : head tracking, IMU, wobbling, `cancel_move`, `play_move(..., sound)`, `enable_motors(ids)`
 - Extra : `pip install -e ".[reachy]"` installe `reachy-mini>=1.9.0`
 - Floors : huggingface-hub ≥1.17, websockets &lt;16, aiohttp ≥3.14, pydantic ≥2.12.5
 - CI : les tests du dossier `tests/e2e/` restent dans le job `test-e2e` (plus dans le job unitaire)

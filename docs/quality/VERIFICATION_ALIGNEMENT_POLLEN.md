@@ -13,7 +13,7 @@ Ce document vérifie que BBIA est au même niveau que Pollen dans tous les domai
 |--------|------------------------|--------|
 | **Version SDK** | ✅ Même | reachy-mini **1.9.0** (référence PyPI), extra `.[reachy]` |
 | **Dépendances (pyproject)** | ✅ Aligné | huggingface-hub ≥1.17, websockets &lt;16, aiohttp ≥3.14, pydantic ≥2.12.5, motor_controller ≥1.5.5, kinematics ≥1.0.3 |
-| **API robot (méthodes SDK)** | ✅ Même | 21 méthodes implémentées, 37 tests conformité passants |
+| **API robot (méthodes SDK)** | ✅ Même | Surface 1.9/1.10 : tracking, IMU, wobbling, media, `play_move(sound)` |
 | **Moteurs / reflash / scan** | ✅ Compatible | Utilise le même SDK ; reflash/scan documentés et CLI officiels utilisables |
 | **Caméra / calibration** | ✅ Même niveau | Outils calibration (acquire, calibrate, scale, visualize) ; messages d’erreur clairs (issue #771) |
 | **Mouvements / IK / émotions** | ✅ Même | goto_target, look_at_*, set_emotion, Move, RecordedMoves, create_head_pose |
@@ -38,10 +38,10 @@ Légende : **✅ Même / Aligné** = au même niveau fonctionnel ou mieux ; **�
 
 ## 2. API robot (méthodes SDK)
 
-- **Pollen** : ReachyMini — look_at_world, look_at_image, goto_target, set_target_head_pose, get_current_joint_positions, set_emotion, enable_motors, etc.
-- **BBIA** : `ReachyMiniBackend` utilise `ReachyMini` et expose les mêmes capacités ; 21 méthodes, 37 tests conformité (voir [CONFORMITE_REACHY_MINI_COMPLETE.md](compliance/CONFORMITE_REACHY_MINI_COMPLETE.md)).
+- **Pollen** : ReachyMini — look_at_world, look_at_image, goto_target, set_target, start_head_tracking, get_tracked_face, imu, enable_wobbling, cancel_move, enable_motors(ids), set_automatic_body_yaw(enabled), play_move(..., sound), media.release, connection_mode.
+- **BBIA** : `ReachyMiniBackend` et `BackendAdapter` exposent la même surface (wrappers sim-safe) ; `RobotFactory` transmet `robot_name` / `host` / `port` / `connection_mode`.
 
-**Verdict** : ✅ **Même niveau.**
+**Verdict** : ✅ **Même niveau API** (17 août 2026). Daemon/dashboard restent une stack BBIA volontairement distincte.
 
 ---
 
@@ -111,7 +111,7 @@ Légende : **✅ Même / Aligné** = au même niveau fonctionnel ou mieux ; **�
 ## 10. Documentation
 
 - **Pollen** : doc sur Hugging Face ; README, install, wireless, reflash macOS, etc.
-- **BBIA** : docs hardware/quality/reference à jour (v1.3.0, 7 fév. 2026) ; [ISSUES_POLLEN_IMPACT_BBIA.md](../hardware/ISSUES_POLLEN_IMPACT_BBIA.md), [ANALYSE_REPO_OFFICIEL_JANVIER_2026.md](../hardware/ANALYSE_REPO_OFFICIEL_JANVIER_2026.md), conformité, audits.
+- **BBIA** : docs hardware/quality/reference à jour (v1.9.0, 17 août 2026) ; [ISSUES_POLLEN_IMPACT_BBIA.md](../hardware/ISSUES_POLLEN_IMPACT_BBIA.md), [ANALYSE_REPO_OFFICIEL_JANVIER_2026.md](../hardware/ANALYSE_REPO_OFFICIEL_JANVIER_2026.md), conformité, audits.
 
 **Verdict** : ✅ **À jour et cohérent.**
 

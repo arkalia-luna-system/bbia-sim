@@ -14,7 +14,9 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### 🔧 Alignement SDK Pollen v1.9.0 + CI (17 Août 2026)
 
 - Alignement sur [`pollen-robotics/reachy_mini`](https://github.com/pollen-robotics/reachy_mini) **v1.9.0** (dépôt `main` en 1.10.0.dev0) : `connection_mode`, `automatic_body_yaw=True` par défaut, extra optionnel `reachy-mini>=1.9.0`.
-- Dépendances : `huggingface-hub>=1.17.0,<2`, `websockets>=12,<16`, `aiohttp>=3.14`, `pydantic>=2.12.5`, `python-multipart>=0.0.27`.
+- Surface SDK : `start_head_tracking`, `get_tracked_face`, `imu`, `enable_wobbling`, `cancel_move`, `release_media` / `acquire_media`, `enable_motors(ids)`, `set_automatic_body_yaw(enabled: bool)`, `play_move(..., sound=True)`.
+- Daemon : `BackendAdapter` délègue tracking / wobbling / media / recording au backend (plus de stubs d'enregistrement).
+- Dépendances : `huggingface-hub>=1.17.0,<2`, `websockets>=12,<16`, `aiohttp>=3.14`, `pydantic>=2.12.5`, `python-multipart>=0.0.27`, `starlette<1.0`.
 - CI : exclusion de `tests/e2e` et `tests/benchmarks` du job unitaire (échec [#1831](https://github.com/arkalia-luna-system/bbia-sim/actions/runs/31812434474) : test e2e non marqué + pytest-asyncio).
 - Pylance : dossier `typings/` + `pyrightconfig.json` pour corriger `stubPath is not a valid directory`.
 

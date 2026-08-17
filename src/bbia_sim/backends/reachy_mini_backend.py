@@ -164,6 +164,10 @@ class ReachyMiniBackend(RobotAPI):
         automatic_body_yaw: bool = True,
         log_level: str = "INFO",
         media_backend: str = "default",
+        robot_name: str = "reachy_mini",
+        host: str = "reachy-mini.local",
+        port: int = 8000,
+        connection_mode: str | None = None,
     ) -> None:
         """Initialise le backend Reachy Mini officiel.
 
@@ -175,6 +179,10 @@ class ReachyMiniBackend(RobotAPI):
             automatic_body_yaw: Active la rotation automatique du corps
             log_level: Niveau de log ('DEBUG', 'INFO', 'WARNING', 'ERROR')
             media_backend: Backend média à utiliser
+            robot_name: Nom du robot (SDK officiel, défaut reachy_mini)
+            host: Hôte du daemon (défaut reachy-mini.local)
+            port: Port FastAPI du daemon (défaut 8000)
+            connection_mode: auto | localhost_only | network (SDK 1.9+)
 
         """
         super().__init__()
@@ -185,6 +193,13 @@ class ReachyMiniBackend(RobotAPI):
         self.automatic_body_yaw = automatic_body_yaw
         self.log_level = log_level
         self.media_backend = media_backend
+        self.robot_name = robot_name
+        self.host = host
+        self.port = port
+        if connection_mode in {"auto", "localhost_only", "network"}:
+            self.connection_mode = connection_mode
+        else:
+            self.connection_mode = "localhost_only" if localhost_only else "auto"
         self.robot: ReachyMini | None = None
         self.step_count = 0
         self.start_time: float = 0.0
@@ -270,7 +285,7 @@ class ReachyMiniBackend(RobotAPI):
         try:
             # SDK 1.9+ : connection_mode ("auto" | "localhost_only" | "network")
             # localhost_only reste accepté en compatibilité descendante.
-            connection_mode = "localhost_only" if self.localhost_only else "auto"
+            connection_mode = self.connection_mode
             connect_kwargs: dict[str, Any] = {
                 "spawn_daemon": self.spawn_daemon,
                 "use_sim": False,  # Essayer la connexion réelle
@@ -281,6 +296,9 @@ class ReachyMiniBackend(RobotAPI):
             }
             try:
                 self.robot = ReachyMini(
+                    robot_name=self.robot_name,
+                    host=self.host,
+                    port=self.port,
                     connection_mode=connection_mode,
                     **connect_kwargs,
                 )
@@ -1465,8 +1483,8 @@ class ReachyMiniBackend(RobotAPI):
         except Exception:
             logger.exception("Erreur goto_target")
 
-    def enable_motors(self) -> None:
-        """Active les moteurs.
+    def enable_motors(self, ids: list[str] | None = None) -> None:
+        """Active les moteurs (ids optionnels, conforme SDK officiel).
 
         Issue #323: S'assure que enable_motors définit le mode position controlled.
 
@@ -1478,7 +1496,10 @@ class ReachyMiniBackend(RobotAPI):
             return
 
         try:
-            self.robot.enable_motors()
+            try:
+                self.robot.enable_motors(ids=ids)
+            except TypeError:
+                self.robot.enable_motors()
             # Issue #323: S'assurer que le mode est position controlled après enable
             # NOTE: SDK v1.2.4+ gère automatiquement, mais on garde ce code pour
             # compatibilité avec anciennes versions (< v1.2.4) où le bug existait
@@ -1499,14 +1520,17 @@ class ReachyMiniBackend(RobotAPI):
         except Exception:
             logger.exception("Erreur enable_motors")
 
-    def disable_motors(self) -> None:
-        """Désactive les moteurs."""
+    def disable_motors(self, ids: list[str] | None = None) -> None:
+        """Désactive les moteurs (ids optionnels, conforme SDK officiel)."""
         if not self.is_connected or not self.robot:
             logger.debug("Mode simulation: disable_motors")
             return
 
         try:
-            self.robot.disable_motors()
+            try:
+                self.robot.disable_motors(ids=ids)
+            except TypeError:
+                self.robot.disable_motors()
         except Exception:
             logger.exception("Erreur disable_motors")
 
@@ -1565,14 +1589,14 @@ class ReachyMiniBackend(RobotAPI):
 
     # ===== MÉTHODES SDK OFFICIEL SUPPLÉMENTAIRES AVANCÉES =====
 
-    def set_automatic_body_yaw(self, body_yaw: float) -> None:
-        """Définit la rotation automatique du corps."""
+    def set_automatic_body_yaw(self, enabled: bool = True) -> None:
+        """Active ou désactive le yaw corps automatique (SDK: enabled: bool)."""
         if not self.is_connected or not self.robot:
-            logger.debug("Mode simulation: set_automatic_body_yaw = %s", body_yaw)
+            logger.debug("Mode simulation: set_automatic_body_yaw = %s", enabled)
             return
 
         try:
-            self.robot.set_automatic_body_yaw(body_yaw)
+            self.robot.set_automatic_body_yaw(bool(enabled))
         except Exception:
             logger.exception("Erreur set_automatic_body_yaw")
 
@@ -1633,6 +1657,7 @@ class ReachyMiniBackend(RobotAPI):
         move: object,
         play_frequency: float = 100.0,
         initial_goto_duration: float = 0.0,
+        sound: bool = True,
     ) -> None:
         """Joue un mouvement enregistré (conforme SDK officiel).
 
@@ -1644,6 +1669,7 @@ class ReachyMiniBackend(RobotAPI):
             play_frequency: Fréquence de lecture (Hz, défaut 100.0)
             initial_goto_duration: Durée goto initial vers position de départ
                 (s, défaut 0.0)
+            sound: Si True, joue l'audio associé au move (SDK officiel)
 
         """
         if not self.is_connected or not self.robot:
@@ -1652,8 +1678,15 @@ class ReachyMiniBackend(RobotAPI):
 
         try:
             # SDK officiel : play_move = async_to_sync(async_play_move)
-            # On utilise directement play_move du SDK
-            self.robot.play_move(move, play_frequency, initial_goto_duration)
+            try:
+                self.robot.play_move(
+                    move,
+                    play_frequency,
+                    initial_goto_duration,
+                    sound=sound,
+                )
+            except TypeError:
+                self.robot.play_move(move, play_frequency, initial_goto_duration)
         except (
             ValueError,
             AttributeError,
@@ -1671,6 +1704,7 @@ class ReachyMiniBackend(RobotAPI):
         move: object,
         play_frequency: float = 100.0,
         initial_goto_duration: float = 0.0,
+        sound: bool = True,
     ) -> None:
         """Joue un mouvement enregistré de manière asynchrone."""
         if not self.is_connected or not self.robot:
@@ -1678,7 +1712,19 @@ class ReachyMiniBackend(RobotAPI):
             return
 
         try:
-            self.robot.async_play_move(move, play_frequency, initial_goto_duration)
+            try:
+                self.robot.async_play_move(
+                    move,
+                    play_frequency,
+                    initial_goto_duration,
+                    sound=sound,
+                )
+            except TypeError:
+                self.robot.async_play_move(
+                    move,
+                    play_frequency,
+                    initial_goto_duration,
+                )
         except (
             ValueError,
             AttributeError,
@@ -1736,6 +1782,108 @@ class ReachyMiniBackend(RobotAPI):
         if not hasattr(self, "_sim_media_module"):
             self._sim_media_module = SimulationMediaModule()
         return self._sim_media_module
+
+    @property
+    def media_released(self) -> bool:
+        """Indique si le hardware média a été relâché (SDK officiel)."""
+        if self.robot and hasattr(self.robot, "media_released"):
+            return bool(self.robot.media_released)
+        return False
+
+    def release_media(self) -> None:
+        """Libère caméra/audio pour un accès externe (OpenCV, sounddevice)."""
+        if not self.is_connected or not self.robot:
+            logger.debug("Mode simulation: release_media")
+            return
+        try:
+            self.robot.release_media()
+        except (AttributeError, RuntimeError, OSError, ConnectionError):
+            logger.debug("release_media non disponible sur ce SDK")
+
+    def acquire_media(self) -> None:
+        """Ré-acquiert caméra/audio après release_media."""
+        if not self.is_connected or not self.robot:
+            logger.debug("Mode simulation: acquire_media")
+            return
+        try:
+            self.robot.acquire_media()
+        except (AttributeError, RuntimeError, OSError, ConnectionError):
+            logger.debug("acquire_media non disponible sur ce SDK")
+
+    def start_head_tracking(self, weight: float = 1.0) -> None:
+        """Active le suivi de visage côté daemon (SDK officiel)."""
+        if not self.is_connected or not self.robot:
+            logger.debug("Mode simulation: start_head_tracking weight=%s", weight)
+            return
+        try:
+            self.robot.start_head_tracking(weight=weight)
+        except (AttributeError, TypeError, RuntimeError, OSError, ConnectionError):
+            logger.debug("start_head_tracking non disponible sur ce SDK")
+
+    def stop_head_tracking(self) -> None:
+        """Arrête le suivi de visage côté daemon."""
+        if not self.is_connected or not self.robot:
+            logger.debug("Mode simulation: stop_head_tracking")
+            return
+        try:
+            self.robot.stop_head_tracking()
+        except (AttributeError, RuntimeError, OSError, ConnectionError):
+            logger.debug("stop_head_tracking non disponible sur ce SDK")
+
+    def get_tracked_face(
+        self, wait: bool = True, timeout: float = 5.0
+    ) -> dict[str, Any] | None:
+        """Retourne la cible visage suivie (x, y, roll) ou None en simulation."""
+        if not self.is_connected or not self.robot:
+            logger.debug("Mode simulation: get_tracked_face")
+            return None
+        try:
+            face = self.robot.get_tracked_face(wait=wait, timeout=timeout)
+            return face if isinstance(face, dict) else None
+        except (AttributeError, TypeError, RuntimeError, OSError, ConnectionError):
+            logger.debug("get_tracked_face non disponible sur ce SDK")
+            return None
+
+    @property
+    def imu(self) -> dict[str, Any] | None:
+        """Données IMU (Wireless uniquement). None si indisponible / simulation."""
+        if not self.is_connected or not self.robot:
+            return None
+        try:
+            data = self.robot.imu
+            return data if isinstance(data, dict) else None
+        except (AttributeError, RuntimeError, OSError, ConnectionError):
+            return None
+
+    def enable_wobbling(self) -> None:
+        """Active le wobbling tête réactif à l'audio (SDK officiel)."""
+        if not self.is_connected or not self.robot:
+            logger.debug("Mode simulation: enable_wobbling")
+            return
+        try:
+            self.robot.enable_wobbling()
+        except (AttributeError, RuntimeError, OSError, ConnectionError):
+            logger.debug("enable_wobbling non disponible sur ce SDK")
+
+    def disable_wobbling(self) -> None:
+        """Désactive le wobbling tête réactif à l'audio."""
+        if not self.is_connected or not self.robot:
+            logger.debug("Mode simulation: disable_wobbling")
+            return
+        try:
+            self.robot.disable_wobbling()
+        except (AttributeError, RuntimeError, OSError, ConnectionError):
+            logger.debug("disable_wobbling non disponible sur ce SDK")
+
+    def cancel_move(self) -> None:
+        """Annule le play_move / async_play_move en cours (SDK officiel)."""
+        if not self.is_connected or not self.robot:
+            logger.debug("Mode simulation: cancel_move")
+            return
+        try:
+            self.robot.cancel_move()
+        except (AttributeError, RuntimeError, OSError, ConnectionError):
+            logger.debug("cancel_move non disponible sur ce SDK")
 
     # ===== MÉTHODES UTILITAIRES POUR MOVE =====
 

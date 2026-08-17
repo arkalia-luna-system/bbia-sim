@@ -1,12 +1,12 @@
 # 🔍 Analyse Complète du Repo Officiel Reachy Mini - Janvier / Février 2026
 
 **Date d'analyse** : 26 Janvier 2026  
-**Dernière vérification** : 9 Mars 2026  
+**Dernière vérification** : 17 Août 2026  
 **Repo analysé** : https://github.com/pollen-robotics/reachy_mini  
-**Dernière version** : **v1.5.0** (5 mars 2026)  
-**Version précédente** : v1.3.0 (5 février 2026) — série v1.2.x analysée ci‑dessous  
-**Version installée BBIA (référence)** : **1.3.0+** (environnement compatible, deps critiques alignées v1.5.0)  
-**Note** : BBIA suit la branche stable Pollen (v1.5.0) pour les dépendances clés (numpy 2.x, motor_controller ≥1.5.5, kinematics, zenoh, websockets, huggingface-hub).
+**Dernière version** : **v1.9.0** (PyPI, 17 août 2026) ; `main` = 1.10.0.dev0  
+**Version précédente** : v1.5.0 (5 mars 2026) — série v1.2.x / v1.3.0 analysée ci‑dessous  
+**Version installée BBIA (référence)** : **1.9.0** (extra `.[reachy]`, deps critiques alignées)  
+**Note** : BBIA suit la branche stable Pollen (v1.9.0) pour les dépendances clés (numpy 2.x, motor_controller ≥1.5.5, kinematics, websockets, huggingface-hub). Le corps de ce document reste l’analyse historique janv.–mars 2026.
 
 ---
 

@@ -154,6 +154,10 @@ class RobotFactory:
                     automatic_body_yaw=kwargs.get("automatic_body_yaw", True),
                     log_level=kwargs.get("log_level", "INFO"),
                     media_backend=kwargs.get("media_backend", "default"),
+                    robot_name=kwargs.get("robot_name", "reachy_mini"),
+                    host=kwargs.get("host", "reachy-mini.local"),
+                    port=kwargs.get("port", 8000),
+                    connection_mode=kwargs.get("connection_mode"),
                 )
 
             logger.error("Type de backend non supporté: %s", backend_type)

@@ -469,11 +469,12 @@ class BackendAdapter:
 
                 await asyncio.sleep(0.01)
 
-    async def play_move(self, move: object) -> None:
+    async def play_move(self, move: object, sound: bool = True) -> None:
         """Joue un mouvement enregistré (conforme SDK officiel - async).
 
         Args:
             move: Objet Move du SDK reachy_mini.motion.move
+            sound: Si True, joue l'audio associé au move
 
         """
         self.connect_if_needed()
@@ -485,6 +486,7 @@ class BackendAdapter:
                     move,
                     play_frequency=100.0,
                     initial_goto_duration=0.0,
+                    sound=sound,
                 )
             else:
                 # Si sync, exécuter dans thread
@@ -495,6 +497,7 @@ class BackendAdapter:
                     move,
                     100.0,
                     0.0,
+                    sound,
                 )
         elif hasattr(self._robot, "async_play_move"):
             # Fallback sur async_play_move si play_move n'existe pas
@@ -505,6 +508,7 @@ class BackendAdapter:
                 move,
                 100.0,
                 0.0,
+                sound,
             )
         else:
             logger.warning("play_move non disponible sur ce backend")
@@ -548,14 +552,80 @@ class BackendAdapter:
         else:
             logger.debug("play_sound non disponible, fichier: %s", sound_file)
 
-    def set_automatic_body_yaw(self, body_yaw: float) -> None:
-        """Définit le yaw automatique du corps (conforme SDK)."""
+    def set_automatic_body_yaw(self, enabled: bool = True) -> None:
+        """Active ou désactive le yaw automatique du corps (conforme SDK)."""
         self.connect_if_needed()
 
         if hasattr(self._robot, "set_automatic_body_yaw"):
-            self._robot.set_automatic_body_yaw(body_yaw)
+            self._robot.set_automatic_body_yaw(bool(enabled))
         else:
-            logger.debug("set_automatic_body_yaw non disponible, yaw: %s", body_yaw)
+            logger.debug("set_automatic_body_yaw non disponible, enabled: %s", enabled)
+
+    def start_head_tracking(self, weight: float = 1.0) -> None:
+        """Active le suivi de visage (SDK officiel)."""
+        self.connect_if_needed()
+        if hasattr(self._robot, "start_head_tracking"):
+            self._robot.start_head_tracking(weight=weight)
+        else:
+            logger.debug("start_head_tracking non disponible")
+
+    def stop_head_tracking(self) -> None:
+        """Arrête le suivi de visage (SDK officiel)."""
+        self.connect_if_needed()
+        if hasattr(self._robot, "stop_head_tracking"):
+            self._robot.stop_head_tracking()
+        else:
+            logger.debug("stop_head_tracking non disponible")
+
+    def get_tracked_face(
+        self, wait: bool = True, timeout: float = 5.0
+    ) -> dict[str, Any] | None:
+        """Retourne la cible visage suivie, ou None en simulation."""
+        self.connect_if_needed()
+        if hasattr(self._robot, "get_tracked_face"):
+            face = self._robot.get_tracked_face(wait=wait, timeout=timeout)
+            return face if isinstance(face, dict) else None
+        return None
+
+    def enable_wobbling(self) -> None:
+        """Active le wobbling tête réactif à l'audio (SDK officiel)."""
+        self.connect_if_needed()
+        if hasattr(self._robot, "enable_wobbling"):
+            self._robot.enable_wobbling()
+        else:
+            logger.debug("enable_wobbling non disponible")
+
+    def disable_wobbling(self) -> None:
+        """Désactive le wobbling tête réactif à l'audio."""
+        self.connect_if_needed()
+        if hasattr(self._robot, "disable_wobbling"):
+            self._robot.disable_wobbling()
+        else:
+            logger.debug("disable_wobbling non disponible")
+
+    def cancel_move(self) -> None:
+        """Annule le play_move en cours (SDK officiel)."""
+        self.connect_if_needed()
+        if hasattr(self._robot, "cancel_move"):
+            self._robot.cancel_move()
+        else:
+            logger.debug("cancel_move non disponible")
+
+    def release_media(self) -> None:
+        """Libère caméra/audio pour un accès externe."""
+        self.connect_if_needed()
+        if hasattr(self._robot, "release_media"):
+            self._robot.release_media()
+        else:
+            logger.debug("release_media non disponible")
+
+    def acquire_media(self) -> None:
+        """Ré-acquiert caméra/audio après release_media."""
+        self.connect_if_needed()
+        if hasattr(self._robot, "acquire_media"):
+            self._robot.acquire_media()
+        else:
+            logger.debug("acquire_media non disponible")
 
     def set_target_head_joint_current(self, current: npt.NDArray[np.float64]) -> None:
         """Définit le courant des joints de la tête (conforme SDK)."""
@@ -673,12 +743,20 @@ class BackendAdapter:
         logger.debug("append_record: non implémenté (simulation)")
 
     def start_recording(self) -> None:
-        """Démarre l'enregistrement (conforme SDK - stub)."""
-        logger.debug("start_recording: non implémenté (simulation)")
+        """Démarre l'enregistrement (conforme SDK)."""
+        self.connect_if_needed()
+        if hasattr(self._robot, "start_recording"):
+            self._robot.start_recording()
+        else:
+            logger.debug("start_recording non disponible")
 
-    def stop_recording(self) -> None:
-        """Arrête l'enregistrement (conforme SDK - stub)."""
-        logger.debug("stop_recording: non implémenté (simulation)")
+    def stop_recording(self) -> Any:
+        """Arrête l'enregistrement et retourne les données (conforme SDK)."""
+        self.connect_if_needed()
+        if hasattr(self._robot, "stop_recording"):
+            return self._robot.stop_recording()
+        logger.debug("stop_recording non disponible")
+        return None
 
     # Lifecycle methods (non nécessaires pour adaptateur, stubs pour conformité)
     def run(self) -> None:
