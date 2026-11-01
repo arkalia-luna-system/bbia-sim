@@ -71,7 +71,7 @@ Les scripts de comparaison/audit avec le SDK officiel Reachy Mini ont été cons
 
 - Voir `scripts/_archived/dates_md/README.md` et `scripts/_archived/verification/README.md`
 
-Voir `scripts/_archived/README.md`, `scripts/PLAN_CONSOLIDATION_AUDIT_SCRIPTS.md` et `scripts/PLAN_FUSION_SCRIPTS.md` pour plus de détails.
+Voir `scripts/_archived/README.md` pour plus de détails.
 
 ## 🎯 **Scripts Disponibles**
 
