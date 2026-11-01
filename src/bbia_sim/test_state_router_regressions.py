@@ -57,6 +57,20 @@ async def test_get_full_state_target_head_pose_none_is_safe():
     assert state.target_head_pose is None
 
 
+class _BackendTargetPoseRaises(_BackendNoTargetPose):
+    @property
+    def target_head_pose(self):  # type: ignore[override]
+        raise RuntimeError("target not set yet (Pollen #1527)")
+
+
+@pytest.mark.asyncio
+async def test_get_full_state_target_head_pose_raise_is_safe():
+    """Anticipation #1527 : exception sur target → None, pas 500."""
+    backend = _BackendTargetPoseRaises()
+    state = await get_full_state(backend=backend, with_target_head_pose=True)
+    assert state.target_head_pose is None
+
+
 @pytest.mark.asyncio
 async def test_get_present_antenna_joint_positions_raises_http_exception():
     backend = _BackendBadAntennaLen()

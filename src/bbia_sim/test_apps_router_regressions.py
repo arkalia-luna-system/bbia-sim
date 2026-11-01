@@ -31,3 +31,13 @@ async def test_remove_app_rejects_empty_name() -> None:
     with pytest.raises(HTTPException) as exc:
         await apps.remove_app("   ")
     assert exc.value.status_code == 422
+
+
+@pytest.mark.asyncio
+async def test_stop_app_always_clears_current() -> None:
+    """Anticipation Pollen #1523 : stop ne reste jamais bloqué."""
+    apps._bbia_apps_manager["current_app"] = "bbia_vision"
+    result = await apps.stop_app()
+    assert apps._bbia_apps_manager["current_app"] is None
+    assert result["status"] == "stopped"
+    assert result["running"] is False

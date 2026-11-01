@@ -1930,18 +1930,23 @@ class ReachyMiniBackend(RobotAPI):
             return
         try:
             self.robot.enable_wobbling()
-        except (AttributeError, RuntimeError, OSError, ConnectionError):
-            logger.debug("enable_wobbling non disponible sur ce SDK")
+        except (AttributeError, RuntimeError, OSError, ConnectionError, TypeError):
+            # Pollen #1517 : callbacks wobbler peuvent lever AttributeError
+            logger.debug("enable_wobbling non disponible ou état incoherent")
 
     def disable_wobbling(self) -> None:
-        """Désactive le wobbling tête réactif à l'audio."""
+        """Désactive le wobbling tête réactif à l'audio.
+
+        Anticipation Pollen #1517 : ne propage jamais AttributeError si le
+        sample callback tourne pendant la désactivation.
+        """
         if not self.is_connected or not self.robot:
             logger.debug("Mode simulation: disable_wobbling")
             return
         try:
             self.robot.disable_wobbling()
-        except (AttributeError, RuntimeError, OSError, ConnectionError):
-            logger.debug("disable_wobbling non disponible sur ce SDK")
+        except (AttributeError, RuntimeError, OSError, ConnectionError, TypeError):
+            logger.debug("disable_wobbling non disponible ou état incoherent")
 
     def cancel_move(self) -> None:
         """Annule le play_move / async_play_move en cours (SDK officiel)."""

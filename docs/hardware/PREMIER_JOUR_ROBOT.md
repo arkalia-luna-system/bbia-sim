@@ -61,11 +61,20 @@ PY
   `BBIA_ALLOW_HARDWARE` est absent).
 - `ReachyMini()` sans arguments dans du code custom.
 - Amplitudes antennes hors ±0,3 rad (limite de sécurité BBIA).
+- Lancer l’audio USB / GStreamer host si le module XMOS est instable
+  (`BBIA_DISABLE_AUDIO=1` ou `media_backend="no_media"`) — issues Pollen #1507 / #1525.
+
+## Anticipation bugs daemon (aperçu)
+
+BBIA refuse par défaut un second move concurrent (Pollen #1512) et tolère
+`state/full` sans target (Pollen #1527). Détail :
+[`POLLEN_ISSUES_ANTICIPATION.md`](POLLEN_ISSUES_ANTICIPATION.md).
 
 ## Références
 
-- SDK : https://github.com/pollen-robotics/reachy_mini (tag v1.13.0)
+- SDK : https://github.com/pollen-robotics/reachy_mini (tag v1.13.0 ; **≥ 1.12.0** pour PIN BT)
 - Garde code : `src/bbia_sim/hardware_guard.py`
 - Sécurité DO/DON’T : [`SECURITE_ROBOT.md`](SECURITE_ROBOT.md)
+- Issues/GHSA : [`POLLEN_ISSUES_ANTICIPATION.md`](POLLEN_ISSUES_ANTICIPATION.md)
 
-**Dernière mise à jour** : mission alignement SDK 1.13 / sécurité hardware
+**Dernière mise à jour** : anticipation issues/GHSA Pollen + SDK 1.13

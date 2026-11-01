@@ -58,17 +58,29 @@ class AnyPose(BaseModel):
 
 
 def as_any_pose(data: Any) -> AnyPose:
-    """Convertit diverses représentations en AnyPose."""
+    """Convertit diverses représentations en AnyPose.
+
+    Ne lève pas sur entrées absentes/invalides (anticipation Pollen #1527 :
+    target non défini ne doit pas provoquer un 500).
+    """
+    if data is None:
+        return AnyPose()
     if isinstance(data, dict):
-        return AnyPose(**data)
+        try:
+            return AnyPose(**data)
+        except (TypeError, ValueError):
+            return AnyPose()
     if isinstance(data, AnyPose):
         return data
     if isinstance(data, np.ndarray):
-        # Extraire xyz depuis colonne 3
-        x, y, z = data[:3, 3]
-        # Extraire rpy depuis matrice de rotation (simplifié)
-        # TODO: Implémenter extraction RPY complète si nécessaire
-        return AnyPose(x=x, y=y, z=z, roll=0.0, pitch=0.0, yaw=0.0)
+        try:
+            if data.ndim != 2 or data.shape[0] < 3 or data.shape[1] < 4:
+                return AnyPose()
+            # Extraire xyz depuis colonne 3
+            x, y, z = float(data[0, 3]), float(data[1, 3]), float(data[2, 3])
+            return AnyPose(x=x, y=y, z=z, roll=0.0, pitch=0.0, yaw=0.0)
+        except (TypeError, ValueError, IndexError):
+            return AnyPose()
     return AnyPose()
 
 

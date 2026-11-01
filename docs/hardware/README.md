@@ -32,7 +32,8 @@
 ### 🔍 Analyse et Documentation Technique
 
 - **[Vérification alignement Pollen](../quality/VERIFICATION_ALIGNEMENT_POLLEN.md)** - Même niveau que Pollen (SDK, API, outils, Zenoh, doc) — tous domaines
-- **[Issues Pollen impact BBIA](ISSUES_POLLEN_IMPACT_BBIA.md)** - Issues ouvertes Pollen, impact et mitigations BBIA
+- **[Anticipation issues/GHSA Pollen](POLLEN_ISSUES_ANTICIPATION.md)** - Tableau issue/GHSA → mitigation BBIA (gardes + doc)
+- **[Issues Pollen impact BBIA](ISSUES_POLLEN_IMPACT_BBIA.md)** - Historique Zenoh / caméra (complément)
 - **[Analyse Repo Officiel](ANALYSE_REPO_OFFICIEL_JANVIER_2026.md)** - Analyse du repo officiel
 - **[Impression 3D Stewart Arms](IMPRESSION_3D_STEWART_ARMS.md)** - Guide impression 3D
 - **[Analyse 3MF Stewart Arm](ANALYSE_3MF_STEWART_ARM.md)** - Analyse fichier 3MF
@@ -45,6 +46,6 @@
 
 ---
 
-**Dernière mise à jour** : 17 Août 2026
-**SDK Officiel Latest** : v1.13.0 (PyPI) — [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini)
+**Dernière mise à jour** : 1 Nov 2026
+**SDK Officiel Latest** : v1.13.0 (PyPI) — [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini) (≥ 1.12.0 requis pour correctif PIN GHSA-993g-hgjh-whmf)
 **Statut Robot** : ✅ Reçu le 18 déc 2025, monté le 20 déc 2025. **Installation moteurs 1, 2, 4 effectuée** : slots 1 et 2 = QC 2549, slot 4 = QC 2548 (ou 2549). En attente de premier rallumage et validation.

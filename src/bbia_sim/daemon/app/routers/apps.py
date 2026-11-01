@@ -755,11 +755,15 @@ async def restart_app() -> dict[str, Any]:
 
 
 @router.post("/stop-current-app")
-async def stop_app() -> dict[str, Any] | None:
+async def stop_app() -> dict[str, Any]:
     """Arrête l'application actuellement en cours d'exécution.
 
+    Anticipation Pollen #1523 : ne fait aucun contrôle de pose post-stop qui
+    pourrait laisser l'app bloquée en ``stopping``. Le statut est toujours
+    remis à ``stopped`` dans un ``finally``.
+
     Returns:
-        None si succès
+        Statut ``stopped`` de l'app arrêtée
 
     Raises:
         HTTPException: Si aucune app n'est en cours d'exécution
@@ -772,10 +776,14 @@ async def stop_app() -> dict[str, Any] | None:
             detail="Aucune application en cours d'exécution",
         )
 
-    logger.info("Arrêt de l'application: %s", current_app)
-    _bbia_apps_manager["current_app"] = None
+    stopped_name = str(current_app)
+    try:
+        logger.info("Arrêt de l'application: %s", stopped_name)
+    finally:
+        # Toujours libérer le slot courant — jamais rester en "stopping"
+        _bbia_apps_manager["current_app"] = None
 
-    return None
+    return AppStatus(name=stopped_name, status="stopped", running=False).model_dump()
 
 
 @router.get("/current-app-status")

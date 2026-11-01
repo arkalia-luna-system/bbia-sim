@@ -1,7 +1,10 @@
 # Issues Pollen ouvertes — impact BBIA (essentiel)
 
-**Dernière mise à jour** : 7 Février 2026  
-**Repo** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini) — 69 issues ouvertes
+**Dernière mise à jour** : 1 Nov 2026  
+**Repo** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini)
+
+> **Document principal à jour** : [`POLLEN_ISSUES_ANTICIPATION.md`](POLLEN_ISSUES_ANTICIPATION.md)
+> (tableau issues prioritaires + GHSA → mitigation BBIA). Ci-dessous : historique Zenoh / caméra.
 
 ## Mitigations BBIA (déjà fait)
 

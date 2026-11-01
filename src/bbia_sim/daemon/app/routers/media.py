@@ -3,6 +3,10 @@
 
 Endpoints pour contrôler le volume des haut-parleurs et microphone,
 et activer/désactiver la caméra.
+
+Note sécurité (GHSA-m2pc-3q4q-w6jr) : BBIA n'expose PAS
+``/api/media/sounds/upload``. Tout futur upload doit passer par
+``bbia_sim.daemon.app.safe_media_upload``.
 """
 
 import logging

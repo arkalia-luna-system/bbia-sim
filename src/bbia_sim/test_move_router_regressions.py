@@ -11,6 +11,7 @@ from bbia_sim.daemon.app.routers.move import (
     batch_movements,
     create_move_task,
     move_listeners,
+    move_tasks,
     stop_move_task,
 )
 from bbia_sim.daemon.models import BatchMovementRequest
@@ -53,6 +54,22 @@ async def test_create_move_task_notifies_cancelled():
     assert any(m["type"] == "move_cancelled" for m in ws.messages)
     if ws in move_listeners:
         move_listeners.remove(ws)
+
+
+@pytest.mark.asyncio
+async def test_create_move_task_rejects_concurrent_by_default():
+    """Anticipation Pollen #1512 : un seul move running sauf override env."""
+    move_tasks.clear()
+
+    async def slow_move():
+        await asyncio.sleep(2)
+
+    first = create_move_task(slow_move()).uuid
+    with pytest.raises(HTTPException) as exc:
+        create_move_task(slow_move())
+    assert exc.value.status_code == 409
+    await stop_move_task(first)
+    move_tasks.clear()
 
 
 @pytest.mark.asyncio

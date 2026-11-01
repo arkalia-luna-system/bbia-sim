@@ -36,6 +36,8 @@ class Settings(BaseSettings):
     # WebSocket
     telemetry_frequency: float = 10.0  # Hz
     telemetry_enabled: bool = True
+    # Anticipation Pollen #1494 : keepalive WS configurable (secondes)
+    ws_keepalive_timeout: float = 30.0
 
     # Logging
     log_level: str = "INFO"

@@ -35,6 +35,8 @@ Sans ce flag : daemon BBIA, bridge Zenoh, factory `auto` et backends restent en 
 - ❌ Ne pas désactiver watchdog en production
 - ❌ Ne pas appeler `ReachyMini()` sans arguments ni sans `BBIA_ALLOW_HARDWARE`
 - ❌ Ne pas compter sur `backend=auto` pour « trouver » le robot sans le flag
+- ❌ Ne pas réintroduire un upload « sounds » sans `safe_media_upload` (GHSA-m2pc-3q4q-w6jr)
+- ❌ Ne pas exécuter de commandes Bluetooth brutes `CMD_` / PIN (GHSA-vg3x / GHSA-993g) — hors BBIA ; laisser le daemon robot ≥ 1.12.0
 
 ---
 
@@ -46,16 +48,19 @@ Sans ce flag : daemon BBIA, bridge Zenoh, factory `auto` et backends restent en 
 - [ ] Dry-run : `python scripts/hardware_dry_run_reachy_mini.py --hardware ...`
 - [ ] `emergency_stop()` testé et accessible
 - [ ] Amplitudes validées (< 0.3 rad)
+- [ ] Daemon / image robot avec `reachy-mini` **≥ 1.12.0** (PIN BT) — BBIA pinne 1.13.0 côté host
 
 ---
 
 ## 📚 Références
 
 - **Premier jour** : [`PREMIER_JOUR_ROBOT.md`](PREMIER_JOUR_ROBOT.md)
+- **Anticipation bugs/GHSA Pollen** : [`POLLEN_ISSUES_ANTICIPATION.md`](POLLEN_ISSUES_ANTICIPATION.md)
 - **Garde code** : [`src/bbia_sim/hardware_guard.py`](../../src/bbia_sim/hardware_guard.py)
+- **Upload sûr** : [`src/bbia_sim/daemon/app/safe_media_upload.py`](../../src/bbia_sim/daemon/app/safe_media_upload.py)
 - **Mapping joints** : [`src/bbia_sim/mapping_reachy.py`](../../src/bbia_sim/mapping_reachy.py)
 - **Tests sécurité** : [`tests/test_safety_limits_pid.py`](../../tests/test_safety_limits_pid.py)
 
 ---
 
-**Dernière mise à jour** : alignement SDK 1.13 / garde hardware
+**Dernière mise à jour** : anticipation GHSA/issues Pollen + SDK 1.13

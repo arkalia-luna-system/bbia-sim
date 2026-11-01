@@ -11,6 +11,7 @@ This exposes:
 import asyncio
 import contextlib
 import logging
+import os
 from collections.abc import Coroutine
 from datetime import datetime
 from typing import Annotated, Any
@@ -75,6 +76,13 @@ move_tasks: dict[UUID, asyncio.Task[None]] = {}
 # OPTIMISATION RAM: Limiter nombre de listeners WebSocket (max 20)
 move_listeners: list[WebSocket] = []
 _MAX_MOVE_LISTENERS = 20
+# Anticipation Pollen #1512 : un seul move « running » par défaut
+# (évite de signaler un move terminé pendant qu'un autre tourne côté daemon).
+_TRUTHY = frozenset({"1", "true", "yes", "on"})
+
+
+def _allow_concurrent_moves() -> bool:
+    return os.environ.get("BBIA_ALLOW_CONCURRENT_MOVES", "").strip().lower() in _TRUTHY
 
 
 class InterpolationMode(StrEnum):
@@ -143,7 +151,26 @@ def get_backend_adapter_for_move(
 
 
 def create_move_task(coro: Coroutine[Any, Any, None]) -> MoveUUID:
-    """Crée une nouvelle tâche de mouvement avec UUID (conforme SDK)."""
+    """Crée une nouvelle tâche de mouvement avec UUID (conforme SDK).
+
+    Par défaut refuse un second move concurrent (Pollen #1512). Contournement :
+    ``BBIA_ALLOW_CONCURRENT_MOVES=1``.
+    """
+    # Nettoyer les tâches déjà terminées (évite faux positifs 409)
+    for done_uuid, done_task in list(move_tasks.items()):
+        if done_task.done():
+            move_tasks.pop(done_uuid, None)
+
+    if move_tasks and not _allow_concurrent_moves():
+        raise HTTPException(
+            status_code=409,
+            detail=(
+                "Un mouvement est déjà en cours (garde BBIA / Pollen #1512). "
+                "Attendre la fin, POST /api/move/stop, ou "
+                "BBIA_ALLOW_CONCURRENT_MOVES=1."
+            ),
+        )
+
     uuid = uuid4()
 
     async def notify_listeners(message: str, details: str = "") -> None:
