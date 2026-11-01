@@ -9,8 +9,8 @@ This exposes:
 """
 
 import asyncio
-import inspect
 import contextlib
+import inspect
 import logging
 import os
 from collections.abc import Coroutine
