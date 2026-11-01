@@ -13,6 +13,8 @@ from typing import TYPE_CHECKING, Any, Optional
 import numpy as np
 import numpy.typing as npt
 
+from bbia_sim.hardware_guard import resolve_use_sim
+from bbia_sim.robot_api import RobotAPI
 from bbia_sim.utils.types import JointPositions, TelemetryData
 
 # Import paresseux du SDK : `import reachy_mini` peut bloquer (discovery/réseau).
@@ -24,9 +26,6 @@ _SDK_LOAD_ATTEMPTED = False
 
 if TYPE_CHECKING:
     from reachy_mini.utils import HeadPose  # type: ignore[import-untyped]
-
-from bbia_sim.hardware_guard import resolve_use_sim
-from bbia_sim.robot_api import RobotAPI
 
 
 def _fallback_create_head_pose(
@@ -54,7 +53,7 @@ def _fallback_create_head_pose(
         ],
         dtype=np.float64,
     )
-    pose = np.eye(4, dtype=np.float64)
+    pose: npt.NDArray[np.float64] = np.eye(4, dtype=np.float64)
     pose[:3, :3] = rot
     pose[0, 3] = x / 1000.0 if mm else x
     pose[1, 3] = y / 1000.0 if mm else y

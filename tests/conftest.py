@@ -406,6 +406,54 @@ def pytest_collection_modifyitems(config: pytest.Config, items: list) -> None:
                 item.add_marker(skip_marker)
 
 
+def _clear_heavy_model_caches_if_loaded() -> None:
+    """Vide les caches ML seulement si les modules sont déjà dans sys.modules.
+
+    Évite l'import eager de vision_yolo (ultralytics→torch) au pytest_configure,
+    qui ralentit / casse les tests unitaires légers.
+    """
+    import sys
+
+    vision_yolo = sys.modules.get("bbia_sim.vision_yolo")
+    if vision_yolo is not None:
+        yolo_lock = getattr(vision_yolo, "_yolo_cache_lock", None)
+        yolo_cache = getattr(vision_yolo, "_yolo_model_cache", None)
+        if yolo_lock is not None and isinstance(yolo_cache, dict):
+            with yolo_lock:
+                yolo_cache.clear()
+        mp_lock = getattr(vision_yolo, "_mediapipe_cache_lock", None)
+        if mp_lock is not None:
+            with mp_lock:
+                vision_yolo._mediapipe_face_detection_cache = None
+
+    voice_whisper = sys.modules.get("bbia_sim.voice_whisper")
+    if voice_whisper is not None:
+        w_lock = getattr(voice_whisper, "_whisper_model_cache_lock", None)
+        w_cache = getattr(voice_whisper, "_whisper_models_cache", None)
+        if w_lock is not None and isinstance(w_cache, dict):
+            with w_lock:
+                w_cache.clear()
+
+    hf_mod = sys.modules.get("bbia_sim.bbia_huggingface")
+    if hf_mod is not None:
+        BBIAHuggingFace = getattr(hf_mod, "BBIAHuggingFace", None)
+        if BBIAHuggingFace is None:
+            return
+        try:
+            with BBIAHuggingFace._shared_unload_thread_lock:
+                thread = BBIAHuggingFace._shared_unload_thread
+                if thread is not None and thread.is_alive():
+                    BBIAHuggingFace._shared_unload_thread_stop.set()
+                    thread.join(timeout=1.0)
+                BBIAHuggingFace._shared_instances.clear()
+                BBIAHuggingFace._shared_unload_thread = None
+        except (AttributeError, RuntimeError):
+            pass
+        clear_cache = getattr(BBIAHuggingFace, "_clear_cache", None)
+        if callable(clear_cache):
+            clear_cache()
+
+
 @pytest.hookimpl(tryfirst=True)
 def pytest_configure(config: pytest.Config) -> None:
     """
@@ -439,60 +487,12 @@ def pytest_configure(config: pytest.Config) -> None:
         if not any(isinstance(f, ExpectedErrorFilter) for f in logger.filters):
             logger.addFilter(expected_error_filter)
 
-    # OPTIMISATION RAM: Nettoyer caches modèles avant tests
+    # OPTIMISATION RAM: Nettoyer caches modèles UNIQUEMENT s'ils sont déjà chargés.
+    # Ne jamais importer vision_yolo / whisper / HF ici : cela tire ultralytics→torch
+    # et peut bloquer/tuer la session pytest (SystemExit via signal pendant import).
     try:
-        # Nettoyer cache YOLO
-        from bbia_sim.vision_yolo import _yolo_cache_lock, _yolo_model_cache
-
-        with _yolo_cache_lock:
-            _yolo_model_cache.clear()
-
-        # Nettoyer cache MediaPipe
-        from bbia_sim import vision_yolo
-        from bbia_sim.vision_yolo import _mediapipe_cache_lock
-
-        with _mediapipe_cache_lock:
-            vision_yolo._mediapipe_face_detection_cache = None
-
-        # Nettoyer cache Whisper
-        try:
-            from bbia_sim.voice_whisper import (
-                _whisper_model_cache_lock,
-                _whisper_models_cache,
-            )
-
-            with _whisper_model_cache_lock:
-                _whisper_models_cache.clear()
-        except ImportError:
-            pass
-
-        # Nettoyer cache HuggingFace
-        try:
-            from bbia_sim.bbia_huggingface import BBIAHuggingFace
-
-            # Nettoyer thread partagé BBIAHuggingFace pour éviter fuites entre tests
-            try:
-                with BBIAHuggingFace._shared_unload_thread_lock:
-                    # Arrêter thread partagé si actif
-                    if (
-                        BBIAHuggingFace._shared_unload_thread
-                        and BBIAHuggingFace._shared_unload_thread.is_alive()
-                    ):
-                        BBIAHuggingFace._shared_unload_thread_stop.set()
-                        BBIAHuggingFace._shared_unload_thread.join(timeout=1.0)
-                    # Nettoyer liste instances
-                    BBIAHuggingFace._shared_instances.clear()
-                    BBIAHuggingFace._shared_unload_thread = None
-            except (AttributeError, RuntimeError):
-                # Ignorer si attributs n'existent pas encore
-                pass
-
-            if hasattr(BBIAHuggingFace, "_clear_cache"):
-                BBIAHuggingFace._clear_cache()
-        except (ImportError, AttributeError):
-            pass
-
-        print("🧹 Caches modèles nettoyés (optimisation RAM)\n")
+        _clear_heavy_model_caches_if_loaded()
+        print("🧹 Caches modèles nettoyés si déjà chargés (pas d'import torch/YOLO)\n")
     except Exception as e:
         # Ignorer erreurs de nettoyage (non bloquant)
         print(f"⚠️  Erreur nettoyage cache (non bloquant): {e}\n")
@@ -520,12 +520,9 @@ def pytest_unconfigure(config: pytest.Config) -> None:
     except Exception:
         pass
 
-    # OPTIMISATION RAM: Nettoyer caches après tests
+    # OPTIMISATION RAM: Nettoyer caches après tests sans forcer import YOLO/torch
     try:
-        from bbia_sim.vision_yolo import _yolo_cache_lock, _yolo_model_cache
-
-        with _yolo_cache_lock:
-            _yolo_model_cache.clear()
+        _clear_heavy_model_caches_if_loaded()
     except Exception:
         pass
 
@@ -601,12 +598,18 @@ def clear_model_caches_after_test():
     """
     Fixture automatique: nettoie les caches de modèles après chaque test.
     OPTIMISATION RAM: Libère mémoire après chaque test.
+    N'importe pas HF/YOLO si le module n'a jamais été chargé.
     """
     yield
-    # Nettoyer thread partagé BBIAHuggingFace après chaque test
-    try:
-        from bbia_sim.bbia_huggingface import BBIAHuggingFace
+    import sys
 
+    hf_mod = sys.modules.get("bbia_sim.bbia_huggingface")
+    if hf_mod is None:
+        return
+    BBIAHuggingFace = getattr(hf_mod, "BBIAHuggingFace", None)
+    if BBIAHuggingFace is None:
+        return
+    try:
         with BBIAHuggingFace._shared_unload_thread_lock:
             # Arrêter thread partagé si actif et plus d'instances
             if (
@@ -616,8 +619,8 @@ def clear_model_caches_after_test():
             ):
                 BBIAHuggingFace._shared_unload_thread_stop.set()
                 BBIAHuggingFace._shared_unload_thread.join(timeout=0.5)
-    except (ImportError, AttributeError, RuntimeError):
-        # Ignorer si module non disponible ou erreurs
+    except (AttributeError, RuntimeError):
+        # Ignorer si attributs absents ou erreurs
         pass
 
     # Nettoyer cache MuJoCo après chaque test
