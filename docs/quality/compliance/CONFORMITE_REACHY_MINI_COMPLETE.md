@@ -5,12 +5,12 @@
 **🎯 Validation complète de la conformité SDK officiel**  
 *21 méthodes implémentées • 37 tests passants • 100% conforme*
 
-**Version** : BBIA-SIM v1.4.0 • **Dernière mise à jour** : 17 Août 2026  
+**Version** : BBIA-SIM v1.4.0 • **Dernière mise à jour** : 27 Octobre 2026  
 **SDK Cible** : `reachy_mini` (Pollen Robotics × Hugging Face)  
-**Version SDK Installée (référence)** : **v1.9.0** (PyPI, extra `.[reachy]`)  
-**Version SDK Officiel Latest** : v1.9.0 (PyPI) ; dépôt `main` = 1.10.0.dev0
+**Version SDK Installée (référence)** : **v1.13.0** (PyPI, extra `.[reachy]`)  
+**Version SDK Officiel Latest** : v1.13.0 (PyPI)
 
-**État SDK** : **Aligné Pollen v1.9.0** — Dépendances critiques du projet (`pyproject.toml`) alignées sur le SDK officiel (numpy 2.x, motor_controller ≥1.5.5, kinematics ≥1.0.3, huggingface-hub ≥1.17, scipy &lt;2, websockets &lt;16, starlette &lt;1). Installer le SDK avec `pip install --upgrade reachy-mini` pour cibler v1.9.0 sur le robot physique. **Projet prêt pour Reachy Mini physique** (démonter pour accès remote si besoin).
+**État SDK** : **Aligné Pollen v1.13.0** — Dépendances critiques du projet (`pyproject.toml`) alignées sur le SDK officiel (numpy 2.x, motor_controller ≥1.5.5, kinematics ≥1.0.3, huggingface-hub ≥1.20.1, scipy &lt;2, websockets &lt;16, starlette ≥1.3.1,&lt;2, FastAPI ≥0.135). Extra : `pip install -e ".[reachy]"` → `reachy-mini==1.13.0` (Python ≥3.11 ; cœur BBIA reste ≥3.10). **Projet prêt pour Reachy Mini physique** (démonter pour accès remote si besoin).
 
 Référence officielle: `pollen-robotics/reachy_mini` (GitHub) — voir `README` et instructions d’installation
 ([lien](https://github.com/pollen-robotics/reachy_mini)).

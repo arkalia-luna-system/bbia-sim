@@ -1,7 +1,7 @@
 # Vérification alignement BBIA ↔ Pollen (tous domaines)
 
-**Date** : 17 août 2026  
-**Référence** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini) **v1.9.0** (PyPI ; `main` = 1.10.0.dev0)
+**Date** : 27 octobre 2026 (MISSION 026)  
+**Référence** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini) **v1.13.0** (PyPI)
 
 Ce document vérifie que BBIA est au même niveau que Pollen dans tous les domaines : SDK, fonctionnalités, outils, connexion, doc.
 
@@ -11,9 +11,9 @@ Ce document vérifie que BBIA est au même niveau que Pollen dans tous les domai
 
 | Domaine | Niveau BBIA vs Pollen | Détail |
 |--------|------------------------|--------|
-| **Version SDK** | ✅ Même | reachy-mini **1.9.0** (référence PyPI), extra `.[reachy]` |
-| **Dépendances (pyproject)** | ✅ Aligné | huggingface-hub ≥1.17, websockets &lt;16, aiohttp ≥3.14, pydantic ≥2.12.5, motor_controller ≥1.5.5, kinematics ≥1.0.3 |
-| **API robot (méthodes SDK)** | ✅ Même | Surface 1.9/1.10 : tracking, IMU, wobbling, media, `play_move(sound)` |
+| **Version SDK** | ✅ Même | reachy-mini **1.13.0** (référence PyPI), extra `.[reachy]` |
+| **Dépendances (pyproject)** | ✅ Aligné | huggingface-hub ≥1.20.1, starlette ≥1.3.1,&lt;2, FastAPI ≥0.135, websockets &lt;16, aiohttp ≥3.14, pydantic ≥2.12.5, motor_controller ≥1.5.5, kinematics ≥1.0.3 |
+| **API robot (méthodes SDK)** | ✅ Même | Surface 1.13 : tracking, IMU, wobbling, media, `play_move(sound)`, `connection_mode` |
 | **Moteurs / reflash / scan** | ✅ Compatible | Utilise le même SDK ; reflash/scan documentés et CLI officiels utilisables |
 | **Caméra / calibration** | ✅ Même niveau | Outils calibration (acquire, calibrate, scale, visualize) ; messages d’erreur clairs (issue #771) |
 | **Mouvements / IK / émotions** | ✅ Même | goto_target, look_at_*, set_emotion, Move, RecordedMoves, create_head_pose |
@@ -21,7 +21,7 @@ Ce document vérifie que BBIA est au même niveau que Pollen dans tous les domai
 | **Daemon / Dashboard** | 🔶 Volontairement différent | BBIA = daemon + dashboard propres ; Pollen = reachy-mini-daemon + dashboard officiel |
 | **Apps HF** | ✅ Compatible | Référence aux mêmes apps (conversation, vision-demo, etc.) ; pas d’app Pollen à dupliquer |
 | **WebRTC** | 🔶 Choix technique | Pollen : WebRTC navigateur ; BBIA : WebSocket/OpenCV pour le flux principal (suffisant pour notre stack) |
-| **Documentation** | ✅ À jour | Doc BBIA mise à jour (avril 2026) ; doc officielle = Hugging Face |
+| **Documentation** | ✅ À jour | Doc BBIA mise à jour (MISSION 026) ; doc officielle = Hugging Face |
 
 Légende : **✅ Même / Aligné** = au même niveau fonctionnel ou mieux ; **🔶 Volontairement différent** = choix d’architecture (BBIA garde son daemon/dashboard).
 
@@ -29,10 +29,10 @@ Légende : **✅ Même / Aligné** = au même niveau fonctionnel ou mieux ; **�
 
 ## 1. Version SDK et dépendances
 
-- **Pollen (v1.9.0)** : `reachy_mini` 1.9.0 sur PyPI, Python ≥3.11, `connection_mode`, huggingface-hub 1.17+, websockets &lt;16, zeroconf, rustypot (voir `pyproject.toml` officiel).
-- **BBIA** : extra `reachy-mini>=1.9.0` ; floors critiques alignés ; `ReachyMiniBackend` passe `connection_mode` (repli `localhost_only` si SDK plus ancien).
+- **Pollen (v1.13.0)** : `reachy_mini` 1.13.0 sur PyPI, Python ≥3.11, `connection_mode`, huggingface-hub ≥1.20.1, starlette ≥1.3.1,&lt;2, websockets &lt;16, zeroconf, rustypot (voir `pyproject.toml` officiel).
+- **BBIA** : extra `reachy-mini==1.13.0` (Python ≥3.11 pour cet extra) ; cœur BBIA `requires-python>=3.10` ; floors critiques alignés ; `ReachyMiniBackend` passe `connection_mode` (repli `localhost_only` si SDK plus ancien).
 
-**Verdict** : ✅ **Même niveau (référence 1.9.0).**
+**Verdict** : ✅ **Même niveau (référence 1.13.0).**
 
 ---
 
