@@ -277,7 +277,8 @@ app = FastAPI(
             "description": "Serveur de production (à venir)",
         },
     ],
-    tags_metadata=[
+    # FastAPI ≥0.135 / SDK 1.13 : paramètre renommé tags_metadata → openapi_tags
+    openapi_tags=[
         {
             "name": "ecosystem",
             "description": (
