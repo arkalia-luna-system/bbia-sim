@@ -110,9 +110,7 @@ def prepare_goto_sleep(robot: Any | None, *, use_sim: bool) -> dict[str, Any]:
                 except TypeError:
                     robot.enable_motors()  # type: ignore[call-arg]
                 report["hold_torque_applied"] = True
-                report["warnings"].append(
-                    "hold_torque_best_effort_not_a_firmware_fix"
-                )
+                report["warnings"].append("hold_torque_best_effort_not_a_firmware_fix")
                 logger.info(
                     "BBIA_SLEEP_HOLD_TORQUE=1 : enable_motors() best-effort "
                     "avant sleep (ne garantit pas l'absence de droop)"
@@ -123,7 +121,13 @@ def prepare_goto_sleep(robot: Any | None, *, use_sim: bool) -> dict[str, Any]:
                     "BBIA_SLEEP_HOLD_TORQUE=1 mais enable_motors absent — "
                     "exposé Pollen uniquement"
                 )
-        except (AttributeError, RuntimeError, OSError, ConnectionError, TypeError) as exc:
+        except (
+            AttributeError,
+            RuntimeError,
+            OSError,
+            ConnectionError,
+            TypeError,
+        ) as exc:
             report["warnings"].append(f"hold_torque_failed:{exc}")
             logger.warning("hold torque soft échoué: %s", exc)
 

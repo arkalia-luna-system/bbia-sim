@@ -67,9 +67,7 @@ def _parse_int(env_name: str, default: int, *, minimum: int = 1) -> int:
 
 def get_sdk_connect_timeout(fallback: float | None = None) -> float:
     """Timeout connexion SDK (secondes)."""
-    default = (
-        float(fallback) if fallback is not None else _DEFAULT_CONNECT_TIMEOUT
-    )
+    default = float(fallback) if fallback is not None else _DEFAULT_CONNECT_TIMEOUT
     if default <= 0:
         default = _DEFAULT_CONNECT_TIMEOUT
     return _parse_float(ENV_CONNECT_TIMEOUT, default, minimum=0.1)
@@ -87,9 +85,7 @@ def get_sdk_reconnect_delay() -> float:
 
 def get_sdk_heartbeat_timeout(fallback: float | None = None) -> float:
     """Timeout heartbeat watchdog (secondes) — soft-detect relay down."""
-    default = (
-        float(fallback) if fallback is not None else _DEFAULT_HEARTBEAT_TIMEOUT
-    )
+    default = float(fallback) if fallback is not None else _DEFAULT_HEARTBEAT_TIMEOUT
     if default <= 0:
         default = _DEFAULT_HEARTBEAT_TIMEOUT
     return _parse_float(ENV_HEARTBEAT_TIMEOUT, default, minimum=0.2)
