@@ -148,18 +148,25 @@ class RobotFactory:
             if backend_type == "reachy_mini":
                 # Paramètres SDK officiel ReachyMini
                 # use_sim=True par défaut ; robot physique = use_sim=False + BBIA_ALLOW_HARDWARE=1
+                from bbia_sim.media_guard import resolve_media_backend
+                from bbia_sim.sdk_connection import get_sdk_connect_timeout
+
                 requested_sim = bool(kwargs.get("use_sim", True))
                 effective_sim = resolve_use_sim(
                     requested_sim, context="RobotFactory.reachy_mini"
                 )
+                default_timeout = get_sdk_connect_timeout(5.0)
                 return ReachyMiniBackend(
                     localhost_only=kwargs.get("localhost_only", True),
                     spawn_daemon=kwargs.get("spawn_daemon", False),
                     use_sim=effective_sim,
-                    timeout=kwargs.get("timeout", 3.0),  # Timeout réduit à 3s
+                    timeout=kwargs.get("timeout", default_timeout),
                     automatic_body_yaw=kwargs.get("automatic_body_yaw", True),
                     log_level=kwargs.get("log_level", "INFO"),
-                    media_backend=kwargs.get("media_backend", "no_media"),
+                    media_backend=resolve_media_backend(
+                        kwargs.get("media_backend", "no_media"),
+                        context="RobotFactory.reachy_mini",
+                    ),
                     robot_name=kwargs.get("robot_name", "reachy_mini"),
                     host=kwargs.get("host", "reachy-mini.local"),
                     port=kwargs.get("port", 8000),

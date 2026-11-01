@@ -427,7 +427,7 @@ async def ws_move_updates(websocket: WebSocket, token: str | None = None) -> Non
         while True:
             # Keepalive configurable (#1494 / BBIA_WS_KEEPALIVE_TIMEOUT)
             _ = await receive_text_with_keepalive(websocket)
-    except (asyncio.TimeoutError, TimeoutError, WebSocketDisconnect, Exception):
+    except (TimeoutError, WebSocketDisconnect, Exception):
         # OPTIMISATION RAM: Nettoyer dans finally pour garantir suppression
         pass
     finally:
@@ -482,7 +482,7 @@ async def ws_set_target(websocket: WebSocket, token: str | None = None) -> None:
                 await websocket.send_text(
                     json.dumps({"status": "error", "detail": str(e)}),
                 )
-    except (asyncio.TimeoutError, TimeoutError, WebSocketDisconnect):
+    except (TimeoutError, WebSocketDisconnect):
         pass
 
 

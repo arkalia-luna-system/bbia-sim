@@ -470,9 +470,12 @@ class VisionTrackingBehavior(BBIABehavior):
             return False
 
         try:
+            from bbia_sim.head_tracking_guard import assert_finite_direction
+
             x = float(pos.get("x", 0.2))
             y = float(pos.get("y", 0.1))
             z = float(pos.get("z", 0.0))
+            assert_finite_direction(x, y, z, context="look_at_world")
             if not (-2.0 <= x <= 2.0 and -2.0 <= y <= 2.0 and -1.0 <= z <= 1.0):
                 logger.debug("Coordonnées 3D hors limites: (%s, %s, %s)", x, y, z)
                 return False
@@ -496,8 +499,11 @@ class VisionTrackingBehavior(BBIABehavior):
             return False
 
         try:
-            u = int(bbox.get("center_x", 320))
-            v = int(bbox.get("center_y", 240))
+            from bbia_sim.head_tracking_guard import clamp_look_image_uv
+
+            u_raw = float(bbox.get("center_x", 320))
+            v_raw = float(bbox.get("center_y", 240))
+            u, v = clamp_look_image_uv(u_raw, v_raw)
             if not (0 <= u <= 640 and 0 <= v <= 480):
                 logger.debug("Coordonnées image hors limites: (%s, %s)", u, v)
                 return False

@@ -43,10 +43,19 @@ async def receive_text_with_keepalive(
     """`receive_text` borné par le keepalive configuré (#1494).
 
     Raises:
-        asyncio.TimeoutError: si aucun message avant le timeout
-            (alias de builtins.TimeoutError dès Python 3.11).
+        TimeoutError: si aucun message avant le timeout (builtin, y compris sous
+            Python 3.10 où ``asyncio.TimeoutError`` n'est pas encore un alias).
     """
     limit = get_ws_keepalive_timeout() if timeout is None else float(timeout)
     if limit <= 0:
         return await websocket.receive_text()
-    return await asyncio.wait_for(websocket.receive_text(), timeout=limit)
+    try:
+        return await asyncio.wait_for(websocket.receive_text(), timeout=limit)
+    except TimeoutError:
+        raise
+    except Exception as exc:
+        # Py3.10 : asyncio.TimeoutError ≠ builtins.TimeoutError — normaliser
+        # pour que les ``except TimeoutError`` (UP041) fonctionnent partout.
+        if type(exc).__name__ == "TimeoutError":
+            raise TimeoutError("keepalive timeout") from exc
+        raise

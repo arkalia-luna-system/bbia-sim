@@ -263,7 +263,7 @@ async def websocket_endpoint(websocket: WebSocket, token: str | None = None) -> 
                         websocket,
                     )
 
-            except (asyncio.TimeoutError, TimeoutError):
+            except TimeoutError:
                 logger.info("WebSocket telemetry: keepalive timeout, fermeture")
                 await websocket.close(code=1001, reason="keepalive timeout")
                 break

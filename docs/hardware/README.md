@@ -46,6 +46,6 @@
 
 ---
 
-**Dernière mise à jour** : 1 Nov 2026
-**SDK Officiel Latest** : v1.13.0 (PyPI) — [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini) (≥ 1.12.0 requis pour correctif PIN GHSA-993g-hgjh-whmf)
+**Dernière mise à jour** : 1 Nov 2026 (MIXTE anticipation + CI UP041 / ConnectionManager)
+**SDK Officiel Latest** : v1.13.0 (PyPI) — [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini) (≥ 1.12.0 requis pour correctif PIN GHSA-993g-hgjh-whmf) ; `certifi>=2026.10.19`
 **Statut Robot** : ✅ Reçu le 18 déc 2025, monté le 20 déc 2025. **Installation moteurs 1, 2, 4 effectuée** : slots 1 et 2 = QC 2549, slot 4 = QC 2548 (ou 2549). En attente de premier rallumage et validation.

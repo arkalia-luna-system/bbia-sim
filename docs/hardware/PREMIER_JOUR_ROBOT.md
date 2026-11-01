@@ -67,8 +67,12 @@ PY
 ## Anticipation bugs daemon (aperçu)
 
 BBIA refuse par défaut un second move concurrent (Pollen #1512), tolère
-`state/full` sans target (Pollen #1527), et expose un keepalive WS
-configurable (`BBIA_WS_KEEPALIVE_TIMEOUT`, Pollen #1494). Détail :
+`state/full` sans target (Pollen #1527), keepalive WS configurable
+(`BBIA_WS_KEEPALIVE_TIMEOUT`), et timeout/reconnect client SDK
+(`BBIA_SDK_CONNECT_TIMEOUT` / `BBIA_SDK_RECONNECT_*`, #1494 suite / Wireless).
+Audio USB/GStreamer : `BBIA_DISABLE_AUDIO=1` → `no_media`. Tracking en sim :
+skip sauf `BBIA_HEAD_TRACKING_SIM=1`. Sleep droop / yaw ~3 Hz : mitigations soft
+uniquement — **exposé firmware Pollen**. Détail :
 [`POLLEN_ISSUES_ANTICIPATION.md`](POLLEN_ISSUES_ANTICIPATION.md).
 
 ## Références
@@ -83,8 +87,9 @@ configurable (`BBIA_WS_KEEPALIVE_TIMEOUT`, Pollen #1494). Détail :
 
 | Domaine | Qui mène | Note |
 |---|---|---|
-| Firmware / daemon / moteurs | **Pollen** | BBIA s’appuie dessus |
+| Firmware / daemon / moteurs | **Pollen** | BBIA s’appuie dessus ; droop/yaw/GStreamer host exposés |
 | Couche cognitive BBIA | **BBIA** | Au-dessus du SDK |
 | Garde hardware | BBIA (`BBIA_ALLOW_HARDWARE`) | Sans flag → sim forcée |
+| Anticipation issues | BBIA (gardes soft + doc) | Ne remplace pas un correctif firmware |
 
-**Dernière mise à jour** : anticipation issues/GHSA Pollen + SDK 1.13
+**Dernière mise à jour** : MIXTE gardes + SDK 1.13

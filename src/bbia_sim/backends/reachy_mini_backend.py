@@ -14,7 +14,15 @@ import numpy as np
 import numpy.typing as npt
 
 from bbia_sim.hardware_guard import resolve_use_sim
+from bbia_sim.head_tracking_guard import should_skip_head_tracking
+from bbia_sim.media_guard import resolve_media_backend
 from bbia_sim.robot_api import RobotAPI
+from bbia_sim.sdk_connection import (
+    call_with_reconnect,
+    get_sdk_connect_timeout,
+    get_sdk_heartbeat_timeout,
+)
+from bbia_sim.sleep_guard import clamp_yaw_amplitude, prepare_goto_sleep
 from bbia_sim.utils.types import JointPositions, TelemetryData
 
 # Import paresseux du SDK : `import reachy_mini` peut bloquer (discovery/réseau).
@@ -253,7 +261,11 @@ class ReachyMiniBackend(RobotAPI):
         self.timeout = timeout
         self.automatic_body_yaw = automatic_body_yaw
         self.log_level = log_level
-        self.media_backend = media_backend
+        # #1507/#1525 : forcer no_media si BBIA_DISABLE_AUDIO ou backend dangereux
+        self.media_backend = resolve_media_backend(
+            media_backend,
+            context="ReachyMiniBackend.__init__",
+        )
         self.robot_name = robot_name
         self.host = host
         self.port = port
@@ -355,34 +367,49 @@ class ReachyMiniBackend(RobotAPI):
         try:
             # SDK 1.9+ : connection_mode ("auto" | "localhost_only" | "network")
             # localhost_only reste accepté en compatibilité descendante.
+            # #1494 suite / #1466 : timeout + reconnect configurables (BBIA_SDK_*)
             connection_mode = self.connection_mode
+            sdk_timeout = get_sdk_connect_timeout(self.timeout)
             connect_kwargs: dict[str, Any] = {
                 "spawn_daemon": self.spawn_daemon,
                 "use_sim": False,  # Connexion daemon réel (flag hardware déjà validé)
-                "timeout": min(self.timeout, 3.0),  # Max 3 secondes
+                "timeout": sdk_timeout,
                 "automatic_body_yaw": self.automatic_body_yaw,
                 "log_level": self.log_level,
-                "media_backend": self.media_backend,
+                "media_backend": resolve_media_backend(
+                    self.media_backend,
+                    context="ReachyMiniBackend._try_connect_robot",
+                ),
             }
-            try:
-                self.robot = ReachyMini(
-                    robot_name=self.robot_name,
-                    host=self.host,
-                    port=self.port,
-                    connection_mode=connection_mode,
-                    **connect_kwargs,
-                )
-            except TypeError:
-                self.robot = ReachyMini(
-                    localhost_only=self.localhost_only,
-                    **connect_kwargs,
-                )
+
+            def _factory() -> Any:
+                try:
+                    return ReachyMini(
+                        robot_name=self.robot_name,
+                        host=self.host,
+                        port=self.port,
+                        connection_mode=connection_mode,
+                        **connect_kwargs,
+                    )
+                except TypeError:
+                    return ReachyMini(
+                        localhost_only=self.localhost_only,
+                        **connect_kwargs,
+                    )
+
+            self.robot = call_with_reconnect(
+                _factory,
+                label="ReachyMini SDK connect",
+            )
             self.is_connected = True
             self.start_time = time.time()
             self._last_heartbeat = time.time()
             if not self.use_sim:
                 self._start_watchdog()
-            logger.info("✅ Connecté au robot Reachy-Mini officiel")
+            logger.info(
+                "✅ Connecté au robot Reachy-Mini officiel (timeout=%.1fs)",
+                sdk_timeout,
+            )
             # Note: SDK v1.2.4+ reflash automatique des moteurs lors de la connexion
             # Cela protège les futurs moteurs contre le problème batch QC 2544
             logger.debug(
@@ -400,15 +427,16 @@ class ReachyMiniBackend(RobotAPI):
         ) as e:
             error_msg = str(e).lower()
             # Amélioration messages d'erreur v1.2.13 : Messages plus clairs quand robot éteint
+            # Wireless #1466/#1465 : timeout/refused → relay / auth souvent en cause
             if (
                 "timeout" in error_msg
                 or "connection" in error_msg
                 or "refused" in error_msg
             ):
                 logger.warning(
-                    "⚠️  Impossible de se connecter au Reachy Mini. "
-                    "Le robot est peut-être éteint ou le daemon n'est pas démarré. "
-                    "Erreur: %s. Mode simulation activé.",
+                    "⚠️  Impossible de se connecter au Reachy Mini "
+                    "(timeout/reconnect épuisés — check daemon / relay Wireless "
+                    "#1466/#1465). Erreur: %s. Mode simulation activé.",
                     str(e),
                 )
             else:
@@ -520,7 +548,8 @@ class ReachyMiniBackend(RobotAPI):
         Conforme au SDK officiel qui utilise threads avec Event.
         """
         logger.debug("Watchdog monitoring démarré")
-        max_heartbeat_timeout = 2.0  # 2 secondes max sans heartbeat
+        # Configurable (#1466 soft-detect relay) via BBIA_SDK_HEARTBEAT_TIMEOUT
+        max_heartbeat_timeout = get_sdk_heartbeat_timeout(2.0)
 
         while not self._should_stop_watchdog.is_set():
             try:
@@ -891,9 +920,14 @@ class ReachyMiniBackend(RobotAPI):
         return position
 
     def _set_yaw_body(self, position: float) -> bool:
-        """Contrôle la rotation du corps via l'API officielle."""
+        """Contrôle la rotation du corps via l'API officielle.
+
+        Mitigation soft Pollen #1479 : amplitude yaw bornée (BBIA_YAW_SAFE_AMPLITUDE).
+        Le gain servo / oscillation ~3 Hz reste exposé firmware.
+        """
+        safe_yaw = clamp_yaw_amplitude(position)
         if self.robot:
-            self.robot.set_target_body_yaw(position)
+            self.robot.set_target_body_yaw(safe_yaw)
             return True
         return False
 
@@ -1879,29 +1913,50 @@ class ReachyMiniBackend(RobotAPI):
             logger.debug("acquire_media non disponible sur ce SDK")
 
     def start_head_tracking(self, weight: float = 1.0) -> None:
-        """Active le suivi de visage côté daemon (SDK officiel)."""
+        """Active le suivi de visage côté daemon (SDK officiel).
+
+        Garde #1453/#1451/#1450 : no-op en sim sauf BBIA_HEAD_TRACKING_SIM=1.
+        """
+        if should_skip_head_tracking(
+            use_sim=self.use_sim or not self.robot,
+            context="start_head_tracking",
+        ):
+            return
         if not self.is_connected or not self.robot:
             logger.debug("Mode simulation: start_head_tracking weight=%s", weight)
             return
         try:
             self.robot.start_head_tracking(weight=weight)
         except (AttributeError, TypeError, RuntimeError, OSError, ConnectionError):
-            logger.debug("start_head_tracking non disponible sur ce SDK")
+            logger.info(
+                "start_head_tracking indisponible / loop absente (safe no-op) "
+                "— Pollen #1453/#1451"
+            )
 
     def stop_head_tracking(self) -> None:
         """Arrête le suivi de visage côté daemon."""
+        if should_skip_head_tracking(
+            use_sim=self.use_sim or not self.robot,
+            context="stop_head_tracking",
+        ):
+            return
         if not self.is_connected or not self.robot:
             logger.debug("Mode simulation: stop_head_tracking")
             return
         try:
             self.robot.stop_head_tracking()
         except (AttributeError, RuntimeError, OSError, ConnectionError):
-            logger.debug("stop_head_tracking non disponible sur ce SDK")
+            logger.info("stop_head_tracking indisponible (safe no-op)")
 
     def get_tracked_face(
         self, wait: bool = True, timeout: float = 5.0
     ) -> dict[str, Any] | None:
         """Retourne la cible visage suivie (x, y, roll) ou None en simulation."""
+        if should_skip_head_tracking(
+            use_sim=self.use_sim or not self.robot,
+            context="get_tracked_face",
+        ):
+            return None
         if not self.is_connected or not self.robot:
             logger.debug("Mode simulation: get_tracked_face")
             return None
@@ -1909,7 +1964,7 @@ class ReachyMiniBackend(RobotAPI):
             face = self.robot.get_tracked_face(wait=wait, timeout=timeout)
             return face if isinstance(face, dict) else None
         except (AttributeError, TypeError, RuntimeError, OSError, ConnectionError):
-            logger.debug("get_tracked_face non disponible sur ce SDK")
+            logger.info("get_tracked_face indisponible (None) — Pollen #1450")
             return None
 
     @property
@@ -2192,11 +2247,17 @@ class ReachyMiniBackend(RobotAPI):
             logger.exception("Erreur wake_up")
 
     def goto_sleep(self) -> None:
-        """Alias SDK officiel pour run_behavior('goto_sleep')."""
+        """Alias SDK officiel pour run_behavior('goto_sleep').
+
+        Garde soft #1478 : re-check pose + option BBIA_SLEEP_HOLD_TORQUE.
+        Le droop après coupe couple reste exposé firmware Pollen.
+        """
         if not self.is_connected or not self.robot:
             logger.debug("Mode simulation: goto_sleep")
+            prepare_goto_sleep(None, use_sim=True)
             return
 
+        prepare_goto_sleep(self.robot, use_sim=bool(self.use_sim))
         try:
             self.robot.goto_sleep()
         except Exception:

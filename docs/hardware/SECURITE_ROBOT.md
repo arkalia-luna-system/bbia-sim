@@ -11,9 +11,15 @@
 |----------|--------|
 | `BBIA_ALLOW_HARDWARE=1` | Autorise connexion daemon / robot physique |
 | absent / autre | `use_sim` forcé, pas de `ReachyMini()` matériel |
-| `BBIA_WS_KEEPALIVE_TIMEOUT` | Timeout keepalive WS (s, défaut 30) — Pollen #1494 |
+| `BBIA_WS_KEEPALIVE_TIMEOUT` | Timeout keepalive WS daemon (s, défaut 30) — #1494 |
+| `BBIA_SDK_CONNECT_TIMEOUT` / `BBIA_SDK_RECONNECT_*` | Client SDK → robot (timeout + retries) |
+| `BBIA_DISABLE_AUDIO=1` | Force `no_media` / coupe audio host (#1507/#1525) |
+| `BBIA_HEAD_TRACKING_SIM=0` | Défaut sûr : skip tracking en sim (#1453+) |
+| `BBIA_SLEEP_HOLD_TORQUE=0` | Soft only ; droop sleep reste exposé firmware (#1478) |
+| `BBIA_YAW_SAFE_AMPLITUDE` | Clamp soft yaw_body (rad) — #1479 |
 
-Sans ce flag : daemon BBIA, bridge Zenoh, factory `auto` et backends restent en sim.
+Sans `BBIA_ALLOW_HARDWARE` : daemon BBIA, bridge Zenoh, factory `auto` et backends restent en sim.
+Détail : [`POLLEN_ISSUES_ANTICIPATION.md`](POLLEN_ISSUES_ANTICIPATION.md).
 
 ---
 
@@ -64,4 +70,4 @@ Sans ce flag : daemon BBIA, bridge Zenoh, factory `auto` et backends restent en 
 
 ---
 
-**Dernière mise à jour** : anticipation GHSA/issues Pollen + SDK 1.13
+**Dernière mise à jour** : gardes MIXTE (SDK reconnect, audio, tracking, sleep/yaw) + SDK 1.13

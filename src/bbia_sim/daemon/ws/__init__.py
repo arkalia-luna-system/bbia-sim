@@ -8,8 +8,10 @@ from bbia_sim.daemon.ws.keepalive import (
     receive_text_with_keepalive,
     uvicorn_ws_keepalive_kwargs,
 )
+from bbia_sim.daemon.ws.telemetry import ConnectionManager
 
 __all__ = [
+    "ConnectionManager",
     "get_ws_keepalive_timeout",
     "receive_text_with_keepalive",
     "uvicorn_ws_keepalive_kwargs",

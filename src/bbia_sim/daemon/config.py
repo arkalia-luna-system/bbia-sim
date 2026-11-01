@@ -38,6 +38,11 @@ class Settings(BaseSettings):
     telemetry_enabled: bool = True
     # Anticipation Pollen #1494 : keepalive WS configurable (secondes)
     ws_keepalive_timeout: float = 30.0
+    # Client SDK → daemon Pollen (#1494 suite / #1466) — aussi lisibles hors Settings
+    # via bbia_sim.sdk_connection (BBIA_SDK_CONNECT_TIMEOUT, _RECONNECT_*, _HEARTBEAT_*)
+    sdk_connect_timeout: float = 5.0
+    sdk_reconnect_attempts: int = 3
+    sdk_reconnect_delay: float = 0.5
 
     # Logging
     log_level: str = "INFO"
