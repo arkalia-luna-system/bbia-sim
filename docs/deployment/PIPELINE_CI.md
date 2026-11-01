@@ -124,6 +124,12 @@ sequenceDiagram
 - **Coverage** : `coverage.xml`, `htmlcov/`
 - **Logs e2e** : upload sur échec
 
+
+
+## Pytest fin de session (anti-hang)
+
+Après `[100%]`, les hooks `pytest_sessionfinish` / `force_cleanup_all_resources` et `scripts/cleanup_all.sh` sont **skip** si `CI=true` ou `BBIA_DISABLE_PYTEST_CLEANUP=1` (sinon timeout dur court). Le verrou `.pytest.lock` reste actif. Opt-out script seul : `BBIA_DISABLE_AUTO_CLEANUP=1`.
+
 ## Références
 
 - **État par axe** : `docs/reference/project-status.md` → CI/CD

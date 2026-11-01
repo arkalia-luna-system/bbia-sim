@@ -9,6 +9,7 @@ This exposes:
 """
 
 import asyncio
+import inspect
 import contextlib
 import logging
 import os
@@ -162,6 +163,10 @@ def create_move_task(coro: Coroutine[Any, Any, None]) -> MoveUUID:
             move_tasks.pop(done_uuid, None)
 
     if move_tasks and not _allow_concurrent_moves():
+        # Évite RuntimeWarning "coroutine never awaited" si l'appelant a déjà
+        # matérialisé la coroutine (ex. create_move_task(slow_move())).
+        with contextlib.suppress(Exception):
+            coro.close()
         raise HTTPException(
             status_code=409,
             detail=(
@@ -205,10 +210,16 @@ def create_move_task(coro: Coroutine[Any, Any, None]) -> MoveUUID:
             raise
         except Exception as e:
             await notify_listeners("move_failed", details=str(e))
-        finally:
-            move_tasks.pop(uuid, None)
+
+    def _on_move_task_done(task: asyncio.Task[None]) -> None:
+        # Cancel avant démarrage de wrap_coro: le body never runs → fermer coro.
+        if inspect.getcoroutinestate(coro) == inspect.CORO_CREATED:
+            with contextlib.suppress(Exception):
+                coro.close()
+        move_tasks.pop(uuid, None)
 
     task = asyncio.create_task(wrap_coro())
+    task.add_done_callback(_on_move_task_done)
     move_tasks[uuid] = task
 
     return MoveUUID(uuid=uuid)

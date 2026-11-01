@@ -6,6 +6,7 @@ OPTIMISATION RAM: Force utilisation de mocks pour modèles lourds.
 """
 
 import atexit
+import contextlib
 import fcntl
 import gc
 import logging
@@ -291,99 +292,74 @@ def release_lock(lock_fd: int) -> None:
         pass
 
 
+def _pytest_cleanup_hooks_disabled() -> bool:
+    """Skip nettoyage agressif fin de session (CI / opt-out explicite)."""
+    if os.environ.get("BBIA_DISABLE_PYTEST_CLEANUP", "0") == "1":
+        return True
+    if os.environ.get("CI", "").strip().lower() in {"1", "true", "yes", "on"}:
+        return True
+    return False
+
+
+def _force_cleanup_all_resources_impl() -> None:
+    """Nettoyage léger uniquement (pas de join threads, pas de new_event_loop)."""
+    try:
+        import asyncio
+
+        try:
+            loop = asyncio.get_running_loop()
+        except RuntimeError:
+            loop = None
+
+        if loop is not None and not loop.is_closed():
+            try:
+                for task in asyncio.all_tasks(loop):
+                    if not task.done():
+                        task.cancel()
+            except Exception:
+                pass
+    except Exception:
+        pass
+
+    try:
+        gc.collect()
+    except Exception:
+        pass
+
+
 def force_cleanup_all_resources() -> None:
     """
-    Force le nettoyage de toutes les ressources qui peuvent empêcher pytest de se terminer.
-    - Arrête tous les threads actifs (sauf le thread principal)
-    - Ferme toutes les boucles asyncio
-    - Déconnecte tous les backends actifs
-    - Ferme toutes les connexions WebSocket/HTTP
+    Nettoyage fin de session non bloquant.
+
+    Historique: l'ancienne version créait des event loops / joignait des threads
+    et pouvait laisser pytest coincé minutes après ``[100%]``.
+    Skip si ``CI=true`` ou ``BBIA_DISABLE_PYTEST_CLEANUP=1``.
+    Sinon exécute l'implémentation légère sous timeout dur (2s).
     """
+    if _pytest_cleanup_hooks_disabled():
+        return
+
+    done = threading.Event()
+
+    def _runner() -> None:
+        try:
+            _force_cleanup_all_resources_impl()
+        except Exception:
+            pass
+        finally:
+            done.set()
+
     try:
-        # 1. Nettoyer tous les backends actifs (threads watchdog)
-        try:
-
-            # Forcer la déconnexion de tous les backends qui pourraient être actifs
-            # Note: On ne peut pas vraiment lister toutes les instances, mais on force
-            # le nettoyage des threads watchdog qui peuvent rester actifs
-            pass  # Les backends doivent être nettoyés dans les tests individuels
-        except Exception:
-            pass
-
-        # 2. Fermer toutes les boucles asyncio qui peuvent rester ouvertes
-        try:
-            import asyncio
-
-            # Annuler toutes les tâches asyncio en attente
-            try:
-                # Essayer d'obtenir la boucle courante
-                loop = asyncio.get_running_loop()
-            except RuntimeError:
-                # Pas de boucle en cours, essayer de nettoyer les boucles fermées
-                try:
-                    # Essayer de récupérer la boucle par défaut (peut être fermée)
-                    loop = asyncio.get_event_loop()
-                    if loop.is_closed():
-                        # Créer une nouvelle boucle pour nettoyer puis la fermer
-                        loop = asyncio.new_event_loop()
-                        asyncio.set_event_loop(loop)
-                except RuntimeError:
-                    loop = None
-
-            if loop is not None and not loop.is_closed():
-                # Annuler toutes les tâches en cours
-                try:
-                    tasks = [t for t in asyncio.all_tasks(loop) if not t.done()]
-                    for task in tasks:
-                        task.cancel()
-                except Exception:
-                    pass
-
-                # Essayer de fermer proprement la boucle (sans bloquer)
-                try:
-                    if not loop.is_closed():
-                        # Arrêter la boucle sans bloquer
-                        try:
-                            loop.call_soon_threadsafe(loop.stop)
-                        except Exception:
-                            pass
-                except Exception:
-                    pass
-        except Exception:
-            pass
-
-        # 3. Forcer l'arrêt des threads non-daemon qui peuvent bloquer pytest
-        # Note: Les threads daemon sont automatiquement terminés, mais on peut
-        # forcer l'arrêt propre si nécessaire
-        try:
-            # Lister tous les threads actifs sauf le thread principal
-            all_threads = threading.enumerate()
-            main_thread = threading.main_thread()
-
-            for thread in all_threads:
-                if thread is main_thread:
-                    continue
-
-                # Si le thread est toujours actif, essayer de le joindre avec timeout
-                if thread.is_alive():
-                    thread_name = getattr(thread, "name", "Unknown")
-                    # Ignorer les threads système Python (garbage collector, etc.)
-                    if "MainThread" in thread_name or "Thread" not in thread_name:
-                        continue
-
-                    # Joindre avec timeout très court
-                    thread.join(timeout=0.1)
-        except Exception:
-            pass
-
-        # 4. Force garbage collection pour libérer les ressources
-        try:
-            gc.collect()
-        except Exception:
-            pass
-
+        worker = threading.Thread(
+            target=_runner,
+            name="bbia-pytest-force-cleanup",
+            daemon=True,
+        )
+        worker.start()
+        if not done.wait(timeout=2.0):
+            print("⚠️  force_cleanup timeout 2s (abandonné, non bloquant)")
     except Exception:
-        # Ignorer toutes les erreurs pour ne pas bloquer la fin de pytest
+        # Ne jamais bloquer la fin de pytest
         pass
 
 
@@ -532,10 +508,14 @@ def run_cleanup_scripts() -> None:
     Exécute les scripts de nettoyage après les tests.
     Nettoie les fichiers cache, métadonnées macOS, et processus gourmands.
 
-    Peut être désactivé via la variable d'environnement BBIA_DISABLE_AUTO_CLEANUP=1
+    Désactivé si:
+    - BBIA_DISABLE_AUTO_CLEANUP=1
+    - BBIA_DISABLE_PYTEST_CLEANUP=1
+    - CI=true (évite find/. sur runners / disques lents)
     """
-    # Vérifier si le nettoyage automatique est désactivé
     if os.environ.get("BBIA_DISABLE_AUTO_CLEANUP", "0") == "1":
+        return
+    if _pytest_cleanup_hooks_disabled():
         return
 
     try:
@@ -558,22 +538,33 @@ def run_cleanup_scripts() -> None:
         # Ne pas nettoyer la RAM automatiquement (peut être dangereux)
         print("\n🧹 Exécution du nettoyage automatique après les tests...")
         try:
-            # Utiliser bash explicitement pour éviter les problèmes de permissions
-            result = subprocess.run(
+            # Popen + process group: timeout dur et kill des find enfants
+            proc = subprocess.Popen(
                 ["bash", str(cleanup_script), "--cache-only", "--yes"],
                 cwd=str(project_root),
-                capture_output=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
                 text=True,
-                timeout=30,  # Timeout de 30 secondes max (optimisé)
+                start_new_session=True,
             )
-            if result.returncode == 0:
+            try:
+                _stdout, stderr = proc.communicate(timeout=10)
+            except subprocess.TimeoutExpired:
+                try:
+                    os.killpg(proc.pid, signal.SIGKILL)
+                except Exception:
+                    with contextlib.suppress(Exception):
+                        proc.kill()
+                with contextlib.suppress(Exception):
+                    proc.wait(timeout=2)
+                print("⚠️  Nettoyage timeout (ignoré)")
+                return
+            if proc.returncode == 0:
                 print("✅ Nettoyage automatique terminé avec succès")
             else:
-                print(f"⚠️  Nettoyage terminé avec code {result.returncode}")
-                if result.stderr:
-                    print(f"   Erreur: {result.stderr[:200]}")
-        except subprocess.TimeoutExpired:
-            print("⚠️  Nettoyage timeout (ignoré)")
+                print(f"⚠️  Nettoyage terminé avec code {proc.returncode}")
+                if stderr:
+                    print(f"   Erreur: {stderr[:200]}")
         except Exception as e:
             print(f"⚠️  Erreur lors du nettoyage (non bloquant): {e}")
     except Exception as e:
@@ -585,12 +576,14 @@ def run_cleanup_scripts() -> None:
 def pytest_sessionfinish(session: pytest.Session, exitstatus: int) -> None:
     """
     Hook pytest qui s'exécute à la fin de la session complète.
-    Force le nettoyage de toutes les ressources pour éviter que pytest reste bloqué.
+    Nettoyage non bloquant (timeout/skip) pour garantir la sortie du process.
     """
+    t0 = time.monotonic()
     force_cleanup_all_resources()
-
-    # Exécuter les scripts de nettoyage après les tests
     run_cleanup_scripts()
+    elapsed = time.monotonic() - t0
+    if elapsed > 1.0:
+        print(f"⚠️  sessionfinish cleanup took {elapsed:.1f}s")
 
 
 @pytest.fixture(autouse=True)
