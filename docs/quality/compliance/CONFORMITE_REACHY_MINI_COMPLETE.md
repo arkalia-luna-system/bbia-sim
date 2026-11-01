@@ -26,7 +26,7 @@ Référence officielle: `pollen-robotics/reachy_mini` (GitHub) — voir `README`
 - **SDK cible** : `reachy-mini` **v1.5.0** (5 mars 2026). Plus de décalage volontaire : le projet vise le même niveau que Pollen tout en restant compatible 1.3.0+.
 - **Dépendances** : `pyproject.toml` aligné sur [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini) pour les briques critiques (numpy 2.x, motor_controller ≥1.5.5, zenoh, kinematics, huggingface-hub, scipy, websockets).
 - **Robot physique** : Projet prêt pour Reachy Mini (Wireless/Lite). Démonter le robot pour accès remote si besoin (maintenance, câblage).
-- **Documentation Cursor/lenteur** : Un seul guide de référence → [docs/development/ACCELERER_CURSOR.md](../development/ACCELERER_CURSOR.md). Les anciens MD à la racine redirigent vers lui.
+- **Documentation Cursor/lenteur** : Un seul guide de référence → [docs/development/ACCELERER_CURSOR.md](../development/ACCELERER_CURSOR.md).
 
 ---
 

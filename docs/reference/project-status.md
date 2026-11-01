@@ -23,7 +23,7 @@
 **Mise à jour 8 Mai 2026** : Alignement Pollen v1.7.1
 - SDK de référence **v1.7.1** ; dépendances critiques `pyproject.toml` alignées (numpy 2.x, motor_controller ≥1.5.5, zenoh, kinematics, huggingface-hub, scipy, websockets)
 - Projet au même niveau que Pollen pour Reachy Mini (robot physique ; compatibilité maintenue avec environnements encore en 1.3.0+)
-- Guide Cursor/lenteur unifié → [docs/development/ACCELERER_CURSOR.md](../development/ACCELERER_CURSOR.md) (anciens MD racine redirigent)
+- Guide Cursor/lenteur unifié → [docs/development/ACCELERER_CURSOR.md](../development/ACCELERER_CURSOR.md)
 
 **Mise à jour 26 Janvier 2026** : Améliorations Phase 1 Quick Wins terminées
 - Python 3.12 dans CI (matrice lint)
