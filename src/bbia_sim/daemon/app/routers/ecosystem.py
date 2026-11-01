@@ -9,9 +9,22 @@ from typing import Annotated, Any
 from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel, Field
 
-from bbia_sim.bbia_behavior import BBIABehaviorManager
-from bbia_sim.bbia_emotions import BBIAEmotions
 from bbia_sim.robot_factory import RobotFactory
+
+# bbia_behavior / bbia_emotions : import paresseux (vision/voice/SDK hang au load).
+
+
+def _bbia_emotions_cls() -> Any:
+    from bbia_sim.bbia_emotions import BBIAEmotions
+
+    return BBIAEmotions
+
+
+def _bbia_behavior_manager_cls() -> Any:
+    from bbia_sim.bbia_behavior import BBIABehaviorManager
+
+    return BBIABehaviorManager
+
 
 logger = logging.getLogger(__name__)
 
@@ -163,8 +176,8 @@ async def get_robot_capabilities() -> RobotCapabilities:
     """
     try:
         # Initialiser les modules BBIA
-        emotions_module = BBIAEmotions()
-        behavior_manager = BBIABehaviorManager()
+        emotions_module = _bbia_emotions_cls()()
+        behavior_manager = _bbia_behavior_manager_cls()()
 
         return RobotCapabilities(
             model="Reachy Mini Wireless",
@@ -256,7 +269,7 @@ async def apply_emotion(
     """
     try:
         # Initialiser le module émotions
-        emotions_module = BBIAEmotions()
+        emotions_module = _bbia_emotions_cls()()
 
         # Vérifier que l'émotion existe
         available_emotions = list(emotions_module.emotions.keys())
@@ -317,7 +330,7 @@ async def execute_behavior(
     """
     try:
         # Initialiser le module comportements
-        behavior_manager = BBIABehaviorManager()
+        behavior_manager = _bbia_behavior_manager_cls()()
 
         # Vérifier que le comportement existe
         available_behaviors = list(behavior_manager.behaviors.keys())
@@ -360,7 +373,7 @@ async def get_available_emotions() -> dict[str, Any]:
 
     """
     try:
-        emotions_module = BBIAEmotions()
+        emotions_module = _bbia_emotions_cls()()
         emotions = list(emotions_module.emotions.keys())
 
         # Descriptions des émotions
@@ -408,7 +421,7 @@ async def get_available_behaviors() -> dict[str, Any]:
 
     """
     try:
-        behavior_manager = BBIABehaviorManager()
+        behavior_manager = _bbia_behavior_manager_cls()()
         behaviors = list(behavior_manager.behaviors.keys())
 
         # Descriptions des comportements

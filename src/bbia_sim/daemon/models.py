@@ -8,10 +8,8 @@ import numpy as np
 import numpy.typing as npt
 from pydantic import BaseModel, Field, field_validator
 
-try:
-    from reachy_mini.utils.interpolation import HeadPose  # type: ignore[import-untyped]
-except ImportError:
-    HeadPose = Any  # type: ignore[misc,assignment]
+# Ne pas importer reachy_mini ici : son __init__ charge media_manager (hang).
+HeadPose = Any  # type: ignore[misc,assignment]
 
 
 class AnyPose(BaseModel):

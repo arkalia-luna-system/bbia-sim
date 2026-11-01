@@ -22,11 +22,6 @@ from pydantic import BaseModel, Field
 
 from bbia_sim.utils.enum_compat import StrEnum
 
-try:
-    from reachy_mini.motion.recorded_move import RecordedMoves
-except ImportError:
-    RecordedMoves = None
-
 import contextlib
 
 from fastapi import Query
@@ -49,6 +44,25 @@ from bbia_sim.multi_layer_queue import (
 )
 
 logger = logging.getLogger(__name__)
+
+# RecordedMoves : import paresseux (reachy_mini.__init__ → media_manager hang).
+_RecordedMovesCls: Any = None
+_RECORDED_MOVES_LOAD_ATTEMPTED = False
+
+
+def _get_recorded_moves_cls() -> Any:
+    """Charge RecordedMoves à la demande uniquement."""
+    global _RecordedMovesCls, _RECORDED_MOVES_LOAD_ATTEMPTED
+    if _RECORDED_MOVES_LOAD_ATTEMPTED:
+        return _RecordedMovesCls
+    _RECORDED_MOVES_LOAD_ATTEMPTED = True
+    try:
+        from reachy_mini.motion.recorded_move import RecordedMoves as _RM
+    except ImportError:
+        _RecordedMovesCls = None
+    else:
+        _RecordedMovesCls = _RM
+    return _RecordedMovesCls
 
 router = APIRouter(prefix="/move")
 
@@ -302,6 +316,7 @@ async def discover_recorded_move_datasets() -> list[str]:
 @router.get("/recorded-move-datasets/list/{dataset_name:path}")
 async def list_recorded_move_dataset(dataset_name: str) -> list[str]:
     """Liste les mouvements enregistrés disponibles dans un dataset (conforme SDK)."""
+    RecordedMoves = _get_recorded_moves_cls()
     if RecordedMoves is None:
         raise HTTPException(
             status_code=501,
@@ -326,6 +341,7 @@ async def play_recorded_move_dataset(
     backend: Annotated[BackendAdapter, Depends(get_backend_adapter_for_move)],
 ) -> MoveUUID:
     """Demande au robot de jouer un mouvement enregistré depuis un dataset (conforme SDK officiel)."""
+    RecordedMoves = _get_recorded_moves_cls()
     if RecordedMoves is None:
         raise HTTPException(
             status_code=501,

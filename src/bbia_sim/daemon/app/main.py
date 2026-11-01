@@ -22,6 +22,7 @@ from bbia_sim.daemon.simulation_service import simulation_service
 from bbia_sim.daemon.ws import telemetry
 from bbia_sim.robot_factory import RobotFactory
 
+# Routers : pas d'import reachy_mini/media au top-level (lazy dans move/backends).
 from .routers import (
     apps,
     daemon,
