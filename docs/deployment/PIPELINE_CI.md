@@ -75,6 +75,14 @@ sequenceDiagram
 
 ```
 
+
+### Perf mypy (contrat CI)
+
+- incremental + cache_fine_grained
+- follow_imports=skip
+- périmètre CI: mypy src/ (~120 modules)
+- mesure locale cache chaud: ~33s exit 0 (2026-11-01)
+
 ## Axes d'amélioration
 
 - ✅ Matrice Python : 3.11 / 3.12 - **TERMINÉ** (24 Nov. 2025)

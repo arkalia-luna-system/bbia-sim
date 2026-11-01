@@ -64,8 +64,17 @@ PY
 
 ## Références
 
-- SDK : https://github.com/pollen-robotics/reachy_mini (tag v1.13.0)
+- SDK GitHub : https://github.com/pollen-robotics/reachy_mini (tag **v1.13.0**)
+- Clone de référence local (lecture seule) : `/Users/athalia/Documents/dev/reachy_mini` @ `v1.13.0`
 - Garde code : `src/bbia_sim/hardware_guard.py`
 - Sécurité DO/DON’T : [`SECURITE_ROBOT.md`](SECURITE_ROBOT.md)
+
+## BBIA vs SDK Pollen (honnête)
+
+| Domaine | Qui mène | Note |
+|---|---|---|
+| Firmware / daemon / moteurs | **Pollen** | BBIA s appuye dessus |
+| Couche cognitive BBIA | **BBIA** | Au-dessus du SDK |
+| Garde hardware | BBIA (`BBIA_ALLOW_HARDWARE`) | Sans flag → sim forcée |
 
 **Dernière mise à jour** : mission alignement SDK 1.13 / sécurité hardware
