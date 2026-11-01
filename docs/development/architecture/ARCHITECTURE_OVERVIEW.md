@@ -250,7 +250,7 @@ class ReachyMiniBackend(RobotAPI):
  """Backend robot Reachy Mini officiel."""
 
  def __init__(self):
- self.reachy_mini = ReachyMini()
+ self.reachy_mini = ReachyMini(...)  # uniquement si BBIA_ALLOW_HARDWARE=1
  self.zenoh_client = ZenohClient()
 
 ```text

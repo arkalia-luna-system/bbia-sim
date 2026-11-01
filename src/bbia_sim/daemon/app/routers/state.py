@@ -71,12 +71,23 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
             )
             timeout = 1.0
 
+        # Télémétrie SDK réelle = robot/daemon : exige aussi BBIA_ALLOW_HARDWARE
+        from bbia_sim.hardware_guard import is_hardware_allowed
+
+        if not is_hardware_allowed():
+            logger.debug(
+                "Télémétrie SDK ignorée: BBIA_ALLOW_HARDWARE non activé "
+                "(BBIA_TELEMETRY_SDK seul ne suffit pas)"
+            )
+            return None
+
         # Créer un backend SDK avec tentative connexion rapide
         backend = RobotFactory.create_backend(
             "reachy_mini",
             use_sim=False,
             timeout=timeout,
             spawn_daemon=False,
+            media_backend="no_media",
         )
         if backend is None:
             return None

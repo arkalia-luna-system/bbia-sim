@@ -20,6 +20,7 @@
 
 ### 🎮 Mouvements et Contrôle
 
+- **[Premier jour robot](PREMIER_JOUR_ROBOT.md)** - Procédure sûre (BBIA_ALLOW_HARDWARE)
 - **[Mouvements Reachy Mini](MOUVEMENTS_REACHY_MINI.md)** - Guide des mouvements
 - **[Sécurité Robot](SECURITE_ROBOT.md)** - DO/DON'T sécurité
 

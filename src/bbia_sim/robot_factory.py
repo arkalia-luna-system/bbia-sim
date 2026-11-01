@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Any
 from .backends.mujoco_backend import MuJoCoBackend
 from .backends.reachy_backend import ReachyBackend
 from .backends.reachy_mini_backend import ReachyMiniBackend
+from .hardware_guard import is_hardware_allowed, resolve_use_sim
 
 if TYPE_CHECKING:
     from .robot_api import RobotAPI
@@ -69,16 +70,22 @@ class RobotFactory:
         try:
             backend_type = RobotFactory._normalize_backend_type(backend_type)
 
-            # NOUVEAU: Support mode "auto" - détection automatique robot réel
+            # Mode "auto": robot réel uniquement si BBIA_ALLOW_HARDWARE=1
             if backend_type == "auto":
-                # NOUVEAU: Utiliser RobotRegistry pour découverte automatique
+                if not is_hardware_allowed():
+                    logger.info(
+                        "Mode auto: hardware non autorisé "
+                        "(BBIA_ALLOW_HARDWARE) → simulation MuJoCo"
+                    )
+                    return RobotFactory.create_backend("mujoco", **kwargs)
+
+                # Découverte / connexion robot réel (flag hardware déjà validé)
                 try:
                     from bbia_sim.robot_registry import RobotRegistry
 
                     registry = RobotRegistry()
                     discovered_robots = registry.discover_robots(timeout=2.0)
 
-                    # Si robots découverts, essayer de se connecter au premier
                     if discovered_robots:
                         robot_info = discovered_robots[0]
                         logger.info(
@@ -88,7 +95,6 @@ class RobotFactory:
                             robot_info.get("port", 8080),
                         )
 
-                        # Essayer connexion avec informations découvertes
                         try:
                             backend = RobotFactory.create_backend(
                                 "reachy_mini",
@@ -105,7 +111,6 @@ class RobotFactory:
                 except Exception as e:
                     logger.debug("Découverte automatique échouée: %s", e)
 
-                # Essayer robot réel d'abord (reachy_mini avec use_sim=False)
                 try:
                     backend = RobotFactory.create_backend(
                         "reachy_mini",
@@ -120,12 +125,10 @@ class RobotFactory:
                         and hasattr(backend, "is_connected")
                         and backend.is_connected
                     ):
-                        # Si robot est None mais is_connected=True, c'est généralement mode sim
                         logger.debug("Robot en mode simulation, fallback vers MuJoCo")
                 except Exception as e:
                     logger.debug("Robot réel non disponible: %s", e)
 
-                # Fallback vers simulation MuJoCo
                 logger.info("⚠️ Robot réel non disponible, utilisation simulation")
                 return RobotFactory.create_backend("mujoco", **kwargs)
 
@@ -144,16 +147,19 @@ class RobotFactory:
 
             if backend_type == "reachy_mini":
                 # Paramètres SDK officiel ReachyMini
-                # use_sim=True par défaut pour éviter timeout si pas de robot physique
-                # L'utilisateur peut forcer use_sim=False pour chercher un robot réel
+                # use_sim=True par défaut ; robot physique = use_sim=False + BBIA_ALLOW_HARDWARE=1
+                requested_sim = bool(kwargs.get("use_sim", True))
+                effective_sim = resolve_use_sim(
+                    requested_sim, context="RobotFactory.reachy_mini"
+                )
                 return ReachyMiniBackend(
                     localhost_only=kwargs.get("localhost_only", True),
                     spawn_daemon=kwargs.get("spawn_daemon", False),
-                    use_sim=kwargs.get("use_sim", True),  # Par défaut mode simulation
+                    use_sim=effective_sim,
                     timeout=kwargs.get("timeout", 3.0),  # Timeout réduit à 3s
                     automatic_body_yaw=kwargs.get("automatic_body_yaw", True),
                     log_level=kwargs.get("log_level", "INFO"),
-                    media_backend=kwargs.get("media_backend", "default"),
+                    media_backend=kwargs.get("media_backend", "no_media"),
                     robot_name=kwargs.get("robot_name", "reachy_mini"),
                     host=kwargs.get("host", "reachy-mini.local"),
                     port=kwargs.get("port", 8000),
@@ -200,7 +206,8 @@ class RobotFactory:
             "auto": {
                 "name": "Auto-Détection",
                 "description": (
-                    "Détecte automatiquement robot réel, fallback vers simulation"
+                    "Simulation MuJoCo par défaut ; robot réel seulement si "
+                    "BBIA_ALLOW_HARDWARE=1, sinon fallback sim"
                 ),
                 "supports_viewer": True,
                 "supports_headless": True,

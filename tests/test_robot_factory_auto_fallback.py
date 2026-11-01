@@ -9,8 +9,20 @@ from bbia_sim.robot_factory import RobotFactory
 class TestAutoFallback:
     """Tests pour mode 'auto' avec fallback automatique."""
 
-    def test_auto_detects_robot_when_available(self):
-        """Test détection robot si disponible."""
+    def test_auto_defaults_to_mujoco_without_hardware_flag(self, monkeypatch):
+        """Sans BBIA_ALLOW_HARDWARE, auto → MuJoCo (pas de tentative robot)."""
+        monkeypatch.delenv("BBIA_ALLOW_HARDWARE", raising=False)
+        with patch("bbia_sim.robot_factory.ReachyMiniBackend") as mock_rm:
+            with patch("bbia_sim.robot_factory.MuJoCoBackend") as mock_sim:
+                mock_sim.return_value = MagicMock(name="mujoco")
+                backend = RobotFactory.create_backend("auto")
+                assert backend is not None
+                mock_rm.assert_not_called()
+                mock_sim.assert_called_once()
+
+    def test_auto_detects_robot_when_available(self, monkeypatch):
+        """Test détection robot si disponible (flag hardware requis)."""
+        monkeypatch.setenv("BBIA_ALLOW_HARDWARE", "1")
         with patch("bbia_sim.robot_factory.ReachyMiniBackend") as mock_backend_class:
             mock_instance = MagicMock()
             mock_instance.is_connected = True
@@ -24,8 +36,9 @@ class TestAutoFallback:
             assert backend.robot is not None
             mock_backend_class.assert_called_once()
 
-    def test_auto_fallback_to_sim_when_robot_unavailable(self):
-        """Test fallback sim si robot absent."""
+    def test_auto_fallback_to_sim_when_robot_unavailable(self, monkeypatch):
+        """Test fallback sim si robot absent (avec flag hardware)."""
+        monkeypatch.setenv("BBIA_ALLOW_HARDWARE", "1")
         with patch(
             "bbia_sim.robot_factory.ReachyMiniBackend",
             side_effect=Exception("No robot"),
@@ -40,8 +53,9 @@ class TestAutoFallback:
                 assert isinstance(backend, type(mock_instance))
                 mock_sim.assert_called_once()
 
-    def test_auto_handles_connection_errors(self):
+    def test_auto_handles_connection_errors(self, monkeypatch):
         """Test gestion erreurs connexion."""
+        monkeypatch.setenv("BBIA_ALLOW_HARDWARE", "1")
         with patch("bbia_sim.robot_factory.ReachyMiniBackend") as mock_backend_class:
             mock_instance = MagicMock()
             mock_instance.is_connected = True
@@ -58,8 +72,9 @@ class TestAutoFallback:
                 assert backend is not None
                 mock_sim.assert_called_once()
 
-    def test_auto_preserves_kwargs(self):
+    def test_auto_preserves_kwargs(self, monkeypatch):
         """Test préservation kwargs lors fallback."""
+        monkeypatch.setenv("BBIA_ALLOW_HARDWARE", "1")
         with patch(
             "bbia_sim.robot_factory.ReachyMiniBackend",
             side_effect=Exception("Connection failed"),
@@ -77,8 +92,9 @@ class TestAutoFallback:
                 call_kwargs = mock_sim.call_args[1] if mock_sim.call_args else {}
                 assert "fast" in call_kwargs or "model_path" in call_kwargs
 
-    def test_auto_case_insensitive(self):
+    def test_auto_case_insensitive(self, monkeypatch):
         """Test mode auto insensible à la casse."""
+        monkeypatch.delenv("BBIA_ALLOW_HARDWARE", raising=False)
         with patch(
             "bbia_sim.robot_factory.ReachyMiniBackend",
             side_effect=Exception("No robot"),
@@ -106,4 +122,4 @@ class TestAutoFallback:
         info = RobotFactory.get_backend_info("auto")
         assert isinstance(info, dict)
         assert info["name"] == "Auto-Détection"
-        assert "Détecte automatiquement" in info["description"]
+        assert "BBIA_ALLOW_HARDWARE" in info["description"]

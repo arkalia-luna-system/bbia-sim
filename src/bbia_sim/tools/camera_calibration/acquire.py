@@ -38,7 +38,7 @@ def acquire_images(
     delay: float = 2.0,
     resolution: tuple[int, int] | None = None,
     crop: tuple[int, int, int, int] | None = None,
-    use_sim: bool = False,
+    use_sim: bool = True,
 ) -> None:
     """Acquiert des images pour calibration.
 
@@ -48,22 +48,40 @@ def acquire_images(
         delay: Délai entre captures (secondes)
         resolution: Résolution (width, height) ou None pour auto
         crop: Zone de crop (x, y, width, height) ou None
-        use_sim: Utiliser simulation si True
+        use_sim: True (défaut) → webcam OpenCV / pas de ReachyMini hardware.
+            False exige BBIA_ALLOW_HARDWARE=1
     """
     output_dir.mkdir(parents=True, exist_ok=True)
 
     # Initialiser caméra
     camera = None
-    if SDK_AVAILABLE:
+    if SDK_AVAILABLE and not use_sim:
         try:
-            robot = ReachyMini(use_sim=use_sim)
+            from bbia_sim.hardware_guard import require_hardware_allowed
+
+            require_hardware_allowed(action="calibration caméra robot")
+            # media_backend explicite: caméra robot (pas no_media)
+            robot = ReachyMini(
+                connection_mode="localhost_only",
+                spawn_daemon=False,
+                use_sim=False,
+                media_backend="default",
+            )
             robot.__enter__()
             if hasattr(robot, "media") and robot.media:
                 camera = robot.media.camera
-                print(f"✅ Caméra SDK Reachy Mini initialisée (sim={use_sim})")
+                print("✅ Caméra SDK Reachy Mini initialisée (hardware)")
+        except PermissionError as e:
+            print(f"⚠️  {e}")
+            camera = None
         except Exception as e:
             print(f"⚠️  Échec initialisation SDK: {e}")
             camera = None
+    elif SDK_AVAILABLE and use_sim:
+        print(
+            "ℹ️  Mode sim/calibration locale: pas d'instanciation ReachyMini "
+            "(évite connexion daemon). Webcam OpenCV si besoin."
+        )
 
     if camera is None:
         # Fallback webcam OpenCV
@@ -178,7 +196,17 @@ def main() -> None:
     )
     parser.add_argument("--resolution", type=str, help="Résolution (ex: 640x480)")
     parser.add_argument("--crop", type=str, help="Crop (ex: 100,100,640,480)")
-    parser.add_argument("--sim", action="store_true", help="Utiliser simulation")
+    parser.add_argument(
+        "--sim",
+        action="store_true",
+        default=True,
+        help="Mode sûr (défaut): webcam locale, pas de robot",
+    )
+    parser.add_argument(
+        "--hardware",
+        action="store_true",
+        help="Caméra robot réel (exige BBIA_ALLOW_HARDWARE=1)",
+    )
 
     args = parser.parse_args()
 
@@ -198,7 +226,7 @@ def main() -> None:
         delay=args.delay,
         resolution=resolution,
         crop=crop,
-        use_sim=args.sim,
+        use_sim=not args.hardware,
     )
 
 

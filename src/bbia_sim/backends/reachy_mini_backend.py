@@ -15,20 +15,84 @@ import numpy.typing as npt
 
 from bbia_sim.utils.types import JointPositions, TelemetryData
 
-try:
-    from reachy_mini import ReachyMini  # type: ignore[import-untyped]
-    from reachy_mini.utils import create_head_pose  # type: ignore[import-untyped]
-
-    REACHY_MINI_AVAILABLE = True
-except ImportError:
-    REACHY_MINI_AVAILABLE = False
-    ReachyMini = None
-    create_head_pose = None
+# Import paresseux du SDK : `import reachy_mini` peut bloquer (discovery/réseau).
+# Ne jamais charger ReachyMini au import du module BBIA.
+ReachyMini: Any = None
+create_head_pose: Any = None
+REACHY_MINI_AVAILABLE = False
+_SDK_LOAD_ATTEMPTED = False
 
 if TYPE_CHECKING:
     from reachy_mini.utils import HeadPose  # type: ignore[import-untyped]
 
+from bbia_sim.hardware_guard import resolve_use_sim
 from bbia_sim.robot_api import RobotAPI
+
+
+def _fallback_create_head_pose(
+    pitch: float = 0.0,
+    yaw: float = 0.0,
+    roll: float = 0.0,
+    degrees: bool = False,
+    x: float = 0.0,
+    y: float = 0.0,
+    z: float = 0.0,
+    mm: bool = False,
+) -> npt.NDArray[np.float64]:
+    """Pose 4x4 locale (équivalent mathématique SDK) si reachy_mini non chargé."""
+    if degrees:
+        roll, pitch, yaw = np.deg2rad([roll, pitch, yaw])
+    cr, sr = np.cos(roll), np.sin(roll)
+    cp, sp = np.cos(pitch), np.sin(pitch)
+    cy, sy = np.cos(yaw), np.sin(yaw)
+    # Euler XYZ comme reachy_mini.utils.create_head_pose
+    rot = np.array(
+        [
+            [cy * cp, cy * sp * sr - sy * cr, cy * sp * cr + sy * sr],
+            [sy * cp, sy * sp * sr + cy * cr, sy * sp * cr - cy * sr],
+            [-sp, cp * sr, cp * cr],
+        ],
+        dtype=np.float64,
+    )
+    pose = np.eye(4, dtype=np.float64)
+    pose[:3, :3] = rot
+    pose[0, 3] = x / 1000.0 if mm else x
+    pose[1, 3] = y / 1000.0 if mm else y
+    pose[2, 3] = z / 1000.0 if mm else z
+    return pose
+
+
+def _ensure_reachy_mini_sdk() -> bool:
+    """Charge le SDK officiel une seule fois, seulement à la demande (hardware)."""
+    global ReachyMini, create_head_pose, REACHY_MINI_AVAILABLE, _SDK_LOAD_ATTEMPTED
+    if _SDK_LOAD_ATTEMPTED:
+        return REACHY_MINI_AVAILABLE
+    _SDK_LOAD_ATTEMPTED = True
+    _log = logging.getLogger(__name__)
+    try:
+        from reachy_mini import ReachyMini as _RM  # type: ignore[import-untyped]
+        from reachy_mini.utils import (  # type: ignore[import-untyped]
+            create_head_pose as _CHP,
+        )
+
+        ReachyMini = _RM
+        create_head_pose = _CHP
+        REACHY_MINI_AVAILABLE = True
+        _log.info("SDK reachy_mini chargé à la demande")
+    except ImportError:
+        ReachyMini = None
+        create_head_pose = _fallback_create_head_pose
+        REACHY_MINI_AVAILABLE = False
+        _log.debug("SDK reachy_mini indisponible — fallback pose locale")
+    return REACHY_MINI_AVAILABLE
+
+
+def _get_create_head_pose() -> Any:
+    """Retourne create_head_pose SDK ou fallback local (sans forcer le chargement réseau)."""
+    if create_head_pose is not None:
+        return create_head_pose
+    return _fallback_create_head_pose
+
 
 # Constantes Stewart platform (alignées SDK officiel)
 STEWART_JOINTS_COUNT = 6  # 6 joints stewart (stewart_1 à stewart_6)
@@ -88,13 +152,10 @@ def _create_cached_head_pose(
         Matrice de transformation 4x4 (numpy array)
 
     """
-    if not REACHY_MINI_AVAILABLE or create_head_pose is None:
-        # Fallback: créer matrice identité si SDK non disponible
-        return np.eye(4, dtype=np.float64)
-
+    pose_fn = _get_create_head_pose()
     try:
-        # Appeler la fonction originale du SDK (pas récursif)
-        pose = create_head_pose(
+        # SDK si déjà chargé, sinon fallback local (évite import réseau au démarrage)
+        pose = pose_fn(
             pitch=pitch,
             yaw=yaw,
             roll=roll,
@@ -159,11 +220,11 @@ class ReachyMiniBackend(RobotAPI):
         self,
         localhost_only: bool = True,
         spawn_daemon: bool = False,
-        use_sim: bool = False,
+        use_sim: bool = True,
         timeout: float = 5.0,
         automatic_body_yaw: bool = True,
         log_level: str = "INFO",
-        media_backend: str = "default",
+        media_backend: str = "no_media",
         robot_name: str = "reachy_mini",
         host: str = "reachy-mini.local",
         port: int = 8000,
@@ -174,11 +235,12 @@ class ReachyMiniBackend(RobotAPI):
         Args:
             localhost_only: Si True, se connecte uniquement au localhost
             spawn_daemon: Si True, lance le daemon automatiquement
-            use_sim: Si True, utilise le mode simulation du SDK
+            use_sim: Si True, mode simulation BBIA (défaut sûr). Robot physique
+                uniquement si use_sim=False **et** BBIA_ALLOW_HARDWARE=1
             timeout: Timeout de connexion en secondes
             automatic_body_yaw: Active la rotation automatique du corps
             log_level: Niveau de log ('DEBUG', 'INFO', 'WARNING', 'ERROR')
-            media_backend: Backend média à utiliser
+            media_backend: Backend média SDK (défaut no_media — sûr / headless)
             robot_name: Nom du robot (SDK officiel, défaut reachy_mini)
             host: Hôte du daemon (défaut reachy-mini.local)
             port: Port FastAPI du daemon (défaut 8000)
@@ -188,7 +250,7 @@ class ReachyMiniBackend(RobotAPI):
         super().__init__()
         self.localhost_only = localhost_only
         self.spawn_daemon = spawn_daemon
-        self.use_sim = use_sim
+        self.use_sim = resolve_use_sim(use_sim, context="ReachyMiniBackend.__init__")
         self.timeout = timeout
         self.automatic_body_yaw = automatic_body_yaw
         self.log_level = log_level
@@ -278,17 +340,26 @@ class ReachyMiniBackend(RobotAPI):
         lors de la connexion et du démarrage du robot. Cela protège les futurs
         moteurs contre le problème de batch QC 2544 (moteurs non flashés à l'usine).
 
+        Sécurité BBIA: exige BBIA_ALLOW_HARDWARE=1 (voir hardware_guard).
+
         Returns:
             True si connexion réussie, False sinon
 
         """
+        # Garde redondante (connect() force déjà use_sim) — défense en profondeur
+        if resolve_use_sim(False, context="ReachyMiniBackend._try_connect_robot"):
+            self._activate_simulation_mode("hardware non autorisé")
+            return False
+        if not _ensure_reachy_mini_sdk() or ReachyMini is None:
+            self._activate_simulation_mode("SDK reachy_mini non disponible")
+            return False
         try:
             # SDK 1.9+ : connection_mode ("auto" | "localhost_only" | "network")
             # localhost_only reste accepté en compatibilité descendante.
             connection_mode = self.connection_mode
             connect_kwargs: dict[str, Any] = {
                 "spawn_daemon": self.spawn_daemon,
-                "use_sim": False,  # Essayer la connexion réelle
+                "use_sim": False,  # Connexion daemon réel (flag hardware déjà validé)
                 "timeout": min(self.timeout, 3.0),  # Max 3 secondes
                 "automatic_body_yaw": self.automatic_body_yaw,
                 "log_level": self.log_level,
@@ -351,20 +422,29 @@ class ReachyMiniBackend(RobotAPI):
             return False
 
     def connect(self) -> bool:
-        """Connecte au robot Reachy-Mini officiel."""
-        if not REACHY_MINI_AVAILABLE:
-            self._activate_simulation_mode("SDK reachy_mini non disponible")
-            if not self.use_sim:
-                self._start_watchdog()
-            return True
+        """Connecte au robot Reachy-Mini officiel.
 
-        # Si use_sim=True, utiliser directement le mode simulation
+        Par défaut (use_sim=True ou sans BBIA_ALLOW_HARDWARE) : simulation BBIA,
+        sans instancier ``ReachyMini()`` (qui se connecterait à un daemon réel).
+        """
+        # Re-évaluer le garde à chaque connect (l'env peut changer en runtime)
+        self.use_sim = resolve_use_sim(
+            self.use_sim, context="ReachyMiniBackend.connect"
+        )
+
+        # Si use_sim=True, simulation BBIA sans charger le SDK (pas d'effet réseau)
         if self.use_sim:
             self._activate_simulation_mode("use_sim=True")
             self._start_watchdog()
             return True
 
-        # Tenter connexion réelle
+        # Hardware : charger le SDK seulement maintenant
+        if not _ensure_reachy_mini_sdk():
+            self._activate_simulation_mode("SDK reachy_mini non disponible")
+            self._start_watchdog()
+            return True
+
+        # Tenter connexion réelle (BBIA_ALLOW_HARDWARE déjà validé)
         if self._try_connect_robot():
             return True
 
@@ -924,19 +1004,8 @@ class ReachyMiniBackend(RobotAPI):
             )
             intensity = max(0.0, min(1.0, intensity))
 
-        # Vérifier si le SDK est disponible
-        if not REACHY_MINI_AVAILABLE or create_head_pose is None:
-            # Mode simulation sans SDK
-            self.current_emotion = emotion
-            self.emotion_intensity = intensity
-            logger.info(
-                "Émotion simulée (sans SDK): %s (intensité: %s)",
-                emotion,
-                intensity,
-            )
-            return True
-
         # Mapping émotions vers poses tête - valeurs de base (intensité 1.0)
+        # (fallback local create_head_pose si SDK non chargé)
         emotion_base_poses = {
             "happy": {"pitch": 0.1, "yaw": 0.0},
             "sad": {"pitch": -0.1, "yaw": 0.0},

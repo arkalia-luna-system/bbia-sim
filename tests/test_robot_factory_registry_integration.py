@@ -9,8 +9,9 @@ from bbia_sim.robot_factory import RobotFactory
 class TestRobotFactoryRegistryIntegration:
     """Tests pour intégration RobotFactory avec RobotRegistry."""
 
-    def test_auto_mode_uses_registry_for_discovery(self):
+    def test_auto_mode_uses_registry_for_discovery(self, monkeypatch):
         """Test que mode 'auto' utilise RobotRegistry pour découverte."""
+        monkeypatch.setenv("BBIA_ALLOW_HARDWARE", "1")
         with patch("bbia_sim.robot_registry.RobotRegistry") as mock_registry_class:
             mock_registry = MagicMock()
             mock_registry.discover_robots.return_value = [
@@ -34,8 +35,9 @@ class TestRobotFactoryRegistryIntegration:
                 # Vérifier que registry a été utilisé
                 mock_registry.discover_robots.assert_called_once()
 
-    def test_auto_mode_fallback_if_registry_fails(self):
+    def test_auto_mode_fallback_if_registry_fails(self, monkeypatch):
         """Test que mode 'auto' fallback si registry échoue."""
+        monkeypatch.setenv("BBIA_ALLOW_HARDWARE", "1")
         with patch("bbia_sim.robot_registry.RobotRegistry") as mock_registry_class:
             mock_registry_class.side_effect = Exception("Registry error")
 
@@ -55,8 +57,9 @@ class TestRobotFactoryRegistryIntegration:
                     assert backend is not None
                     mock_sim.assert_called_once()
 
-    def test_auto_mode_uses_discovered_robot_info(self):
+    def test_auto_mode_uses_discovered_robot_info(self, monkeypatch):
         """Test que mode 'auto' utilise infos robot découvert."""
+        monkeypatch.setenv("BBIA_ALLOW_HARDWARE", "1")
         with patch("bbia_sim.robot_registry.RobotRegistry") as mock_registry_class:
             mock_registry = MagicMock()
             mock_registry.discover_robots.return_value = [
@@ -69,6 +72,7 @@ class TestRobotFactoryRegistryIntegration:
             ]
             mock_registry_class.return_value = mock_registry
 
+            monkeypatch.setenv("BBIA_ALLOW_HARDWARE", "1")
             with patch("bbia_sim.robot_factory.ReachyMiniBackend") as mock_backend:
                 mock_instance = MagicMock()
                 mock_instance.is_connected = True
