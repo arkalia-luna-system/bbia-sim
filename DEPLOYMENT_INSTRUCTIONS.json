@@ -1,7 +1,7 @@
 {
-  "title": "BBIA-SIM v1.3.0 - Instructions de Déploiement",
-  "version": "1.3.0-pre-release",
-  "date": "2024-10-25",
+  "title": "BBIA-SIM — Instructions de déploiement (historique)",
+  "version": "historique",
+  "date": "2024-10-25 (obsolète — voir docs/deployment/ et README.md)",
   "deployment_options": [
     {
       "platform": "Render.com",
@@ -60,5 +60,7 @@
     "Générer vidéo démonstration pour YouTube/LinkedIn",
     "Partager avec communauté Reachy Mini",
     "Utiliser pour candidatures emploi senior"
-  ]
+  ],
+  "status": "archived_reference",
+  "note": "Fichier conservé pour scripts/deploy_external_communication.py ; préférer docs/deployment/."
 }

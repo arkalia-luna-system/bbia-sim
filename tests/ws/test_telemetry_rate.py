@@ -56,9 +56,6 @@ class TestTelemetryRate:
                 assert "joints" in data
 
     @pytest.mark.asyncio
-    @pytest.mark.skipif(
-        os.getenv("CI") is not None, reason="Test WebSocket flaky en CI"
-    )
     async def test_telemetry_message_format(self):
         """Test le format des messages de télémétrie."""
         client = TestClient(app)

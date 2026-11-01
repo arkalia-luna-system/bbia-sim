@@ -25,10 +25,13 @@ def sanitize_sound_filename(filename: str | None) -> str:
     if not filename or not str(filename).strip():
         raise ValueError("Filename is required")
     raw = str(filename).strip()
-    if "/" in raw or "\\" in raw or ".." in raw.split("/") or raw in (".", ".."):
+    # Null byte = extension spoofing / truncation OS (ex: tone.wav\x00.sh)
+    if "\x00" in raw:
+        raise ValueError("Invalid filename")
+    if "/" in raw or "\\" in raw or raw in (".", ".."):
         raise ValueError("Path traversal rejected")
     safe = Path(raw).name
-    if not safe or safe != raw:
+    if not safe or safe != raw or "\x00" in safe:
         raise ValueError("Invalid filename")
     ext = Path(safe).suffix.lower()
     if ext not in ALLOWED_SOUND_EXTENSIONS:

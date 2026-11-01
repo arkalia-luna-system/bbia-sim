@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Script COMPLET de vérification professionnelle de la documentation BBIA.
 
-🔍 FUSION DE :
+🔍 FUSION / SUCCESSEUR DE :
 - verify_documentation.py (précision et cohérence avec code)
-- audit_complet_md.py (dates, contenu, organisation)
-- verify_docs_complete.py (nouveau - vérification formatage complète)
+- audit_complet_md.py (dates, contenu — archivé `_archived/one_shot_hygiene_2026/`)
+- verify_md_links / fix_md_links / verify_docs_links (archivés même dossier)
 
 ✅ VÉRIFICATIONS COMPLÈTES :
 - 🔗 Liens (internes/externes brisés, ancres)

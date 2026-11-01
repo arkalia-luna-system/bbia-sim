@@ -18,7 +18,7 @@ from typing import Any
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
-from bbia_sim.media_guard import is_audio_disabled, refuse_shell_audio_command
+from bbia_sim.media_guard import is_audio_disabled
 from bbia_sim.robot_factory import RobotFactory
 
 logger = logging.getLogger(__name__)
@@ -135,8 +135,7 @@ async def set_speaker_volume(request: VolumeRequest) -> dict[str, Any]:
     """
     try:
         global _speaker_volume
-        # Défense : jamais de chemin shell amixer (#1521) — volume Pydantic only
-        refuse_shell_audio_command(None, context="speaker.volume")
+        # Défense #1521 : volume float Pydantic only — aucun shell amixer
         if is_audio_disabled():
             logger.info(
                 "BBIA_DISABLE_AUDIO=1 : volume speaker mémorisé localement "
@@ -188,7 +187,7 @@ async def set_microphone_volume(request: VolumeRequest) -> dict[str, Any]:
     """
     try:
         global _microphone_volume
-        refuse_shell_audio_command(None, context="microphone.volume")
+        # Défense #1521 : volume float Pydantic only — aucun shell amixer
         if is_audio_disabled():
             _microphone_volume = request.volume
             return {

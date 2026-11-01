@@ -18,6 +18,8 @@ def test_safe_media_upload_rejects_shell_and_traversal(tmp_path) -> None:
     with pytest.raises(ValueError):
         safe_media_upload.sanitize_sound_filename("../etc/passwd.wav")
     with pytest.raises(ValueError):
+        safe_media_upload.sanitize_sound_filename("tone.wav\x00.sh")
+    with pytest.raises(ValueError):
         safe_media_upload.validate_sound_payload("ok.wav", b"not-a-riff")
     dest = safe_media_upload.safe_dest_under(tmp_path, "tone.wav")
     assert dest.parent == tmp_path.resolve()

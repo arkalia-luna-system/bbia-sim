@@ -35,6 +35,13 @@
 - **Raison**: Fusionné dans `verify_documentation.py`
 - **Alternative**: Utiliser `scripts/verify_documentation.py --improve`
 
+
+### `one_shot_hygiene_2026/` (1 Nov 2026)
+
+- **Raison**: scripts d’audit/fix one-shot ou doublons liens MD, sans usage CI
+- **Détail**: voir `one_shot_hygiene_2026/README.md`
+- **Alternatives**: `verify_docs_complete.py`, `verify_documentation.py`, `compare_with_official_exhaustive.py`
+
 ## 💡 Notes
 
 Ces scripts sont conservés pour référence historique mais **ne doivent pas être utilisés**.
