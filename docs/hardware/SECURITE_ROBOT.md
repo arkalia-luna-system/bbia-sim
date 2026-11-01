@@ -11,6 +11,7 @@
 |----------|--------|
 | `BBIA_ALLOW_HARDWARE=1` | Autorise connexion daemon / robot physique |
 | absent / autre | `use_sim` forcé, pas de `ReachyMini()` matériel |
+| `BBIA_WS_KEEPALIVE_TIMEOUT` | Timeout keepalive WS (s, défaut 30) — Pollen #1494 |
 
 Sans ce flag : daemon BBIA, bridge Zenoh, factory `auto` et backends restent en sim.
 

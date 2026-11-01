@@ -610,12 +610,16 @@ async def general_exception_handler(request: Request, exc: Exception) -> JSONRes
 if __name__ == "__main__":
     import uvicorn
 
+    from bbia_sim.daemon.ws.keepalive import uvicorn_ws_keepalive_kwargs
+
     # Configuration pour le développement
     # Utiliser string d'import complète pour éviter problèmes
+    # Keepalive WS (#1494) via BBIA_WS_KEEPALIVE_TIMEOUT
     uvicorn.run(
         "bbia_sim.daemon.app.main:app",
         host="127.0.0.1",
         port=8000,
         reload=False,  # Désactiver reload pour stabilité
         log_level="info",
+        **uvicorn_ws_keepalive_kwargs(),
     )

@@ -41,7 +41,7 @@ Correctif PIN upstream : **1.12.0** (advisory). Upload / traversal : mettre à j
 | [#1512](https://github.com/pollen-robotics/reachy_mini/issues/1512) | Move « finished » alors qu’un autre tourne | wrapper/guard | `create_move_task` refuse le concurrent (HTTP 409) sauf `BBIA_ALLOW_CONCURRENT_MOVES=1` | implémenté |
 | [#1508](https://github.com/pollen-robotics/reachy_mini/issues/1508) | WebRTC audio queue non flushée | N/A BBIA | Pas de `stop_recording` WebRTC Pollen dans BBIA | documenté |
 | [#1507](https://github.com/pollen-robotics/reachy_mini/issues/1507) | USB audio « No Reachy Mini Audio » | doc seule | Premier jour : `media_backend="no_media"` ; `BBIA_DISABLE_AUDIO` | documenté |
-| [#1494](https://github.com/pollen-robotics/reachy_mini/issues/1494) | WS keepalive non configurable | wrapper/guard | `BBIA_WS_KEEPALIVE_TIMEOUT` / `settings.ws_keepalive_timeout` (défaut 30 s) | implémenté |
+| [#1494](https://github.com/pollen-robotics/reachy_mini/issues/1494) | WS keepalive non configurable | wrapper/guard | `BBIA_WS_KEEPALIVE_TIMEOUT` → `uvicorn ws_ping_*` + `receive_text_with_keepalive` (télémétrie / move WS) ; défaut 30 s | implémenté |
 | [#1493](https://github.com/pollen-robotics/reachy_mini/issues/1493) | Pin exact `onnxruntime==1.27.0` | N/A BBIA | BBIA ne pinne pas onnxruntime en cœur ; SDK via extra optionnel | documenté |
 | [#1479](https://github.com/pollen-robotics/reachy_mini/issues/1479) | Oscillation yaw ~3 Hz | doc seule | Amplitudes BBIA bornées (`safe_amplitude_limit`) ; gain servo = firmware | documenté |
 | [#1478](https://github.com/pollen-robotics/reachy_mini/issues/1478) | Sleep droop après coupe couple | doc seule | Observer sur robot ; pas de re-torque agressif BBIA au sleep | documenté |
@@ -64,13 +64,19 @@ export REACHY_ZENOH_CONNECT="tcp://<IP_ROBOT>:7447"
 | Fichier | Rôle |
 |---------|------|
 | `src/bbia_sim/daemon/app/routers/state.py` | Garde #1527 |
-| `src/bbia_sim/daemon/app/routers/move.py` | Garde #1512 |
+| `src/bbia_sim/daemon/app/routers/move.py` | Garde #1512 + receive keepalive #1494 |
 | `src/bbia_sim/daemon/app/routers/apps.py` | Garde #1523 |
 | `src/bbia_sim/daemon/app/safe_media_upload.py` | Garde GHSA upload |
 | `src/bbia_sim/daemon/app/hf_app_installer.py` | Path sanitize (HF) |
 | `src/bbia_sim/daemon/config.py` | `ws_keepalive_timeout` |
+| `src/bbia_sim/daemon/ws/keepalive.py` | Câblage runtime #1494 (uvicorn + receive) |
+| `src/bbia_sim/daemon/ws/telemetry.py` | Receive keepalive #1494 |
 | `src/bbia_sim/backends/reachy_mini_backend.py` | Garde wobbler #1517 |
-| `src/bbia_sim/test_*_regressions.py` / `test_pollen_anticipation_*` | Preuves |
+| `src/bbia_sim/test_pollen_anticipation_regressions.py` + suites state/move/apps/media | Preuves |
+
+**Suite pytest ciblée anticipation** (collect **VÉRIFIÉ** 1 Nov 2026) :
+`test_pollen_anticipation_*` + state/move/apps/media + `test_websocket_auth_regressions`
+→ **27** tests collected / **27** passed. Re-collect avant toute déclaration.
 
 ## Voir aussi
 

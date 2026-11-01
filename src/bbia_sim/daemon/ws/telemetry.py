@@ -11,6 +11,7 @@ from typing import Any
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
 from bbia_sim.daemon.simulation_service import simulation_service
+from bbia_sim.daemon.ws.keepalive import receive_text_with_keepalive
 
 logger = logging.getLogger(__name__)
 
@@ -236,11 +237,10 @@ async def websocket_endpoint(websocket: WebSocket, token: str | None = None) -> 
         if len(manager.active_connections) == 1:
             await manager.start_broadcast()
 
-        # Boucle de réception des messages du client
+        # Boucle de réception (keepalive #1494 via BBIA_WS_KEEPALIVE_TIMEOUT)
         while True:
             try:
-                # Réception d'un message du client
-                data = await websocket.receive_text()
+                data = await receive_text_with_keepalive(websocket)
                 message = json.loads(data)
 
                 # Traitement des commandes du client
@@ -263,6 +263,10 @@ async def websocket_endpoint(websocket: WebSocket, token: str | None = None) -> 
                         websocket,
                     )
 
+            except (asyncio.TimeoutError, TimeoutError):
+                logger.info("WebSocket telemetry: keepalive timeout, fermeture")
+                await websocket.close(code=1001, reason="keepalive timeout")
+                break
             except WebSocketDisconnect:
                 break
             except json.JSONDecodeError:

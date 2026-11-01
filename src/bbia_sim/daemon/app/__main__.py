@@ -123,11 +123,15 @@ if __name__ == "__main__":
     logging.info("📚 API Docs: http://127.0.0.1:8000/docs")
     logging.info("💡 Note: Mode simulation activé (robot physique non requis)")
 
+    from bbia_sim.daemon.ws.keepalive import uvicorn_ws_keepalive_kwargs  # noqa: E402
+
     # Importer directement l'app (pas de string) pour éviter problèmes reload
+    # Keepalive WS (#1494) via BBIA_WS_KEEPALIVE_TIMEOUT
     uvicorn.run(
         app,  # Objet app directement (pas de string)
         host="127.0.0.1",
         port=port,
         reload=False,  # Pas de reload pour éviter problèmes
         log_level="info",
+        **uvicorn_ws_keepalive_kwargs(),
     )

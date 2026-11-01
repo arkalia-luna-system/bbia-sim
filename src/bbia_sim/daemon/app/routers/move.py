@@ -421,10 +421,13 @@ async def ws_move_updates(websocket: WebSocket, token: str | None = None) -> Non
 
     await websocket.accept()
     try:
+        from bbia_sim.daemon.ws.keepalive import receive_text_with_keepalive
+
         move_listeners.append(websocket)
         while True:
-            _ = await websocket.receive_text()
-    except (WebSocketDisconnect, Exception):
+            # Keepalive configurable (#1494 / BBIA_WS_KEEPALIVE_TIMEOUT)
+            _ = await receive_text_with_keepalive(websocket)
+    except (asyncio.TimeoutError, TimeoutError, WebSocketDisconnect, Exception):
         # OPTIMISATION RAM: Nettoyer dans finally pour garantir suppression
         pass
     finally:
@@ -466,8 +469,11 @@ async def ws_set_target(websocket: WebSocket, token: str | None = None) -> None:
     # Créer backend adapter directement (pas de Depends pour WebSockets)
     backend = ws_get_backend_adapter(websocket)
     try:
+        from bbia_sim.daemon.ws.keepalive import receive_text_with_keepalive
+
         while True:
-            data = await websocket.receive_text()
+            # Keepalive configurable (#1494 / BBIA_WS_KEEPALIVE_TIMEOUT)
+            data = await receive_text_with_keepalive(websocket)
             try:
                 target = FullBodyTarget.model_validate_json(data)
                 # Conforme SDK officiel: utiliser set_target directement
@@ -476,7 +482,7 @@ async def ws_set_target(websocket: WebSocket, token: str | None = None) -> None:
                 await websocket.send_text(
                     json.dumps({"status": "error", "detail": str(e)}),
                 )
-    except WebSocketDisconnect:
+    except (asyncio.TimeoutError, TimeoutError, WebSocketDisconnect):
         pass
 
 

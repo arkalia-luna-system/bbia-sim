@@ -66,8 +66,9 @@ PY
 
 ## Anticipation bugs daemon (aperçu)
 
-BBIA refuse par défaut un second move concurrent (Pollen #1512) et tolère
-`state/full` sans target (Pollen #1527). Détail :
+BBIA refuse par défaut un second move concurrent (Pollen #1512), tolère
+`state/full` sans target (Pollen #1527), et expose un keepalive WS
+configurable (`BBIA_WS_KEEPALIVE_TIMEOUT`, Pollen #1494). Détail :
 [`POLLEN_ISSUES_ANTICIPATION.md`](POLLEN_ISSUES_ANTICIPATION.md).
 
 ## Références
