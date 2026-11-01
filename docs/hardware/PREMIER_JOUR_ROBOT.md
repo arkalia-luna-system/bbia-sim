@@ -72,9 +72,18 @@ BBIA refuse par défaut un second move concurrent (Pollen #1512) et tolère
 
 ## Références
 
-- SDK : https://github.com/pollen-robotics/reachy_mini (tag v1.13.0 ; **≥ 1.12.0** pour PIN BT)
+- SDK GitHub : https://github.com/pollen-robotics/reachy_mini (tag **v1.13.0** ; **≥ 1.12.0** pour PIN BT)
+- Clone de référence local (lecture seule) : `/Users/athalia/Documents/dev/reachy_mini` @ `v1.13.0`
 - Garde code : `src/bbia_sim/hardware_guard.py`
 - Sécurité DO/DON’T : [`SECURITE_ROBOT.md`](SECURITE_ROBOT.md)
 - Issues/GHSA : [`POLLEN_ISSUES_ANTICIPATION.md`](POLLEN_ISSUES_ANTICIPATION.md)
+
+## BBIA vs SDK Pollen (honnête)
+
+| Domaine | Qui mène | Note |
+|---|---|---|
+| Firmware / daemon / moteurs | **Pollen** | BBIA s’appuie dessus |
+| Couche cognitive BBIA | **BBIA** | Au-dessus du SDK |
+| Garde hardware | BBIA (`BBIA_ALLOW_HARDWARE`) | Sans flag → sim forcée |
 
 **Dernière mise à jour** : anticipation issues/GHSA Pollen + SDK 1.13

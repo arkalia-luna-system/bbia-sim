@@ -139,6 +139,11 @@ class HFAppInstaller:
                 "app_path": str(app_path),
             }
 
+        except RuntimeError:
+            # Erreurs métier déjà formatées (ex. échec clonage) — ne pas ré-envelopper
+            if app_path.exists():
+                shutil.rmtree(app_path, ignore_errors=True)
+            raise
         except Exception as e:
             # Nettoyer en cas d'erreur
             if app_path.exists():
