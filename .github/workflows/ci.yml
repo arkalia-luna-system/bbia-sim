@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   lint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     permissions:
       contents: read
@@ -172,7 +172,7 @@ jobs:
           python -m pip cache purge || true
 
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 45
     permissions:
       contents: read
@@ -302,7 +302,7 @@ jobs:
           if-no-files-found: ignore
 
   test-e2e:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     needs: [lint, test]
     permissions:
@@ -458,7 +458,7 @@ jobs:
           fi
 
   test-slow:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [lint, test]
     timeout-minutes: 45
     permissions:
@@ -545,7 +545,7 @@ jobs:
           name: codecov-slow-tests
 
   examples:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [lint, test]
     timeout-minutes: 20
     permissions:
@@ -615,7 +615,7 @@ jobs:
           python -m pip cache purge || true
 
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [lint, test, test-e2e, test-slow]
     timeout-minutes: 10
     permissions:
@@ -669,7 +669,7 @@ jobs:
           python -m pip cache purge || true
 
   benchmark:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [lint, test]
     timeout-minutes: 20
     permissions:
@@ -764,7 +764,7 @@ jobs:
           if-no-files-found: ignore
 
   metrics:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [test]
     if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main'
     timeout-minutes: 10

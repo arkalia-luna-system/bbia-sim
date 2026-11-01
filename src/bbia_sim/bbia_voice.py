@@ -287,7 +287,7 @@ def _play_wav_via_sounddevice(wav_path: str) -> bool:
         with wave.open(wav_path, "rb") as wf:
             sr = wf.getframerate()
             frames = wf.readframes(wf.getnframes())
-            data = np.frombuffer(frames, dtype=np.int16)
+            data: np.ndarray = np.frombuffer(frames, dtype=np.int16)
             _sd.play(data, sr)
             _sd.wait()
         return True
