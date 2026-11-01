@@ -26,7 +26,7 @@ jobs:
       DISPLAY: ""
       BBIA_DISABLE_AUDIO: "1"
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Clean up disk space
         run: |
@@ -41,7 +41,7 @@ jobs:
           df -h
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
           cache: "pip"
@@ -185,7 +185,7 @@ jobs:
       BBIA_DISABLE_VISION_MODELS: "1"
       PYTHONDONTWRITEBYTECODE: 1
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Clean up disk space
         run: |
@@ -200,7 +200,7 @@ jobs:
           df -h
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: "3.11"
           cache: "pip"
@@ -314,7 +314,7 @@ jobs:
       PYTHONDONTWRITEBYTECODE: 1
       SEED: 42
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Clean up disk space
         run: |
@@ -329,7 +329,7 @@ jobs:
           df -h
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: "3.11"
           cache: "pip"
@@ -471,7 +471,7 @@ jobs:
       BBIA_DISABLE_VISION_MODELS: "1"
       PYTHONDONTWRITEBYTECODE: 1
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Clean up disk space
         run: |
@@ -486,7 +486,7 @@ jobs:
           df -h
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: "3.11"
           cache: "pip"
@@ -556,7 +556,7 @@ jobs:
       BBIA_DISABLE_AUDIO: "1"
       PYTHONDONTWRITEBYTECODE: 1
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Clean up disk space
         run: |
@@ -571,7 +571,7 @@ jobs:
           df -h
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: "3.11"
           cache: "pip"
@@ -623,7 +623,7 @@ jobs:
     env:
       PYTHONDONTWRITEBYTECODE: 1
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Clean up disk space
         run: |
@@ -638,7 +638,7 @@ jobs:
           df -h
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: "3.11"
           cache: "pip"
@@ -680,7 +680,7 @@ jobs:
       BBIA_DISABLE_AUDIO: "1"
       PYTHONDONTWRITEBYTECODE: 1
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Clean up disk space
         run: |
@@ -695,7 +695,7 @@ jobs:
           df -h
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: "3.11"
           cache: "pip"
@@ -776,7 +776,7 @@ jobs:
       DISPLAY: ""
       BBIA_DISABLE_AUDIO: "1"
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Clean up disk space
         run: |
@@ -791,7 +791,7 @@ jobs:
           df -h
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: "3.11"
           cache: "pip"

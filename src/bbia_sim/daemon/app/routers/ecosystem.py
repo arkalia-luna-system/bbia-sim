@@ -578,7 +578,8 @@ async def start_demo_mode(
                                         )
                 except Exception as e:
                     logger.warning("Émotion non appliquée: %s", e)
-                    demo_info["emotion_error"] = str(e)
+                    # Ne pas exposer le détail d'exception au client (CodeQL #76).
+                    demo_info["emotion_error"] = "Émotion non appliquée"
 
             # Planifier arrêt après durée
             if duration > 0:
@@ -604,10 +605,11 @@ async def start_demo_mode(
 
         except HTTPException:
             raise
-        except Exception as e:
+        except Exception:
             logger.exception("Erreur logique démo")
             demo_info["status"] = "error"
-            demo_info["error"] = str(e)
+            # Ne pas exposer le détail d'exception au client (CodeQL #76).
+            demo_info["error"] = "Erreur lors du démarrage de la démo"
 
         return demo_info
     except HTTPException:

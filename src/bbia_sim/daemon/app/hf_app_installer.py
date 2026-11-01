@@ -1,7 +1,10 @@
 """Module d'installation automatique d'apps depuis Hugging Face Spaces."""
 
+from __future__ import annotations
+
 import asyncio
 import logging
+import os
 import re
 import shutil
 import subprocess
@@ -26,25 +29,36 @@ class HFAppInstaller:
         Args:
             apps_dir: Répertoire pour stocker les apps installées (défaut: installed_apps/)
         """
-        self.apps_dir = apps_dir or INSTALLED_APPS_DIR
-        self.apps_dir.mkdir(parents=True, exist_ok=True)
-        self.apps_dir = self.apps_dir.resolve()
+        raw_dir = apps_dir or INSTALLED_APPS_DIR
+        raw_dir.mkdir(parents=True, exist_ok=True)
+        # Base figée (resolved) — toutes les ops path restent sous ce préfixe.
+        self.apps_dir = Path(os.path.realpath(str(raw_dir)))
 
     @staticmethod
     def _normalize_space_name(name: str) -> str:
-        """Normalise et valide un nom d'app local."""
+        """Normalise et valide un nom d'app local (allowlist, pas de séparateurs)."""
         normalized = (name or "").strip()
         if not normalized or not _APP_NAME_RE.fullmatch(normalized):
             raise ValueError(f"Nom d'application invalide: {name!r}")
         return normalized
 
     def _safe_app_path(self, app_name: str) -> Path:
-        """Construit un chemin d'app confiné dans apps_dir."""
+        """Construit un chemin d'app confiné sous apps_dir (sanitizer CodeQL)."""
         safe_name = self._normalize_space_name(app_name)
-        candidate = (self.apps_dir / safe_name).resolve()
-        if self.apps_dir not in candidate.parents:
+        base = os.path.realpath(str(self.apps_dir))
+        # Join uniquement le basename validé — jamais un chemin utilisateur brut.
+        candidate = os.path.realpath(os.path.join(base, safe_name))
+        if os.path.commonpath([base, candidate]) != base:
             raise ValueError(f"Chemin d'application invalide: {app_name!r}")
-        return candidate
+        return Path(candidate)
+
+    def _ensure_under_apps_dir(self, path: Path) -> Path:
+        """Refuse tout chemin qui sort de apps_dir après resolve."""
+        base = os.path.realpath(str(self.apps_dir))
+        candidate = os.path.realpath(str(path))
+        if os.path.commonpath([base, candidate]) != base:
+            raise ValueError(f"Chemin hors répertoire apps: {path!r}")
+        return Path(candidate)
 
     async def install_app(
         self,
@@ -67,15 +81,17 @@ class HFAppInstaller:
         if not hf_space_id or "/" not in hf_space_id:
             raise ValueError(f"HF Space ID invalide: {hf_space_id}")
 
-        app_name = self._normalize_space_name(app_name or hf_space_id.split("/")[-1])
-        app_path = self._safe_app_path(app_name)
+        local_name = self._normalize_space_name(
+            app_name or hf_space_id.split("/")[-1]
+        )
+        app_path = self._safe_app_path(local_name)
 
         # Vérifier si déjà installé
         if app_path.exists():
-            logger.info("App %s déjà installée dans %s", app_name, app_path)
+            logger.info("App %s déjà installée dans %s", local_name, app_path)
             return {
                 "status": "already_installed",
-                "app_name": app_name,
+                "app_name": local_name,
                 "app_path": str(app_path),
             }
 
@@ -99,27 +115,29 @@ class HFAppInstaller:
                     shutil.rmtree(app_path, ignore_errors=True)
                 error_msg = result.stderr or result.stdout or "Erreur inconnue"
                 logger.error(
-                    "❌ Échec clonage app %s depuis %s: %s",
-                    app_name,
+                    "Échec clonage app %s depuis %s: %s",
+                    local_name,
                     hf_space_id,
                     error_msg,
                 )
                 raise RuntimeError(
-                    f"Échec clonage app '{app_name}' depuis Hugging Face Space '{hf_space_id}': {error_msg}. "
-                    f"Vérifiez que le Space existe et que vous avez les permissions nécessaires."
+                    f"Échec clonage app '{local_name}' depuis Hugging Face Space "
+                    f"'{hf_space_id}'. Vérifiez que le Space existe et les permissions."
                 )
 
-            logger.info("✅ App %s clonée avec succès", app_name)
+            logger.info("App %s clonée avec succès", local_name)
 
             # Installer les dépendances si requirements.txt existe
-            requirements_file = app_path / "requirements.txt"
+            requirements_file = self._ensure_under_apps_dir(
+                app_path / "requirements.txt"
+            )
             if requirements_file.exists():
                 logger.info("Installation des dépendances depuis requirements.txt...")
                 await self._install_dependencies(requirements_file)
 
             return {
                 "status": "installed",
-                "app_name": app_name,
+                "app_name": local_name,
                 "app_path": str(app_path),
             }
 
@@ -128,36 +146,34 @@ class HFAppInstaller:
             if app_path.exists():
                 shutil.rmtree(app_path, ignore_errors=True)
             logger.exception(
-                "❌ Erreur installation app %s (HF Space: %s): %s",
-                app_name,
+                "Erreur installation app %s (HF Space: %s): %s",
+                local_name,
                 hf_space_id,
                 e,
             )
-            error_type = type(e).__name__
             raise RuntimeError(
-                f"Échec installation app '{app_name}' depuis Hugging Face Space '{hf_space_id}': "
-                f"{error_type}: {str(e)}. "
-                f"Vérifiez votre connexion réseau, les permissions du Space, et que le Space existe bien."
+                f"Échec installation app '{local_name}' depuis Hugging Face Space "
+                f"'{hf_space_id}'. Vérifiez réseau, permissions et existence du Space."
             ) from e
 
     async def _install_dependencies(self, requirements_file: Path) -> None:
         """Installe les dépendances depuis requirements.txt.
 
         Args:
-            requirements_file: Chemin vers requirements.txt
+            requirements_file: Chemin vers requirements.txt (doit être sous apps_dir)
 
         Raises:
             RuntimeError: Si l'installation des dépendances échoue
         """
+        safe_req = self._ensure_under_apps_dir(requirements_file)
         try:
-            # Installer avec pip
             result = await asyncio.to_thread(
                 subprocess.run,
                 [
                     "pip",
                     "install",
                     "-r",
-                    str(requirements_file),
+                    str(safe_req),
                 ],
                 capture_output=True,
                 text=True,
@@ -166,17 +182,14 @@ class HFAppInstaller:
 
             if result.returncode != 0:
                 logger.warning(
-                    "⚠️ Erreur installation dépendances: %s",
+                    "Erreur installation dépendances: %s",
                     result.stderr or result.stdout,
                 )
-                # Ne pas faire échouer l'installation si dépendances échouent
-                # (certaines apps peuvent fonctionner sans toutes les dépendances)
             else:
-                logger.info("✅ Dépendances installées avec succès")
+                logger.info("Dépendances installées avec succès")
 
         except Exception as e:
-            logger.warning("⚠️ Erreur installation dépendances: %s", e)
-            # Ne pas faire échouer l'installation
+            logger.warning("Erreur installation dépendances: %s", e)
 
     async def uninstall_app(self, app_name: str) -> dict[str, Any]:
         """Désinstalle une app.
@@ -197,14 +210,14 @@ class HFAppInstaller:
 
         try:
             shutil.rmtree(app_path)
-            logger.info("✅ App %s désinstallée", app_name)
+            logger.info("App %s désinstallée", app_name)
             return {
                 "status": "uninstalled",
                 "app_name": app_name,
             }
         except Exception as e:
             logger.exception("Erreur désinstallation app %s: %s", app_name, e)
-            raise RuntimeError(f"Échec désinstallation: {e}") from e
+            raise RuntimeError("Échec désinstallation de l'application") from e
 
     def list_installed_apps(self) -> list[dict[str, Any]]:
         """Liste les apps installées.
@@ -218,10 +231,11 @@ class HFAppInstaller:
 
         for app_path in self.apps_dir.iterdir():
             if app_path.is_dir() and not app_path.name.startswith("."):
+                safe_path = self._ensure_under_apps_dir(app_path)
                 installed.append(
                     {
-                        "name": app_path.name,
-                        "app_path": str(app_path),
+                        "name": safe_path.name,
+                        "app_path": str(safe_path),
                         "installed": True,
                     },
                 )
@@ -240,53 +254,44 @@ class HFAppInstaller:
         Returns:
             True si installée, False sinon
         """
-        normalized = app_name.strip()
+        normalized = (app_name or "").strip()
         if not normalized:
             return False
 
-        try:
-            app_path = self._safe_app_path(normalized)
-        except ValueError:
-            return False
-        if app_path.exists() and app_path.is_dir():
-            return True
-
-        # Essayer avec juste le nom du space (sans username/)
+        # Noms avec slash : ne tester que le basename allowlisté.
+        candidates: list[str] = []
         if "/" in normalized:
-            space_name = normalized.split("/")[-1]
+            candidates.append(normalized.split("/")[-1])
+        else:
+            candidates.append(normalized)
+
+        for candidate_name in candidates:
             try:
-                app_path = self._safe_app_path(space_name)
+                app_path = self._safe_app_path(candidate_name)
             except ValueError:
-                return False
+                continue
             if app_path.exists() and app_path.is_dir():
                 return True
 
-        # Vérifier aussi par entry point si un setup.py ou pyproject.toml existe
+        # Vérifier aussi par entry point si un setup.py existe
+        needle = candidates[0]
         for installed_dir in self.apps_dir.iterdir():
             if not installed_dir.is_dir():
                 continue
+            try:
+                safe_dir = self._ensure_under_apps_dir(installed_dir)
+            except ValueError:
+                continue
 
-            # Vérifier si le nom correspond à un entry point dans setup.py
-            setup_py = installed_dir / "setup.py"
-            if setup_py.exists():
-                try:
-                    with open(setup_py, encoding="utf-8") as f:
-                        content = f.read()
-                        # Chercher le nom de l'app dans setup.py
-                        if (
-                            f'name="{app_name}"' in content
-                            or f"name='{app_name}'" in content
-                        ):
-                            return True
-                        # Chercher aussi par space name
-                        if "/" in app_name:
-                            space_name = app_name.split("/")[-1]
-                            if (
-                                f'name="{space_name}"' in content
-                                or f"name='{space_name}'" in content
-                            ):
-                                return True
-                except Exception:
-                    pass
+            setup_py = self._ensure_under_apps_dir(safe_dir / "setup.py")
+            if not setup_py.exists():
+                continue
+            try:
+                with open(setup_py, encoding="utf-8") as f:
+                    content = f.read()
+                if f'name="{needle}"' in content or f"name='{needle}'" in content:
+                    return True
+            except OSError:
+                continue
 
         return False
