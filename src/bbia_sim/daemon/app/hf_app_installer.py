@@ -81,9 +81,7 @@ class HFAppInstaller:
         if not hf_space_id or "/" not in hf_space_id:
             raise ValueError(f"HF Space ID invalide: {hf_space_id}")
 
-        local_name = self._normalize_space_name(
-            app_name or hf_space_id.split("/")[-1]
-        )
+        local_name = self._normalize_space_name(app_name or hf_space_id.split("/")[-1])
         app_path = self._safe_app_path(local_name)
 
         # Vérifier si déjà installé
