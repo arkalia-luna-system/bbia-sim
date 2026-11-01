@@ -76,14 +76,12 @@ def _dire_texte_safe(*args: Any, **kwargs: Any) -> Any:
     return fn(*args, **kwargs)
 
 
-
 def _reconnaitre_parole_safe(*args: Any, **kwargs: Any) -> Any:
     _ensure_behavior_deps()
     fn = _reconnaitre_parole
     if fn is None:
         return None
     return fn(*args, **kwargs)
-
 
 
 def _ensure_create_head_pose() -> bool:
@@ -103,6 +101,7 @@ def _ensure_create_head_pose() -> bool:
         create_head_pose = None
         REACHY_MINI_UTILS_AVAILABLE = False
     return REACHY_MINI_UTILS_AVAILABLE
+
 
 # Création du dossier log si besoin (préférence utilisateur)
 Path("log").mkdir(parents=True, exist_ok=True)
@@ -143,12 +142,12 @@ class BBIABehavior:
         self.priority = 1  # 1-10, 10 étant le plus prioritaire
         self.robot_api = robot_api  # Référence au robot pour contrôler les mouvements
 
-    def can_execute(self, context: dict[str, Any]) -> bool:  # noqa: ARG002
+    def can_execute(self, context: dict[str, Any]) -> bool:
         """Vérifie si le comportement peut être exécuté."""
         logger.info("Vérification d'exécution du comportement : %s", self.name)
         return True
 
-    def execute(self, context: dict[str, Any]) -> bool:  # noqa: ARG002
+    def execute(self, context: dict[str, Any]) -> bool:
         """Exécute le comportement."""
         logger.info("Exécution du comportement : %s", self.name)
         return True
@@ -249,7 +248,7 @@ class WakeUpBehavior(BBIABehavior):
         except (TypeError, KeyError, IndexError) as e:
             logger.warning("Erreur inattendue mouvement corps réveil: %s", e)
 
-    def execute(self, context: dict[str, Any]) -> bool:  # noqa: ARG002
+    def execute(self, context: dict[str, Any]) -> bool:
         logger.info("Début de la séquence de réveil BBIA")
 
         if self._try_sdk_wake_up():
@@ -286,7 +285,7 @@ class GreetingBehavior(BBIABehavior):
             "Salut ! Prêt pour discuter ?",
         ]
 
-    def execute(self, context: dict[str, Any]) -> bool:  # noqa: ARG002
+    def execute(self, context: dict[str, Any]) -> bool:
         greeting = secrets.choice(self.greetings)
         logger.info("Salutation choisie : %s", greeting)
 
@@ -571,7 +570,7 @@ class VisionTrackingBehavior(BBIABehavior):
         logger.info("Aucun objet détecté pour le suivi visuel")
         return False
 
-    def execute(self, context: dict[str, Any]) -> bool:  # noqa: ARG002
+    def execute(self, context: dict[str, Any]) -> bool:
         """Exécute le comportement de suivi visuel."""
         logger.info("Activation du suivi visuel")
 
@@ -609,7 +608,11 @@ class ConversationBehavior(BBIABehavior):
 
             # Initialiser outils LLM pour function calling
             _ensure_behavior_deps()
-            vision = _BBIAVision(robot_api=robot_api) if (robot_api and _BBIAVision) else None
+            vision = (
+                _BBIAVision(robot_api=robot_api)
+                if (robot_api and _BBIAVision)
+                else None
+            )
             tools = BBIATools(robot_api=robot_api, vision=vision)
 
             # Créer BBIAHuggingFace avec outils intégrés
@@ -750,7 +753,7 @@ class ConversationBehavior(BBIABehavior):
             except (ValueError, RuntimeError, AttributeError) as e:
                 logger.warning("Erreur application émotion : %s", e)
 
-    def execute(self, context: dict[str, Any]) -> bool:  # noqa: ARG002
+    def execute(self, context: dict[str, Any]) -> bool:
         """Exécute une conversation intelligente avec reconnaissance vocale."""
         logger.info("Activation du mode conversation intelligente")
 
@@ -971,7 +974,7 @@ class HideBehavior(BBIABehavior):
         )
         self.priority = 9
 
-    def execute(self, context: dict[str, Any]) -> bool:  # noqa: ARG002
+    def execute(self, context: dict[str, Any]) -> bool:
         logger.info("🙈 [BBIA] Séquence 'se cacher'...")
         logger.info("Début de la séquence 'se cacher'")
 

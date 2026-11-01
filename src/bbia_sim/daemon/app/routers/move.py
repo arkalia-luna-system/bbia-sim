@@ -9,6 +9,7 @@ This exposes:
 """
 
 import asyncio
+import contextlib
 import logging
 from collections.abc import Coroutine
 from datetime import datetime
@@ -16,15 +17,16 @@ from typing import Annotated, Any
 from uuid import UUID, uuid4
 
 import numpy as np
-from fastapi import APIRouter, Depends, HTTPException, WebSocket, WebSocketDisconnect
+from fastapi import (
+    APIRouter,
+    Depends,
+    HTTPException,
+    Query,
+    WebSocket,
+    WebSocketDisconnect,
+)
 from huggingface_hub.errors import RepositoryNotFoundError
 from pydantic import BaseModel, Field
-
-from bbia_sim.utils.enum_compat import StrEnum
-
-import contextlib
-
-from fastapi import Query
 
 from bbia_sim.daemon.app.backend_adapter import (
     BackendAdapter,
@@ -42,6 +44,7 @@ from bbia_sim.multi_layer_queue import (
     MovementPriority,
     get_multi_layer_queue,
 )
+from bbia_sim.utils.enum_compat import StrEnum
 
 logger = logging.getLogger(__name__)
 
@@ -63,6 +66,7 @@ def _get_recorded_moves_cls() -> Any:
     else:
         _RecordedMovesCls = _RM
     return _RecordedMovesCls
+
 
 router = APIRouter(prefix="/move")
 
