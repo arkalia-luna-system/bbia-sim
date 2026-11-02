@@ -1,9 +1,9 @@
 """Helpers chat / outils HF — extraits de ``bbia_huggingface``.
 
-Découpe non big-bang : patterns mots-clés, descriptions NLP, mappings
-paramètres, extracteurs d'angle/intensité. L'orchestration
-(``_detect_and_execute_tools`` / NLP / exécution) reste sur
-``BBIAHuggingFace`` et consomme ces constantes / fonctions.
+Patterns mots-clés, descriptions NLP, mappings paramètres,
+extracteurs d'angle/intensité. L'orchestration pipeline
+(détection NLP / mots-clés / exécution) vit dans
+``bbia_hf_tool_orchestration`` ; ``BBIAHuggingFace`` délègue.
 """
 
 from __future__ import annotations

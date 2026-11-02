@@ -22,7 +22,7 @@ Scripts orphelins (0 référence hors `scripts/`), doublons joints / médias / d
 | Script | Raison |
 |--------|--------|
 | `analyze_joints_detailed.py` / `diagnose_joints.py` | Doublons de `check_joints.py` |
-| `create_robot_gif.py` / `generate_emotions_sequence_for_gif.py` / `generate_bbia_image_simple.py` | One-shot médias ; préférer `generate_bbia_image.py` |
+| `create_robot_gif.py` / `generate_emotions_sequence_for_gif.py` / `generate_bbia_image_simple.py` | One-shot médias ; `generate_bbia_image.py` aussi archivé (`media_comms_orphans/`) |
 | `demo_nod.sh` / `demo_wave.sh` | Remplacés par `demo_mode_complete.py` / `demo_public_api.py` |
 | `export_visual_stl.py` / `redimensionner_viewer_mujoco.sh` | Utilitaires ponctuels non branchés |
 | `verify_project.py` | Remplacé par `verify_documentation.py` / `bbia_doctor.py` |
@@ -37,3 +37,14 @@ Wrappers / dashboard minimal sans référence CI/Makefile/docs actives.
 |--------|--------|
 | `bandit_safe.py` / `run_bandit_quiet.sh` | Bandit branché directement (CI, Makefile, pre-commit) |
 | `bbia_dashboard_server.py` | Remplacé par `bbia_advanced_dashboard_server.py` (docs archi) |
+
+### `media_comms_orphans/` (2 Nov 2026)
+
+Scripts hors Makefile/CI/`scripts/README.md` (0 référence active).
+
+| Script | Raison |
+|--------|--------|
+| `demo_bridge_zenoh.py` | Démo bridge Zenoh non branchée |
+| `deploy_external_communication.py` | Déploiement one-shot non référencé |
+| `generate_bbia_image.py` / `generate_presentation.py` / `generate_video_demo.py` | Générateurs médias one-shot ; non listés actifs |
+

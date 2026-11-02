@@ -9,6 +9,7 @@ import pytest
 
 from bbia_sim import bbia_hf_chat_tools as chat_tools
 from bbia_sim import bbia_hf_response_bank as bank
+from bbia_sim import bbia_hf_tool_orchestration as orch
 from bbia_sim.hf_guards import (
     HF_PIP_INSTALL_ENV,
     hf_pip_install_enabled,
@@ -88,6 +89,7 @@ def test_response_bank_stable_and_reexported() -> None:
     tree = ast.parse(src)
     bank_imported = False
     chat_tools_imported = False
+    orch_imported = False
     for node in tree.body:
         if isinstance(node, ast.ImportFrom):
             names = {alias.name for alias in node.names}
@@ -95,8 +97,11 @@ def test_response_bank_stable_and_reexported() -> None:
                 bank_imported = True
             if "bbia_hf_chat_tools" in names:
                 chat_tools_imported = True
+            if "bbia_hf_tool_orchestration" in names:
+                orch_imported = True
     assert bank_imported, "bbia_huggingface doit importer bbia_hf_response_bank"
     assert chat_tools_imported, "bbia_huggingface doit importer bbia_hf_chat_tools"
+    assert orch_imported, "bbia_huggingface doit importer bbia_hf_tool_orchestration"
     assert "SAFE_FALLBACK: str =" in src
     assert "SUFFIX_POOL: list[str] =" in src
     assert "TOOL_KEYWORD_PATTERNS =" in src
@@ -125,3 +130,61 @@ def test_chat_tools_helpers_stable_and_reexported() -> None:
     assert "extract_intensity = _hf_chat_tools.extract_intensity" in src
     assert "return extract_angle(message)" in src
     assert "return extract_intensity(message)" in src
+    assert "detect_and_execute_tools = _hf_orch.detect_and_execute_tools" in src
+    assert "return _hf_orch.detect_and_execute_tools(" in src
+
+
+def test_tool_orchestration_keyword_dance() -> None:
+    class _State:
+        _sentence_model = None
+        _use_nlp_detection = False
+
+    calls: list[tuple[str, dict[str, object]]] = []
+
+    def _exec(name: str, params: dict[str, object]) -> dict[str, object]:
+        calls.append((name, params))
+        return {"status": "success", "detail": f"{name} ok"}
+
+    text = orch.detect_and_execute_tools(
+        "fais danser le robot",
+        state=_State(),
+        execute_tool=_exec,
+        tools_available=True,
+    )
+    assert text == "✅ dance ok"
+    assert calls and calls[0][0] == "dance"
+    assert calls[0][1].get("move_name") == "happy_dance"
+
+
+def test_tool_orchestration_move_head_params() -> None:
+    params = orch.build_tool_params(
+        "move_head",
+        "tourne la tête à gauche de 30 degrés",
+        "tourne la tête à gauche de 30 degrés",
+        use_ner_extraction=True,
+    )
+    assert params["direction"] == "left"
+    assert params["intensity"] == pytest.approx(30.0 / 90.0)
+    kw = orch.build_tool_params(
+        "move_head",
+        "tourne la tête à gauche de 30 degrés",
+        "tourne la tête à gauche de 30 degrés",
+        use_ner_extraction=False,
+    )
+    assert kw["intensity"] == 0.5
+
+
+def test_tool_orchestration_no_tools() -> None:
+    class _State:
+        _sentence_model = None
+        _use_nlp_detection = False
+
+    assert (
+        orch.detect_and_execute_tools(
+            "danse",
+            state=_State(),
+            execute_tool=lambda *_a, **_k: None,
+            tools_available=False,
+        )
+        is None
+    )

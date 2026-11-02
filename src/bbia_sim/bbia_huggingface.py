@@ -11,7 +11,7 @@ import threading
 import time
 from collections import deque
 from functools import lru_cache
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, cast
 
 import numpy as np
 import numpy.typing as npt
@@ -19,6 +19,7 @@ from PIL import Image
 
 from . import bbia_hf_chat_tools as _hf_chat_tools
 from . import bbia_hf_response_bank as _hf_bank
+from . import bbia_hf_tool_orchestration as _hf_orch
 from .utils.types import ConversationEntry, SentimentDict, SentimentResult
 
 # Réexports stables + aliases typés (garde mypy no-any-return)
@@ -33,6 +34,10 @@ TOOL_KEYWORD_PATTERNS = _hf_chat_tools.TOOL_KEYWORD_PATTERNS
 TOOL_NLP_DESCRIPTIONS = _hf_chat_tools.TOOL_NLP_DESCRIPTIONS
 extract_angle = _hf_chat_tools.extract_angle
 extract_intensity = _hf_chat_tools.extract_intensity
+detect_and_execute_tools = _hf_orch.detect_and_execute_tools
+detect_tool_with_nlp = _hf_orch.detect_tool_with_nlp
+execute_detected_tool = _hf_orch.execute_detected_tool
+build_tool_params = _hf_orch.build_tool_params
 
 if TYPE_CHECKING:
     from .bbia_tools import BBIATools
@@ -1767,230 +1772,26 @@ class BBIAHuggingFace:
     def _detect_and_execute_tools(self, user_message: str) -> str | None:
         """Détecte et exécute des outils depuis le message utilisateur.
 
-        Analyse le message pour détecter des commandes d'outils
-        (ex: "fais danser le robot", "tourne la tête à gauche",
-        "capture une image") et exécute les outils correspondants.
-
-        Utilise d'abord NLP (sentence-transformers) si disponible, sinon
-        mots-clés étendus.
-
-        Args:
-            user_message: Message utilisateur
-
-        Returns:
-            Résultat texte de l'exécution d'outil, ou None si aucun outil détecté
-
+        Délègue à ``bbia_hf_tool_orchestration`` (NLP puis mots-clés).
         """
         if not self.tools:
             return None
-
-        message_lower = user_message.lower()
-
-        # Tentative détection NLP (plus robuste)
-        nlp_result = self._detect_tool_with_nlp(user_message)
-        if nlp_result:
-            tool_name, confidence = nlp_result
-            logger.info(
-                "🔍 NLP détecté outil '%s' (confiance: %.2f)",
-                tool_name,
-                confidence,
-            )
-            # Exécuter outil détecté par NLP
-            return self._execute_detected_tool(tool_name, user_message, message_lower)
-
-        # Détection améliorée : mots-clés étendus + NLP optionnel
-        # Pattern: détecter intentions → appeler outils
-        tool_patterns = TOOL_KEYWORD_PATTERNS
-        # Chercher correspondance avec patterns
-        for tool_name, pattern in tool_patterns.items():
-            for keyword in pattern["keywords"]:  # type: ignore[index]
-                if keyword in message_lower:
-                    try:
-                        # Exécuter outil
-                        params: dict[str, Any] = {}
-
-                        # Extraire paramètres selon outil
-                        if tool_name == "move_head":
-                            # Extraire direction
-                            for fr_dir, en_dir in pattern["mappings"].items():  # type: ignore[index]
-                                if fr_dir in message_lower:
-                                    params["direction"] = en_dir
-                                    break
-                            if "direction" not in params:
-                                # Par défaut
-                                params["direction"] = "left"
-                            params["intensity"] = 0.5
-
-                        elif tool_name == "play_emotion":
-                            # Extraire émotion
-                            for fr_emo, en_emo in pattern["mappings"].items():  # type: ignore[index]
-                                if fr_emo in message_lower:
-                                    params["emotion"] = en_emo
-                                    break
-                            if "emotion" not in params:
-                                # Détecter émotion depuis sentiment
-                                try:
-                                    sentiment = self.analyze_sentiment(user_message)
-                                    params["emotion"] = (
-                                        _hf_chat_tools.SENTIMENT_TO_EMOTION.get(
-                                            sentiment.get("sentiment", "NEUTRAL"),
-                                            "neutral",
-                                        )
-                                    )
-                                except (KeyError, ValueError, TypeError):
-                                    params["emotion"] = "neutral"
-                            params["intensity"] = 0.7
-
-                        elif tool_name == "dance":
-                            # Utiliser danse par défaut ou extraire nom
-                            params.update(_hf_chat_tools.DEFAULT_DANCE_PARAMS)
-
-                        # Exécuter outil avec gestion d'erreurs centralisée
-                        try:
-                            result = self.tools.execute_tool(tool_name, params)
-                        except (
-                            AttributeError,
-                            RuntimeError,
-                            ValueError,
-                            KeyError,
-                        ) as e:
-                            logger.exception(
-                                "❌ Erreur exécution outil '%s' (critique): %s",
-                                tool_name,
-                                e,
-                            )
-                            result = {
-                                "status": "error",
-                                "detail": f"Erreur lors de l'exécution: {e}",
-                            }
-                        except (
-                            Exception
-                        ) as e:  # noqa: BLE001 - Gestion des exceptions non prévues
-                            logger.exception(
-                                "❌ Erreur inattendue exécution outil '%s' "
-                                "(critique): %s",
-                                tool_name,
-                                e,
-                            )
-                            result = {
-                                "status": "error",
-                                "detail": f"Erreur lors de l'exécution: {e}",
-                            }
-
-                        if result is None:
-                            return (
-                                f"❌ Erreur lors de l'exécution "
-                                f"de l'outil '{tool_name}'"
-                            )
-
-                        # Retourner résultat textuel
-                        if result.get("status") == "success":
-                            detail = result.get("detail", "Action exécutée")
-                            logger.info("✅ Outil '%s' exécuté: %s", tool_name, detail)
-                            return f"✅ {detail}"
-                        error_detail = result.get("detail", "Erreur inconnue")
-                        logger.warning(
-                            "⚠️ Erreur outil '%s': %s",
-                            tool_name,
-                            error_detail,
-                        )
-                        return f"⚠️ {error_detail}"
-                    except (
-                        Exception
-                    ) as e:  # noqa: BLE001 - Gestion des exceptions non prévues
-                        logger.exception(
-                            f"❌ Erreur inattendue exécution outil '{tool_name}'"
-                        )
-                        return f"❌ Erreur lors de l'exécution: {e}"
-
-        # Aucun outil détecté
-        return None
+        return _hf_orch.detect_and_execute_tools(
+            user_message,
+            state=self,
+            execute_tool=self.tools.execute_tool,
+            analyze_sentiment=self.analyze_sentiment,
+            extract_angle_fn=self._extract_angle,
+            extract_intensity_fn=self._extract_intensity,
+            tools_available=True,
+        )
 
     def _detect_tool_with_nlp(
         self,
         user_message: str,
     ) -> tuple[str, float] | None:
-        """Détecte outil avec NLP (sentence-transformers) si disponible.
-
-        Args:
-            user_message: Message utilisateur
-
-        Returns:
-            Tuple (tool_name, confidence) si détecté, None sinon
-
-        """
-        try:
-            # Charger modèle à la demande (gratuit Hugging Face)
-            if self._sentence_model is None:
-                try:
-                    from sentence_transformers import (  # type: ignore[import-untyped]
-                        SentenceTransformer,
-                    )
-
-                    logger.info("📥 Chargement modèle NLP (sentence-transformers)...")
-                    self._sentence_model = SentenceTransformer(
-                        "sentence-transformers/all-MiniLM-L6-v2",
-                    )
-                    self._use_nlp_detection = True
-                    logger.info("✅ Modèle NLP chargé")
-                except ImportError:
-                    logger.debug(
-                        "ℹ️ sentence-transformers non disponible, fallback mots-clés",
-                    )
-                    self._use_nlp_detection = False
-                    return None
-
-            if not self._use_nlp_detection or self._sentence_model is None:
-                return None
-
-            # Descriptions des outils (module chat_tools)
-            tool_descriptions = TOOL_NLP_DESCRIPTIONS
-            # Calculer similarité sémantique
-            try:
-                from sklearn.metrics.pairwise import (
-                    cosine_similarity,
-                )
-            except ImportError:
-                logger.debug("ℹ️ scikit-learn non disponible, fallback mots-clés")
-                return None
-
-            message_embedding = self._sentence_model.encode([user_message])
-            tool_embeddings = self._sentence_model.encode(
-                list(tool_descriptions.values()),
-            )
-
-            similarities = cosine_similarity(message_embedding, tool_embeddings)[0]
-
-            # Retourner outil le plus similaire si score > seuil
-            best_idx = int(similarities.argmax())
-            best_score = float(similarities[best_idx])
-
-            # Seuil de confiance (ajustable)
-            confidence_threshold = _hf_chat_tools.NLP_CONFIDENCE_THRESHOLD
-
-            if best_score > confidence_threshold:
-                tool_name = list(tool_descriptions.keys())[best_idx]
-                return (tool_name, best_score)
-
-            return None
-
-        except (ImportError, RuntimeError, AttributeError, ValueError) as e:
-            logger.debug("ℹ️ Erreur NLP détection (fallback mots-clés): %s", e)
-            return None
-        except (TypeError, IndexError, OSError) as e:
-            logger.debug(
-                "ℹ️ Erreur NLP détection (type/index/os): %s",
-                e,
-            )
-            return None
-        except (
-            Exception
-        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
-            logger.debug(
-                "ℹ️ Erreur inattendue NLP détection (fallback mots-clés): %s",
-                e,
-            )
-            return None
+        """Détecte outil avec NLP (sentence-transformers) si disponible."""
+        return _hf_orch.detect_tool_with_nlp(user_message, self)
 
     def _execute_detected_tool(
         self,
@@ -1998,122 +1799,18 @@ class BBIAHuggingFace:
         user_message: str,
         message_lower: str,
     ) -> str | None:
-        """Exécute un outil détecté (par NLP ou mots-clés).
-
-        Args:
-            tool_name: Nom de l'outil à exécuter
-            user_message: Message utilisateur original
-            message_lower: Message en minuscules
-
-        Returns:
-            Résultat textuel de l'exécution, ou None si erreur
-
-        """
+        """Exécute un outil détecté (par NLP ou mots-clés)."""
         if not self.tools:
             return None
-
-        # Patterns pour extraction paramètres (module chat_tools)
-        tool_patterns = {
-            "move_head": {"mappings": _hf_chat_tools.MOVE_HEAD_MAPPINGS},
-            "play_emotion": {"mappings": _hf_chat_tools.PLAY_EMOTION_MAPPINGS},
-        }
-
-        try:
-            # Exécuter outil
-            params: dict[str, Any] = {}
-
-            # Extraire paramètres selon outil
-            if tool_name == "move_head":
-                pattern = tool_patterns.get("move_head", {})
-                mappings = pattern.get("mappings", {})
-                # Extraire direction
-                for fr_dir, en_dir in mappings.items():
-                    if fr_dir in message_lower:
-                        params["direction"] = en_dir
-                        break
-                if "direction" not in params:
-                    # Par défaut
-                    params["direction"] = "left"
-
-                # Extraction NER: angle/intensité depuis phrase
-                extracted_angle = self._extract_angle(user_message)
-                if extracted_angle is not None:
-                    # Convertir angle en intensité (0-1)
-                    # Angle max ~90 degrés → intensité 1.0
-                    params["intensity"] = min(extracted_angle / 90.0, 1.0)
-                    logger.info(
-                        "📐 Angle extrait: %s° → intensité: %.2f",
-                        extracted_angle,
-                        params["intensity"],
-                    )
-                else:
-                    # Extraire intensité depuis mots-clés
-                    intensity = self._extract_intensity(user_message)
-                    params["intensity"] = intensity if intensity is not None else 0.5
-
-            elif tool_name == "play_emotion":
-                pattern = tool_patterns.get("play_emotion", {})
-                mappings = pattern.get("mappings", {})
-                # Extraire émotion
-                for fr_emo, en_emo in mappings.items():
-                    if fr_emo in message_lower:
-                        params["emotion"] = en_emo
-                        break
-                if "emotion" not in params:
-                    # Détecter émotion depuis sentiment
-                    try:
-                        sentiment = self.analyze_sentiment(user_message)
-                        params["emotion"] = _hf_chat_tools.SENTIMENT_TO_EMOTION.get(
-                            sentiment.get("sentiment", "NEUTRAL"),
-                            "neutral",
-                        )
-                    except (ValueError, KeyError, TypeError):
-                        params["emotion"] = "neutral"
-                params["intensity"] = 0.7
-
-            elif tool_name == "dance":
-                # Utiliser danse par défaut ou extraire nom
-                params.update(_hf_chat_tools.DEFAULT_DANCE_PARAMS)
-
-            elif tool_name in [
-                "stop_dance",
-                "stop_emotion",
-                "head_tracking",
-                "do_nothing",
-            ]:
-                # Outils sans paramètres spécifiques
-                if tool_name == "head_tracking":
-                    params["enabled"] = True  # Activer par défaut
-                elif tool_name == "do_nothing":
-                    params["duration"] = 2.0
-
-            # Exécuter outil
-            result = self.tools.execute_tool(tool_name, params)
-
-            # Retourner résultat textuel
-            if result.get("status") == "success":
-                detail = result.get("detail", "Action exécutée")
-                logger.info("✅ Outil '%s' exécuté: %s", tool_name, detail)
-                return f"✅ {detail}"
-            error_detail = result.get("detail", "Erreur inconnue")
-            logger.warning("⚠️ Erreur outil '%s': %s", tool_name, error_detail)
-            return f"⚠️ {error_detail}"
-
-        except (AttributeError, RuntimeError, ValueError, KeyError) as e:
-            logger.exception("❌ Erreur exécution outil '%s': %s", tool_name, e)
-            return f"❌ Erreur lors de l'exécution: {e}"
-        except (TypeError, IndexError, OSError) as e:
-            logger.exception(
-                "❌ Erreur exécution outil '%s' (type/index/os): %s", tool_name, e
-            )
-            return f"❌ Erreur lors de l'exécution: {e}"
-        except (
-            Exception
-        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
-            logger.exception(
-                "❌ Erreur inattendue exécution outil '%s': %s", tool_name, e
-            )
-            return f"❌ Erreur lors de l'exécution: {e}"
+        return _hf_orch.execute_detected_tool(
+            tool_name,
+            user_message,
+            message_lower,
+            execute_tool=self.tools.execute_tool,
+            analyze_sentiment=self.analyze_sentiment,
+            extract_angle_fn=self._extract_angle,
+            extract_intensity_fn=self._extract_intensity,
+        )
 
     def _extract_angle(self, message: str) -> float | None:
         """Extrait un angle depuis un message (ex: "30 degrés", "pi/4 radians").
