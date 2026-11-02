@@ -68,8 +68,10 @@ Related to #(issue_number)
 - [ ] La documentation est mise à jour si nécessaire
 - [ ] Les nouveaux fichiers ont les en-têtes appropriés
 - [ ] Pas de secrets/credentials dans le code
-- [ ] Compatible avec Python 3.9+
-- [ ] Testé sur macOS (développement principal)
+- [ ] Compatible avec Python 3.10+ (extra SDK Reachy : 3.11+)
+- [ ] Si impact robot réel : `BBIA_ALLOW_HARDWARE` / sim-first respectés
+- [ ] Testé sur macOS (développement principal) si applicable
+- [ ] Pas de claim « robot 100 % validé » / hardware Pollen « parfait » sans preuve
 
 ## 🎵 Compatibilité Audio/Vision
 <!-- Si applicable -->

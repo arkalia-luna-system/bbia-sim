@@ -5,8 +5,8 @@
 **🎯 Vue d'ensemble de l'état du projet par axe**
 *Fiabilité • Performance • Sécurité • CI/CD • Plus*
 
-**Version** : 1.4.0 • **Dernière mise à jour** : 2 Novembre 2026
-**Prêt pour arrivée robot** 🤖
+**Version** : 1.4.0 • **Dernière mise à jour** : 2 Novembre 2026  
+**Robot** : reçu / monté (déc. 2025) — usage **sim-first** ; hardware Pollen **≤7/10** ; pas de claim « robot production-ready 100 % ».
 
 **Mise à jour 2 Novembre 2026 (fin de journée hygiène)** : doublons `cleanup_*.sh` / `smart_process_cleanup.sh` → `_archived/cleanup_fused_2026/` ; MD draft issues mort (source `GOOD_FIRST_ISSUES.md` absente) supprimé ; symlink `launch_robot.sh` corrigé ; claims Unity/install global retirés de `scripts/README.md` ; AppleDouble locaux nettoyés (non commit).
 

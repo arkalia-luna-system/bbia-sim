@@ -1,93 +1,64 @@
-# 🤖 BBIA Reachy Mini Simulation
+# BBIA — Reachy Mini simulation
 
-<div align="center">
+Python cognitive / simulation engine for [Reachy Mini](https://github.com/pollen-robotics/reachy_mini) (emotions, vision, MuJoCo).
+
+**Sim-first**: without `BBIA_ALLOW_HARDWARE=1`, no physical `ReachyMini()` client — MuJoCo / simulation only.
 
 [![Version](https://img.shields.io/badge/version-1.4.0-blue.svg)](https://github.com/arkalia-luna-system/bbia-sim)
-[![Python](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://python.org)
+[![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://python.org)
+[![SDK](https://img.shields.io/badge/SDK%20Pollen-1.13.0-blue.svg)](https://github.com/pollen-robotics/reachy_mini)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![CI Status](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml/badge.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml)
-[![Tests](https://img.shields.io/badge/tests-pytest%20collect--only-blue.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions)
-[![Code Quality](https://img.shields.io/badge/code%20quality-A%2B-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim)
-[![SDK Conformity](https://img.shields.io/badge/SDK%20conformity-100%25-brightgreen.svg)](https://github.com/pollen-robotics/reachy_mini)
-[![Documentation](https://img.shields.io/badge/docs-mkdocs-blue.svg)](docs/)
-[![Coverage](https://img.shields.io/badge/coverage-tracked%20in%20Codecov-brightgreen)](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim)
+[![CI main](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml?query=branch%3Amain)
+[![CI develop](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml/badge.svg?branch=develop)](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml?query=branch%3Adevelop)
+[![Coverage](https://img.shields.io/badge/coverage-Codecov%20CI-blue)](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim)
 
-</div>
+## Honest status (showcase)
 
-<div align="center">
+| Area | Tip reality (2 Nov 2026) |
+|:-----|:-------------------------|
+| **Default mode** | **Sim-first** — hardware only with `BBIA_ALLOW_HARDWARE=1` |
+| **Pollen SDK** | **reachy-mini 1.13.0** via `pip install -e ".[reachy]"` (Python ≥3.11 for that extra) |
+| **App-layer scores** | Subjective **10/10** software domains — see [`docs/reference/project-status.md`](docs/reference/project-status.md) |
+| **Pollen hardware / firmware** | Cap **≤7/10** — yaw/sleep/Wireless/GStreamer host remain upstream |
+| **“100% real-robot validated”** | **Not claimed** — dry-run + [`PREMIER_JOUR_ROBOT.md`](docs/hardware/PREMIER_JOUR_ROBOT.md) |
 
-## 🧠 Python Cognitive Engine for Reachy Mini Robot
-
-### 🌟 Faithful Simulation • Advanced AI • 100% SDK Compliant
-
-[![🚀 Quick Start](https://img.shields.io/badge/🚀-Quick%20Start-green)](#-quick-start)
-[![📚 Documentation](https://img.shields.io/badge/📚-Documentation-blue)](docs/)
-[![🤖 Try Demo](https://img.shields.io/badge/🤖-Try%20Demo-orange)](#-see-robot-in-3d)
-[![🔧 Installation](https://img.shields.io/badge/🔧-Installation-purple)](#-quick-start)
-
-</div>
+French README (canonical): [`README.md`](README.md) · Security: [`SECURITY.md`](SECURITY.md) · Robot safety: [`docs/hardware/SECURITE_ROBOT.md`](docs/hardware/SECURITE_ROBOT.md)
 
 ---
 
-## 📋 **IN 30 SECONDS**
+![BBIA-SIM Reachy Mini (sim GIF)](./assets/images/robot_animation.gif)
 
-<div align="center">
+### Key features
 
-### 🎯 BBIA-SIM: Python Cognitive Engine for Reachy Mini
+| Feature | Details |
+|:---|:---|
+| **Pollen SDK** | Tracked alignment **v1.13.0** (`.[reachy]`) — not a Pollen certification |
+| **Unified backend** | Same API for sim / real; real requires `BBIA_ALLOW_HARDWARE=1` |
+| **Tests** | Large pytest suite (historical local snapshot ~2.3k collected) — CI unit job excludes e2e/benchmarks |
+| **Docs** | ~115 Markdown files under `docs/` |
+| **CI/CD** | Black, Ruff, MyPy, Bandit, gitleaks — **main** / **develop** badges above |
+| **License** | MIT |
 
-**12 robotic emotions** (6 official SDK + 6 extended) • **Faithful 3D simulation** • **Advanced AI**
+## Statistics (orders of magnitude)
 
-![BBIA-SIM Reachy Mini Robot](./assets/images/robot_animation.gif)
+- **Python sources** (`src/bbia_sim`): ~145 `.py` modules (tip 2 Nov 2026)
+- **Test files**: ~225 `test_*.py`
+- **Collected tests**: historical local snapshot (8 May 2026) ~2,311 — re-run `pytest --collect-only` for tip
+- **Coverage**: [Codecov CI](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim)
+- **Examples**: ~85 Python scripts under `examples/`
 
-</div>
+## Code quality
 
-### ✨ Key Features
+- Coverage tracked in CI (progressive unit threshold — not “80% whole repo”)
+- Linting: black, ruff, mypy, bandit
+- Python: core `>=3.10`; Reachy extra `>=3.11`; CI 3.11 + 3.12
+- App-layer scores **10/10** ≠ Pollen hardware (≤7)
 
-<div align="center">
-
-| 🎯 **Feature** | 📊 **Details** |
-|:---:|:---|
-| ✅ **Official SDK** | 100% compliant with Pollen Robotics |
-| 🔄 **Unified Backend** | Simulation ↔ Real robot |
-| 🧪 **Automated Tests** | 2,311 tests collected (2,201 active + 110 deselected) |
-| 📚 **Documentation** | 209 Markdown files in `docs/` |
-| ⚡ **Performance** | Optimized AI caches |
-| 🔒 **Pro CI/CD** | Black, Ruff, MyPy, Bandit |
-| 🌟 **Open Source** | MIT License |
-
-</div>
-
-## 📊 Statistics
-
-- **Python source files**: 92 files (35,988 lines)
-- **Test files**: 163 files (38,935 lines)
-- **Test functions**: 1,804 tests identified
-- **Collected tests (local snapshot, May 8 2026)**: 2,311 tests (2,201 active + 110 deselected)
-- **Coverage tracking**: maintained in [Codecov](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim)
-- **Core modules coverage**: ~50% (relevant measure)
-- **BBIA modules**: 15+ specialized modules
-- **Behaviors**: 21 intelligent behaviors
-- **Documentation**: 209 Markdown files in `docs/`
-- **Git commits**: 1,296+ commits
-
-## 🏆 Code Quality
-
-BBIA-SIM maintains strict quality standards:
-
-- **Test coverage**: 80% minimum
-- **Linting**: black, ruff, mypy, bandit
-- **Python**: 3.11+
-- **CI/CD**: GitHub Actions with automatic checks
-- **Security**: Static analysis with Bandit
-- **Performance**: Continuous optimizations and monitoring
-
-**[🚀 Quick Start](#-quick-start)** | **[📚 Getting Started Guide](docs/guides/GUIDE_DEMARRAGE.md)** | **[🔬 Advanced Docs](docs/guides/GUIDE_AVANCE.md)**
+**[Quick Start](#-quick-start)** · **[Getting started](docs/guides/GUIDE_DEMARRAGE.md)** · **[Advanced](docs/guides/GUIDE_AVANCE.md)** · **[Status](docs/reference/project-status.md)**
 
 ---
 
-Version 1.4.0 – Unified simulation/real backend, expanded tests and docs, active maintenance.
-
-This project provides a faithful simulation of the Reachy Mini robot in MuJoCo, with integration of BBIA (Bio-Inspired Artificial Intelligence) modules and maintained alignment with the official Pollen Robotics ecosystem (tracked up to **v1.9.0** on 17 August 2026).
+**v1.4.0** — MuJoCo simulation + BBIA modules + Pollen SDK **1.13.0**. **Sim-first**; not a “production-ready robot” promise.
 
 ---
 
@@ -95,7 +66,7 @@ This project provides a faithful simulation of the Reachy Mini robot in MuJoCo, 
 
 ### Prerequisites
 
-- Python 3.11+
+- Python 3.10+ (Reachy SDK extra: 3.11+)
 - pip
 - (Optional) Docker & Docker Compose for containerized environment
 
@@ -160,76 +131,64 @@ open http://localhost:8000
 - **NLP**: Transformers, Phi-2/TinyLlama (LLM), sentence-transformers
 - **Function Calling**: Automatic detection of 6 robot actions
 
-### Unified Backend Architecture
+### Unified backend
 
-- **Same code** for simulation and real hardware
-- **RobotAPI abstraction** for seamless switching
-- **100% SDK compliant** with Pollen Robotics official SDK
-
----
-
-## 📚 Documentation
-
-- **[Getting Started Guide](docs/guides/GUIDE_DEMARRAGE.md)**: Complete installation and first steps
-- **[Advanced Guide](docs/guides/GUIDE_AVANCE.md)**: Advanced features and customization
-- **[API Documentation](docs/reference/)**: Complete API reference
-- **[Video Demonstration Guide](docs/guides/GUIDE_VIDEOS_DEMONSTRATION.md)**: How to create demo videos
-- **[Community Guide](docs/community/GUIDE_COMMUNAUTE.md)**: How to contribute and share
+- Same application code path for simulation and real hardware
+- Real robot requires explicit `BBIA_ALLOW_HARDWARE=1`
+- Tracked API alignment with Pollen SDK **1.13.0** (not a Pollen certification)
 
 ---
 
-## 🧪 Testing
+## Documentation
+
+- [Getting started](docs/guides/GUIDE_DEMARRAGE.md)
+- [Advanced](docs/guides/GUIDE_AVANCE.md)
+- [Project status](docs/reference/project-status.md)
+- [First-day robot](docs/hardware/PREMIER_JOUR_ROBOT.md) / [Robot safety](docs/hardware/SECURITE_ROBOT.md)
+- [Contribution guide](docs/community/CONTRIBUTION_GUIDE.md)
+
+---
+
+## Testing
 
 ```bash
-# Run all tests
-pytest tests/ --cov=src/bbia_sim --cov-report=html
-
-# Run specific test suite
+pytest tests/ --cov=src/bbia_sim --cov-report=term-missing
 pytest tests/test_reachy_mini_full_conformity_official.py -v
-
-# View coverage report
-open htmlcov/index.html
 ```
 
-**Test Results**:
-- ✅ **2,311 tests collected** (2,201 active, 110 deselected)
-- ✅ **47 SDK conformity tests** (100% passing)
-- ✅ **Coverage tracked continuously in Codecov**
+- Historical local collect snapshot (8 May 2026): ~2,311 — re-check tip with `pytest --collect-only`
+- SDK conformity suite documented under `docs/quality/compliance/` (API alignment tests, not “real robot 100%”)
+- Coverage reference: [Codecov](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim)
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
-We welcome contributions! See our [Contribution Guide](docs/community/CONTRIBUTION_GUIDE.md) for details.
-
-**Good First Issues**: We have 4 "Good First Issues" for new contributors.
+See [CONTRIBUTING.md](CONTRIBUTING.md) and [Contribution Guide](docs/community/CONTRIBUTION_GUIDE.md).
 
 ---
 
-## 📄 License
+## License
 
-MIT License - see [LICENSE](LICENSE) file for details.
-
----
-
-## 🙏 Acknowledgments
-
-- **Pollen Robotics** for the official Reachy Mini SDK
-- **MuJoCo** for the physics simulation engine
-- **Hugging Face** for AI models and transformers
-- **OpenAI** for Whisper speech recognition
+MIT — see [LICENSE](LICENSE).
 
 ---
 
-## 📞 Contact
+## Acknowledgments
 
-- **GitHub**: [arkalia-luna-system/bbia-sim](https://github.com/arkalia-luna-system/bbia-sim)
-- **Issues**: [GitHub Issues](https://github.com/arkalia-luna-system/bbia-sim/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/arkalia-luna-system/bbia-sim/discussions)
+- Pollen Robotics — Reachy Mini SDK
+- MuJoCo — physics simulation
+- Hugging Face — models / transformers
+- OpenAI Whisper — speech recognition (optional stack)
 
 ---
 
-**Made with ❤️ by Arkalia Luna System**
+## Contact
 
-*Last updated: April 27, 2026*
+- GitHub: [arkalia-luna-system/bbia-sim](https://github.com/arkalia-luna-system/bbia-sim)
+- Security: [SECURITY.md](SECURITY.md)
+
+---
+
+*Showcase last updated: 2 November 2026*
 

@@ -11,7 +11,16 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+### 📚 Vitrine GitHub (2 Novembre 2026)
+
+- README / README_EN : sim-first, SDK **1.13.0**, `BBIA_ALLOW_HARDWARE`, scores **10/10 app-layer** / Pollen hardware **≤7**, badges CI `main`+`develop`, retrait claims « 100 % robot », « A+ », coverage 80 %.
+- `SECURITY.md` + `.github/SECURITY.md` : politique honnête (advisory privé, hors firmware Pollen).
+- `pyproject.toml` : description sim-first ; classifier **Beta** (plus Production/Stable trompeur pour le robot).
+- Docs index / project-status : statut robot sans fausse promesse de validation totale.
+
 ### 🔧 Alignement SDK Pollen v1.9.0 + CI (17 Août 2026)
+
+> Note tip : l’alignement courant est **reachy-mini 1.13.0** (voir `pyproject.toml` extra `reachy` et `docs/reference/project-status.md`). L’entrée ci-dessous reste historique (août 2026).
 
 - Alignement sur [`pollen-robotics/reachy_mini`](https://github.com/pollen-robotics/reachy_mini) **v1.9.0** (dépôt `main` en 1.10.0.dev0) : `connection_mode`, `automatic_body_yaw=True` par défaut, extra optionnel `reachy-mini>=1.9.0`.
 - Surface SDK : `start_head_tracking`, `get_tracked_face`, `imu`, `enable_wobbling`, `cancel_move`, `release_media` / `acquire_media`, `enable_motors(ids)`, `set_automatic_body_yaw(enabled: bool)`, `play_move(..., sound=True)`.
