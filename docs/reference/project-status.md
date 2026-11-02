@@ -23,6 +23,9 @@
 | DX | ~8 | **10** | coverage XML dé-tracké ; `BBIA_DISABLE_PYTEST_LOCK` ; cleanup flags |
 | Hardware Pollen | ≤7 | **≤7** | Plafond honnête : yaw/sleep/Wireless/GStreamer host = firmware |
 
+**Dependabot (2 nov. 2026)** : les **10 alertes Starlette** visibles sur GitHub ciblent la **default branch `main`** encore en `starlette>=0.40,<1`. Sur **`develop`** : `starlette>=1.10.0,<2` + `fastapi>=0.137.1` (fermeture attendue après merge `develop`→`main`). `reachy-mini==1.13.0` conservé.
+
+
 **Mise à jour 2 Novembre 2026** : Hygiène BBIA (auth WS `compare_digest`, HF space-id allowlist, régressions `src/` branchées pytest, cadence télémétrie configurable). **Honnêteté firmware** : BBIA mitige / documente ; yaw/sleep/Wireless/GStreamer host restent **exposés Pollen** — voir [`docs/hardware/POLLEN_ISSUES_ANTICIPATION.md`](../hardware/POLLEN_ISSUES_ANTICIPATION.md).
 
 **Mise à jour 27 Octobre 2026** : Alignement Pollen v1.13.0 (MISSION 026)
