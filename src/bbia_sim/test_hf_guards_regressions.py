@@ -128,10 +128,10 @@ def test_chat_tools_helpers_stable_and_reexported() -> None:
     assert "TOOL_KEYWORD_PATTERNS = _hf_chat_tools.TOOL_KEYWORD_PATTERNS" in src
     assert "extract_angle = _hf_chat_tools.extract_angle" in src
     assert "extract_intensity = _hf_chat_tools.extract_intensity" in src
-    assert "return extract_angle(message)" in src
-    assert "return extract_intensity(message)" in src
+    assert "cast(float | None, extract_angle(message))" in src
+    assert "cast(float | None, extract_intensity(message))" in src
     assert "detect_and_execute_tools = _hf_orch.detect_and_execute_tools" in src
-    assert "return _hf_orch.detect_and_execute_tools(" in src
+    assert "_hf_orch.detect_and_execute_tools(" in src
 
 
 def test_tool_orchestration_keyword_dance() -> None:
