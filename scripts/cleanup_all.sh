@@ -78,22 +78,30 @@ echo ""
 # PARTIE 1: NETTOYAGE FICHIERS CACHE (fusionné depuis cleanup_project.sh)
 # ============================================================================
 
+# Exclusions disques lourds (T7 / CI) — évite hang find sur .venv/.git
+FIND_PRUNE=(-path "./.git" -o -path "./.venv" -o -path "./venv" -o -path "./venv-*" -o -path "./reachy_repos" -o -path "./node_modules" -o -path "./dist" -o -path "./build" -o -path "./.mypy_cache" -o -path "./.pytest_cache" -o -path "./.ruff_cache" -o -path "./htmlcov" -o -path "./site-packages")
+find_prj() {
+    # Usage: find_prj <find-args...>
+    find . \( "${FIND_PRUNE[@]}" \) -prune -o "$@" -print
+}
+find_prj_delete() {
+    find . \( "${FIND_PRUNE[@]}" \) -prune -o "$@" -print0 | xargs -0 rm -f 2>/dev/null || true
+}
+
 if [ "$CLEAN_CACHE" = true ]; then
     echo -e "${BLUE}📁 PHASE 1: Nettoyage des fichiers cache${NC}"
     echo "----------------------------------------"
     
     # 1. Supprimer les fichiers système macOS (métadonnées)
     echo "🗑️  Suppression des fichiers système macOS..."
-    count_before=$(find . -name "._*" -type f ! -path "./venv/*" ! -path "./venv-*/*" ! -path "./dist/*" ! -path "./build/*" 2>/dev/null | wc -l | tr -d ' ')
-    
-    # Supprimer fichiers ._* partout sauf dans venv
-    find . -name "._*" -type f ! -path "./venv/*" ! -path "./venv-*/*" ! -path "./dist/*" ! -path "./build/*" -delete 2>/dev/null || true
-    # Supprimer aussi fichiers .!*!._* (métadonnées macOS sur disque réseau/externe)
-    find . -name ".!*!._*" -type f ! -path "./venv/*" ! -path "./venv-*/*" ! -path "./dist/*" ! -path "./build/*" -delete 2>/dev/null || true
-    # Supprimer aussi les fichiers .DS_Store
-    find . -name ".DS_Store" -type f -delete 2>/dev/null || true
-    
-    count_after=$(find . -name "._*" -type f ! -path "./venv/*" ! -path "./venv-*/*" ! -path "./dist/*" ! -path "./build/*" 2>/dev/null | wc -l | tr -d ' ')
+    count_before=$(find_prj -name "._*" -type f 2>/dev/null | wc -l | tr -d ' ')
+
+    # Supprimer métadonnées macOS hors arbres exclus (.venv/.git/…)
+    find_prj_delete -name "._*" -type f
+    find_prj_delete -name ".!*!._*" -type f
+    find_prj_delete -name ".DS_Store" -type f
+
+    count_after=$(find_prj -name "._*" -type f 2>/dev/null | wc -l | tr -d ' ')
     if [ "$count_before" -gt 0 ]; then
         echo -e "   ✅ ${GREEN}Fichiers métadonnées supprimés: $((count_before - count_after))${NC}"
     else
@@ -121,11 +129,12 @@ if [ "$CLEAN_CACHE" = true ]; then
     
     # 3. Nettoyer les caches Python
     echo "🐍 Nettoyage des caches Python..."
-    pycache_count=$(find . -type d -name "__pycache__" 2>/dev/null | wc -l | tr -d ' ')
-    pyc_count=$(find . -name "*.pyc" 2>/dev/null | wc -l | tr -d ' ')
-    find . -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
-    find . -name "*.pyc" -delete 2>/dev/null || true
-    find . -name "*.pyo" -delete 2>/dev/null || true
+    pycache_count=$(find_prj -type d -name "__pycache__" 2>/dev/null | wc -l | tr -d ' ')
+    pyc_count=$(find_prj -name "*.pyc" -type f 2>/dev/null | wc -l | tr -d ' ')
+    # Dossiers __pycache__ : prune-aware
+    find . \( "${FIND_PRUNE[@]}" \) -prune -o -type d -name "__pycache__" -print0 2>/dev/null | xargs -0 rm -rf 2>/dev/null || true
+    find_prj_delete -name "*.pyc" -type f
+    find_prj_delete -name "*.pyo" -type f
     echo "   ✅ Caches Python supprimés (${pycache_count} dossiers __pycache__, ${pyc_count} fichiers .pyc)"
     
     # 4. Nettoyer les caches mypy

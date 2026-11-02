@@ -13,6 +13,8 @@ exclude:
   - "._*"
   - "*.pyc"
   - "__pycache__"
+  - "*/test_*.py"
+  - "test_*.py"
 
 skips:
   - B101
