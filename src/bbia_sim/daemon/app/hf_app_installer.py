@@ -130,18 +130,32 @@ class HFAppInstaller:
 
             logger.info("App %s clonée avec succès", local_name)
 
-            # Installer les dépendances si requirements.txt existe
+            # pip install -r = exécution de deps arbitraires — OFF par défaut.
+            # Opt-in explicite : BBIA_HF_PIP_INSTALL=1
             requirements_file = self._ensure_under_apps_dir(
                 app_path / "requirements.txt"
             )
-            if requirements_file.exists():
+            pip_opt_in = os.environ.get("BBIA_HF_PIP_INSTALL", "0").strip().lower() in {
+                "1",
+                "true",
+                "yes",
+                "on",
+            }
+            if requirements_file.exists() and pip_opt_in:
                 logger.info("Installation des dépendances depuis requirements.txt...")
                 await self._install_dependencies(requirements_file)
+            elif requirements_file.exists():
+                logger.warning(
+                    "requirements.txt présent pour %s mais BBIA_HF_PIP_INSTALL "
+                    "désactivé (défaut) — deps non installées (anti code arbitraire)",
+                    local_name,
+                )
 
             return {
                 "status": "installed",
                 "app_name": local_name,
                 "app_path": str(app_path),
+                "pip_install": bool(requirements_file.exists() and pip_opt_in),
             }
 
         except RuntimeError:

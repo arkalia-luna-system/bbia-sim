@@ -10,17 +10,17 @@
 
 **Mise à jour 2 Novembre 2026 (soir)** : passe ≥9/10 domaines logiciels — floors `fastapi>=0.137.1` / `starlette>=1.3.1` / `requests>=2.33.1` / `httpx` alignés ; Dependabot → `develop` ; smokes/slices **mockés CI** ; télémétrie `frequency` = settings ; joint ecosystem honoré ; artefacts coverage XML **dé-trackés**.
 
-**Scores subjectifs domaines (2 nov. 2026 — tip `903d7efb`+)** :
+**Scores subjectifs domaines (2 nov. 2026 — tip `da21b44d`+ senior pass)** :
 
-| Domaine | Avant (`55db1bdf`) | Après | Note |
-|:--------|:------------------:|:-----:|:-----|
-| Sécu app-layer | ~8 | **10** | WS `compare_digest`, HTTP `http_auth`, HF allowlist, upload/path/shell ; pins starlette≥1.3.1 |
+| Domaine | Avant | Après | Note |
+|:--------|:-----:|:-----:|:-----|
+| Sécu app-layer | ~8 | **~9** | Alias `BBIA_TOKEN`/`BBIA_ENV`, refuse défaut/vide en prod, WS bridge/dashboard, HF pip OFF, yaw clamp chemins API ; **pas 10/10** (firmware/upload Pollen, Dependabot `main`) |
 | Dependabot GitHub | ~8 | **9** | Corrigé sur `develop` ; alertes UI restent tant que `main` non mergé (hors app-layer) |
-| Tests | ~8 | **10** | Smokes/slices mockés CI ; auth sans import Jinja ; 54 pytest ciblés verts |
-| Qualité / structure | ~8.5 | **10** | `verify_token` extrait ; guards cohérents ; F401 clean surfaces clé |
-| Docs | ~8.5 | **10** | Status/scores à jour ; honesty Pollen ; archives banner |
-| Bugs | ~8.5 | **10** | Telemetry freq, joint ecosystem, factory/media/auth |
-| DX | ~8 | **10** | coverage XML dé-tracké ; `BBIA_DISABLE_PYTEST_LOCK` ; cleanup flags |
+| Tests | ~8 | **~9** | Régressions auth/alias/guards ; smokes mockés CI — pas de claim 10/10 exhaustif |
+| Qualité / structure | ~8.5 | **~9** | `http_auth` / `ws.auth` / presets allowlist ; god-file HF volontairement hors scope |
+| Docs | ~8.5 | **~9** | Scores honnêtes ; Pollen ≤7 ; pas de faux 10/10 hardware |
+| Bugs | ~8.5 | **~9** | Telemetry freq, joint, yaw bypass, env aliases |
+| DX | ~8 | **~9** | `BBIA_DISABLE_PYTEST_LOCK` / cleanup flags ; coverage XML dé-tracké |
 | Hardware Pollen | ≤7 | **≤7** | Plafond honnête : yaw/sleep/Wireless/GStreamer host = firmware |
 
 **Dependabot (2 nov. 2026)** : les **10 alertes Starlette** visibles sur GitHub ciblent la **default branch `main`** encore en `starlette>=0.40,<1`. Sur **`develop`** : `starlette>=1.10.0,<2` + `fastapi>=0.137.1` (fermeture attendue après merge `develop`→`main`). `reachy-mini==1.13.0` conservé.

@@ -1384,12 +1384,13 @@ class ReachyMiniBackend(RobotAPI):
 
     def set_target_body_yaw(self, body_yaw: float) -> None:
         """Définit la rotation cible du corps."""
+        safe_yaw = clamp_yaw_amplitude(float(body_yaw))
         if not self.is_connected or not self.robot:
-            logger.debug("Mode simulation: body_yaw = %s", body_yaw)
+            logger.debug("Mode simulation: body_yaw = %s", safe_yaw)
             return
 
         try:
-            self.robot.set_target_body_yaw(body_yaw)
+            self.robot.set_target_body_yaw(safe_yaw)
         except (ValueError, AttributeError, RuntimeError, OSError, TypeError) as e:
             logger.exception("Erreur set_target_body_yaw: %s", e)
         except (IndexError, KeyError) as e:
@@ -1572,12 +1573,16 @@ class ReachyMiniBackend(RobotAPI):
 
             # Appel SDK avec validation (conforme SDK officiel)
             # body_yaw=None signifie "garder position actuelle" dans le SDK
+            # Clamp soft #1479 si yaw fourni (évite bypass via goto_target)
+            safe_body_yaw = (
+                None if body_yaw is None else clamp_yaw_amplitude(float(body_yaw))
+            )
             self.robot.goto_target(
                 head=head,
                 antennas=antennas,
                 duration=duration_float,
                 method=method_enum,
-                body_yaw=body_yaw,  # Passer None directement si None (SDK gère)
+                body_yaw=safe_body_yaw,
             )
         except ValueError:
             # Propager les ValueError de validation

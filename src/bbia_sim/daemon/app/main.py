@@ -64,6 +64,8 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     """Gestionnaire de cycle de vie robuste avec retry et fallback."""
     # Démarrage
     logger.info("🚀 Démarrage de l'API BBIA-SIM")
+    # Fail-fast prod : refuse token vide / défaut documenté
+    settings.require_secure_production_token()
 
     # NOUVEAU: Retry automatique startup simulation
     max_retries = 3

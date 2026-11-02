@@ -17,6 +17,9 @@ def ws_token_is_valid(token: str | None) -> bool:
     expected = settings.api_token
     if not isinstance(expected, str) or not expected:
         return False
+    # En prod, le défaut connu n'est jamais « valide » même s'il match
+    if settings.is_production() and settings.uses_insecure_api_token():
+        return False
     return hmac.compare_digest(token, expected)
 
 

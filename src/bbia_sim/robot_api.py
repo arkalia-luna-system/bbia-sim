@@ -317,6 +317,11 @@ class RobotAPI(ABC):
 
     def _execute_goto_sleep(self, duration: float) -> bool:
         """Exécute le comportement d'endormissement."""
+        from bbia_sim.sleep_guard import prepare_goto_sleep
+
+        # Garde soft #1478 (best-effort ; droop firmware reste exposé Pollen)
+        prepare_goto_sleep(self, use_sim=not bool(self.is_connected))
+
         # Utiliser set_sleeping_pose si disponible (Issue #410)
         if hasattr(self, "set_sleeping_pose"):
             return self.set_sleeping_pose(duration=duration)
@@ -344,6 +349,10 @@ class RobotAPI(ABC):
 
         """
         try:
+            from bbia_sim.sleep_guard import clamp_yaw_amplitude, prepare_goto_sleep
+
+            prepare_goto_sleep(self, use_sim=not bool(self.is_connected))
+
             # Pose sommeil naturelle : tête baissée, corps légèrement tourné, antennes baissées
             from reachy_mini.utils import create_head_pose
 
@@ -353,8 +362,8 @@ class RobotAPI(ABC):
             # Antennes baissées pour pose sommeil
             antennas = [-0.2, 0.2]  # Antennes légèrement baissées
 
-            # Corps légèrement tourné pour pose plus naturelle
-            body_yaw = -0.1  # Légère rotation gauche
+            # Corps légèrement tourné pour pose plus naturelle (#1479 clamp soft)
+            body_yaw = clamp_yaw_amplitude(-0.1)
 
             if hasattr(self, "goto_target"):
                 try:

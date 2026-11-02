@@ -793,8 +793,17 @@ async def get_bridge_status() -> dict[str, Any | bool]:
 
 
 @app.websocket("/ws/zenoh")
-async def websocket_endpoint(websocket: WebSocket) -> None:
+async def websocket_endpoint(
+    websocket: WebSocket,
+    token: str | None = None,
+) -> None:
     """WebSocket pour communication temps réel avec Zenoh."""
+    from bbia_sim.daemon.ws.auth import ws_auth_rejected
+
+    if ws_auth_rejected(token):
+        await websocket.close(code=1008, reason="Invalid token")
+        return
+
     await websocket.accept()
 
     try:
