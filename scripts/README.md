@@ -94,9 +94,9 @@ Voir `scripts/_archived/README.md` pour plus de détails.
 
 ### ✅ **Scripts de Vérification Documentation**
 
-- **`verify_docs_complete.py`** ⭐ - Vérification complète documentation (liens, Mermaid, orthographe, formatage, cohérence code) - **RECOMMANDÉ**
+- **`verify_docs_complete.py`** ⭐ - Vérification large (liens, Mermaid, orthographe, formatage, cohérence fichiers/classes) - **RECOMMANDÉ** au quotidien
 - ❌ **`verify_md_links.py` / `fix_md_links.py` / `verify_docs_links.py` / audits one-shot** → archivés dans `_archived/one_shot_hygiene_2026/` (1 Nov 2026)
-- **`verify_documentation.py`** - Vérification précision, cohérence et amélioration formatage MD (fusionné avec `audit_and_improve_md.py`)
+- **`verify_documentation.py`** - **Complément distinct** (pas un doublon à supprimer) : précision/cohérence via `FUNCTIONALITIES_TO_CHECK` + `--improve` ; appelé par `quick_start.sh --consistency`
   - Modes: `--accuracy`, `--consistency`, `--improve`
 - **`audit_and_correct_dates_md.py`** - Audit et correction dates MD (bien consolidé)
 

@@ -48,3 +48,9 @@ Scripts hors Makefile/CI/`scripts/README.md` (0 référence active).
 | `deploy_external_communication.py` | Déploiement one-shot non référencé |
 | `generate_bbia_image.py` / `generate_presentation.py` / `generate_video_demo.py` | Générateurs médias one-shot ; non listés actifs |
 
+### `process_orphans/` (2 Nov 2026)
+
+| Script | Raison |
+|--------|--------|
+| `bbia_safe.sh` | Wrapper start/stop orphelin (0 réf. docs/CI/Makefile) ; `process_manager.py` + `cleanup_all.sh` / `kill_mujoco_viewers.sh` restent actifs |
+
