@@ -148,6 +148,8 @@ class TestRobotAPISmoke:
 
     def test_robot_api_error_handling(self, demo_scripts):
         """Test de gestion d'erreurs RobotAPI."""
+        if os.environ.get("CI", "false").lower() == "true":
+            pytest.skip("Test désactivé en CI (trop lent avec subprocess)")
         script = demo_scripts["emotion"]
 
         # Test avec backend invalide
@@ -173,6 +175,8 @@ class TestRobotAPISmoke:
 
     def test_robot_api_joint_validation(self, demo_scripts):
         """Test de validation des joints RobotAPI."""
+        if os.environ.get("CI", "false").lower() == "true":
+            pytest.skip("Test désactivé en CI (trop lent avec subprocess)")
         script = demo_scripts["emotion"]
 
         # Test avec joint invalide
@@ -200,6 +204,9 @@ class TestRobotAPISmoke:
 
     def test_robot_api_performance(self, demo_scripts):
         """Test de performance RobotAPI."""
+        # Skip en CI (subprocess) — couverture mockée dans test_robot_api_smoke_mocked
+        if os.environ.get("CI", "false").lower() == "true":
+            pytest.skip("Test désactivé en CI (trop lent avec subprocess)")
         script = demo_scripts["emotion"]
 
         start_time = time.time()

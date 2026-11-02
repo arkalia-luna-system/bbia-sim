@@ -9,27 +9,26 @@ This exposes:
 """
 
 import asyncio
+import contextlib
+import inspect
 import logging
+import os
 from collections.abc import Coroutine
 from datetime import datetime
 from typing import Annotated, Any
 from uuid import UUID, uuid4
 
 import numpy as np
-from fastapi import APIRouter, Depends, HTTPException, WebSocket, WebSocketDisconnect
+from fastapi import (
+    APIRouter,
+    Depends,
+    HTTPException,
+    Query,
+    WebSocket,
+    WebSocketDisconnect,
+)
 from huggingface_hub.errors import RepositoryNotFoundError
 from pydantic import BaseModel, Field
-
-from bbia_sim.utils.enum_compat import StrEnum
-
-try:
-    from reachy_mini.motion.recorded_move import RecordedMoves
-except ImportError:
-    RecordedMoves = None
-
-import contextlib
-
-from fastapi import Query
 
 from bbia_sim.daemon.app.backend_adapter import (
     BackendAdapter,
@@ -47,8 +46,29 @@ from bbia_sim.multi_layer_queue import (
     MovementPriority,
     get_multi_layer_queue,
 )
+from bbia_sim.utils.enum_compat import StrEnum
 
 logger = logging.getLogger(__name__)
+
+# RecordedMoves : import paresseux (reachy_mini.__init__ → media_manager hang).
+_RecordedMovesCls: Any = None
+_RECORDED_MOVES_LOAD_ATTEMPTED = False
+
+
+def _get_recorded_moves_cls() -> Any:
+    """Charge RecordedMoves à la demande uniquement."""
+    global _RecordedMovesCls, _RECORDED_MOVES_LOAD_ATTEMPTED
+    if _RECORDED_MOVES_LOAD_ATTEMPTED:
+        return _RecordedMovesCls
+    _RECORDED_MOVES_LOAD_ATTEMPTED = True
+    try:
+        from reachy_mini.motion.recorded_move import RecordedMoves as _RM
+    except ImportError:
+        _RecordedMovesCls = None
+    else:
+        _RecordedMovesCls = _RM
+    return _RecordedMovesCls
+
 
 router = APIRouter(prefix="/move")
 
@@ -57,6 +77,13 @@ move_tasks: dict[UUID, asyncio.Task[None]] = {}
 # OPTIMISATION RAM: Limiter nombre de listeners WebSocket (max 20)
 move_listeners: list[WebSocket] = []
 _MAX_MOVE_LISTENERS = 20
+# Anticipation Pollen #1512 : un seul move « running » par défaut
+# (évite de signaler un move terminé pendant qu'un autre tourne côté daemon).
+_TRUTHY = frozenset({"1", "true", "yes", "on"})
+
+
+def _allow_concurrent_moves() -> bool:
+    return os.environ.get("BBIA_ALLOW_CONCURRENT_MOVES", "").strip().lower() in _TRUTHY
 
 
 class InterpolationMode(StrEnum):
@@ -125,7 +152,30 @@ def get_backend_adapter_for_move(
 
 
 def create_move_task(coro: Coroutine[Any, Any, None]) -> MoveUUID:
-    """Crée une nouvelle tâche de mouvement avec UUID (conforme SDK)."""
+    """Crée une nouvelle tâche de mouvement avec UUID (conforme SDK).
+
+    Par défaut refuse un second move concurrent (Pollen #1512). Contournement :
+    ``BBIA_ALLOW_CONCURRENT_MOVES=1``.
+    """
+    # Nettoyer les tâches déjà terminées (évite faux positifs 409)
+    for done_uuid, done_task in list(move_tasks.items()):
+        if done_task.done():
+            move_tasks.pop(done_uuid, None)
+
+    if move_tasks and not _allow_concurrent_moves():
+        # Évite RuntimeWarning "coroutine never awaited" si l'appelant a déjà
+        # matérialisé la coroutine (ex. create_move_task(slow_move())).
+        with contextlib.suppress(Exception):
+            coro.close()
+        raise HTTPException(
+            status_code=409,
+            detail=(
+                "Un mouvement est déjà en cours (garde BBIA / Pollen #1512). "
+                "Attendre la fin, POST /api/move/stop, ou "
+                "BBIA_ALLOW_CONCURRENT_MOVES=1."
+            ),
+        )
+
     uuid = uuid4()
 
     async def notify_listeners(message: str, details: str = "") -> None:
@@ -160,10 +210,16 @@ def create_move_task(coro: Coroutine[Any, Any, None]) -> MoveUUID:
             raise
         except Exception as e:
             await notify_listeners("move_failed", details=str(e))
-        finally:
-            move_tasks.pop(uuid, None)
+
+    def _on_move_task_done(task: asyncio.Task[None]) -> None:
+        # Cancel avant démarrage de wrap_coro: le body never runs → fermer coro.
+        if inspect.getcoroutinestate(coro) == inspect.CORO_CREATED:
+            with contextlib.suppress(Exception):
+                coro.close()
+        move_tasks.pop(uuid, None)
 
     task = asyncio.create_task(wrap_coro())
+    task.add_done_callback(_on_move_task_done)
     move_tasks[uuid] = task
 
     return MoveUUID(uuid=uuid)
@@ -302,6 +358,7 @@ async def discover_recorded_move_datasets() -> list[str]:
 @router.get("/recorded-move-datasets/list/{dataset_name:path}")
 async def list_recorded_move_dataset(dataset_name: str) -> list[str]:
     """Liste les mouvements enregistrés disponibles dans un dataset (conforme SDK)."""
+    RecordedMoves = _get_recorded_moves_cls()
     if RecordedMoves is None:
         raise HTTPException(
             status_code=501,
@@ -326,6 +383,7 @@ async def play_recorded_move_dataset(
     backend: Annotated[BackendAdapter, Depends(get_backend_adapter_for_move)],
 ) -> MoveUUID:
     """Demande au robot de jouer un mouvement enregistré depuis un dataset (conforme SDK officiel)."""
+    RecordedMoves = _get_recorded_moves_cls()
     if RecordedMoves is None:
         raise HTTPException(
             status_code=501,
@@ -355,11 +413,9 @@ async def stop_move(uuid: MoveUUID) -> dict[str, str]:
 @router.websocket("/ws/updates")
 async def ws_move_updates(websocket: WebSocket, token: str | None = None) -> None:
     """WebSocket pour streamer les mises à jour de mouvements."""
-    from bbia_sim.daemon.config import settings
+    from bbia_sim.daemon.ws.auth import ws_auth_rejected
 
-    if settings.environment.lower() == "prod" and (
-        not token or token != settings.api_token
-    ):
+    if ws_auth_rejected(token):
         await websocket.close(code=1008, reason="Invalid token")
         return
 
@@ -374,10 +430,13 @@ async def ws_move_updates(websocket: WebSocket, token: str | None = None) -> Non
 
     await websocket.accept()
     try:
+        from bbia_sim.daemon.ws.keepalive import receive_text_with_keepalive
+
         move_listeners.append(websocket)
         while True:
-            _ = await websocket.receive_text()
-    except (WebSocketDisconnect, Exception):
+            # Keepalive configurable (#1494 / BBIA_WS_KEEPALIVE_TIMEOUT)
+            _ = await receive_text_with_keepalive(websocket)
+    except (TimeoutError, WebSocketDisconnect, Exception):
         # OPTIMISATION RAM: Nettoyer dans finally pour garantir suppression
         pass
     finally:
@@ -407,11 +466,9 @@ async def ws_set_target(websocket: WebSocket, token: str | None = None) -> None:
     """WebSocket pour streamer les appels set_target - conforme SDK."""
     import json
 
-    from bbia_sim.daemon.config import settings
+    from bbia_sim.daemon.ws.auth import ws_auth_rejected
 
-    if settings.environment.lower() == "prod" and (
-        not token or token != settings.api_token
-    ):
+    if ws_auth_rejected(token):
         await websocket.close(code=1008, reason="Invalid token")
         return
 
@@ -419,8 +476,11 @@ async def ws_set_target(websocket: WebSocket, token: str | None = None) -> None:
     # Créer backend adapter directement (pas de Depends pour WebSockets)
     backend = ws_get_backend_adapter(websocket)
     try:
+        from bbia_sim.daemon.ws.keepalive import receive_text_with_keepalive
+
         while True:
-            data = await websocket.receive_text()
+            # Keepalive configurable (#1494 / BBIA_WS_KEEPALIVE_TIMEOUT)
+            data = await receive_text_with_keepalive(websocket)
             try:
                 target = FullBodyTarget.model_validate_json(data)
                 # Conforme SDK officiel: utiliser set_target directement
@@ -429,7 +489,7 @@ async def ws_set_target(websocket: WebSocket, token: str | None = None) -> None:
                 await websocket.send_text(
                     json.dumps({"status": "error", "detail": str(e)}),
                 )
-    except WebSocketDisconnect:
+    except (TimeoutError, WebSocketDisconnect):
         pass
 
 

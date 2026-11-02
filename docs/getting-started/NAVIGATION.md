@@ -77,10 +77,10 @@ docs/
 
 ## 💡 Astuces
 
-- **Besoin d'aide rapide ?** → Consultez [FAQ Troubleshooting](../development/troubleshooting.md)
+- **Besoin d'aide rapide ?** → [FAQ principale](troubleshooting.md) · [FAQ technique](../development/troubleshooting.md)
 - **Recherche complète ?** → Voir [INDEX_FINAL.md](../INDEX_FINAL.md)
 - **Navigation par profil ?** → Voir [Index Thématique](../reference/INDEX_THEMATIQUE.md)
 
 ---
 
-**Dernière mise à jour** : 26 Janvier 2026
+**Dernière mise à jour** : 2 Novembre 2026

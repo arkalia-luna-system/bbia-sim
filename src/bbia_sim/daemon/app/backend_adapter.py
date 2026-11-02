@@ -277,14 +277,17 @@ class BackendAdapter:
 
     def set_target_body_yaw(self, body_yaw: float) -> None:
         """Définit le yaw cible du corps (conforme SDK)."""
+        from bbia_sim.sleep_guard import clamp_yaw_amplitude
+
         self.connect_if_needed()
-        self.target_body_yaw = body_yaw
+        safe_yaw = clamp_yaw_amplitude(float(body_yaw))
+        self.target_body_yaw = safe_yaw
         self.ik_required = True  # Conforme SDK
 
         if hasattr(self._robot, "set_target_body_yaw"):
-            self._robot.set_target_body_yaw(body_yaw)
+            self._robot.set_target_body_yaw(safe_yaw)
         elif hasattr(self._robot, "set_target"):
-            self._robot.set_target(body_yaw=body_yaw)
+            self._robot.set_target(body_yaw=safe_yaw)
 
     def set_target_head_joint_positions(
         self,

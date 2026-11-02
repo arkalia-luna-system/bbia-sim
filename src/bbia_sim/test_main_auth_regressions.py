@@ -1,10 +1,12 @@
-"""Tests de non-regression pour l'authentification HTTP de main.py."""
+"""Tests de non-regression auth HTTP — via ``http_auth`` (sans import ``main``/Jinja)."""
+
+from __future__ import annotations
 
 import pytest
 from fastapi import HTTPException
 from fastapi.security import HTTPAuthorizationCredentials
 
-from bbia_sim.daemon.app.main import verify_token
+from bbia_sim.daemon.app.http_auth import verify_token
 from bbia_sim.daemon.config import settings
 
 
@@ -32,3 +34,23 @@ def test_verify_token_logs_masked_token(
     with pytest.raises(HTTPException):
         verify_token(_creds("bad-token"))
     assert "bad-token" not in caplog.text
+
+
+def test_main_reexports_verify_token_from_http_auth() -> None:
+    """Garde le câblage ``main`` → ``http_auth`` (sans exécuter l'app)."""
+    import ast
+    from pathlib import Path
+
+    src = Path(__file__).resolve().parent / "daemon" / "app" / "main.py"
+    tree = ast.parse(src.read_text(encoding="utf-8"))
+    found = False
+    for node in tree.body:
+        if not isinstance(node, ast.ImportFrom):
+            continue
+        # absolute ou relatif ``.http_auth``
+        if node.module in {"bbia_sim.daemon.app.http_auth", "http_auth"}:
+            names = {a.name for a in node.names}
+            if "verify_token" in names:
+                found = True
+                break
+    assert found, "main.py doit importer verify_token depuis http_auth"

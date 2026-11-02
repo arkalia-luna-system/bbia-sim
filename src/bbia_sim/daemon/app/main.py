@@ -1,7 +1,6 @@
 """Application FastAPI principale pour BBIA-SIM."""
 
 import asyncio
-import hmac
 import logging
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
@@ -11,7 +10,6 @@ from typing import Any
 from fastapi import APIRouter, Depends, FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, JSONResponse
-from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
@@ -22,6 +20,9 @@ from bbia_sim.daemon.simulation_service import simulation_service
 from bbia_sim.daemon.ws import telemetry
 from bbia_sim.robot_factory import RobotFactory
 
+from .http_auth import verify_token
+
+# Routers : pas d'import reachy_mini/media au top-level (lazy dans move/backends).
 from .routers import (
     apps,
     daemon,
@@ -44,8 +45,6 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Configuration de sécurité
-security = HTTPBearer()
-
 # Variables globales pour l'état de l'application
 app_state: dict[str, Any] = {
     "simulator": None,
@@ -60,46 +59,13 @@ app_state: dict[str, Any] = {
 }
 
 
-def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)) -> str:
-    """Vérifie le token d'authentification.
-
-    Args:
-        credentials: Credentials HTTP Bearer
-
-    Returns:
-        Token vérifié
-
-    Raises:
-        HTTPException: Si le token est invalide
-
-    """
-    if not hmac.compare_digest(credentials.credentials, settings.api_token):
-        # Log sécurisé sans exposer le token
-        logger.warning(
-            "Tentative d'authentification avec token invalide: %s",
-            settings.mask_token(credentials.credentials),
-        )
-        raise HTTPException(
-            status_code=401,
-            detail="Token d'authentification invalide",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-
-    # Log de succès en mode debug uniquement
-    if settings.log_level.upper() == "DEBUG":
-        logger.debug(
-            "Authentification réussie avec token: %s",
-            settings.mask_token(credentials.credentials),
-        )
-
-    return str(credentials.credentials)
-
-
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     """Gestionnaire de cycle de vie robuste avec retry et fallback."""
     # Démarrage
     logger.info("🚀 Démarrage de l'API BBIA-SIM")
+    # Fail-fast prod : refuse token vide / défaut documenté
+    settings.require_secure_production_token()
 
     # NOUVEAU: Retry automatique startup simulation
     max_retries = 3
@@ -277,7 +243,8 @@ app = FastAPI(
             "description": "Serveur de production (à venir)",
         },
     ],
-    tags_metadata=[
+    # FastAPI ≥0.135 / SDK 1.13 : paramètre renommé tags_metadata → openapi_tags
+    openapi_tags=[
         {
             "name": "ecosystem",
             "description": (
@@ -608,12 +575,16 @@ async def general_exception_handler(request: Request, exc: Exception) -> JSONRes
 if __name__ == "__main__":
     import uvicorn
 
+    from bbia_sim.daemon.ws.keepalive import uvicorn_ws_keepalive_kwargs
+
     # Configuration pour le développement
     # Utiliser string d'import complète pour éviter problèmes
+    # Keepalive WS (#1494) via BBIA_WS_KEEPALIVE_TIMEOUT
     uvicorn.run(
         "bbia_sim.daemon.app.main:app",
         host="127.0.0.1",
         port=8000,
         reload=False,  # Désactiver reload pour stabilité
         log_level="info",
+        **uvicorn_ws_keepalive_kwargs(),
     )

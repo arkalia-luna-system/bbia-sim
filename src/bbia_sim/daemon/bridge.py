@@ -43,16 +43,33 @@ except ImportError:
     Config = Any  # type: ignore[assignment,misc]
     Session = Any  # type: ignore[assignment,misc]
 
-# Import conditionnel SDK officiel
-try:
-    from reachy_mini import ReachyMini  # type: ignore[import-untyped]
-    from reachy_mini.utils import create_head_pose  # type: ignore[import-untyped]
+# SDK officiel : import paresseux (évite blocage réseau au import du bridge)
+ReachyMini: Any = cast("Any", None)
+create_head_pose: Any = cast("Any", None)
+REACHY_MINI_AVAILABLE = False
+_SDK_LOAD_ATTEMPTED = False
 
-    REACHY_MINI_AVAILABLE = True
-except ImportError:
-    REACHY_MINI_AVAILABLE = False
-    ReachyMini = cast("Any", None)
-    create_head_pose = cast("Any", None)
+
+def _ensure_bridge_sdk() -> bool:
+    """Charge reachy_mini seulement si hardware autorisé / besoin réel."""
+    global ReachyMini, create_head_pose, REACHY_MINI_AVAILABLE, _SDK_LOAD_ATTEMPTED
+    if _SDK_LOAD_ATTEMPTED:
+        return REACHY_MINI_AVAILABLE
+    _SDK_LOAD_ATTEMPTED = True
+    try:
+        from reachy_mini import ReachyMini as _RM  # type: ignore[import-untyped]
+        from reachy_mini.utils import (  # type: ignore[import-untyped]
+            create_head_pose as _CHP,
+        )
+
+        ReachyMini = _RM
+        create_head_pose = _CHP
+        REACHY_MINI_AVAILABLE = True
+    except ImportError:
+        ReachyMini = cast("Any", None)
+        create_head_pose = cast("Any", None)
+        REACHY_MINI_AVAILABLE = False
+    return REACHY_MINI_AVAILABLE
 
 
 def _default_zenoh_connect() -> list[str]:
@@ -160,15 +177,31 @@ class ZenohBridge:
             self.session = await asyncio.to_thread(zenoh.open, zenoh_config)
             self.logger.info("Session Zenoh créée")
 
-            # Initialiser Reachy Mini
-            if REACHY_MINI_AVAILABLE:
-                if ReachyMini is None:
-                    msg = "ReachyMini non disponible"
-                    raise RuntimeError(msg)
-                self.reachy_mini = ReachyMini()
-                self.logger.info("Reachy Mini initialisé")
+            # Initialiser Reachy Mini — JAMAIS ReachyMini() nu (se connecte au daemon réel)
+            from bbia_sim.hardware_guard import is_hardware_allowed
+
+            if is_hardware_allowed():
+                if not _ensure_bridge_sdk() or ReachyMini is None:
+                    self.reachy_mini = None
+                    self.logger.warning(
+                        "BBIA_ALLOW_HARDWARE=1 mais SDK reachy_mini indisponible"
+                    )
+                else:
+                    self.reachy_mini = ReachyMini(
+                        connection_mode="localhost_only",
+                        spawn_daemon=False,
+                        use_sim=False,
+                        media_backend="no_media",
+                    )
+                    self.logger.info(
+                        "Reachy Mini initialisé (hardware, BBIA_ALLOW_HARDWARE=1)"
+                    )
             else:
-                self.logger.warning("SDK Reachy Mini non disponible - mode simulation")
+                self.reachy_mini = None
+                self.logger.info(
+                    "Bridge Zenoh sans client ReachyMini "
+                    "(BBIA_ALLOW_HARDWARE non activé) — pas de mouvement matériel"
+                )
 
             # Créer les subscribers et publishers
             await self._setup_zenoh_topics()
@@ -392,16 +425,16 @@ class ZenohBridge:
             n'est pas disponible.
 
         """
-        if not create_head_pose:
-            return None
+        from bbia_sim.backends.reachy_mini_backend import _get_create_head_pose
 
+        pose_fn = create_head_pose or _get_create_head_pose()
         emotion_poses: dict[str, Any] = {
-            "happy": create_head_pose(pitch=0.1, yaw=0.0, degrees=False),
-            "sad": create_head_pose(pitch=-0.1, yaw=0.0, degrees=False),
-            "excited": create_head_pose(pitch=0.2, yaw=0.1, degrees=False),
-            "curious": create_head_pose(pitch=0.05, yaw=0.2, degrees=False),
-            "calm": create_head_pose(pitch=-0.05, yaw=0.0, degrees=False),
-            "neutral": create_head_pose(pitch=0.0, yaw=0.0, degrees=False),
+            "happy": pose_fn(pitch=0.1, yaw=0.0, degrees=False),
+            "sad": pose_fn(pitch=-0.1, yaw=0.0, degrees=False),
+            "excited": pose_fn(pitch=0.2, yaw=0.1, degrees=False),
+            "curious": pose_fn(pitch=0.05, yaw=0.2, degrees=False),
+            "calm": pose_fn(pitch=-0.05, yaw=0.0, degrees=False),
+            "neutral": pose_fn(pitch=0.0, yaw=0.0, degrees=False),
         }
         return emotion_poses.get(emotion, emotion_poses["neutral"])
 
@@ -530,12 +563,12 @@ class ZenohBridge:
             duration: Durée du mouvement (secondes)
 
         """
-        if not create_head_pose:
-            return
+        from bbia_sim.backends.reachy_mini_backend import _get_create_head_pose
 
+        pose_fn = create_head_pose or _get_create_head_pose()
         pitch = z * 0.2  # Approximation verticale
         yaw = x * 0.3  # Approximation horizontale
-        pose: np.ndarray = create_head_pose(pitch=pitch, yaw=yaw, degrees=False)
+        pose: np.ndarray = pose_fn(pitch=pitch, yaw=yaw, degrees=False)
         if self.reachy_mini is not None and hasattr(self.reachy_mini, "goto_target"):
             self.reachy_mini.goto_target(head=pose, duration=duration, method="minjerk")
         elif self.reachy_mini is not None and hasattr(
@@ -760,8 +793,17 @@ async def get_bridge_status() -> dict[str, Any | bool]:
 
 
 @app.websocket("/ws/zenoh")
-async def websocket_endpoint(websocket: WebSocket) -> None:
+async def websocket_endpoint(
+    websocket: WebSocket,
+    token: str | None = None,
+) -> None:
     """WebSocket pour communication temps réel avec Zenoh."""
+    from bbia_sim.daemon.ws.auth import ws_auth_rejected
+
+    if ws_auth_rejected(token):
+        await websocket.close(code=1008, reason="Invalid token")
+        return
+
     await websocket.accept()
 
     try:

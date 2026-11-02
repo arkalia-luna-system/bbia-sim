@@ -46,6 +46,8 @@ async def test_start_demo_mode_disconnects_robot_even_when_emotion_fails(
     )
     assert result["status"] == "started"
     assert "emotion_error" in result
+    # Pas de détail d'exception exposé au client (CodeQL #76).
+    assert "set_emotion failed" not in str(result.get("emotion_error", ""))
     assert robot.connect_calls == 1
     assert robot.disconnect_calls == 1
 

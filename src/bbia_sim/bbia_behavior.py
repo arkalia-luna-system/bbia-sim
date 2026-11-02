@@ -19,25 +19,89 @@ from typing import TYPE_CHECKING, Any
 from uuid import UUID, uuid4
 
 if TYPE_CHECKING:
+    from .bbia_emotions import BBIAEmotions
+    from .bbia_vision import BBIAVision
     from .robot_api import RobotAPI
 
-try:
-    from .bbia_emotions import BBIAEmotions
-    from .bbia_vision import BBIAVision, get_bbia_vision_singleton
-    from .bbia_voice import dire_texte, reconnaitre_parole
-except ImportError:
-    # Pour les tests directs
-    get_bbia_vision_singleton = None  # type: ignore[assignment,misc]
-    pass
+# Imports lourds (vision/voice/SDK) : jamais au chargement du module.
+create_head_pose: Any = None
+REACHY_MINI_UTILS_AVAILABLE = False
+_SDK_UTILS_LOAD_ATTEMPTED = False
+_BBIAEmotions: Any = None
+_BBIAVision: Any = None
+_get_bbia_vision_singleton: Any = None
+_dire_texte: Any = None
+_reconnaitre_parole: Any = None
+_DEPS_LOAD_ATTEMPTED = False
 
-# Import SDK officiel pour create_head_pose (optionnel)
-try:
-    from reachy_mini.utils import create_head_pose  # type: ignore[import-untyped]
 
-    REACHY_MINI_UTILS_AVAILABLE = True
-except ImportError:
-    REACHY_MINI_UTILS_AVAILABLE = False
-    create_head_pose = None
+def _ensure_behavior_deps() -> None:
+    """Charge émotions/vision/voix à la demande uniquement."""
+    global _BBIAEmotions, _BBIAVision, _get_bbia_vision_singleton
+    global _dire_texte, _reconnaitre_parole, _DEPS_LOAD_ATTEMPTED
+    if _DEPS_LOAD_ATTEMPTED:
+        return
+    _DEPS_LOAD_ATTEMPTED = True
+    try:
+        from .bbia_emotions import BBIAEmotions as _E
+
+        _BBIAEmotions = _E
+    except ImportError:
+        _BBIAEmotions = None
+    try:
+        from .bbia_vision import BBIAVision as _V
+        from .bbia_vision import get_bbia_vision_singleton as _G
+
+        _BBIAVision = _V
+        _get_bbia_vision_singleton = _G
+    except ImportError:
+        _BBIAVision = None
+        _get_bbia_vision_singleton = None
+    try:
+        from .bbia_voice import dire_texte as _DT
+        from .bbia_voice import reconnaitre_parole as _RP
+
+        _dire_texte = _DT
+        _reconnaitre_parole = _RP
+    except ImportError:
+        _dire_texte = None
+        _reconnaitre_parole = None
+
+
+def _dire_texte_safe(*args: Any, **kwargs: Any) -> Any:
+    _ensure_behavior_deps()
+    fn = _dire_texte
+    if fn is None:
+        return None
+    return fn(*args, **kwargs)
+
+
+def _reconnaitre_parole_safe(*args: Any, **kwargs: Any) -> Any:
+    _ensure_behavior_deps()
+    fn = _reconnaitre_parole
+    if fn is None:
+        return None
+    return fn(*args, **kwargs)
+
+
+def _ensure_create_head_pose() -> bool:
+    """Charge create_head_pose à la demande uniquement."""
+    global create_head_pose, REACHY_MINI_UTILS_AVAILABLE, _SDK_UTILS_LOAD_ATTEMPTED
+    if _SDK_UTILS_LOAD_ATTEMPTED:
+        return REACHY_MINI_UTILS_AVAILABLE
+    _SDK_UTILS_LOAD_ATTEMPTED = True
+    try:
+        from reachy_mini.utils import (  # type: ignore[import-untyped]
+            create_head_pose as _chp,
+        )
+
+        create_head_pose = _chp
+        REACHY_MINI_UTILS_AVAILABLE = True
+    except ImportError:
+        create_head_pose = None
+        REACHY_MINI_UTILS_AVAILABLE = False
+    return REACHY_MINI_UTILS_AVAILABLE
+
 
 # Création du dossier log si besoin (préférence utilisateur)
 Path("log").mkdir(parents=True, exist_ok=True)
@@ -78,12 +142,12 @@ class BBIABehavior:
         self.priority = 1  # 1-10, 10 étant le plus prioritaire
         self.robot_api = robot_api  # Référence au robot pour contrôler les mouvements
 
-    def can_execute(self, context: dict[str, Any]) -> bool:  # noqa: ARG002
+    def can_execute(self, context: dict[str, Any]) -> bool:
         """Vérifie si le comportement peut être exécuté."""
         logger.info("Vérification d'exécution du comportement : %s", self.name)
         return True
 
-    def execute(self, context: dict[str, Any]) -> bool:  # noqa: ARG002
+    def execute(self, context: dict[str, Any]) -> bool:
         """Exécute le comportement."""
         logger.info("Exécution du comportement : %s", self.name)
         return True
@@ -131,7 +195,7 @@ class WakeUpBehavior(BBIABehavior):
                 logger.info("Réveil via SDK réussi")
                 wake_message = secrets.choice(self._get_wake_messages())
                 try:
-                    dire_texte(wake_message, robot_api=self.robot_api)
+                    _dire_texte_safe(wake_message, robot_api=self.robot_api)
                     logger.info("Synthèse vocale : %s", wake_message)
                 except (RuntimeError, Exception) as e:
                     logger.warning("Synthèse vocale non disponible: %s", e)
@@ -163,7 +227,7 @@ class WakeUpBehavior(BBIABehavior):
             return
 
         try:
-            if hasattr(self.robot_api, "goto_target") and REACHY_MINI_UTILS_AVAILABLE:
+            if hasattr(self.robot_api, "goto_target") and _ensure_create_head_pose():
                 self.robot_api.goto_target(
                     body_yaw=0.15, duration=0.8, method="minjerk"
                 )
@@ -184,7 +248,7 @@ class WakeUpBehavior(BBIABehavior):
         except (TypeError, KeyError, IndexError) as e:
             logger.warning("Erreur inattendue mouvement corps réveil: %s", e)
 
-    def execute(self, context: dict[str, Any]) -> bool:  # noqa: ARG002
+    def execute(self, context: dict[str, Any]) -> bool:
         logger.info("Début de la séquence de réveil BBIA")
 
         if self._try_sdk_wake_up():
@@ -194,7 +258,7 @@ class WakeUpBehavior(BBIABehavior):
 
         logger.info("Étape : Première parole d'éveil")
         wake_message = secrets.choice(self._get_wake_messages())
-        dire_texte(wake_message, robot_api=self.robot_api)
+        _dire_texte_safe(wake_message, robot_api=self.robot_api)
         logger.info("Synthèse vocale : %s", wake_message)
 
         logger.info("Fin de la séquence de réveil BBIA")
@@ -221,7 +285,7 @@ class GreetingBehavior(BBIABehavior):
             "Salut ! Prêt pour discuter ?",
         ]
 
-    def execute(self, context: dict[str, Any]) -> bool:  # noqa: ARG002
+    def execute(self, context: dict[str, Any]) -> bool:
         greeting = secrets.choice(self.greetings)
         logger.info("Salutation choisie : %s", greeting)
 
@@ -232,7 +296,7 @@ class GreetingBehavior(BBIABehavior):
         # OPTIMISATION EXPERT: Utiliser goto_target pour mouvement fluide
         # avec interpolation au lieu de set_target_head_pose répétés
         # (évite mouvements saccadés)
-        if self.robot_api and (REACHY_MINI_UTILS_AVAILABLE and create_head_pose):
+        if self.robot_api and (_ensure_create_head_pose() and create_head_pose):
             try:
                 # Méthode 1 (recommandée): goto_target avec interpolation
                 # fluide (minjerk)
@@ -279,7 +343,7 @@ class GreetingBehavior(BBIABehavior):
                 logger.exception("Erreur fallback rotation corps")
 
         # OPTIMISATION SDK: Passer robot_api pour utiliser haut-parleur 5W
-        dire_texte(greeting, robot_api=self.robot_api)
+        _dire_texte_safe(greeting, robot_api=self.robot_api)
         logger.info("Synthèse vocale : %s", greeting)
         return True
 
@@ -374,7 +438,7 @@ class EmotionalResponseBehavior(BBIABehavior):
             if comments:
                 comment = secrets.choice(comments)
                 # OPTIMISATION SDK: Passer robot_api pour utiliser haut-parleur 5W
-                dire_texte(comment, robot_api=self.robot_api)
+                _dire_texte_safe(comment, robot_api=self.robot_api)
                 logger.info("Synthèse vocale (émotion) : %s", comment)
 
             return True
@@ -406,9 +470,12 @@ class VisionTrackingBehavior(BBIABehavior):
             return False
 
         try:
+            from bbia_sim.head_tracking_guard import assert_finite_direction
+
             x = float(pos.get("x", 0.2))
             y = float(pos.get("y", 0.1))
             z = float(pos.get("z", 0.0))
+            assert_finite_direction(x, y, z, context="look_at_world")
             if not (-2.0 <= x <= 2.0 and -2.0 <= y <= 2.0 and -1.0 <= z <= 1.0):
                 logger.debug("Coordonnées 3D hors limites: (%s, %s, %s)", x, y, z)
                 return False
@@ -432,8 +499,11 @@ class VisionTrackingBehavior(BBIABehavior):
             return False
 
         try:
-            u = int(bbox.get("center_x", 320))
-            v = int(bbox.get("center_y", 240))
+            from bbia_sim.head_tracking_guard import clamp_look_image_uv
+
+            u_raw = float(bbox.get("center_x", 320))
+            v_raw = float(bbox.get("center_y", 240))
+            u, v = clamp_look_image_uv(u_raw, v_raw)
             if not (0 <= u <= 640 and 0 <= v <= 480):
                 logger.debug("Coordonnées image hors limites: (%s, %s)", u, v)
                 return False
@@ -482,7 +552,7 @@ class VisionTrackingBehavior(BBIABehavior):
             f"Intéressant, je vois {object_name}.",
         ]
         comment = secrets.choice(detection_comments)
-        dire_texte(comment, robot_api=self.robot_api)
+        _dire_texte_safe(comment, robot_api=self.robot_api)
         logger.info("Synthèse vocale (vision) : %s", comment)
 
         self._track_object(first_object)
@@ -501,12 +571,12 @@ class VisionTrackingBehavior(BBIABehavior):
             "Aucun objet détecté autour de moi.",
         ]
         comment = secrets.choice(no_object_comments)
-        dire_texte(comment, robot_api=self.robot_api)
+        _dire_texte_safe(comment, robot_api=self.robot_api)
         logger.info("Synthèse vocale (vision, aucun objet) : %s", comment)
         logger.info("Aucun objet détecté pour le suivi visuel")
         return False
 
-    def execute(self, context: dict[str, Any]) -> bool:  # noqa: ARG002
+    def execute(self, context: dict[str, Any]) -> bool:
         """Exécute le comportement de suivi visuel."""
         logger.info("Activation du suivi visuel")
 
@@ -543,7 +613,12 @@ class ConversationBehavior(BBIABehavior):
             # BBIAVision déjà importé globalement (ligne 26)
 
             # Initialiser outils LLM pour function calling
-            vision = BBIAVision(robot_api=robot_api) if robot_api else None
+            _ensure_behavior_deps()
+            vision = (
+                _BBIAVision(robot_api=robot_api)
+                if (robot_api and _BBIAVision)
+                else None
+            )
             tools = BBIATools(robot_api=robot_api, vision=vision)
 
             # Créer BBIAHuggingFace avec outils intégrés
@@ -656,7 +731,7 @@ class ConversationBehavior(BBIABehavior):
 
         try:
             response = self.hf_chat.chat(texte, enable_tools=True)
-            dire_texte(response, robot_api=self.robot_api)
+            _dire_texte_safe(response, robot_api=self.robot_api)
             logger.info("Synthèse vocale (HF + outils LLM) : %s", response)
 
             sentiment_result = self.hf_chat.analyze_sentiment(texte)
@@ -673,7 +748,7 @@ class ConversationBehavior(BBIABehavior):
     def _handle_enriched_response(self, texte_lower: str) -> None:
         """Gère la réponse via le système enrichi."""
         response = self._generate_enriched_response(texte_lower)
-        dire_texte(response, robot_api=self.robot_api)
+        _dire_texte_safe(response, robot_api=self.robot_api)
         logger.info("Synthèse vocale (enrichi) : %s", response)
 
         emotion = self._detect_emotion_from_text(texte_lower)
@@ -684,15 +759,15 @@ class ConversationBehavior(BBIABehavior):
             except (ValueError, RuntimeError, AttributeError) as e:
                 logger.warning("Erreur application émotion : %s", e)
 
-    def execute(self, context: dict[str, Any]) -> bool:  # noqa: ARG002
+    def execute(self, context: dict[str, Any]) -> bool:
         """Exécute une conversation intelligente avec reconnaissance vocale."""
         logger.info("Activation du mode conversation intelligente")
 
         greeting = secrets.choice(self._get_greeting_messages())  # nosec B311
-        dire_texte(greeting, robot_api=self.robot_api)
+        _dire_texte_safe(greeting, robot_api=self.robot_api)
         logger.info("Synthèse vocale : %s", greeting)
 
-        texte = reconnaitre_parole(duree=5, robot_api=self.robot_api)
+        texte = _reconnaitre_parole_safe(duree=5, robot_api=self.robot_api)
         logger.info("Texte reconnu : %s", texte)
 
         if texte:
@@ -701,7 +776,7 @@ class ConversationBehavior(BBIABehavior):
                 self._handle_enriched_response(texte_lower)
         else:
             response = self._get_enriched_response("not_heard")
-            dire_texte(response, robot_api=self.robot_api)
+            _dire_texte_safe(response, robot_api=self.robot_api)
             logger.info("Synthèse vocale : %s", response)
 
         return True
@@ -905,7 +980,7 @@ class HideBehavior(BBIABehavior):
         )
         self.priority = 9
 
-    def execute(self, context: dict[str, Any]) -> bool:  # noqa: ARG002
+    def execute(self, context: dict[str, Any]) -> bool:
         logger.info("🙈 [BBIA] Séquence 'se cacher'...")
         logger.info("Début de la séquence 'se cacher'")
 
@@ -929,7 +1004,7 @@ class HideBehavior(BBIABehavior):
         if self.robot_api:
             try:
                 if (
-                    REACHY_MINI_UTILS_AVAILABLE
+                    _ensure_create_head_pose()
                     and create_head_pose
                     and hasattr(self.robot_api, "goto_target")
                 ):
@@ -953,7 +1028,7 @@ class HideBehavior(BBIABehavior):
                     time.sleep(1.5)
 
                     # Baisser encore plus la tête si possible
-                    if REACHY_MINI_UTILS_AVAILABLE and create_head_pose:
+                    if _ensure_create_head_pose() and create_head_pose:
                         if hasattr(self.robot_api, "set_target_head_pose"):
                             # Pose tête baissée (conforme SDK sad: pitch=-0.1,
                             # ici plus fort)
@@ -977,7 +1052,7 @@ class HideBehavior(BBIABehavior):
         ]
         hide_message = secrets.choice(hide_messages)
         # OPTIMISATION SDK: Passer robot_api pour utiliser haut-parleur 5W
-        dire_texte(hide_message, robot_api=self.robot_api)
+        _dire_texte_safe(hide_message, robot_api=self.robot_api)
         logger.info("Synthèse vocale : %s", hide_message)
         time.sleep(1)
         logger.info("Fin de la séquence 'se cacher'")
@@ -1011,17 +1086,22 @@ class BBIABehaviorManager:
         self.saved_moves: dict[str, Any] = {}
 
         # Initialiser les modules BBIA
-        self.emotions = BBIAEmotions()
+        _ensure_behavior_deps()
+        if _BBIAEmotions is None:
+            raise ImportError("BBIAEmotions non disponible")
+        self.emotions = _BBIAEmotions()
         # OPTIMISATION RAM: Utiliser singleton BBIAVision si disponible
-        # get_bbia_vision_singleton déjà importé globalement (ligne 26)
         try:
-            if get_bbia_vision_singleton is not None:
-                self.vision = get_bbia_vision_singleton(robot_api)
+            if _get_bbia_vision_singleton is not None:
+                self.vision = _get_bbia_vision_singleton(robot_api)
+            elif _BBIAVision is not None:
+                self.vision = _BBIAVision(robot_api=robot_api)
             else:
-                raise ImportError("get_bbia_vision_singleton non disponible")
+                raise ImportError("BBIAVision non disponible")
         except (ImportError, AttributeError):
-            # Fallback si singleton non disponible
-            self.vision = BBIAVision(robot_api=robot_api)
+            if _BBIAVision is None:
+                raise
+            self.vision = _BBIAVision(robot_api=robot_api)
 
         # Enregistrer les comportements par défaut
         self._register_default_behaviors()

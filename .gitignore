@@ -49,6 +49,9 @@ logs/bandit_report.json
 coverage.xml
 coverage.json
 coverage_report.json
+docs/reports/coverage/*.xml
+docs/reports/coverage/*.json
+!docs/reports/coverage/README.md
 htmlcov/
 .pytest_cache/
 .mypy_cache/

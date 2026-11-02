@@ -67,6 +67,18 @@ class ReachyBackend(RobotAPI):
         - En l'absence de robot, bascule automatiquement en mode simulation
         """
         try:
+            from bbia_sim.hardware_guard import is_hardware_allowed
+
+            if not is_hardware_allowed():
+                logger.warning(
+                    "ReachyBackend: BBIA_ALLOW_HARDWARE non activé → mode simulation "
+                    "(pas de ReachyMini())"
+                )
+                self.robot_sdk = None
+                self.is_connected = True
+                self.start_time = time.time()
+                return True
+
             # Tenter connexion via SDK Reachy Mini officiel
             try:
                 from reachy_mini import ReachyMini
@@ -81,8 +93,9 @@ class ReachyBackend(RobotAPI):
                 self.robot_sdk = ReachyMini(
                     localhost_only=(self.robot_ip == "localhost"),
                     spawn_daemon=False,  # Daemon doit être lancé séparément
-                    use_sim=False,  # Essayer connexion réelle
+                    use_sim=False,  # Connexion daemon réel (flag déjà validé)
                     timeout=3.0,  # Timeout 3 secondes
+                    media_backend="no_media",
                 )
 
                 self.is_connected = True

@@ -1,7 +1,10 @@
 # Issues Pollen ouvertes — impact BBIA (essentiel)
 
-**Dernière mise à jour** : 7 Février 2026  
-**Repo** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini) — 69 issues ouvertes
+**Dernière mise à jour** : 1 Nov 2026  
+**Repo** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini)
+
+> **Document principal à jour** : [`POLLEN_ISSUES_ANTICIPATION.md`](POLLEN_ISSUES_ANTICIPATION.md)
+> (tableau issues prioritaires + GHSA → mitigation BBIA). Ci-dessous : historique Zenoh / caméra.
 
 ## Mitigations BBIA (déjà fait)
 
@@ -20,6 +23,14 @@
 - **#770** (Lite/macOS) Micro retourne silence jusqu'à reboot XMOS → Si détection tactile/audio sur Mac, redémarrer le module audio ou contourner.
 - **#765** GStreamer segfault sur GPU NVIDIA Blackwell (RTX 5080/5090) → Côté flux officiel ; BBIA utilise WebSocket/OpenCV.
 
+## Wireless #1466 / #1465 (checklist soft)
+
+1. Même SSID ; pas d’isolation client.
+2. `REACHY_ZENOH_CONNECT` / `BBIA_ZENOH_CONNECT` = `tcp://<IP_ROBOT>:7447`.
+3. `BBIA_SDK_CONNECT_TIMEOUT` + `BBIA_SDK_RECONNECT_ATTEMPTS` si relay lent.
+4. Timeouts après auth → **reboot robot** (relay HS = exposé Pollen).
+5. Voir tableau à jour dans [`POLLEN_ISSUES_ANTICIPATION.md`](POLLEN_ISSUES_ANTICIPATION.md).
+
 ## Variables d’environnement utiles
 
 ```bash
@@ -27,4 +38,6 @@
 export REACHY_ZENOH_CONNECT="tcp://192.168.1.10:7447"
 # ou
 export BBIA_ZENOH_CONNECT="tcp://<IP_ROBOT>:7447"
+export BBIA_SDK_CONNECT_TIMEOUT=5
+export BBIA_SDK_RECONNECT_ATTEMPTS=3
 ```

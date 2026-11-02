@@ -71,12 +71,23 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
             )
             timeout = 1.0
 
+        # Télémétrie SDK réelle = robot/daemon : exige aussi BBIA_ALLOW_HARDWARE
+        from bbia_sim.hardware_guard import is_hardware_allowed
+
+        if not is_hardware_allowed():
+            logger.debug(
+                "Télémétrie SDK ignorée: BBIA_ALLOW_HARDWARE non activé "
+                "(BBIA_TELEMETRY_SDK seul ne suffit pas)"
+            )
+            return None
+
         # Créer un backend SDK avec tentative connexion rapide
         backend = RobotFactory.create_backend(
             "reachy_mini",
             use_sim=False,
             timeout=timeout,
             spawn_daemon=False,
+            media_backend="no_media",
         )
         if backend is None:
             return None
@@ -217,39 +228,66 @@ async def get_full_state(
     """
     result: dict[str, Any] = {}
 
+    def _safe_call(label: str, fn: Any, default: Any = None) -> Any:
+        """Lit un champ d'état sans propager d'exception HTTP 500."""
+        try:
+            return fn()
+        except Exception as exc:  # noqa: BLE001 — anticipation Pollen #1527
+            logger.debug("state/full: %s indisponible (%s)", label, exc)
+            return default
+
     if with_control_mode:
-        mode = backend.get_motor_control_mode()
-        result["control_mode"] = mode.value if hasattr(mode, "value") else str(mode)
+        mode = _safe_call("control_mode", backend.get_motor_control_mode)
+        if mode is not None:
+            result["control_mode"] = mode.value if hasattr(mode, "value") else str(mode)
 
     if with_head_pose:
-        pose = backend.get_present_head_pose()
+        pose = _safe_call("present_head_pose", backend.get_present_head_pose)
         result["present_head_pose"] = as_any_pose(pose)
 
     if with_target_head_pose:
-        target_pose = backend.target_head_pose
+        # Pollen #1527 : target non défini → None, jamais 500
+        target_pose = _safe_call(
+            "target_head_pose",
+            lambda: getattr(backend, "target_head_pose", None),
+        )
         result["target_head_pose"] = (
             as_any_pose(target_pose) if target_pose is not None else None
         )
     if with_head_joints:
-        result["head_joints"] = backend.get_present_head_joint_positions()
+        result["head_joints"] = _safe_call(
+            "head_joints", backend.get_present_head_joint_positions
+        )
     if with_target_head_joints:
-        result["target_head_joints"] = backend.target_head_joint_positions
+        result["target_head_joints"] = _safe_call(
+            "target_head_joints",
+            lambda: getattr(backend, "target_head_joint_positions", None),
+        )
     if with_body_yaw:
-        result["present_body_yaw"] = backend.get_present_body_yaw()
+        result["present_body_yaw"] = _safe_call(
+            "present_body_yaw", backend.get_present_body_yaw, default=0.0
+        )
     if with_target_body_yaw:
-        result["target_body_yaw"] = backend.target_body_yaw
+        result["target_body_yaw"] = _safe_call(
+            "target_body_yaw",
+            lambda: getattr(backend, "target_body_yaw", None),
+        )
 
     if with_antenna_positions:
-        result["present_antenna_joint_positions"] = (
-            backend.get_present_antenna_joint_positions()
+        result["present_antenna_joint_positions"] = _safe_call(
+            "present_antenna_joint_positions",
+            backend.get_present_antenna_joint_positions,
         )
     if with_target_antenna_positions:
-        result["target_antenna_joint_positions"] = (
-            backend.target_antenna_joint_positions
+        result["target_antenna_joint_positions"] = _safe_call(
+            "target_antenna_joint_positions",
+            lambda: getattr(backend, "target_antenna_joint_positions", None),
         )
 
     if with_passive_joints:
-        joints = backend.get_present_passive_joint_positions()
+        joints = _safe_call(
+            "passive_joints", backend.get_present_passive_joint_positions
+        )
         if joints is not None:
             # joints peut être dict[str, float] ou NDArray
             if isinstance(joints, dict):
@@ -573,13 +611,12 @@ async def ws_full_state(
         token: Token d'authentification (query param, optionnel en dev)
 
     """
-    # Auth WebSocket via query param (optionnel en dev)
-    from bbia_sim.daemon.config import settings
+    # Auth WebSocket via query param (optionnel en dev, compare_digest en prod)
+    from bbia_sim.daemon.ws.auth import ws_auth_rejected
 
-    if settings.environment.lower() == "prod":
-        if not token or token != settings.api_token:
-            await websocket.close(code=1008, reason="Invalid token")
-            return
+    if ws_auth_rejected(token):
+        await websocket.close(code=1008, reason="Invalid token")
+        return
     if frequency <= 0:
         await websocket.close(code=1008, reason="frequency must be > 0")
         return

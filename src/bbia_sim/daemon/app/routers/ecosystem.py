@@ -9,9 +9,22 @@ from typing import Annotated, Any
 from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel, Field
 
-from bbia_sim.bbia_behavior import BBIABehaviorManager
-from bbia_sim.bbia_emotions import BBIAEmotions
 from bbia_sim.robot_factory import RobotFactory
+
+# bbia_behavior / bbia_emotions : import paresseux (vision/voice/SDK hang au load).
+
+
+def _bbia_emotions_cls() -> Any:
+    from bbia_sim.bbia_emotions import BBIAEmotions
+
+    return BBIAEmotions
+
+
+def _bbia_behavior_manager_cls() -> Any:
+    from bbia_sim.bbia_behavior import BBIABehaviorManager
+
+    return BBIABehaviorManager
+
 
 logger = logging.getLogger(__name__)
 
@@ -163,8 +176,8 @@ async def get_robot_capabilities() -> RobotCapabilities:
     """
     try:
         # Initialiser les modules BBIA
-        emotions_module = BBIAEmotions()
-        behavior_manager = BBIABehaviorManager()
+        emotions_module = _bbia_emotions_cls()()
+        behavior_manager = _bbia_behavior_manager_cls()()
 
         return RobotCapabilities(
             model="Reachy Mini Wireless",
@@ -256,7 +269,7 @@ async def apply_emotion(
     """
     try:
         # Initialiser le module émotions
-        emotions_module = BBIAEmotions()
+        emotions_module = _bbia_emotions_cls()()
 
         # Vérifier que l'émotion existe
         available_emotions = list(emotions_module.emotions.keys())
@@ -270,8 +283,11 @@ async def apply_emotion(
         emotions_module.current_emotion = emotion
         emotions_module.emotion_intensity = intensity
 
-        # Simuler les joints affectés
-        joints_affected = ["yaw_body"]  # Joint principal pour les émotions
+        # Joints affectés : paramètre API `joint` honoré s'il est fourni
+        if joint is not None and str(joint).strip():
+            joints_affected = [str(joint).strip()]
+        else:
+            joints_affected = ["yaw_body"]
 
         return EmotionResponse(
             emotion=emotion,
@@ -317,7 +333,7 @@ async def execute_behavior(
     """
     try:
         # Initialiser le module comportements
-        behavior_manager = BBIABehaviorManager()
+        behavior_manager = _bbia_behavior_manager_cls()()
 
         # Vérifier que le comportement existe
         available_behaviors = list(behavior_manager.behaviors.keys())
@@ -360,7 +376,7 @@ async def get_available_emotions() -> dict[str, Any]:
 
     """
     try:
-        emotions_module = BBIAEmotions()
+        emotions_module = _bbia_emotions_cls()()
         emotions = list(emotions_module.emotions.keys())
 
         # Descriptions des émotions
@@ -408,7 +424,7 @@ async def get_available_behaviors() -> dict[str, Any]:
 
     """
     try:
-        behavior_manager = BBIABehaviorManager()
+        behavior_manager = _bbia_behavior_manager_cls()()
         behaviors = list(behavior_manager.behaviors.keys())
 
         # Descriptions des comportements
@@ -578,7 +594,8 @@ async def start_demo_mode(
                                         )
                 except Exception as e:
                     logger.warning("Émotion non appliquée: %s", e)
-                    demo_info["emotion_error"] = str(e)
+                    # Ne pas exposer le détail d'exception au client (CodeQL #76).
+                    demo_info["emotion_error"] = "Émotion non appliquée"
 
             # Planifier arrêt après durée
             if duration > 0:
@@ -604,10 +621,11 @@ async def start_demo_mode(
 
         except HTTPException:
             raise
-        except Exception as e:
+        except Exception:
             logger.exception("Erreur logique démo")
             demo_info["status"] = "error"
-            demo_info["error"] = str(e)
+            # Ne pas exposer le détail d'exception au client (CodeQL #76).
+            demo_info["error"] = "Erreur lors du démarrage de la démo"
 
         return demo_info
     except HTTPException:

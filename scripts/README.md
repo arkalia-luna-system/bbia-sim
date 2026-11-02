@@ -71,7 +71,7 @@ Les scripts de comparaison/audit avec le SDK officiel Reachy Mini ont été cons
 
 - Voir `scripts/_archived/dates_md/README.md` et `scripts/_archived/verification/README.md`
 
-Voir `scripts/_archived/README.md`, `scripts/PLAN_CONSOLIDATION_AUDIT_SCRIPTS.md` et `scripts/PLAN_FUSION_SCRIPTS.md` pour plus de détails.
+Voir `scripts/_archived/README.md` pour plus de détails.
 
 ## 🎯 **Scripts Disponibles**
 
@@ -95,6 +95,7 @@ Voir `scripts/_archived/README.md`, `scripts/PLAN_CONSOLIDATION_AUDIT_SCRIPTS.md
 ### ✅ **Scripts de Vérification Documentation**
 
 - **`verify_docs_complete.py`** ⭐ - Vérification complète documentation (liens, Mermaid, orthographe, formatage, cohérence code) - **RECOMMANDÉ**
+- ❌ **`verify_md_links.py` / `fix_md_links.py` / `verify_docs_links.py` / audits one-shot** → archivés dans `_archived/one_shot_hygiene_2026/` (1 Nov 2026)
 - **`verify_documentation.py`** - Vérification précision, cohérence et amélioration formatage MD (fusionné avec `audit_and_improve_md.py`)
   - Modes: `--accuracy`, `--consistency`, `--improve`
 - **`audit_and_correct_dates_md.py`** - Audit et correction dates MD (bien consolidé)

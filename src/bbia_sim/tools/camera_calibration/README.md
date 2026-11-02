@@ -105,26 +105,23 @@ cv2.imwrite("charuco_board.png", img)
 
 ## 🔧 Utilisation avec Reachy Mini
 
-### Mode SDK (robot physique)
+### Mode sûr (défaut)
 
-```python
-from reachy_mini import ReachyMini
-
-with ReachyMini() as robot:
-    # La caméra est accessible via robot.media.camera
-    # Les outils de calibration utilisent automatiquement cette caméra
-    pass
+```bash
+# Webcam locale — pas de ReachyMini() / pas de daemon
+python -m bbia_sim.tools.camera_calibration.acquire --output ./calibration_images
 ```
 
-### Mode simulation
+### Mode robot physique
 
-```python
-from reachy_mini import ReachyMini
+Exige `BBIA_ALLOW_HARDWARE=1` (ne pas utiliser `ReachyMini()` nu) :
 
-with ReachyMini(use_sim=True) as robot:
-    # Utilise la caméra simulée
-    pass
+```bash
+export BBIA_ALLOW_HARDWARE=1
+python -m bbia_sim.tools.camera_calibration.acquire --hardware --output ./calibration_images
 ```
+
+Voir `docs/hardware/PREMIER_JOUR_ROBOT.md`.
 
 ## 📊 Format de sortie
 

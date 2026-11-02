@@ -2,6 +2,8 @@
 
 import json
 import logging
+import os
+import re
 from pathlib import Path
 from typing import Any
 
@@ -15,6 +17,19 @@ router = APIRouter()
 # Dossier pour stocker les presets
 PRESETS_DIR = Path.home() / ".bbia_sim" / "presets"
 PRESETS_DIR.mkdir(parents=True, exist_ok=True)
+_PRESET_NAME_RE = re.compile(r"^[A-Za-z0-9_-]+$")
+
+
+def _safe_preset_path(preset_name: str) -> Path:
+    """Construit un chemin confiné sous PRESETS_DIR (allowlist + realpath)."""
+    name = (preset_name or "").strip()
+    if not name or not _PRESET_NAME_RE.fullmatch(name):
+        raise HTTPException(status_code=400, detail="Nom de preset invalide")
+    base = Path(os.path.realpath(str(PRESETS_DIR)))
+    candidate = Path(os.path.realpath(str(base / f"{name}.json")))
+    if os.path.commonpath([str(base), str(candidate)]) != str(base):
+        raise HTTPException(status_code=400, detail="Nom de preset invalide")
+    return candidate
 
 
 class EmotionPreset(BaseModel):
@@ -66,11 +81,7 @@ async def get_preset(preset_name: str) -> dict[str, Any]:
     Returns:
         Données du preset
     """
-    # Valider le nom du preset (sécurité: éviter path traversal)
-    if ".." in preset_name or "/" in preset_name or "\\" in preset_name:
-        raise HTTPException(status_code=400, detail="Nom de preset invalide")
-
-    preset_file = PRESETS_DIR / f"{preset_name}.json"
+    preset_file = _safe_preset_path(preset_name)
     if not preset_file.exists():
         raise HTTPException(
             status_code=404, detail=f"Preset '{preset_name}' introuvable"
@@ -103,11 +114,7 @@ async def create_preset(preset: EmotionPreset) -> dict[str, Any]:
                 detail=f"Intensité invalide pour {emotion}: {intensity} (doit être entre 0 et 1)",
             )
 
-    # Valider le nom du preset (sécurité: éviter path traversal)
-    if ".." in preset.name or "/" in preset.name or "\\" in preset.name:
-        raise HTTPException(status_code=400, detail="Nom de preset invalide")
-
-    preset_file = PRESETS_DIR / f"{preset.name}.json"
+    preset_file = _safe_preset_path(preset.name)
     try:
         with open(preset_file, "w", encoding="utf-8") as f:
             json.dump(
@@ -142,11 +149,7 @@ async def apply_preset(preset_name: str) -> dict[str, Any]:
     Returns:
         Confirmation d'application
     """
-    # Valider le nom du preset (sécurité: éviter path traversal)
-    if ".." in preset_name or "/" in preset_name or "\\" in preset_name:
-        raise HTTPException(status_code=400, detail="Nom de preset invalide")
-
-    preset_file = PRESETS_DIR / f"{preset_name}.json"
+    preset_file = _safe_preset_path(preset_name)
     if not preset_file.exists():
         raise HTTPException(
             status_code=404, detail=f"Preset '{preset_name}' introuvable"
@@ -160,17 +163,19 @@ async def apply_preset(preset_name: str) -> dict[str, Any]:
         if not emotions:
             raise HTTPException(status_code=400, detail="Preset vide (pas d'émotions)")
 
-        # Appliquer chaque émotion via le robot (même logique que /api/motion/emotion)
+        # Appliquer via BackendAdapter (même frontière daemon ; pas de MuJoCo jetable)
         try:
-            from bbia_sim.robot_factory import RobotFactory
+            from bbia_sim.daemon.app.backend_adapter import BackendAdapter
 
-            robot = RobotFactory.create_backend("mujoco")
-            if not robot:
+            backend = BackendAdapter(backend_type=None)
+            backend.connect_if_needed()
+            robot = getattr(backend, "_robot", None)
+            if robot is None:
                 raise HTTPException(
-                    status_code=500, detail="Impossible de créer le backend robot"
+                    status_code=503,
+                    detail="Backend robot indisponible pour appliquer le preset",
                 )
 
-            robot.connect()
             applied_count = 0
             errors = []
 
@@ -193,8 +198,6 @@ async def apply_preset(preset_name: str) -> dict[str, Any]:
                     logger.warning("Erreur application émotion %s: %s", emotion, e)
                     errors.append(f"Erreur {emotion}: {e!s}")
 
-            robot.disconnect()
-
             if applied_count == 0 and errors:
                 raise HTTPException(
                     status_code=500,
@@ -202,7 +205,10 @@ async def apply_preset(preset_name: str) -> dict[str, Any]:
                 )
 
             logger.info(
-                f"✅ Preset '{preset_name}' appliqué: {applied_count}/{len(emotions)} émotions"
+                "Preset '%s' appliqué: %s/%s émotions",
+                preset_name,
+                applied_count,
+                len(emotions),
             )
             return {
                 "success": True,
@@ -234,11 +240,7 @@ async def delete_preset(preset_name: str) -> dict[str, Any]:
     Returns:
         Confirmation de suppression
     """
-    # Valider le nom du preset (sécurité: éviter path traversal)
-    if ".." in preset_name or "/" in preset_name or "\\" in preset_name:
-        raise HTTPException(status_code=400, detail="Nom de preset invalide")
-
-    preset_file = PRESETS_DIR / f"{preset_name}.json"
+    preset_file = _safe_preset_path(preset_name)
     if not preset_file.exists():
         raise HTTPException(
             status_code=404, detail=f"Preset '{preset_name}' introuvable"

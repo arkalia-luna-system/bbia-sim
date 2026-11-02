@@ -3,6 +3,13 @@
 
 Endpoints pour contrôler le volume des haut-parleurs et microphone,
 et activer/désactiver la caméra.
+
+Note sécurité (GHSA-m2pc-3q4q-w6jr) : BBIA n'expose PAS
+``/api/media/sounds/upload``. Tout futur upload doit passer par
+``bbia_sim.daemon.app.safe_media_upload``.
+
+Anticipation Pollen #1521 / #1507 / #1525 : volume via Pydantic [0,1] uniquement
+(pas de shell ``amixer`` / GStreamer). ``BBIA_DISABLE_AUDIO=1`` coupe les effets.
 """
 
 import logging
@@ -11,6 +18,7 @@ from typing import Any
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
+from bbia_sim.media_guard import is_audio_disabled
 from bbia_sim.robot_factory import RobotFactory
 
 logger = logging.getLogger(__name__)
@@ -127,6 +135,19 @@ async def set_speaker_volume(request: VolumeRequest) -> dict[str, Any]:
     """
     try:
         global _speaker_volume
+        # Défense #1521 : volume float Pydantic only — aucun shell amixer
+        if is_audio_disabled():
+            logger.info(
+                "BBIA_DISABLE_AUDIO=1 : volume speaker mémorisé localement "
+                "sans appliquer au media USB/GStreamer (#1507/#1525)"
+            )
+            _speaker_volume = request.volume
+            return {
+                "status": "success",
+                "volume": _speaker_volume,
+                "audio_disabled": True,
+            }
+
         _speaker_volume = request.volume
 
         # Appliquer volume au robot réel si disponible
@@ -166,6 +187,15 @@ async def set_microphone_volume(request: VolumeRequest) -> dict[str, Any]:
     """
     try:
         global _microphone_volume
+        # Défense #1521 : volume float Pydantic only — aucun shell amixer
+        if is_audio_disabled():
+            _microphone_volume = request.volume
+            return {
+                "status": "success",
+                "volume": _microphone_volume,
+                "audio_disabled": True,
+            }
+
         _microphone_volume = request.volume
 
         # Appliquer volume au robot réel si disponible

@@ -18,6 +18,25 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 class TestBBIAHuggingFaceExpertConformity:
     """Tests d'expert pour BBIAHuggingFace - Détection problèmes subtils."""
 
+    @staticmethod
+    def _hf_source_paths() -> list[Path]:
+        """Fichiers source HF à scanner (god-file + modules extraits)."""
+        base = Path(__file__).parent.parent / "src" / "bbia_sim"
+        return [
+            base / "bbia_huggingface.py",
+            base / "bbia_hf_response_bank.py",
+            base / "bbia_hf_chat_tools.py",
+        ]
+
+    def _read_hf_sources(self) -> str:
+        parts: list[str] = []
+        for path in self._hf_source_paths():
+            if path.exists():
+                parts.append(path.read_text(encoding="utf-8"))
+        if not parts:
+            pytest.skip("Sources HF introuvables")
+        return "\n".join(parts)
+
     def setup_method(self):
         """Configuration avant chaque test."""
         # Tenter d'importer BBIAHuggingFace (peut échouer si transformers non installé)
@@ -225,13 +244,7 @@ class TestBBIAHuggingFaceExpertConformity:
         if not self.hf_available:
             pytest.skip("BBIAHuggingFace non disponible")
 
-        hf_file = (
-            Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_huggingface.py"
-        )
-        if not hf_file.exists():
-            pytest.skip("Fichier bbia_huggingface.py introuvable")
-
-        content = hf_file.read_text(encoding="utf-8")
+        content = self._read_hf_sources()
 
         # Extraction robuste des réponses candidates via AST
         import ast
@@ -351,13 +364,7 @@ class TestBBIAHuggingFaceExpertConformity:
         if not self.hf_available:
             pytest.skip("BBIAHuggingface non disponible")
 
-        hf_file = (
-            Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_huggingface.py"
-        )
-        if not hf_file.exists():
-            pytest.skip("Fichier bbia_huggingface.py introuvable")
-
-        content = hf_file.read_text(encoding="utf-8")
+        content = self._read_hf_sources()
 
         # Extraction robuste des réponses candidates via AST
         import ast

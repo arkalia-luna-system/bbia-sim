@@ -1,7 +1,6 @@
 # Accélérer Cursor sur bbia-reachy-sim — guide unique
 
-**Document de référence unique** pour la lenteur de Cursor (causes, solutions, étapes).  
-Tous les anciens guides (racine) redirigent ici.
+**Document de référence unique** pour la lenteur de Cursor (causes, solutions, étapes).
 
 ---
 
@@ -93,7 +92,3 @@ Si Cursor est fluide avec ce dossier sur le disque interne, la lenteur vient du 
 | 3 (optionnel) | Copier `src` sur le disque interne et ouvrir ce dossier dans Cursor |
 
 En faisant au minimum les étapes 1 et 2, tu devrais voir une nette amélioration.
-
----
-
-**Anciens fichiers à la racine** : `CURSOR_LENTEUR_CAUSES_ET_SOLUTIONS.md` et `GUIDE_ETAPES_LENTEUR.md` redirigent vers ce document.

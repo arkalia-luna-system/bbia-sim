@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   lint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     permissions:
       contents: read
@@ -26,7 +26,7 @@ jobs:
       DISPLAY: ""
       BBIA_DISABLE_AUDIO: "1"
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Clean up disk space
         run: |
@@ -41,7 +41,7 @@ jobs:
           df -h
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
           cache: "pip"
@@ -172,7 +172,7 @@ jobs:
           python -m pip cache purge || true
 
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 45
     permissions:
       contents: read
@@ -185,7 +185,7 @@ jobs:
       BBIA_DISABLE_VISION_MODELS: "1"
       PYTHONDONTWRITEBYTECODE: 1
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Clean up disk space
         run: |
@@ -200,7 +200,7 @@ jobs:
           df -h
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: "3.11"
           cache: "pip"
@@ -285,7 +285,7 @@ jobs:
           python -m pip cache purge || true
 
       - name: Upload coverage
-        uses: codecov/codecov-action@v6
+        uses: codecov/codecov-action@v7
         with:
           files: ./coverage.xml
           flags: unittests
@@ -302,7 +302,7 @@ jobs:
           if-no-files-found: ignore
 
   test-e2e:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     needs: [lint, test]
     permissions:
@@ -314,7 +314,7 @@ jobs:
       PYTHONDONTWRITEBYTECODE: 1
       SEED: 42
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Clean up disk space
         run: |
@@ -329,7 +329,7 @@ jobs:
           df -h
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: "3.11"
           cache: "pip"
@@ -458,7 +458,7 @@ jobs:
           fi
 
   test-slow:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [lint, test]
     timeout-minutes: 45
     permissions:
@@ -471,7 +471,7 @@ jobs:
       BBIA_DISABLE_VISION_MODELS: "1"
       PYTHONDONTWRITEBYTECODE: 1
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Clean up disk space
         run: |
@@ -486,7 +486,7 @@ jobs:
           df -h
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: "3.11"
           cache: "pip"
@@ -538,14 +538,14 @@ jobs:
           python -m pip cache purge || true
 
       - name: Upload coverage (slow tests)
-        uses: codecov/codecov-action@v6
+        uses: codecov/codecov-action@v7
         with:
           files: ./coverage.xml
           flags: slow-tests
           name: codecov-slow-tests
 
   examples:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [lint, test]
     timeout-minutes: 20
     permissions:
@@ -556,7 +556,7 @@ jobs:
       BBIA_DISABLE_AUDIO: "1"
       PYTHONDONTWRITEBYTECODE: 1
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Clean up disk space
         run: |
@@ -571,7 +571,7 @@ jobs:
           df -h
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: "3.11"
           cache: "pip"
@@ -615,7 +615,7 @@ jobs:
           python -m pip cache purge || true
 
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [lint, test, test-e2e, test-slow]
     timeout-minutes: 10
     permissions:
@@ -623,7 +623,7 @@ jobs:
     env:
       PYTHONDONTWRITEBYTECODE: 1
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Clean up disk space
         run: |
@@ -638,7 +638,7 @@ jobs:
           df -h
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: "3.11"
           cache: "pip"
@@ -669,7 +669,7 @@ jobs:
           python -m pip cache purge || true
 
   benchmark:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [lint, test]
     timeout-minutes: 20
     permissions:
@@ -680,7 +680,7 @@ jobs:
       BBIA_DISABLE_AUDIO: "1"
       PYTHONDONTWRITEBYTECODE: 1
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Clean up disk space
         run: |
@@ -695,7 +695,7 @@ jobs:
           df -h
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: "3.11"
           cache: "pip"
@@ -764,7 +764,7 @@ jobs:
           if-no-files-found: ignore
 
   metrics:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [test]
     if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main'
     timeout-minutes: 10
@@ -776,7 +776,7 @@ jobs:
       DISPLAY: ""
       BBIA_DISABLE_AUDIO: "1"
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Clean up disk space
         run: |
@@ -791,7 +791,7 @@ jobs:
           df -h
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: "3.11"
           cache: "pip"

@@ -333,9 +333,15 @@ class TestReachyMiniBackendIntegration:
         assert avg_latency < 1.0  # < 1ms en simulation
 
 
+@pytest.mark.hardware
+@pytest.mark.robot
 @pytest.mark.skipif(
-    os.environ.get("SKIP_HARDWARE_TESTS", "1") == "1",
-    reason="Tests hardware désactivés par défaut. Définir SKIP_HARDWARE_TESTS=0 pour activer",
+    os.environ.get("SKIP_HARDWARE_TESTS", "1") == "1"
+    or os.environ.get("BBIA_ALLOW_HARDWARE", "") not in {"1", "true", "yes"},
+    reason=(
+        "Tests hardware désactivés par défaut. "
+        "Activer: BBIA_ALLOW_HARDWARE=1 SKIP_HARDWARE_TESTS=0"
+    ),
 )
 class TestReachyMiniBackendReal:
     """Tests pour le backend avec SDK réel (nécessite robot physique).

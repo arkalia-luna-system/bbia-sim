@@ -75,6 +75,14 @@ sequenceDiagram
 
 ```
 
+
+### Perf mypy (contrat CI)
+
+- incremental + cache_fine_grained
+- follow_imports=skip
+- périmètre CI: mypy src/ (~120 modules)
+- mesure locale cache chaud: ~33s exit 0 (2026-11-01)
+
 ## Axes d'amélioration
 
 - ✅ Matrice Python : 3.11 / 3.12 - **TERMINÉ** (24 Nov. 2025)
@@ -115,6 +123,12 @@ sequenceDiagram
 
 - **Coverage** : `coverage.xml`, `htmlcov/`
 - **Logs e2e** : upload sur échec
+
+
+
+## Pytest fin de session (anti-hang)
+
+Après `[100%]`, les hooks `pytest_sessionfinish` / `force_cleanup_all_resources` et `scripts/cleanup_all.sh` sont **skip** si `CI=true` ou `BBIA_DISABLE_PYTEST_CLEANUP=1` (sinon timeout dur court). Le verrou `.pytest.lock` reste actif. Opt-out script seul : `BBIA_DISABLE_AUTO_CLEANUP=1`.
 
 ## Références
 

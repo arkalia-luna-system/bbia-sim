@@ -3693,8 +3693,17 @@ if FASTAPI_AVAILABLE:
         )
 
     @app.websocket("/ws")
-    async def websocket_endpoint(websocket: WebSocket) -> None:
+    async def websocket_endpoint(
+        websocket: WebSocket,
+        token: str | None = None,
+    ) -> None:
         """Endpoint WebSocket pour communication temps réel."""
+        from bbia_sim.daemon.ws.auth import ws_auth_rejected
+
+        if ws_auth_rejected(token):
+            await websocket.close(code=1008, reason="Invalid token")
+            return
+
         await advanced_websocket_manager.connect(websocket)
 
         try:

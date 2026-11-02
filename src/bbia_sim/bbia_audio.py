@@ -496,7 +496,7 @@ def lire_audio(fichier: str, robot_api: Optional["RobotAPI"] = None) -> None:
         with wave.open(fichier, "rb") as wf:
             frequence = wf.getframerate()
             frames = wf.readframes(wf.getnframes())
-            audio = np.frombuffer(frames, dtype="int16")
+            audio: np.ndarray = np.frombuffer(frames, dtype="int16")
             _sd = _get_sd()
             if _sd is None:
                 msg = "sounddevice indisponible (lecture audio)"
@@ -533,7 +533,7 @@ def detecter_son(fichier: str, seuil: int = 500) -> bool:
     try:
         with wave.open(fichier, "rb") as wf:
             frames = wf.readframes(wf.getnframes())
-            audio = np.frombuffer(frames, dtype="int16")
+            audio: np.ndarray = np.frombuffer(frames, dtype="int16")
             # Gérer le cas d'un tableau vide (fichier audio vide)
             if audio.size == 0:
                 logging.info("Fichier audio vide, aucun son détecté")

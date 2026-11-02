@@ -382,8 +382,29 @@ class BBIATools:
 
     def _execute_head_tracking(self, parameters: dict[str, Any]) -> dict[str, Any]:
         """Active/désactive le suivi automatique du visage."""
+        from bbia_sim.head_tracking_guard import should_skip_head_tracking
+
         enabled = parameters.get("enabled", True)
         self.head_tracking_enabled = enabled
+
+        # use_sim / mock : skip loops tracking absentes (#1453/#1451/#1450)
+        use_sim = True
+        if self.robot_api is not None:
+            use_sim = bool(getattr(self.robot_api, "use_sim", True)) or not getattr(
+                self.robot_api, "robot", None
+            )
+        if enabled and should_skip_head_tracking(
+            use_sim=use_sim,
+            context="bbia_tools.head_tracking",
+        ):
+            self.head_tracking_enabled = False
+            return {
+                "status": "skipped",
+                "detail": (
+                    "Head tracking skip en sim/mock (BBIA_HEAD_TRACKING_SIM=0). "
+                    "Pollen #1453/#1451/#1450"
+                ),
+            }
 
         logger.info("Suivi visage: %s", "activé" if enabled else "désactivé")
 

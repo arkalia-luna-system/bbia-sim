@@ -146,7 +146,10 @@ Toutes les fonctionnalités sont disponibles :
 
 ---
 
-**Pour utiliser le robot physique :** Configurer le backend `reachy_mini` avec `use_sim=False` (sera automatiquement utilisé si détecté).
+**Pour utiliser le robot physique :** exporter `BBIA_ALLOW_HARDWARE=1`, puis backend
+`reachy_mini` avec `use_sim=False`. Sans ce flag, le mode `auto` reste en MuJoCo
+(voir `docs/hardware/PREMIER_JOUR_ROBOT.md`). Aucun mouvement matériel au démarrage
+du daemon BBIA.
 
 ---
 

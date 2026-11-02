@@ -12,16 +12,13 @@ from pathlib import Path
 from typing import Any
 
 import mujoco  # type: ignore[import-untyped]
-import mujoco.viewer  # type: ignore[import-untyped]
 
 from bbia_sim.mujoco_model_cache import get_cached_mujoco_model
 from bbia_sim.robot_api import RobotAPI
 
-# Types pour goto_target
-try:
-    from reachy_mini.utils.interpolation import HeadPose  # type: ignore[import-untyped]
-except ImportError:
-    HeadPose = Any  # type: ignore[misc,assignment]
+# Ne pas importer reachy_mini ici : son __init__ charge media_manager (hang).
+HeadPose = Any  # type: ignore[misc,assignment]
+# mujoco.viewer (glfw/cffi) : import paresseux — hang au chargement sur ExFAT/T7.
 
 logger = logging.getLogger(__name__)
 
@@ -195,7 +192,7 @@ class MuJoCoBackend(RobotAPI):
         self.model_path = Path(model_path)
         self.model: mujoco.MjModel | None = None
         self.data: mujoco.MjData | None = None
-        self.viewer: mujoco.viewer.MjViewer | None = None
+        self.viewer: Any | None = None
         self.joint_name_to_id: dict[str, int] = {}
         self.step_count = 0
         self.start_time: float = 0.0
@@ -527,8 +524,8 @@ class MuJoCoBackend(RobotAPI):
     def play_move(
         self,
         move: object,
-        play_frequency: float = 100.0,  # noqa: ARG002
-        initial_goto_duration: float = 0.0,  # noqa: ARG002
+        play_frequency: float = 100.0,
+        initial_goto_duration: float = 0.0,
     ) -> None:
         """Joue un mouvement enregistré depuis un dataset HuggingFace.
 
@@ -610,6 +607,8 @@ class MuJoCoBackend(RobotAPI):
 
     def launch_viewer(self, passive: bool = True) -> bool:
         """Lance le viewer MuJoCo."""
+        import mujoco.viewer  # type: ignore[import-untyped]
+
         if not self.is_connected:
             logger.error("MuJoCo non connecté")
             return False

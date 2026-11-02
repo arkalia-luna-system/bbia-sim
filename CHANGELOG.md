@@ -45,7 +45,7 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 - **SDK** : Projet aligné sur **reachy-mini v1.3.0** (même niveau que Pollen). Dépendances `pyproject.toml` alignées sur le [pyproject officiel](https://github.com/pollen-robotics/reachy_mini) : `reachy_mini_motor_controller>=1.5.3`, `eclipse-zenoh>=1.7.0,<1.8.0`, `reachy-mini-rust-kinematics>=1.0.3`, `huggingface-hub>=1.3.0`, `scipy>=1.15.3,<2.0.0`, `websockets>=12,<16`, `sounddevice>=0.5.1,<0.6`.
 - **Robot physique** : Projet prêt pour Reachy Mini (démonter pour accès remote si besoin). Doc conformité et README mises à jour.
-- **Documentation Cursor/lenteur** : Un seul guide de référence → `docs/development/ACCELERER_CURSOR.md`. `CURSOR_LENTEUR_CAUSES_ET_SOLUTIONS.md` et `GUIDE_ETAPES_LENTEUR.md` à la racine deviennent des redirections vers ce document.
+- **Documentation Cursor/lenteur** : Un seul guide de référence → `docs/development/ACCELERER_CURSOR.md` (anciennes redirections racine `CURSOR_LENTEUR_*` / `GUIDE_ETAPES_LENTEUR` retirées).
 
 ### 📌 **Veille SDK Pollen — v1.3.0** (7 Février 2026)
 

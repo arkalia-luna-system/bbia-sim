@@ -33,8 +33,9 @@ class ReachyMiniHardwareDryRun:
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
-        # Créer le robot avec le backend officiel
-        self.robot = RobotFactory.create_backend("reachy_mini")
+        # Créer le robot avec le backend officiel (sim par défaut — sûr)
+        # Joints alignés mapping SDK : yaw_body (pas head_1/body_yaw legacy)
+        self.robot = RobotFactory.create_backend("reachy_mini", use_sim=True)
         self.mapping = ReachyMapping()
 
         # Données de test
@@ -46,8 +47,8 @@ class ReachyMiniHardwareDryRun:
             "summary": {},
         }
 
-        # Joints de test (sécurisés)
-        self.test_joints = ["head_1", "head_2", "body_yaw"]
+        # Joints de test (sécurisés — noms officiels XML / mapping_reachy)
+        self.test_joints = ["yaw_body"]
 
         logger.info(f"Initialisé avec backend: {type(self.robot).__name__}")
 
@@ -120,8 +121,8 @@ class ReachyMiniHardwareDryRun:
 
             # Test amplitude excessive
             test_position = 0.5  # Au-delà de la limite
-            self.robot.set_joint_pos("head_1", test_position)
-            actual_pos = self.robot.get_joint_pos("head_1")
+            self.robot.set_joint_pos("yaw_body", test_position)
+            actual_pos = self.robot.get_joint_pos("yaw_body")
 
             if abs(actual_pos) <= safe_limit:
                 logger.info("✅ Limite amplitude respectée")
@@ -357,7 +358,11 @@ class ReachyMiniHardwareDryRun:
 def main():
     """Point d'entrée principal."""
     parser = argparse.ArgumentParser(
-        description="Test hardware Reachy-Mini SDK officiel",
+        description=(
+            "Dry-run Reachy-Mini (simulation par défaut). "
+            "Robot physique: --hardware + BBIA_ALLOW_HARDWARE=1 "
+            "(voir docs/hardware/PREMIER_JOUR_ROBOT.md)"
+        ),
     )
     parser.add_argument(
         "--duration",
@@ -371,11 +376,30 @@ def main():
         default="artifacts",
         help="Répertoire sortie",
     )
+    parser.add_argument(
+        "--hardware",
+        action="store_true",
+        help="Connexion robot réel (exige BBIA_ALLOW_HARDWARE=1)",
+    )
 
     args = parser.parse_args()
 
-    # Exécuter test
+    if args.hardware:
+        from bbia_sim.hardware_guard import require_hardware_allowed
+
+        require_hardware_allowed(action="hardware_dry_run_reachy_mini --hardware")
+        logger.warning(
+            "Mode HARDWARE actif — mouvements possibles. "
+            "Espace libre autour du robot, arrêt d'urgence prêt."
+        )
+
+    # Exécuter test (création backend reste use_sim=True dans la classe ;
+    # le flag --hardware documente l'intention et bloque sans ALLOW)
     dry_run = ReachyMiniHardwareDryRun(args.output)
+    if args.hardware:
+        dry_run.robot = RobotFactory.create_backend("reachy_mini", use_sim=False)
+        if dry_run.robot is not None:
+            dry_run.robot.connect()
     success = dry_run.run_full_test(args.duration)
 
     # Code de sortie

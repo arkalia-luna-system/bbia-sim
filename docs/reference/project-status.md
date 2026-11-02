@@ -5,8 +5,38 @@
 **🎯 Vue d'ensemble de l'état du projet par axe**
 *Fiabilité • Performance • Sécurité • CI/CD • Plus*
 
-**Version** : 1.4.0 • **Dernière mise à jour** : 17 Août 2026
+**Version** : 1.4.0 • **Dernière mise à jour** : 2 Novembre 2026
 **Prêt pour arrivée robot** 🤖
+
+**Mise à jour 2 Novembre 2026 (soir)** : passe ≥9/10 domaines logiciels — floors `fastapi>=0.137.1` / `starlette>=1.3.1` / `requests>=2.33.1` / `httpx` alignés ; Dependabot → `develop` ; smokes/slices **mockés CI** ; télémétrie `frequency` = settings ; joint ecosystem honoré ; artefacts coverage XML **dé-trackés**.
+
+**Mise à jour 2 Novembre 2026 (suite senior)** : découpe HF non big-bang — `bbia_hf_response_bank.py` + `hf_guards.py` (space-id / pip opt-in) ; auth token partagée `daemon/auth_token.py` ; logs auth sans fragment de secret hors DEBUG.
+
+**Mise à jour 2 Novembre 2026 (chat tools)** : `bbia_hf_chat_tools.py` (patterns / NLP / extracteurs) ; god-file HF ~2.97k ; wrappers Bandit + dashboard minimal archivés.
+
+**Scores subjectifs domaines (2 nov. 2026 — tip `e99a6f7a`+ découpe HF)** :
+
+| Domaine | Avant | Après | Note |
+|:--------|:-----:|:-----:|:-----|
+| Sécu app-layer | ~8 | **~9** | Alias `BBIA_TOKEN`/`BBIA_ENV`, refuse défaut/vide en prod, WS bridge/dashboard, HF pip OFF, yaw clamp chemins API ; **pas 10/10** (firmware/upload Pollen, Dependabot `main`) |
+| Dependabot GitHub | ~8 | **9** | Corrigé sur `develop` ; alertes UI restent tant que `main` non mergé (hors app-layer) |
+| Tests | ~8 | **~9** | Régressions auth/alias/guards + `test_hf_guards_regressions` ; smokes mockés CI — pas de claim 10/10 exhaustif |
+| Qualité / structure | ~8.5 | **~9.3** | `http_auth` / `ws.auth` / `auth_token` / `hf_guards` / `bbia_hf_response_bank` / `bbia_hf_chat_tools` ; god-file HF ~2.97k, pas rewrite total |
+| Docs | ~8.5 | **~9** | Scores honnêtes ; Pollen ≤7 ; pas de faux 10/10 hardware |
+| Bugs | ~8.5 | **~9** | Telemetry freq, joint, yaw bypass, env aliases |
+| DX | ~8 | **~9** | `BBIA_DISABLE_PYTEST_LOCK` / cleanup flags ; coverage XML dé-tracké |
+| Hardware Pollen | ≤7 | **≤7** | Plafond honnête : yaw/sleep/Wireless/GStreamer host = firmware |
+
+**Dependabot (2 nov. 2026)** : les **10 alertes Starlette** visibles sur GitHub ciblent la **default branch `main`** encore en `starlette>=0.40,<1`. Sur **`develop`** : `starlette>=1.10.0,<2` + `fastapi>=0.137.1` (fermeture attendue après merge `develop`→`main`). `reachy-mini==1.13.0` conservé.
+
+
+**Mise à jour 2 Novembre 2026** : Hygiène BBIA (auth WS `compare_digest`, HF space-id allowlist, régressions `src/` branchées pytest, cadence télémétrie configurable). **Honnêteté firmware** : BBIA mitige / documente ; yaw/sleep/Wireless/GStreamer host restent **exposés Pollen** — voir [`docs/hardware/POLLEN_ISSUES_ANTICIPATION.md`](../hardware/POLLEN_ISSUES_ANTICIPATION.md).
+
+**Mise à jour 27 Octobre 2026** : Alignement Pollen v1.13.0 (MISSION 026)
+- SDK de référence **v1.13.0** (PyPI)
+- Extra optionnel : `pip install -e ".[reachy]"` → `reachy-mini==1.13.0` (Python ≥3.11)
+- Floors : starlette ≥1.3.1,&lt;2 ; FastAPI ≥0.135 ; huggingface-hub ≥1.20.1
+- Cœur BBIA : `requires-python>=3.10` conservé
 
 **Mise à jour 17 Août 2026** : Alignement Pollen v1.9.0
 - SDK de référence **v1.9.0** (PyPI) ; dépôt officiel `main` en 1.10.0.dev0
@@ -17,7 +47,7 @@
 **Mise à jour 8 Mai 2026** : Alignement Pollen v1.7.1
 - SDK de référence **v1.7.1** ; dépendances critiques `pyproject.toml` alignées (numpy 2.x, motor_controller ≥1.5.5, zenoh, kinematics, huggingface-hub, scipy, websockets)
 - Projet au même niveau que Pollen pour Reachy Mini (robot physique ; compatibilité maintenue avec environnements encore en 1.3.0+)
-- Guide Cursor/lenteur unifié → [docs/development/ACCELERER_CURSOR.md](../development/ACCELERER_CURSOR.md) (anciens MD racine redirigent)
+- Guide Cursor/lenteur unifié → [docs/development/ACCELERER_CURSOR.md](../development/ACCELERER_CURSOR.md)
 
 **Mise à jour 26 Janvier 2026** : Améliorations Phase 1 Quick Wins terminées
 - Python 3.12 dans CI (matrice lint)
@@ -42,8 +72,8 @@
 |:-------:|:-------------:|:------:|
 | **Python** | 3.11+ (3.12 testé) | ✅ Requis |
 | **CI/CD** | `.github/workflows/ci.yml` | ✅ GitHub Actions (Python 3.11 + 3.12) |
-| **SDK Référence** | `pollen-robotics/reachy_mini` **v1.9.0** (PyPI, 17 août 2026) | ✅ Aligné Pollen |
-| **SDK local** | `pip install --upgrade reachy-mini` → v1.9.0 recommandé | ✅ Extra `.[reachy]` + deps critiques ([lien](https://github.com/pollen-robotics/reachy_mini)) |
+| **SDK Référence** | `pollen-robotics/reachy_mini` **v1.13.0** (PyPI, 27 oct. 2026) | ✅ Aligné Pollen |
+| **SDK local** | `pip install -e ".[reachy]"` → v1.13.0 (Python ≥3.11) | ✅ Extra `.[reachy]` + deps critiques ([lien](https://github.com/pollen-robotics/reachy_mini)) |
 
 </div>
 

@@ -6,6 +6,7 @@ OPTIMISATION RAM: Force utilisation de mocks pour modèles lourds.
 """
 
 import atexit
+import contextlib
 import fcntl
 import gc
 import logging
@@ -161,6 +162,9 @@ def acquire_lock(recursion_level: int = 0) -> bool:
     Returns:
         True si le lock est acquis, False sinon.
     """
+    # CI / ExFAT / runs ciblés : désactiver lock (+ handlers SIGINT/SIGTERM)
+    if os.environ.get("BBIA_DISABLE_PYTEST_LOCK", "0") == "1":
+        return True
     # Protection contre récursion infinie
     if recursion_level >= _MAX_RECURSION:
         print(
@@ -291,99 +295,74 @@ def release_lock(lock_fd: int) -> None:
         pass
 
 
+def _pytest_cleanup_hooks_disabled() -> bool:
+    """Skip nettoyage agressif fin de session (CI / opt-out explicite)."""
+    if os.environ.get("BBIA_DISABLE_PYTEST_CLEANUP", "0") == "1":
+        return True
+    if os.environ.get("CI", "").strip().lower() in {"1", "true", "yes", "on"}:
+        return True
+    return False
+
+
+def _force_cleanup_all_resources_impl() -> None:
+    """Nettoyage léger uniquement (pas de join threads, pas de new_event_loop)."""
+    try:
+        import asyncio
+
+        try:
+            loop = asyncio.get_running_loop()
+        except RuntimeError:
+            loop = None
+
+        if loop is not None and not loop.is_closed():
+            try:
+                for task in asyncio.all_tasks(loop):
+                    if not task.done():
+                        task.cancel()
+            except Exception:
+                pass
+    except Exception:
+        pass
+
+    try:
+        gc.collect()
+    except Exception:
+        pass
+
+
 def force_cleanup_all_resources() -> None:
     """
-    Force le nettoyage de toutes les ressources qui peuvent empêcher pytest de se terminer.
-    - Arrête tous les threads actifs (sauf le thread principal)
-    - Ferme toutes les boucles asyncio
-    - Déconnecte tous les backends actifs
-    - Ferme toutes les connexions WebSocket/HTTP
+    Nettoyage fin de session non bloquant.
+
+    Historique: l'ancienne version créait des event loops / joignait des threads
+    et pouvait laisser pytest coincé minutes après ``[100%]``.
+    Skip si ``CI=true`` ou ``BBIA_DISABLE_PYTEST_CLEANUP=1``.
+    Sinon exécute l'implémentation légère sous timeout dur (2s).
     """
+    if _pytest_cleanup_hooks_disabled():
+        return
+
+    done = threading.Event()
+
+    def _runner() -> None:
+        try:
+            _force_cleanup_all_resources_impl()
+        except Exception:
+            pass
+        finally:
+            done.set()
+
     try:
-        # 1. Nettoyer tous les backends actifs (threads watchdog)
-        try:
-
-            # Forcer la déconnexion de tous les backends qui pourraient être actifs
-            # Note: On ne peut pas vraiment lister toutes les instances, mais on force
-            # le nettoyage des threads watchdog qui peuvent rester actifs
-            pass  # Les backends doivent être nettoyés dans les tests individuels
-        except Exception:
-            pass
-
-        # 2. Fermer toutes les boucles asyncio qui peuvent rester ouvertes
-        try:
-            import asyncio
-
-            # Annuler toutes les tâches asyncio en attente
-            try:
-                # Essayer d'obtenir la boucle courante
-                loop = asyncio.get_running_loop()
-            except RuntimeError:
-                # Pas de boucle en cours, essayer de nettoyer les boucles fermées
-                try:
-                    # Essayer de récupérer la boucle par défaut (peut être fermée)
-                    loop = asyncio.get_event_loop()
-                    if loop.is_closed():
-                        # Créer une nouvelle boucle pour nettoyer puis la fermer
-                        loop = asyncio.new_event_loop()
-                        asyncio.set_event_loop(loop)
-                except RuntimeError:
-                    loop = None
-
-            if loop is not None and not loop.is_closed():
-                # Annuler toutes les tâches en cours
-                try:
-                    tasks = [t for t in asyncio.all_tasks(loop) if not t.done()]
-                    for task in tasks:
-                        task.cancel()
-                except Exception:
-                    pass
-
-                # Essayer de fermer proprement la boucle (sans bloquer)
-                try:
-                    if not loop.is_closed():
-                        # Arrêter la boucle sans bloquer
-                        try:
-                            loop.call_soon_threadsafe(loop.stop)
-                        except Exception:
-                            pass
-                except Exception:
-                    pass
-        except Exception:
-            pass
-
-        # 3. Forcer l'arrêt des threads non-daemon qui peuvent bloquer pytest
-        # Note: Les threads daemon sont automatiquement terminés, mais on peut
-        # forcer l'arrêt propre si nécessaire
-        try:
-            # Lister tous les threads actifs sauf le thread principal
-            all_threads = threading.enumerate()
-            main_thread = threading.main_thread()
-
-            for thread in all_threads:
-                if thread is main_thread:
-                    continue
-
-                # Si le thread est toujours actif, essayer de le joindre avec timeout
-                if thread.is_alive():
-                    thread_name = getattr(thread, "name", "Unknown")
-                    # Ignorer les threads système Python (garbage collector, etc.)
-                    if "MainThread" in thread_name or "Thread" not in thread_name:
-                        continue
-
-                    # Joindre avec timeout très court
-                    thread.join(timeout=0.1)
-        except Exception:
-            pass
-
-        # 4. Force garbage collection pour libérer les ressources
-        try:
-            gc.collect()
-        except Exception:
-            pass
-
+        worker = threading.Thread(
+            target=_runner,
+            name="bbia-pytest-force-cleanup",
+            daemon=True,
+        )
+        worker.start()
+        if not done.wait(timeout=2.0):
+            print("⚠️  force_cleanup timeout 2s (abandonné, non bloquant)")
     except Exception:
-        # Ignorer toutes les erreurs pour ne pas bloquer la fin de pytest
+        # Ne jamais bloquer la fin de pytest
         pass
 
 
@@ -406,6 +385,54 @@ def pytest_collection_modifyitems(config: pytest.Config, items: list) -> None:
                 item.add_marker(skip_marker)
 
 
+def _clear_heavy_model_caches_if_loaded() -> None:
+    """Vide les caches ML seulement si les modules sont déjà dans sys.modules.
+
+    Évite l'import eager de vision_yolo (ultralytics→torch) au pytest_configure,
+    qui ralentit / casse les tests unitaires légers.
+    """
+    import sys
+
+    vision_yolo = sys.modules.get("bbia_sim.vision_yolo")
+    if vision_yolo is not None:
+        yolo_lock = getattr(vision_yolo, "_yolo_cache_lock", None)
+        yolo_cache = getattr(vision_yolo, "_yolo_model_cache", None)
+        if yolo_lock is not None and isinstance(yolo_cache, dict):
+            with yolo_lock:
+                yolo_cache.clear()
+        mp_lock = getattr(vision_yolo, "_mediapipe_cache_lock", None)
+        if mp_lock is not None:
+            with mp_lock:
+                vision_yolo._mediapipe_face_detection_cache = None
+
+    voice_whisper = sys.modules.get("bbia_sim.voice_whisper")
+    if voice_whisper is not None:
+        w_lock = getattr(voice_whisper, "_whisper_model_cache_lock", None)
+        w_cache = getattr(voice_whisper, "_whisper_models_cache", None)
+        if w_lock is not None and isinstance(w_cache, dict):
+            with w_lock:
+                w_cache.clear()
+
+    hf_mod = sys.modules.get("bbia_sim.bbia_huggingface")
+    if hf_mod is not None:
+        BBIAHuggingFace = getattr(hf_mod, "BBIAHuggingFace", None)
+        if BBIAHuggingFace is None:
+            return
+        try:
+            with BBIAHuggingFace._shared_unload_thread_lock:
+                thread = BBIAHuggingFace._shared_unload_thread
+                if thread is not None and thread.is_alive():
+                    BBIAHuggingFace._shared_unload_thread_stop.set()
+                    thread.join(timeout=1.0)
+                BBIAHuggingFace._shared_instances.clear()
+                BBIAHuggingFace._shared_unload_thread = None
+        except (AttributeError, RuntimeError):
+            pass
+        clear_cache = getattr(BBIAHuggingFace, "_clear_cache", None)
+        if callable(clear_cache):
+            clear_cache()
+
+
 @pytest.hookimpl(tryfirst=True)
 def pytest_configure(config: pytest.Config) -> None:
     """
@@ -420,7 +447,8 @@ def pytest_configure(config: pytest.Config) -> None:
         print("   Un autre processus exécute déjà les tests.\n")
         sys.exit(1)
 
-    print("✅ Verrou d'exécution acquis. Tests sécurisés.\n")
+    if os.environ.get("BBIA_DISABLE_PYTEST_LOCK", "0") != "1":
+        print("✅ Verrou d'exécution acquis. Tests sécurisés.\n")
 
     # Configurer le filtre de logging pour réduire le bruit des erreurs attendues
     # Appliquer le filtre aux loggers principaux du projet
@@ -439,60 +467,12 @@ def pytest_configure(config: pytest.Config) -> None:
         if not any(isinstance(f, ExpectedErrorFilter) for f in logger.filters):
             logger.addFilter(expected_error_filter)
 
-    # OPTIMISATION RAM: Nettoyer caches modèles avant tests
+    # OPTIMISATION RAM: Nettoyer caches modèles UNIQUEMENT s'ils sont déjà chargés.
+    # Ne jamais importer vision_yolo / whisper / HF ici : cela tire ultralytics→torch
+    # et peut bloquer/tuer la session pytest (SystemExit via signal pendant import).
     try:
-        # Nettoyer cache YOLO
-        from bbia_sim.vision_yolo import _yolo_cache_lock, _yolo_model_cache
-
-        with _yolo_cache_lock:
-            _yolo_model_cache.clear()
-
-        # Nettoyer cache MediaPipe
-        from bbia_sim import vision_yolo
-        from bbia_sim.vision_yolo import _mediapipe_cache_lock
-
-        with _mediapipe_cache_lock:
-            vision_yolo._mediapipe_face_detection_cache = None
-
-        # Nettoyer cache Whisper
-        try:
-            from bbia_sim.voice_whisper import (
-                _whisper_model_cache_lock,
-                _whisper_models_cache,
-            )
-
-            with _whisper_model_cache_lock:
-                _whisper_models_cache.clear()
-        except ImportError:
-            pass
-
-        # Nettoyer cache HuggingFace
-        try:
-            from bbia_sim.bbia_huggingface import BBIAHuggingFace
-
-            # Nettoyer thread partagé BBIAHuggingFace pour éviter fuites entre tests
-            try:
-                with BBIAHuggingFace._shared_unload_thread_lock:
-                    # Arrêter thread partagé si actif
-                    if (
-                        BBIAHuggingFace._shared_unload_thread
-                        and BBIAHuggingFace._shared_unload_thread.is_alive()
-                    ):
-                        BBIAHuggingFace._shared_unload_thread_stop.set()
-                        BBIAHuggingFace._shared_unload_thread.join(timeout=1.0)
-                    # Nettoyer liste instances
-                    BBIAHuggingFace._shared_instances.clear()
-                    BBIAHuggingFace._shared_unload_thread = None
-            except (AttributeError, RuntimeError):
-                # Ignorer si attributs n'existent pas encore
-                pass
-
-            if hasattr(BBIAHuggingFace, "_clear_cache"):
-                BBIAHuggingFace._clear_cache()
-        except (ImportError, AttributeError):
-            pass
-
-        print("🧹 Caches modèles nettoyés (optimisation RAM)\n")
+        _clear_heavy_model_caches_if_loaded()
+        print("🧹 Caches modèles nettoyés si déjà chargés (pas d'import torch/YOLO)\n")
     except Exception as e:
         # Ignorer erreurs de nettoyage (non bloquant)
         print(f"⚠️  Erreur nettoyage cache (non bloquant): {e}\n")
@@ -520,12 +500,9 @@ def pytest_unconfigure(config: pytest.Config) -> None:
     except Exception:
         pass
 
-    # OPTIMISATION RAM: Nettoyer caches après tests
+    # OPTIMISATION RAM: Nettoyer caches après tests sans forcer import YOLO/torch
     try:
-        from bbia_sim.vision_yolo import _yolo_cache_lock, _yolo_model_cache
-
-        with _yolo_cache_lock:
-            _yolo_model_cache.clear()
+        _clear_heavy_model_caches_if_loaded()
     except Exception:
         pass
 
@@ -535,10 +512,14 @@ def run_cleanup_scripts() -> None:
     Exécute les scripts de nettoyage après les tests.
     Nettoie les fichiers cache, métadonnées macOS, et processus gourmands.
 
-    Peut être désactivé via la variable d'environnement BBIA_DISABLE_AUTO_CLEANUP=1
+    Désactivé si:
+    - BBIA_DISABLE_AUTO_CLEANUP=1
+    - BBIA_DISABLE_PYTEST_CLEANUP=1
+    - CI=true (évite find/. sur runners / disques lents)
     """
-    # Vérifier si le nettoyage automatique est désactivé
     if os.environ.get("BBIA_DISABLE_AUTO_CLEANUP", "0") == "1":
+        return
+    if _pytest_cleanup_hooks_disabled():
         return
 
     try:
@@ -561,22 +542,33 @@ def run_cleanup_scripts() -> None:
         # Ne pas nettoyer la RAM automatiquement (peut être dangereux)
         print("\n🧹 Exécution du nettoyage automatique après les tests...")
         try:
-            # Utiliser bash explicitement pour éviter les problèmes de permissions
-            result = subprocess.run(
+            # Popen + process group: timeout dur et kill des find enfants
+            proc = subprocess.Popen(
                 ["bash", str(cleanup_script), "--cache-only", "--yes"],
                 cwd=str(project_root),
-                capture_output=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
                 text=True,
-                timeout=30,  # Timeout de 30 secondes max (optimisé)
+                start_new_session=True,
             )
-            if result.returncode == 0:
+            try:
+                _stdout, stderr = proc.communicate(timeout=10)
+            except subprocess.TimeoutExpired:
+                try:
+                    os.killpg(proc.pid, signal.SIGKILL)
+                except Exception:
+                    with contextlib.suppress(Exception):
+                        proc.kill()
+                with contextlib.suppress(Exception):
+                    proc.wait(timeout=2)
+                print("⚠️  Nettoyage timeout (ignoré)")
+                return
+            if proc.returncode == 0:
                 print("✅ Nettoyage automatique terminé avec succès")
             else:
-                print(f"⚠️  Nettoyage terminé avec code {result.returncode}")
-                if result.stderr:
-                    print(f"   Erreur: {result.stderr[:200]}")
-        except subprocess.TimeoutExpired:
-            print("⚠️  Nettoyage timeout (ignoré)")
+                print(f"⚠️  Nettoyage terminé avec code {proc.returncode}")
+                if stderr:
+                    print(f"   Erreur: {stderr[:200]}")
         except Exception as e:
             print(f"⚠️  Erreur lors du nettoyage (non bloquant): {e}")
     except Exception as e:
@@ -588,12 +580,14 @@ def run_cleanup_scripts() -> None:
 def pytest_sessionfinish(session: pytest.Session, exitstatus: int) -> None:
     """
     Hook pytest qui s'exécute à la fin de la session complète.
-    Force le nettoyage de toutes les ressources pour éviter que pytest reste bloqué.
+    Nettoyage non bloquant (timeout/skip) pour garantir la sortie du process.
     """
+    t0 = time.monotonic()
     force_cleanup_all_resources()
-
-    # Exécuter les scripts de nettoyage après les tests
     run_cleanup_scripts()
+    elapsed = time.monotonic() - t0
+    if elapsed > 1.0:
+        print(f"⚠️  sessionfinish cleanup took {elapsed:.1f}s")
 
 
 @pytest.fixture(autouse=True)
@@ -601,12 +595,18 @@ def clear_model_caches_after_test():
     """
     Fixture automatique: nettoie les caches de modèles après chaque test.
     OPTIMISATION RAM: Libère mémoire après chaque test.
+    N'importe pas HF/YOLO si le module n'a jamais été chargé.
     """
     yield
-    # Nettoyer thread partagé BBIAHuggingFace après chaque test
-    try:
-        from bbia_sim.bbia_huggingface import BBIAHuggingFace
+    import sys
 
+    hf_mod = sys.modules.get("bbia_sim.bbia_huggingface")
+    if hf_mod is None:
+        return
+    BBIAHuggingFace = getattr(hf_mod, "BBIAHuggingFace", None)
+    if BBIAHuggingFace is None:
+        return
+    try:
         with BBIAHuggingFace._shared_unload_thread_lock:
             # Arrêter thread partagé si actif et plus d'instances
             if (
@@ -616,8 +616,8 @@ def clear_model_caches_after_test():
             ):
                 BBIAHuggingFace._shared_unload_thread_stop.set()
                 BBIAHuggingFace._shared_unload_thread.join(timeout=0.5)
-    except (ImportError, AttributeError, RuntimeError):
-        # Ignorer si module non disponible ou erreurs
+    except (AttributeError, RuntimeError):
+        # Ignorer si attributs absents ou erreurs
         pass
 
     # Nettoyer cache MuJoCo après chaque test

@@ -11,6 +11,7 @@ from typing import Any
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
 from bbia_sim.daemon.simulation_service import simulation_service
+from bbia_sim.daemon.ws.keepalive import receive_text_with_keepalive
 
 logger = logging.getLogger(__name__)
 
@@ -111,8 +112,12 @@ class ConnectionManager:
                 # Diffusion à toutes les connexions
                 await self.broadcast(json.dumps(telemetry_data))
 
-                # Attente avant la prochaine diffusion (10Hz)
-                await asyncio.sleep(0.1)
+                # Cadence pilotée par BBIA_TELEMETRY_FREQUENCY (défaut 10 Hz)
+                from bbia_sim.daemon.config import settings
+
+                freq = float(settings.telemetry_frequency)
+                interval = 0.1 if freq <= 0 else max(0.01, 1.0 / freq)
+                await asyncio.sleep(interval)
 
             except asyncio.CancelledError:
                 break
@@ -221,11 +226,9 @@ manager = ConnectionManager()
 @router.websocket("/telemetry")
 async def websocket_endpoint(websocket: WebSocket, token: str | None = None) -> None:
     """Endpoint WebSocket pour la télémétrie temps réel."""
-    from bbia_sim.daemon.config import settings
+    from bbia_sim.daemon.ws.auth import ws_auth_rejected
 
-    if settings.environment.lower() == "prod" and (
-        not token or token != settings.api_token
-    ):
+    if ws_auth_rejected(token):
         await websocket.close(code=1008, reason="Invalid token")
         return
 
@@ -236,11 +239,10 @@ async def websocket_endpoint(websocket: WebSocket, token: str | None = None) -> 
         if len(manager.active_connections) == 1:
             await manager.start_broadcast()
 
-        # Boucle de réception des messages du client
+        # Boucle de réception (keepalive #1494 via BBIA_WS_KEEPALIVE_TIMEOUT)
         while True:
             try:
-                # Réception d'un message du client
-                data = await websocket.receive_text()
+                data = await receive_text_with_keepalive(websocket)
                 message = json.loads(data)
 
                 # Traitement des commandes du client
@@ -263,6 +265,10 @@ async def websocket_endpoint(websocket: WebSocket, token: str | None = None) -> 
                         websocket,
                     )
 
+            except TimeoutError:
+                logger.info("WebSocket telemetry: keepalive timeout, fermeture")
+                await websocket.close(code=1001, reason="keepalive timeout")
+                break
             except WebSocketDisconnect:
                 break
             except json.JSONDecodeError:
@@ -286,13 +292,17 @@ async def websocket_endpoint(websocket: WebSocket, token: str | None = None) -> 
 @router.get("/telemetry/info")
 async def get_telemetry_info() -> dict[str, Any]:
     """Informations sur le service de télémétrie."""
+    from bbia_sim.daemon.config import settings
+
+    freq = float(settings.telemetry_frequency)
     return {
         "service": "WebSocket Telemetry",
         "version": "1.0.0",
         "status": "running",
         "connections": len(manager.active_connections),
         "broadcasting": manager.is_broadcasting,
-        "frequency": "10Hz",
+        "frequency": f"{freq:g}Hz",
+        "frequency_hz": freq,
         "endpoint": "/ws/telemetry",
         "timestamp": datetime.now().isoformat(),
     }
