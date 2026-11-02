@@ -1,15 +1,14 @@
 #!/bin/bash
-# ⚠️ DÉPRÉCIÉ : Utiliser smart_process_cleanup.sh à la place
-# Ce script est conservé pour compatibilité mais sera supprimé dans une future version
-# Script pour forcer la fermeture de tous les viewers MuJoCo bloqués
+# ⚠️ DÉPRÉCIÉ : préférer cleanup_all.sh --ram-only ou process_manager.py stop
+# Conservé pour compatibilité (viewers MuJoCo bloqués).
 #
-# ⚠️  DÉPRÉCIÉ: Ce script est déprécié mais conservé pour compatibilité.
-# 💡 Alternative recommandée: python scripts/process_manager.py stop
-#    ou: scripts/smart_process_cleanup.sh
+# Alternatives:
+#   ./scripts/cleanup_all.sh --ram-only
+#   python scripts/process_manager.py stop
 #
-# Date de dépréciation: Novembre 2024
+# Date de dépréciation: Novembre 2024 (pointeurs maj 2 Nov 2026)
 
-echo "⚠️  NOTE: Ce script est déprécié. Utilisez 'python scripts/process_manager.py stop' à la place."
+echo "⚠️  NOTE: Ce script est déprécié. Utilisez './scripts/cleanup_all.sh --ram-only' ou 'python scripts/process_manager.py stop'."
 echo ""
 echo "🔍 Recherche des processus MuJoCo..."
 

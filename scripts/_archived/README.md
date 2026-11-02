@@ -14,9 +14,15 @@
 ### `kill_greedy_processes.sh`
 
 - **Date archivé**: Oct / Nov. 2025
-- **Raison**: Remplacé par `smart_process_cleanup.sh` (plus intelligent) et `process_manager.py`
+- **Raison**: Remplacé par `cleanup_all.sh --ram-only` et `process_manager.py`
 - **Utilisation**: ❌ Aucune référence dans le codebase
-- **Alternative**: Utiliser `scripts/smart_process_cleanup.sh` ou `python scripts/process_manager.py stop`
+- **Alternative**: Utiliser `scripts/cleanup_all.sh --ram-only` ou `python scripts/process_manager.py stop`
+
+### `cleanup_fused_2026/` (2 Nov 2026)
+
+- **Raison**: doublons déjà fusionnés dans `cleanup_all.sh`
+- **Contenu**: `cleanup_project.sh`, `cleanup_metadata_files.sh`, `smart_process_cleanup.sh`
+- **Alternative**: `scripts/cleanup_all.sh`
 
 ### Scripts Consolidés (Nov. 2025)
 

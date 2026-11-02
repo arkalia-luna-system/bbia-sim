@@ -1,1 +1,1 @@
-scripts/launch_robot_3d.sh
+launch_robot_3d.sh

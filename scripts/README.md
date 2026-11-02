@@ -2,10 +2,13 @@
 
 > **Scripts d'automatisation pour BBIA - Brain-Based Interactive Agent**
 
-**⚠️ Note maintenance (8 Mai 2026)**
-Ce document contient encore des sections historiques (Unity/setup legacy).  
-Pour une exécution fiable, privilégier les scripts actifs suivants:  
-`quick_start.sh`, `bbia_doctor.py`, `run_demo_sim.sh`, `hardware_dry_run_reachy_mini.py`, `start_public_api.py`, `cleanup_all.sh`, `verify_documentation.py`.
+**⚠️ Note maintenance (2 Novembre 2026)**
+Les anciens scripts Unity / installateur global repos Reachy **n’existent plus** dans ce dépôt
+(`launch_unity.sh`, `test_unity_setup.sh`, `fix_unity_warnings.sh`, `install_all_reachy_repos.sh`,
+`setup_reachy_environment.sh`). `quick_start.sh` mappe déjà ces besoins vers dashboard / docs / API / Pollen.
+
+Pour une exécution fiable, privilégier :  
+`quick_start.sh`, `bbia_doctor.py`, `run_demo_sim.sh`, `hardware_dry_run_reachy_mini.py`, `start_public_api.py`, `cleanup_all.sh`, `verify_docs_complete.py`, `verify_documentation.py`.
 
 **📚 [Documentation principale](../README.md)** | **📖 [Guide premiers pas](../docs/guides/GUIDE_DEMARRAGE.md)** | **🔧 [Guide avancé](../docs/guides/GUIDE_AVANCE.md)**
 
@@ -16,34 +19,32 @@ mindmap
   root((Scripts BBIA))
     Principaux
       quick_start.sh
-      launch_unity.sh
       launch_robot_3d.sh
       launch_robot.py
+      launch_complete_robot.py
     Test & Validation
-      hardware_dry_run.py
+      hardware_dry_run_reachy_mini.py
+      bbia_doctor.py
       record_trace.py
       validate_trace.py
-      test_unity_setup.sh
     Démo & Enregistrement
+      run_demo_sim.sh
       record_demo.sh
       plot_trace.py
     Audit & Documentation
-      compare_with_official_exhaustive.py
-      audit_and_correct_dates_md.py
+      verify_docs_complete.py
       verify_documentation.py
-    Installation
-      install_all_reachy_repos.sh
-      setup_reachy_environment.sh
+      compare_with_official_exhaustive.py
+    Nettoyage
+      cleanup_all.sh
 ```
 
 ## ⚠️ **Scripts Dépréciés**
 
 - ❌ **`start_api.py`** → Utiliser `start_public_api.py` (archivé dans `_archived/`)
 - ❌ **`kill_greedy_processes.sh`** → Utiliser `cleanup_all.sh --ram-only` (archivé dans `_archived/`)
-- ⚠️ **`kill_mujoco_viewers.sh`** → Utiliser `process_manager.py stop` (déprécié mais gardé)
-- ⚠️ **`cleanup_project.sh`** → Utiliser `cleanup_all.sh` (script fusionné)
-- ⚠️ **`cleanup_metadata_files.sh`** → Utiliser `cleanup_all.sh` (script fusionné)
-- ⚠️ **`smart_process_cleanup.sh`** → Utiliser `cleanup_all.sh --ram-only` (script fusionné)
+- ⚠️ **`kill_mujoco_viewers.sh`** → Utiliser `cleanup_all.sh --ram-only` ou `process_manager.py stop` (déprécié mais gardé)
+- ❌ **`cleanup_project.sh` / `cleanup_metadata_files.sh` / `smart_process_cleanup.sh`** → archivés dans `_archived/cleanup_fused_2026/` (utiliser `cleanup_all.sh`)
 
 ### 🔄 **Scripts d'Audit Consolidés** (Oct / Nov. 2025)
 
@@ -77,18 +78,17 @@ Voir `scripts/_archived/README.md` pour plus de détails.
 
 ### 🎮 **Scripts Principaux**
 
-- **`quick_start.sh`** - Menu interactif principal
-- **`launch_unity.sh`** - Lancement de la simulation Unity 3D
-- **`launch_robot_3d.sh`** - Lancement du robot Reachy Mini en 3D
-- **`launch_robot.py`** - Script Python pour lancer le robot
-- **`install_all_reachy_repos.sh`** - Installation automatique des dépôts GitHub
-- **`setup_reachy_environment.sh`** - Configuration de l'environnement
+- **`quick_start.sh`** - Menu interactif principal (scripts réellement présents)
+- **`launch_robot_3d.sh`** / **`launch_robot.sh`** (symlink) - Viewer / robot 3D
+- **`launch_robot.py`** - Lanceur Python robot
+- **`launch_complete_robot.py`** - Lanceur robot complet
+- **`start_public_api.py`** - API publique
 
 ### 🧪 **Scripts de Test**
 
-- **`test_unity_setup.sh`** - Test de la configuration Unity
-- **`fix_unity_warnings.sh`** - Correction des avertissements Unity
-- **`hardware_dry_run.py`** - Validation hardware Reachy réel ✅
+- **`bbia_doctor.py`** - Diagnostic environnement
+- **`hardware_dry_run_reachy_mini.py`** - Validation hardware Reachy Mini (SDK officiel) ✅
+- **`hardware_dry_run.py`** - Validation hardware Reachy (legacy mapping)
 - **`record_trace.py`** - Enregistrement traces golden
 - **`validate_trace.py`** - Validation traces contre référence
 
@@ -123,9 +123,7 @@ Voir `scripts/_archived/README.md` pour plus de détails.
     ```
   - Options : `--cache-only`, `--ram-only`, `--yes/-y`, `--help/-h`
 
-- **`cleanup_project.sh`** - Nettoyage fichiers cache uniquement (déprécié, utiliser `cleanup_all.sh`)
-- **`cleanup_metadata_files.sh`** - Nettoyage métadonnées macOS uniquement (déprécié, utiliser `cleanup_all.sh`)
-- **`smart_process_cleanup.sh`** - Nettoyage RAM uniquement (déprécié, utiliser `cleanup_all.sh --ram-only`)
+- ❌ Doublons archivés → `_archived/cleanup_fused_2026/` (`cleanup_project.sh`, `cleanup_metadata_files.sh`, `smart_process_cleanup.sh`)
 
 ---
 
@@ -137,17 +135,12 @@ Voir `scripts/_archived/README.md` pour plus de détails.
 flowchart TD
     START[🚀 Démarrage] --> MENU{Menu Interactif<br/>quick_start.sh}
     
-    MENU -->|Option 1| TEST[Test BBIA<br/>Simulation rapide]
-    MENU -->|Option 6| UNITY[Lancer Unity 3D<br/>Visualisation 3D]
-    MENU -->|Option 7| CHECK[Test Config Unity<br/>Validation]
-    MENU -->|Option 8| FIX[Corriger Warnings Unity<br/>Fix automatique]
-    MENU -->|Option 10| INSTALL[Installer Repos GitHub<br/>Setup complet]
-    
-    TEST --> RESULT1[✅ Résultat Test]
-    UNITY --> RESULT2[✅ Unity Lancé]
-    CHECK --> RESULT3[✅ Config OK]
-    FIX --> RESULT4[✅ Warnings Corrigés]
-    INSTALL --> RESULT5[✅ Repos Installés]
+    MENU -->|1| DOCTOR[bbia_doctor]
+    MENU -->|2| DEMO[run_demo_sim]
+    MENU -->|6| DASH[dashboard_advanced]
+    MENU -->|7| DOCS[verify_documentation]
+    MENU -->|8| API[start_public_api --check]
+    MENU -->|9| CLEAN[cleanup_all]
     
     style MENU fill:#FFD700
     style START fill:#90EE90
@@ -159,13 +152,7 @@ flowchart TD
 ./scripts/quick_start.sh
 ```
 
-**Options disponibles :**
-
-- Option 1 : Tester BBIA (simulation rapide)
-- Option 6 : Lancer Unity 3D
-- Option 7 : Tester la configuration Unity
-- Option 8 : Corriger les avertissements Unity
-- Option 10 : Installer dépôts GitHub
+**Options disponibles :** voir `quick_start.sh` (doctor, démo sim, docs, dashboard, verify docs, API check, cleanup, procédure Reachy).
 
 ### 🧪 **Scripts de Validation**
 
@@ -433,33 +420,14 @@ scripts/
 **BBIA** - Brain-Based Interactive Agent  
 *Scripts d'automatisation* 🚀✨
 
-## 📊 **Résumé des Scripts** (Nov. 2025)
+## 📊 **Résumé des Scripts** (2 Nov. 2026)
 
-- **✅ Scripts utiles** : ~35 scripts actifs et maintenus
-- **❌ Scripts inutiles** : 2 scripts déjà archivés (`start_api.py`, `kill_greedy_processes.sh`)
-- **⚠️ Scripts à améliorer** : ~5 scripts à consolider (audit, documentation)
-- **🚀 Scripts prioritaires** : ~10 scripts essentiels (quick_start.sh, launch_complete_robot.py, start_public_api.py, etc.)
-
-### 🎯 **Scripts Prioritaires**
-
-**Immédiat :**
-1. `quick_start.sh` - Point d'entrée principal
-2. `launch_complete_robot.py` - Lanceur robot complet
-3. `start_public_api.py` - API robuste
-
-**Maintenance :**
-1. `verify_docs_complete.py` - Vérification documentation
-2. `hardware_dry_run_reachy_mini.py` - Tests hardware Reachy Mini
-3. `smart_process_cleanup.sh` - Nettoyage processus sécurisé
-
-**Développement :**
-1. `dashboard_gradio.py` - Interface moderne
-2. `record_demo.sh` - Enregistrement démos
-3. `plot_trace.py` - Analyse traces
+- **✅ Actifs** : menu `quick_start.sh`, doctor, démos, hardware dry-run Mini, API, `cleanup_all.sh`, verify docs
+- **❌ Archivés récents** : `_archived/cleanup_fused_2026/`, `_archived/one_shot_hygiene_2026/`
+- **🚀 Prioritaires** : `quick_start.sh`, `launch_complete_robot.py`, `start_public_api.py`, `cleanup_all.sh`, `verify_docs_complete.py`
 
 ---
 
-**Version** : 2.1  
-**Date** : Nov. 2025  
-**Scripts** : ✅ ~35 scripts fonctionnels  
-**Automatisation** : ✅ Complète
+**Version** : 2.2  
+**Date** : 2 Nov. 2026  
+**Hygiène** : cleanup doublons archivés ; claims Unity/install global retirés
