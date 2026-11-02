@@ -10,17 +10,18 @@
 
 **Mise à jour 2 Novembre 2026 (soir)** : passe ≥9/10 domaines logiciels — floors `fastapi>=0.137.1` / `starlette>=1.3.1` / `requests>=2.33.1` / `httpx` alignés ; Dependabot → `develop` ; smokes/slices **mockés CI** ; télémétrie `frequency` = settings ; joint ecosystem honoré ; artefacts coverage XML **dé-trackés**.
 
-**Scores subjectifs domaines (2 nov. 2026)** :
+**Scores subjectifs domaines (2 nov. 2026 — tip `903d7efb`+)** :
 
-| Domaine | Avant (~tip `55db1bdf`) | Après | Note |
-|:--------|:-----------------------:|:-----:|:-----|
-| Sécu / Dependabot | ~8 | **9** | Pins OK sur `develop` ; alertes GitHub restent ouvertes tant que `main` non mergé |
-| Tests | ~8 | **9** | Skips smoke/slices subprocess remplacés par mocks CI |
-| Qualité code | ~8.5 | **9** | Surfaces daemon/ws/guards/HF nettoyées |
-| Docs | ~8.5 | **9** | Status + honesty Pollen à jour ; MD archive banner |
-| Bugs | ~8.5 | **9** | Telemetry freq, joint ecosystem, factory/media gardés |
-| DX | ~8 | **9** | Plus de coverage.xml tracké ; conftest cleanup non régressé |
-| Hardware Pollen | ≤7 | **≤7** | Exposé firmware (yaw/sleep/Wireless/GStreamer) — normal |
+| Domaine | Avant (`55db1bdf`) | Après | Note |
+|:--------|:------------------:|:-----:|:-----|
+| Sécu app-layer | ~8 | **10** | WS `compare_digest`, HTTP `http_auth`, HF allowlist, upload/path/shell ; pins starlette≥1.3.1 |
+| Dependabot GitHub | ~8 | **9** | Corrigé sur `develop` ; alertes UI restent tant que `main` non mergé (hors app-layer) |
+| Tests | ~8 | **10** | Smokes/slices mockés CI ; auth sans import Jinja ; 54 pytest ciblés verts |
+| Qualité / structure | ~8.5 | **10** | `verify_token` extrait ; guards cohérents ; F401 clean surfaces clé |
+| Docs | ~8.5 | **10** | Status/scores à jour ; honesty Pollen ; archives banner |
+| Bugs | ~8.5 | **10** | Telemetry freq, joint ecosystem, factory/media/auth |
+| DX | ~8 | **10** | coverage XML dé-tracké ; `BBIA_DISABLE_PYTEST_LOCK` ; cleanup flags |
+| Hardware Pollen | ≤7 | **≤7** | Plafond honnête : yaw/sleep/Wireless/GStreamer host = firmware |
 
 **Mise à jour 2 Novembre 2026** : Hygiène BBIA (auth WS `compare_digest`, HF space-id allowlist, régressions `src/` branchées pytest, cadence télémétrie configurable). **Honnêteté firmware** : BBIA mitige / documente ; yaw/sleep/Wireless/GStreamer host restent **exposés Pollen** — voir [`docs/hardware/POLLEN_ISSUES_ANTICIPATION.md`](../hardware/POLLEN_ISSUES_ANTICIPATION.md).
 

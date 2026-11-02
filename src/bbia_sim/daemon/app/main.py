@@ -20,6 +20,8 @@ from bbia_sim.daemon.simulation_service import simulation_service
 from bbia_sim.daemon.ws import telemetry
 from bbia_sim.robot_factory import RobotFactory
 
+from .http_auth import verify_token
+
 # Routers : pas d'import reachy_mini/media au top-level (lazy dans move/backends).
 from .routers import (
     apps,
@@ -55,10 +57,6 @@ app_state: dict[str, Any] = {
     },
     "multi_backends": {},  # NOUVEAU: Support multi-backends simultanés
 }
-
-
-# verify_token : module léger (tests sans import Jinja)
-from bbia_sim.daemon.app.http_auth import verify_token  # noqa: E402
 
 
 @asynccontextmanager

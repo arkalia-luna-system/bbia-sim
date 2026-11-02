@@ -45,10 +45,10 @@ def test_main_reexports_verify_token_from_http_auth() -> None:
     tree = ast.parse(src.read_text(encoding="utf-8"))
     found = False
     for node in tree.body:
-        if (
-            isinstance(node, ast.ImportFrom)
-            and node.module == "bbia_sim.daemon.app.http_auth"
-        ):
+        if not isinstance(node, ast.ImportFrom):
+            continue
+        # absolute ou relatif ``.http_auth``
+        if node.module in {"bbia_sim.daemon.app.http_auth", "http_auth"}:
             names = {a.name for a in node.names}
             if "verify_token" in names:
                 found = True

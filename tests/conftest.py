@@ -447,7 +447,8 @@ def pytest_configure(config: pytest.Config) -> None:
         print("   Un autre processus exécute déjà les tests.\n")
         sys.exit(1)
 
-    print("✅ Verrou d'exécution acquis. Tests sécurisés.\n")
+    if os.environ.get("BBIA_DISABLE_PYTEST_LOCK", "0") != "1":
+        print("✅ Verrou d'exécution acquis. Tests sécurisés.\n")
 
     # Configurer le filtre de logging pour réduire le bruit des erreurs attendues
     # Appliquer le filtre aux loggers principaux du projet
