@@ -112,8 +112,12 @@ class ConnectionManager:
                 # Diffusion à toutes les connexions
                 await self.broadcast(json.dumps(telemetry_data))
 
-                # Attente avant la prochaine diffusion (10Hz)
-                await asyncio.sleep(0.1)
+                # Cadence pilotée par BBIA_TELEMETRY_FREQUENCY (défaut 10 Hz)
+                from bbia_sim.daemon.config import settings
+
+                freq = float(settings.telemetry_frequency)
+                interval = 0.1 if freq <= 0 else max(0.01, 1.0 / freq)
+                await asyncio.sleep(interval)
 
             except asyncio.CancelledError:
                 break
@@ -222,11 +226,9 @@ manager = ConnectionManager()
 @router.websocket("/telemetry")
 async def websocket_endpoint(websocket: WebSocket, token: str | None = None) -> None:
     """Endpoint WebSocket pour la télémétrie temps réel."""
-    from bbia_sim.daemon.config import settings
+    from bbia_sim.daemon.ws.auth import ws_auth_rejected
 
-    if settings.environment.lower() == "prod" and (
-        not token or token != settings.api_token
-    ):
+    if ws_auth_rejected(token):
         await websocket.close(code=1008, reason="Invalid token")
         return
 

@@ -413,11 +413,9 @@ async def stop_move(uuid: MoveUUID) -> dict[str, str]:
 @router.websocket("/ws/updates")
 async def ws_move_updates(websocket: WebSocket, token: str | None = None) -> None:
     """WebSocket pour streamer les mises à jour de mouvements."""
-    from bbia_sim.daemon.config import settings
+    from bbia_sim.daemon.ws.auth import ws_auth_rejected
 
-    if settings.environment.lower() == "prod" and (
-        not token or token != settings.api_token
-    ):
+    if ws_auth_rejected(token):
         await websocket.close(code=1008, reason="Invalid token")
         return
 
@@ -468,11 +466,9 @@ async def ws_set_target(websocket: WebSocket, token: str | None = None) -> None:
     """WebSocket pour streamer les appels set_target - conforme SDK."""
     import json
 
-    from bbia_sim.daemon.config import settings
+    from bbia_sim.daemon.ws.auth import ws_auth_rejected
 
-    if settings.environment.lower() == "prod" and (
-        not token or token != settings.api_token
-    ):
+    if ws_auth_rejected(token):
         await websocket.close(code=1008, reason="Invalid token")
         return
 

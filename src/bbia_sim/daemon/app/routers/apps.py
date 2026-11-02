@@ -631,11 +631,9 @@ async def ws_apps_manager(
     """
     from fastapi import WebSocketDisconnect
 
-    from bbia_sim.daemon.config import settings
+    from bbia_sim.daemon.ws.auth import ws_auth_rejected
 
-    if settings.environment.lower() == "prod" and (
-        not token or token != settings.api_token
-    ):
+    if ws_auth_rejected(token):
         await websocket.close(code=1008, reason="Invalid token")
         return
 

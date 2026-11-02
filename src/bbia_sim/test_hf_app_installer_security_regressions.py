@@ -14,6 +14,27 @@ async def test_install_rejects_traversal_name(tmp_path: Path) -> None:
         await installer.install_app("user/space", "../evil")
 
 
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "bad_id",
+    [
+        "",
+        "noslash",
+        "../evil/space",
+        "user/../evil",
+        "user/space.git;rm",
+        "https://evil.example/x",
+        "user/space with space",
+        "user/space\n",
+        "user@host/space",
+    ],
+)
+async def test_install_rejects_injected_space_id(tmp_path: Path, bad_id: str) -> None:
+    installer = HFAppInstaller(apps_dir=tmp_path)
+    with pytest.raises(ValueError, match="HF Space ID invalide"):
+        await installer.install_app(bad_id)
+
+
 def test_is_installed_rejects_invalid_name(tmp_path: Path) -> None:
     installer = HFAppInstaller(apps_dir=tmp_path)
     assert installer.is_installed("../evil") is False

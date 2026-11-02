@@ -5,8 +5,10 @@
 **🎯 Vue d'ensemble de l'état du projet par axe**
 *Fiabilité • Performance • Sécurité • CI/CD • Plus*
 
-**Version** : 1.4.0 • **Dernière mise à jour** : 27 Octobre 2026
+**Version** : 1.4.0 • **Dernière mise à jour** : 2 Novembre 2026
 **Prêt pour arrivée robot** 🤖
+
+**Mise à jour 2 Novembre 2026** : Hygiène BBIA (auth WS `compare_digest`, HF space-id allowlist, régressions `src/` branchées pytest, cadence télémétrie configurable). **Honnêteté firmware** : BBIA mitige / documente ; yaw/sleep/Wireless/GStreamer host restent **exposés Pollen** — voir [`docs/hardware/POLLEN_ISSUES_ANTICIPATION.md`](../hardware/POLLEN_ISSUES_ANTICIPATION.md).
 
 **Mise à jour 27 Octobre 2026** : Alignement Pollen v1.13.0 (MISSION 026)
 - SDK de référence **v1.13.0** (PyPI)

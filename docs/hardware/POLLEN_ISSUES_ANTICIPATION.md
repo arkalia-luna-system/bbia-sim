@@ -25,7 +25,7 @@
 | Domaine | Anticipé **code BBIA** | Reste **exposé firmware / Pollen** |
 |---------|------------------------|-------------------------------------|
 | GHSA BT path / PIN / upload sounds | Pas de surface BT/`CMD_` ; `safe_media_upload` ; SDK ≥ 1.12 pin 1.13 | Daemon robot doit être à jour pour PIN/upload upstream |
-| WS keepalive / SDK connect timeout+reconnect | `BBIA_WS_KEEPALIVE_TIMEOUT`, `BBIA_SDK_CONNECT_TIMEOUT`, `BBIA_SDK_RECONNECT_*` | Comportement keepalive daemon Pollen lui-même |
+| WS keepalive / SDK connect timeout+reconnect | `BBIA_WS_KEEPALIVE_TIMEOUT`, `BBIA_SDK_CONNECT_TIMEOUT`, `BBIA_SDK_RECONNECT_*` ; auth WS prod via `hmac.compare_digest` (`daemon/ws/auth.py`) ; cadence télémétrie = `BBIA_TELEMETRY_FREQUENCY` | Comportement keepalive daemon Pollen lui-même |
 | USB audio / GStreamer / amixer | `media_guard` → `no_media` ; `BBIA_DISABLE_AUDIO` ; volume Pydantic ; refus shell | Crash GStreamer / device « No Reachy Mini Audio » sur host/robot |
 | Head tracking sim / freeze / intrinsics | Skip sim (`BBIA_HEAD_TRACKING_SIM=0`) ; clamp look ; logs | Loops tracking / calib caméra daemon Pollen |
 | Yaw ~3 Hz / sleep droop | `safe_amplitude` + `BBIA_YAW_SAFE_AMPLITUDE` ; watchdog ; garde `goto_sleep` + `BBIA_SLEEP_HOLD_TORQUE` best-effort | Gain servo / coupe couple firmware |

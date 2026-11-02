@@ -143,7 +143,8 @@ bbia_sim = ["*.py", "*.txt", "*.wav"]
 [tool.pytest.ini_options]
 # OPTIMISATION RAM: Configuration pytest optimisée
 pythonpath = ["src"]
-testpaths = ["tests"]
+# tests/ + régressions colocalisées src/bbia_sim/test_*_regressions.py
+testpaths = ["tests", "src/bbia_sim"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]

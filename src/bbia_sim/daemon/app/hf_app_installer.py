@@ -14,6 +14,8 @@ from typing import Any
 logger = logging.getLogger(__name__)
 
 _APP_NAME_RE = re.compile(r"^[A-Za-z0-9._-]+$")
+# username/space — refuse URL injectée, traversal, espaces, protocoles
+_HF_SPACE_ID_RE = re.compile(r"^[A-Za-z0-9._-]+/[A-Za-z0-9._-]+$")
 
 # Répertoire pour stocker les apps installées
 INSTALLED_APPS_DIR = Path("installed_apps")
@@ -78,8 +80,11 @@ class HFAppInstaller:
             ValueError: Si hf_space_id est invalide
             RuntimeError: Si l'installation échoue
         """
-        if not hf_space_id or "/" not in hf_space_id:
+        # Pas de strip silencieux : espaces / \\n / \\r dans l'ID = rejet (anti injection URL)
+        space_id = hf_space_id if isinstance(hf_space_id, str) else ""
+        if not _HF_SPACE_ID_RE.fullmatch(space_id):
             raise ValueError(f"HF Space ID invalide: {hf_space_id}")
+        hf_space_id = space_id
 
         local_name = self._normalize_space_name(app_name or hf_space_id.split("/")[-1])
         app_path = self._safe_app_path(local_name)

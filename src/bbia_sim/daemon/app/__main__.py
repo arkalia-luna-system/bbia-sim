@@ -45,21 +45,24 @@ def kill_processes_on_port(port: int) -> int:
         if result.returncode == 0 and result.stdout.strip():
             pids = result.stdout.strip().split("\n")
             for pid in pids:
-                if pid:
-                    try:
-                        subprocess.run(
-                            [
-                                kill_path,
-                                "-TERM",
-                                pid,
-                            ],  # nosec B603
-                            check=False,
-                            timeout=2,
-                        )
-                        killed += 1
-                        logging.info(f"🛑 Processus {pid} sur port {port} arrêté")
-                    except Exception as e:
-                        logging.debug(f"Erreur arrêt PID {pid}: {e}")
+                # Refuse toute valeur non numérique (évite injection args kill)
+                if not pid or not pid.strip().isdigit():
+                    continue
+                pid = pid.strip()
+                try:
+                    subprocess.run(
+                        [
+                            kill_path,
+                            "-TERM",
+                            pid,
+                        ],  # nosec B603
+                        check=False,
+                        timeout=2,
+                    )
+                    killed += 1
+                    logging.info(f"🛑 Processus {pid} sur port {port} arrêté")
+                except Exception as e:
+                    logging.debug(f"Erreur arrêt PID {pid}: {e}")
             # Attendre un peu pour que les processus se terminent
             if killed > 0:
                 time.sleep(1)
@@ -73,20 +76,22 @@ def kill_processes_on_port(port: int) -> int:
                 if result.returncode == 0 and result.stdout.strip():
                     pids = result.stdout.strip().split("\n")
                     for pid in pids:
-                        if pid:
-                            try:
-                                subprocess.run(
-                                    [
-                                        kill_path,
-                                        "-KILL",
-                                        pid,
-                                    ],  # nosec B603
-                                    check=False,
-                                    timeout=2,
-                                )
-                                logging.info(f"💀 Force kill PID {pid}")
-                            except Exception:  # nosec B110 - Ignorer erreurs force kill
-                                pass
+                        if not pid or not pid.strip().isdigit():
+                            continue
+                        pid = pid.strip()
+                        try:
+                            subprocess.run(
+                                [
+                                    kill_path,
+                                    "-KILL",
+                                    pid,
+                                ],  # nosec B603
+                                check=False,
+                                timeout=2,
+                            )
+                            logging.info(f"💀 Force kill PID {pid}")
+                        except Exception:  # nosec B110 - Ignorer erreurs force kill
+                            pass
     except FileNotFoundError:
         # lsof non disponible, essayer avec psutil si disponible
         try:
