@@ -36,11 +36,11 @@
 - **Alternative**: Utiliser `scripts/verify_documentation.py --improve`
 
 
-### `one_shot_hygiene_2026/` (1 Nov 2026)
+### `one_shot_hygiene_2026/` (1–2 Nov 2026)
 
 - **Raison**: scripts d’audit/fix one-shot ou doublons liens MD, sans usage CI
-- **Détail**: voir `one_shot_hygiene_2026/README.md`
-- **Alternatives**: `verify_docs_complete.py`, `verify_documentation.py`, `compare_with_official_exhaustive.py`
+- **Détail**: voir `one_shot_hygiene_2026/README.md` (+ sous-dossier `joints_media_demos/` du 2 Nov)
+- **Alternatives**: `verify_docs_complete.py`, `verify_documentation.py`, `compare_with_official_exhaustive.py`, `check_joints.py`, `generate_bbia_image.py`
 
 ## 💡 Notes
 

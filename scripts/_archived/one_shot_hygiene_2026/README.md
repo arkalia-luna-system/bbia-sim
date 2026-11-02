@@ -14,3 +14,17 @@ supersédés par `verify_docs_complete.py` / `verify_documentation.py` /
 | `verify_md_links.py` / `fix_md_links.py` / `verify_docs_links.py` | Remplacés par `verify_docs_complete.py` |
 
 Ne pas réutiliser tels quels. Préférer les scripts actifs listés dans `scripts/README.md`.
+
+### `joints_media_demos/` (2 Nov 2026)
+
+Scripts orphelins (0 référence hors `scripts/`), doublons joints / médias / démos.
+
+| Script | Raison |
+|--------|--------|
+| `analyze_joints_detailed.py` / `diagnose_joints.py` | Doublons de `check_joints.py` |
+| `create_robot_gif.py` / `generate_emotions_sequence_for_gif.py` / `generate_bbia_image_simple.py` | One-shot médias ; préférer `generate_bbia_image.py` |
+| `demo_nod.sh` / `demo_wave.sh` | Remplacés par `demo_mode_complete.py` / `demo_public_api.py` |
+| `export_visual_stl.py` / `redimensionner_viewer_mujoco.sh` | Utilitaires ponctuels non branchés |
+| `verify_project.py` | Remplacé par `verify_documentation.py` / `bbia_doctor.py` |
+| `voice_demo.py` / `voice_mac_say.sh` | Démos voix non référencées |
+| `veille_reachy_mini.py` | Veille one-shot ; deps optionnelles dans `requirements/requirements-veille.txt` |
