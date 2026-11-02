@@ -453,34 +453,27 @@ class TestWebSocketTelemetryExtended:
             assert mock_broadcast.call_count <= 1
 
     def test_generate_telemetry_data_randomness(self):
-        """Test caractère aléatoire des données de télémétrie."""
+        """Les valeurs dérivées de time.time() évoluent entre deux appels."""
         import time
+        from unittest.mock import patch
 
-        # Attendre un petit délai pour s'assurer que les timestamps diffèrent
+        # Template mutable : figer timestamp avant 2e génération.
         data1 = self.connection_manager._generate_telemetry_data()
-        time.sleep(0.1)  # Attendre 100ms pour changer le timestamp
+        ts1 = data1["timestamp"]
+        time.sleep(0.05)
         data2 = self.connection_manager._generate_telemetry_data()
+        assert ts1 != data2["timestamp"]
 
-        # Les timestamps devraient être différents
-        assert data1["timestamp"] != data2["timestamp"]
-
-        # Tester plusieurs fois pour s'assurer que les valeurs aléatoires sont différentes
-        # (avec de vrais nombres aléatoires, il est possible d'avoir des valeurs identiques)
-        # OPTIMISATION RAM: Réduire 10 → 5 itérations (suffisant pour tester caractère aléatoire)
-        different_values = 0
-        for _ in range(5):
-            data1 = self.connection_manager._generate_telemetry_data()
-            time.sleep(0.005)  # OPTIMISATION RAM: Réduire sleep 0.01s → 0.005s
-            data2 = self.connection_manager._generate_telemetry_data()
-
-            if (
-                data1["robot"]["position"]["x"] != data2["robot"]["position"]["x"]
-                or data1["sensors"]["battery"] != data2["sensors"]["battery"]
-                or data1["sensors"]["temperature"] != data2["sensors"]["temperature"]
-            ):
-                different_values += 1
-
-        # Au moins 3 fois sur 5, les valeurs devraient être différentes (proportionnel à 7/10)
-        assert (
-            different_values >= 3
-        ), f"Seulement {different_values}/5 valeurs différentes trouvées"
+        with patch("time.time", side_effect=[1000.0, 1010.0]):
+            a = self.connection_manager._generate_telemetry_data()
+            snap = (
+                a["robot"]["position"]["x"],
+                a["sensors"]["battery"],
+                a["sensors"]["temperature"],
+            )
+            b = self.connection_manager._generate_telemetry_data()
+        assert snap != (
+            b["robot"]["position"]["x"],
+            b["sensors"]["battery"],
+            b["sensors"]["temperature"],
+        )

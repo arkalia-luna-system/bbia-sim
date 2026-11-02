@@ -18,6 +18,8 @@ from bbia_sim.bbia_emotions import BBIAEmotions
 from bbia_sim.bbia_vision import BBIAVision
 from bbia_sim.bbia_voice import dire_texte, reconnaitre_parole
 
+pytestmark = pytest.mark.e2e
+
 
 class TestBBIAModules:
     """Tests E2E pour les modules BBIA individuels."""
