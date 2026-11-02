@@ -17,6 +17,7 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - `SECURITY.md` + `.github/SECURITY.md` : politique honnête (advisory privé, hors firmware Pollen).
 - `pyproject.toml` : description sim-first ; classifier **Beta** (plus Production/Stable trompeur pour le robot).
 - Docs index / project-status : statut robot sans fausse promesse de validation totale.
+- Suite docs marketing : `GUIDE_COMMUNAUTE`, portfolio, `INDEX_FINAL`, annexes contribution — claims SDK « 100 % » / Production Ready retirés ; liens morts audits corrigés.
 
 ### 🔧 Alignement SDK Pollen v1.9.0 + CI (17 Août 2026)
 

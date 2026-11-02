@@ -1,7 +1,7 @@
 # 🎯 Good First Issues - Suggestions pour Nouveaux Contributeurs
 
-**Dernière mise à jour** : 26 Janvier 2026  
-**Pour nouveaux contributeurs** : Idéal pour débuter avec le projet
+**Dernière mise à jour** : 2 Novembre 2026  
+**Pour nouveaux contributeurs** : Idéal pour débuter (sim-first ; pas de robot requis)
 
 ---
 
@@ -28,7 +28,8 @@
 
 **Ressources** :
 
-- 📊 **Analyse détaillée** : Voir `docs/quality/audits/ANALYSE_ISSUES_GITHUB.md`
+- 📊 Issues GitHub : [arkalia-luna-system/bbia-sim/issues](https://github.com/arkalia-luna-system/bbia-sim/issues)
+- Audits : [`docs/quality/INDEX_AUDITS.md`](../quality/INDEX_AUDITS.md)
 - Voir `tests/test_voice_whisper_comprehensive.py` comme exemple
 - Documentation : `docs/development/testing.md`
 
@@ -93,7 +94,7 @@
 
 **Ressources** :
 
-- 📊 **Analyse détaillée** : Voir `docs/quality/audits/ANALYSE_ISSUES_GITHUB.md`
+- 📊 Issues : [GitHub Issues](https://github.com/arkalia-luna-system/bbia-sim/issues) · [`INDEX_AUDITS.md`](../quality/INDEX_AUDITS.md)
 - 📝 **Résumé implémentation** : Voir `RESUME_IMPLEMENTATION_ISSUES.md`
 
 ---
@@ -123,7 +124,7 @@
 
 **Ressources** :
 
-- 📊 **Analyse détaillée** : Voir `docs/quality/audits/ANALYSE_ISSUES_GITHUB.md`
+- 📊 Issues : [GitHub Issues](https://github.com/arkalia-luna-system/bbia-sim/issues) · [`INDEX_AUDITS.md`](../quality/INDEX_AUDITS.md)
 - 📝 **Résumé implémentation** : Voir `RESUME_IMPLEMENTATION_ISSUES.md`
 
 ---
@@ -158,7 +159,7 @@
 
 **Ressources** :
 
-- 📊 **Analyse détaillée** : Voir `docs/quality/audits/ANALYSE_ISSUES_GITHUB.md`
+- 📊 Issues : [GitHub Issues](https://github.com/arkalia-luna-system/bbia-sim/issues) · [`INDEX_AUDITS.md`](../quality/INDEX_AUDITS.md)
 - 📝 **Résumé implémentation** : Voir `RESUME_IMPLEMENTATION_ISSUES.md`
 
 ---
@@ -400,7 +401,7 @@ assignees: []
 
 Pour une analyse technique complète de l'état actuel des issues GitHub (vérification code, tests existants, recommandations détaillées), consultez :
 
-**→ [Analyse Complète Issues GitHub](../../quality/audits/ANALYSE_ISSUES_GITHUB.md)**
+**→ [GitHub Issues](https://github.com/arkalia-luna-system/bbia-sim/issues)** · **[Index Audits](../quality/INDEX_AUDITS.md)**
 
 Cette analyse inclut :
 - ✅ Vérification de l'existence des fonctions mentionnées dans les issues
@@ -413,4 +414,4 @@ Cette analyse inclut :
 ## 🎯 Navigation
 
 **Retour à** : [README Documentation](../README.md)  
-**Voir aussi** : [Guide Contribution Complet](../community/CONTRIBUTION_GUIDE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md) • [Analyse Issues GitHub](../../quality/audits/ANALYSE_ISSUES_GITHUB.md)
+**Voir aussi** : [Guide Contribution Complet](../community/CONTRIBUTION_GUIDE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md) • [Index Audits](../quality/INDEX_AUDITS.md) • [Statut](../reference/project-status.md)

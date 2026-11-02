@@ -1,11 +1,12 @@
-# 🌐 Guide Communauté BBIA-SIM
+# Guide Communauté BBIA-SIM
 
-**Dernière mise à jour** : 17 Août 2026  
-**Objectif** : Visibilité et engagement communautaire pour BBIA-SIM
+**Dernière mise à jour** : 2 Novembre 2026  
+**Objectif** : Visibilité et engagement communautaire pour BBIA-SIM  
+**Cadre honnête** : **sim-first** — sans `BBIA_ALLOW_HARDWARE=1`, pas de robot physique. Alignement SDK Pollen **1.13** (tests app-layer), **pas** certification Pollen ni claim « robot 100 % validé ». Hardware / firmware Pollen plafonné **≤7/10**.
 
 ---
 
-## 📋 Stratégie de Communication
+## Stratégie de Communication
 
 ### Objectifs
 
@@ -16,43 +17,43 @@
 
 ---
 
-## 📝 Article Medium/Dev.to
+## Article Medium/Dev.to
 
 ### Structure Recommandée
 
-**Titre** : "Building a Cognitive Robot with Python: BBIA-SIM and Reachy Mini"
+**Titre** : "Building a Cognitive Sim for Reachy Mini: BBIA-SIM (Python + MuJoCo)"
 
 **Sections** :
 
 1. **Introduction** (200 mots)
-   - Présentation du projet
+   - Présentation du projet (simulation / moteur cognitif)
    - Problème résolu
    - Pourquoi c'est intéressant
 
 2. **Architecture Technique** (400 mots)
-   - Backend unifié (simulation ↔ hardware)
+   - Backend unifié (simulation ↔ hardware **opt-in**)
    - Abstraction RobotAPI
-   - Conformité SDK 100%
+   - Alignement SDK Pollen 1.13 (API / tests app-layer — pas certification)
 
 3. **Intégration IA** (400 mots)
-   - YOLO, Whisper, Transformers
+   - YOLO, Whisper, Transformers (optionnels)
    - 12 émotions robotiques
    - 21 comportements
 
 4. **Qualité et Tests** (300 mots)
-   - 2,311 tests collectés (2,201 actifs, 110 désélectionnés)
-   - Coverage suivi en continu via Codecov
-   - CI/CD
+   - Grande suite pytest (snapshot local historique ~2,3k collectés)
+   - Coverage suivi via Codecov CI
+   - CI/CD lint + unitaires
 
 5. **Démonstration** (200 mots)
-   - Exemples de code
+   - Exemples de code (sim)
    - Captures d'écran
    - Liens vers vidéos
 
 6. **Conclusion** (200 mots)
    - Appel à contribution
    - Liens GitHub
-   - Prochaines étapes
+   - Limites honnêtes (sim-first, hardware ≤7)
 
 **Mots-clés** :
 - `#Python`
@@ -68,24 +69,24 @@
 
 **Liens à inclure** :
 - GitHub repository
-- Documentation
-- Vidéos YouTube
-- Badges qualité
+- Documentation (`docs/`)
+- [`project-status.md`](../reference/project-status.md)
+- Badges CI `main` / `develop`
 
 ---
 
-## 🎥 Vidéo YouTube
+## Vidéo YouTube
 
 ### Structure Recommandée
 
-**Titre** : "BBIA-SIM: Cognitive Robot with 12 Emotions and 21 Behaviors | Python + AI"
+**Titre** : "BBIA-SIM: Cognitive Simulation for Reachy Mini | Python + MuJoCo + AI"
 
 **Durée** : 5-10 minutes
 
 **Sections** :
 
 1. **Introduction** (30s)
-   - Présentation rapide
+   - Présentation rapide (sim-first)
    - Problème résolu
    - Ce que vous allez voir
 
@@ -93,11 +94,11 @@
    - Simulation 3D MuJoCo
    - Dashboard web
    - Comportements en action
-   - Chat LLM
-   - Détection objets temps réel
+   - Chat LLM (optionnel)
+   - Détection objets (si modèles installés)
 
 3. **Architecture Technique** (2-3 min)
-   - Backend unifié
+   - Backend unifié + garde `BBIA_ALLOW_HARDWARE`
    - Code source (screenshots)
    - Tests et coverage
    - CI/CD
@@ -108,32 +109,35 @@
    - Abonnement
 
 **Thumbnail** :
-- Robot Reachy Mini visible
+- Robot Reachy Mini / scène MuJoCo
 - Texte "BBIA-SIM"
-- Badge "100% SDK Compliant"
+- Badge "Sim-first · SDK 1.13"
 - Couleurs vives
 
 **Description YouTube** :
 ```
-🤖 BBIA-SIM: Cognitive Robot Engine for Reachy Mini
+BBIA-SIM: Cognitive simulation / engine for Reachy Mini
 
-✅ 12 robotic emotions (6 official + 6 extended)
+✅ 12 robotic emotions (6 SDK + 6 extended)
 ✅ 21 comportements
-✅ Advanced AI: YOLO, Whisper, Transformers
-✅ 100% SDK compliant with Pollen Robotics
-✅ 2,311 collected tests (2,201 active, 110 deselected), coverage tracked continuously in Codecov
+✅ Optional AI: YOLO, Whisper, Transformers
+✅ Aligned with Pollen SDK 1.13 (app-layer tests — not a Pollen certification)
+✅ Sim-first by default; real robot only with BBIA_ALLOW_HARDWARE=1
+✅ Large pytest suite; coverage tracked on Codecov CI
 
-🔗 Links:
+Not claimed: “100% real-robot validated” or perfect Pollen firmware (hardware ≤7/10).
+
+Links:
 - GitHub: https://github.com/arkalia-luna-system/bbia-sim
-- Documentation: https://github.com/arkalia-luna-system/bbia-sim/tree/main/docs
-- Docker: docker-compose up
+- Docs: https://github.com/arkalia-luna-system/bbia-sim/tree/main/docs
+- Status: docs/reference/project-status.md
 
-📚 Topics covered:
+Topics:
 - Python robotics
-- AI integration (YOLO, Whisper, LLM)
+- AI integration (optional)
 - MuJoCo simulation
 - FastAPI backend
-- Unified architecture (simulation ↔ hardware)
+- Unified sim ↔ hardware API (hardware opt-in)
 
 #Python #Robotics #AI #MachineLearning #OpenSource
 ```
@@ -154,26 +158,27 @@
 
 ---
 
-## 💬 Partage Reddit
+## Partage Reddit
 
 ### Subreddits Ciblés
 
 #### 1. r/robotics
-**Titre** : "BBIA-SIM: Open-source cognitive robot engine with 12 emotions and 21 behaviors (Python + AI)"
+**Titre** : "BBIA-SIM: Open-source cognitive sim for Reachy Mini (12 emotions, MuJoCo, optional AI)"
 
 **Contenu** :
 ```
-I've been working on BBIA-SIM, a cognitive engine for the Reachy Mini robot.
+I've been working on BBIA-SIM, a cognitive engine / simulation stack for Reachy Mini.
 
-Key features:
+Key points:
 - 12 robotic emotions (6 official SDK + 6 extended)
 - 21 comportements
-- Advanced AI: YOLO (object detection), Whisper (speech), Transformers (LLM)
-- 100% compliant with Pollen Robotics official SDK
-- Unified backend: same code for simulation and real hardware
-- 2,311 collected tests (2,201 active, 110 deselected), coverage tracked continuously in Codecov
+- Optional AI: YOLO, Whisper, Transformers
+- Aligned with Pollen reachy-mini 1.13 (app-layer) — not a Pollen certification
+- Unified backend: same API for sim and real hardware (real = BBIA_ALLOW_HARDWARE=1)
+- Sim-first by default; no “100% real-robot validated” claim
+- Hardware/firmware Pollen remains ≤7/10 (upstream limits)
 
-Tech stack: Python 3.11+, MuJoCo, FastAPI, Hugging Face Transformers
+Tech stack: Python 3.10+ (Reachy extra 3.11+), MuJoCo, FastAPI
 
 GitHub: https://github.com/arkalia-luna-system/bbia-sim
 
@@ -181,22 +186,22 @@ Would love feedback from the robotics community!
 ```
 
 #### 2. r/Python
-**Titre** : "Building a cognitive robot with Python: BBIA-SIM (2,311 collected tests, production-grade CI)"
+**Titre** : "Building a Reachy Mini cognitive sim in Python: BBIA-SIM (MuJoCo + CI)"
 
 **Contenu** :
 ```
-I built BBIA-SIM, a Python cognitive engine for robotics with:
-- Unified backend architecture (simulation ↔ hardware)
-- Advanced AI integration (YOLO, Whisper, Transformers)
-- 100% SDK compliance validation
-- Professional CI/CD (Black, Ruff, MyPy, Bandit)
-- 2,311 collected tests (2,201 active, 110 deselected), coverage tracked continuously in Codecov
+I built BBIA-SIM, a Python cognitive engine for Reachy Mini simulation:
+- Unified backend architecture (simulation ↔ hardware opt-in)
+- Optional AI integration (YOLO, Whisper, Transformers)
+- SDK alignment checks vs Pollen 1.13 (not “100% certified”)
+- CI/CD (Black, Ruff, MyPy, Bandit)
+- Large pytest suite; coverage via Codecov
 
-The project demonstrates:
+The project emphasizes:
 - Clean architecture (Factory pattern, ABC)
-- Async/await for performance
-- Type hints (MyPy strict)
-- Comprehensive testing
+- Async/await where useful
+- Type hints (MyPy)
+- Honest status: sim-first, hardware ≤7
 
 GitHub: https://github.com/arkalia-luna-system/bbia-sim
 
@@ -204,18 +209,18 @@ Open to contributions and feedback!
 ```
 
 #### 3. r/MachineLearning
-**Titre** : "Integrating YOLO, Whisper, and Transformers in a cognitive robot"
+**Titre** : "Integrating YOLO, Whisper, and Transformers in a Reachy Mini simulation stack"
 
 **Contenu** :
 ```
-BBIA-SIM integrates multiple AI models for a cognitive robot:
-- YOLOv8n for real-time object detection
+BBIA-SIM integrates optional AI models for a cognitive robot sim:
+- YOLOv8n for object detection
 - Whisper for speech-to-text
 - Transformers (Phi-2/TinyLlama) for conversational AI
 - MediaPipe for face/pose detection
-- DeepFace for emotion recognition
+- DeepFace for emotion recognition (optional)
 
-All models are cached and optimized for real-time performance.
+Default path is MuJoCo simulation; real hardware is opt-in.
 
 GitHub: https://github.com/arkalia-luna-system/bbia-sim
 
@@ -223,27 +228,25 @@ Would love to discuss AI integration strategies!
 ```
 
 #### 4. r/learnpython
-**Titre** : "Open-source project for learning: BBIA-SIM (robotics + AI + clean code)"
+**Titre** : "Open-source project for learning: BBIA-SIM (robotics sim + optional AI + clean code)"
 
 **Contenu** :
 ```
-BBIA-SIM is a great learning resource for:
-- Python best practices (type hints, async, testing)
+BBIA-SIM is a learning-friendly codebase for:
+- Python practices (type hints, async, testing)
 - Clean architecture (Factory pattern, ABC)
-- AI integration (YOLO, Whisper, Transformers)
+- Optional AI integration (YOLO, Whisper, Transformers)
 - CI/CD setup (GitHub Actions)
-- Documentation (219 Markdown files)
+- Documentation under docs/
 
-2,311 collected tests with continuous coverage tracking in Codecov - all code is well-documented.
+Sim-first: safe to explore without a physical robot.
 
 GitHub: https://github.com/arkalia-luna-system/bbia-sim
-
-Good for learning advanced Python!
 ```
 
 ---
 
-## 📊 Awesome Lists
+## Awesome Lists
 
 ### Soumission aux Awesome Lists
 
@@ -252,7 +255,7 @@ Good for learning advanced Python!
 
 **Format** :
 ```markdown
-- [BBIA-SIM](https://github.com/arkalia-luna-system/bbia-sim) - Cognitive engine for Reachy Mini with 12 emotions, 21 behaviors, and advanced AI (YOLO, Whisper, Transformers). 100% SDK compliant. Python 3.11+.
+- [BBIA-SIM](https://github.com/arkalia-luna-system/bbia-sim) - Cognitive simulation / engine for Reachy Mini (12 emotions, MuJoCo, optional AI). Sim-first; Pollen SDK 1.13 app-layer alignment. Python 3.10+.
 ```
 
 #### 2. awesome-ai
@@ -260,7 +263,7 @@ Good for learning advanced Python!
 
 **Format** :
 ```markdown
-- [BBIA-SIM](https://github.com/arkalia-luna-system/bbia-sim) - Python cognitive robot engine integrating YOLO, Whisper, and Transformers for real-time AI interactions.
+- [BBIA-SIM](https://github.com/arkalia-luna-system/bbia-sim) - Python cognitive robot sim integrating optional YOLO, Whisper, and Transformers.
 ```
 
 #### 3. awesome-python
@@ -268,12 +271,12 @@ Good for learning advanced Python!
 
 **Format** :
 ```markdown
-- [BBIA-SIM](https://github.com/arkalia-luna-system/bbia-sim) - Cognitive engine for robotics with unified backend architecture, advanced AI integration, and 2,311 collected tests.
+- [BBIA-SIM](https://github.com/arkalia-luna-system/bbia-sim) - Cognitive robotics simulation with unified sim/hardware API (hardware opt-in) and a large pytest suite.
 ```
 
 ---
 
-## 🎯 Calendrier de Publication Recommandé
+## Calendrier de Publication Recommandé
 
 ### Semaine 1
 - [ ] Article Medium/Dev.to
@@ -293,7 +296,7 @@ Good for learning advanced Python!
 
 ---
 
-## 📈 Métriques de Succès
+## Métriques de Succès
 
 ### Objectifs
 
@@ -305,57 +308,56 @@ Good for learning advanced Python!
 
 ### Suivi
 
-- Utiliser Google Analytics pour Medium
+- Analytics Medium / Dev.to
 - YouTube Analytics pour vidéos
-- Reddit Analytics (native)
+- Reddit (native)
 - GitHub Insights pour stars/forks
 
 ---
 
-## 🔗 Ressources
+## Ressources
 
 ### Outils Recommandés
 
 - **Écriture** : Medium, Dev.to, Notion
 - **Vidéo** : OBS Studio, DaVinci Resolve
 - **Graphiques** : Canva, Figma
-- **Analytics** : Google Analytics, YouTube Analytics
+- **Analytics** : YouTube Analytics, GitHub Insights
 
 ### Templates
 
-- **Article Medium** : Template disponible dans `docs/templates/`
-- **Vidéo YouTube** : Script disponible dans `docs/guides/GUIDE_VIDEOS_DEMONSTRATION.md`
+- **Vidéo YouTube** : Script dans [`docs/guides/GUIDE_VIDEOS_DEMONSTRATION.md`](../guides/GUIDE_VIDEOS_DEMONSTRATION.md)
 - **Reddit Posts** : Templates ci-dessus
+- **Statut honnête** : [`docs/reference/project-status.md`](../reference/project-status.md)
 
 ---
 
-## ✅ Checklist Publication
+## Checklist Publication
 
 ### Avant Publication
-- [ ] Contenu relu et corrigé
+- [ ] Contenu relu — pas de claim « robot 100 % validé » / firmware Pollen parfait
 - [ ] Liens vérifiés
 - [ ] Images optimisées
 - [ ] Mots-clés optimisés
-- [ ] Badges qualité à jour
+- [ ] Badges CI à jour (`main` / `develop`)
 
 ### Après Publication
 - [ ] Partage sur réseaux sociaux
 - [ ] Réponse aux commentaires
 - [ ] Suivi métriques
-- [ ] Mise à jour documentation
+- [ ] Mise à jour documentation si besoin
 
 ---
 
-**Dernière mise à jour** : 17 Août 2026
+**Dernière mise à jour** : 2 Novembre 2026
 
 ---
 
-## 📚 Guides Complémentaires
+## Guides Complémentaires
 
 ### Pour Contribuer
 
 - **[Guide Contributeurs](CONTRIBUTION_GUIDE.md)** : Guide détaillé pour contribuer
-- **[Guide Contribution](CONTRIBUTION_GUIDE.md)** : Processus de contribution
 - **[Code de Conduite](../../CODE_OF_CONDUCT.md)** : Standards de comportement
 
 ### Pour Partager
@@ -365,6 +367,6 @@ Good for learning advanced Python!
 
 ### Pour Comprendre
 
-- **[Audit Stratégique Valeur](../../quality/audits/AUDIT_STRATEGIQUE_VALEUR_26NOV2025.md)** : Analyse valeur et recommandations
-- **[Ce qui Manque](../../quality/audits/CE_QUI_MANQUE_BBIA_DEC2025.md)** : Analyse fonctionnalités manquantes
-
+- **[Statut projet](../reference/project-status.md)** : Scores app-layer / hardware ≤7
+- **[Index Audits](../quality/INDEX_AUDITS.md)** : Audits et conformité SDK
+- **[Vérification alignement Pollen](../quality/VERIFICATION_ALIGNEMENT_POLLEN.md)** : Alignement SDK (pas certification)

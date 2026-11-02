@@ -1,10 +1,10 @@
-# 🤖 BBIA - Moteur Cognitif pour Robot Reachy Mini
+# BBIA — Moteur cognitif / simulation Reachy Mini
 
-**Dernière mise à jour** : 26 Janvier 2026
+**Dernière mise à jour** : 2 Novembre 2026
 
-## 📋 Résumé exécutif
+## Résumé exécutif
 
-**BBIA** est un moteur cognitif Python pour robot Reachy Mini Wireless, intégrant la simulation MuJoCo, une intelligence artificielle légère et un contrôle unifié via `RobotAPI`. Le projet fournit une plateforme pour développer, tester et déployer des comportements robotiques.
+**BBIA** est un moteur cognitif Python pour Reachy Mini, **sim-first** (MuJoCo par défaut). Robot physique uniquement avec `BBIA_ALLOW_HARDWARE=1`. IA optionnelle ; contrôle unifié via `RobotAPI`. **Pas** de claim « robot 100 % validé » ni certification Pollen — hardware / firmware **≤7/10**.
 
 ---
 
@@ -28,7 +28,7 @@
 
 - **Scripts one‑click** : démo simulation et robot réel en une commande
 - **Documentation** : guides développeur, architecture, contrats
-- **Backend flexible** : bascule simulation ↔ robot réel sans modification du code
+- **Backend flexible** : même API sim ↔ réel ; le réel exige `BBIA_ALLOW_HARDWARE=1`
 
 ---
 
@@ -43,10 +43,11 @@
 | **Tests collectés** | 1,362 tests (CI) | ✅ OK |
 | **Coverage global** | Suivi CI/Codecov (variable selon périmètre) | ✅ OK |
 | **Coverage modules core** | ~50% | ✅ OK |
-| **Conformité SDK** | 100% (21/21 méthodes) | ✅ OK |
+| **Alignement SDK** | Pollen **1.13** app-layer (pas certification) | ✅ OK |
+| **Hardware Pollen** | **≤7/10** (firmware / Wireless upstream) | plafond honnête |
 | **Modules BBIA** | 15+ modules | ✅ OK |
 | **Comportements** | 15 comportements | ✅ OK |
-| **Exemples** | 44 fichiers | ✅ **100% exploitation** |
+| **Exemples** | ~85 scripts sous `examples/` (tip évolutif) | OK |
 | **Commits Git** | 423 commits | ✅ OK |
 | **Documentation** | 128+ fichiers MD | ✅ OK |
 
@@ -251,7 +252,7 @@ python -m pytest tests/ -m "not e2e" -v
 **Retour à** : [README Documentation](../README.md)  
 **Voir aussi** : [Index Thématique](../reference/INDEX_THEMATIQUE.md)
 
-**Version** : 1.4.0
-**Dernière mise à jour** : 26 Janvier 2026
-**Statut** : Production Ready • **Exploitation des capacités principales** ✅
+**Version** : 1.4.0  
+**Dernière mise à jour** : 2 Novembre 2026  
+**Statut** : Sim-first · scores app-layer documentés · hardware Pollen ≤7 · pas « robot 100 % validé »  
 **Licence** : MIT
