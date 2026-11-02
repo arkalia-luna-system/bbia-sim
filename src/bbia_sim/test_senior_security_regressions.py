@@ -29,7 +29,7 @@ def test_settings_accepts_bbia_token_and_env_aliases(
     monkeypatch.setenv("BBIA_TOKEN", "alias-secret-token")
     monkeypatch.setenv("BBIA_ENV", "prod")
     cfg = Settings(_env_file=None)  # type: ignore[call-arg]
-    assert cfg.api_token == "alias-secret-token"
+    assert cfg.api_token == "alias-secret-token"  # nosec B105 — fixture test
     assert cfg.environment == "prod"
     assert cfg.is_production() is True
 
@@ -42,7 +42,7 @@ def test_settings_canonical_env_wins_over_alias(
     monkeypatch.setenv("BBIA_ENVIRONMENT", "dev")
     monkeypatch.setenv("BBIA_ENV", "prod")
     cfg = Settings(_env_file=None)  # type: ignore[call-arg]
-    assert cfg.api_token == "canonical-token"
+    assert cfg.api_token == "canonical-token"  # nosec B105 — fixture test
     assert cfg.environment == "dev"
 
 

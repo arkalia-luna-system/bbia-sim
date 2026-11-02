@@ -1,21 +1,24 @@
-# 📚 Index — Documentation BBIA-SIM
+# Index — Documentation BBIA-SIM
 
-> **Documentation du moteur cognitif BBIA-SIM**
+> **Documentation du moteur cognitif / simulation BBIA-SIM**  
 > *Organisée par usage • Navigation intuitive*
+
+**Cadre** : **sim-first** — sans `BBIA_ALLOW_HARDWARE=1`, pas de matériel. SDK Pollen **1.13** (alignement app-layer) · hardware **≤7** · pas de claim « robot 100 % validé ». Voir [`reference/project-status.md`](reference/project-status.md).
 
 ---
 
-## ⚡ Démarrage Rapide
+## Démarrage Rapide
 
-> **🚀 Nouveau sur le projet ?** Commencez ici !
+> **Nouveau sur le projet ?** Commencez ici (simulation).
 
 | Action | Commande | Temps | Lien |
 |--------|----------|-------|------|
 | **Installation** | `pip install -e .[dev]` | ~2 min | [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) |
 | **Dashboard** | `python src/bbia_sim/dashboard_advanced.py` | Instant | [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) |
-| **Premier robot** | Voir guide | 5 min | [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) ⭐ |
+| **Première sim** | Voir guide | 5 min | [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) ⭐ |
+| **Robot réel** | Opt-in + checklist | — | [Premier jour robot](hardware/PREMIER_JOUR_ROBOT.md) |
 
-**Version** : v1.4.0 • **Dernière mise à jour** : 7 Février 2026
+**Version** : v1.4.0 • **Dernière mise à jour** : 2 Novembre 2026
 
 > **💡 Départ** : [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md)
 
@@ -141,14 +144,15 @@
 
 ---
 
-## ✅ Points Clés (Fonctionnel Actuel)
+## Points Clés (Fonctionnel Actuel)
 
-- **Backends** : MuJoCo (simulation), Reachy-Mini (SDK)
-- **Behaviors** : `wake_up`, `goto_sleep`, `nod`
-- **Sécurité** : watchdog + `emergency_stop` (conforme)
-- **Audio** : STT/TTS opérationnels (SDK-first + fallback)
-- **Vision** : YOLO/MediaPipe (SDK-first + fallback)
+- **Mode défaut** : MuJoCo / simulation — Reachy Mini matériel = `BBIA_ALLOW_HARDWARE=1`
+- **Behaviors** : `wake_up`, `goto_sleep`, `nod` (sim + dry-run ; e2e hardware non revendiqué CI)
+- **Sécurité** : watchdog + `emergency_stop` (app-layer)
+- **Audio** : STT/TTS (SDK-first + fallback ; optionnel)
+- **Vision** : YOLO/MediaPipe (optionnel)
 - **Télémétrie** : SDK-first batterie/IMU avec fallback simulation (non bloquant)
+- **Scores** : app-layer logiciels documentés · hardware Pollen **≤7**
 
 ### Flags Utiles
 
@@ -156,14 +160,16 @@
 # Simulation/headless (désactive audio matériel)
 export BBIA_DISABLE_AUDIO=1
 
+# Robot physique (opt-in explicite)
+export BBIA_ALLOW_HARDWARE=1
+
 # Télémétrie SDK-first (avec robot, non bloquant si absent)
 export BBIA_TELEMETRY_SDK=true
 export BBIA_TELEMETRY_TIMEOUT=1.0
-
 ```
 
 ---
 
 **Retour** : [README](README.md) • [Index Thématique](reference/INDEX_THEMATIQUE.md)
 
-**Dernière mise à jour** : 7 Février 2026
+**Dernière mise à jour** : 2 Novembre 2026

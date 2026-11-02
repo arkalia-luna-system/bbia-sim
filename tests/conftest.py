@@ -512,11 +512,14 @@ def run_cleanup_scripts() -> None:
     Exécute les scripts de nettoyage après les tests.
     Nettoie les fichiers cache, métadonnées macOS, et processus gourmands.
 
-    Désactivé si:
+    Désactivé par défaut sauf ``BBIA_ENABLE_AUTO_CLEANUP=1`` (évite hang find
+    sur disques lents / T7). Toujours off si:
     - BBIA_DISABLE_AUTO_CLEANUP=1
     - BBIA_DISABLE_PYTEST_CLEANUP=1
-    - CI=true (évite find/. sur runners / disques lents)
+    - CI=true
     """
+    if os.environ.get("BBIA_ENABLE_AUTO_CLEANUP", "0") != "1":
+        return
     if os.environ.get("BBIA_DISABLE_AUTO_CLEANUP", "0") == "1":
         return
     if _pytest_cleanup_hooks_disabled():
@@ -552,7 +555,7 @@ def run_cleanup_scripts() -> None:
                 start_new_session=True,
             )
             try:
-                _stdout, stderr = proc.communicate(timeout=10)
+                _stdout, stderr = proc.communicate(timeout=5)
             except subprocess.TimeoutExpired:
                 try:
                     os.killpg(proc.pid, signal.SIGKILL)

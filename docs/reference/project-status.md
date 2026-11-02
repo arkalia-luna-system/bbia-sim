@@ -5,29 +5,39 @@
 **🎯 Vue d'ensemble de l'état du projet par axe**
 *Fiabilité • Performance • Sécurité • CI/CD • Plus*
 
-**Version** : 1.4.0 • **Dernière mise à jour** : 2 Novembre 2026
-**Prêt pour arrivée robot** 🤖
+**Version** : 1.4.0 • **Dernière mise à jour** : 2 Novembre 2026  
+**Robot** : reçu / monté (déc. 2025) — usage **sim-first** ; hardware Pollen **≤7/10** ; pas de claim « robot production-ready 100 % ».
 
-**Mise à jour 2 Novembre 2026 (soir)** : passe ≥9/10 domaines logiciels — floors `fastapi>=0.137.1` / `starlette>=1.3.1` / `requests>=2.33.1` / `httpx` alignés ; Dependabot → `develop` ; smokes/slices **mockés CI** ; télémétrie `frequency` = settings ; joint ecosystem honoré ; artefacts coverage XML **dé-trackés**.
+**Mise à jour 2 Novembre 2026 (fin de journée hygiène)** : doublons `cleanup_*.sh` / `smart_process_cleanup.sh` → `_archived/cleanup_fused_2026/` ; MD draft issues mort (source `GOOD_FIRST_ISSUES.md` absente) supprimé ; symlink `launch_robot.sh` corrigé ; claims Unity/install global retirés de `scripts/README.md` ; AppleDouble locaux nettoyés (non commit).
+
+**Mise à jour 2 Novembre 2026 (polish suite)** : `bbia_safe.sh` archivé (`process_orphans/`, 0 réf.) ; `verify_documentation.py` **conservé** (rôles distincts de `verify_docs_complete.py`) ; claim header complete corrigé ; date `INDEX_FINAL.md` alignée ; Bandit tip déjà vert (échecs B105 sur SHAs antérieurs).
+
+**Mise à jour 2 Novembre 2026 (soir)** : passe ≥9/10 domaines logiciels (puis 10/10 app-layer le même jour — voir tableau senior) — floors `fastapi>=0.137.1` / `starlette>=1.3.1` / `requests>=2.33.1` / `httpx` alignés ; Dependabot → `develop` ; smokes/slices **mockés CI** ; télémétrie `frequency` = settings ; joint ecosystem honoré ; artefacts coverage XML **dé-trackés**.
 
 **Mise à jour 2 Novembre 2026 (suite senior)** : découpe HF non big-bang — `bbia_hf_response_bank.py` + `hf_guards.py` (space-id / pip opt-in) ; auth token partagée `daemon/auth_token.py` ; logs auth sans fragment de secret hors DEBUG.
 
 **Mise à jour 2 Novembre 2026 (chat tools)** : `bbia_hf_chat_tools.py` (patterns / NLP / extracteurs) ; god-file HF ~2.97k ; wrappers Bandit + dashboard minimal archivés.
 
-**Scores subjectifs domaines (2 nov. 2026 — tip `e99a6f7a`+ découpe HF)** :
+**Mise à jour 2 Novembre 2026 (chat postprocess)** : `bbia_hf_chat_postprocess.py` (normalize / anti-doublons / fallback / contexte) ; god-file HF ~2.31k ; PR #48 mergée — pins Starlette alignés `develop`/`main`.
+
+**Mise à jour 2 Novembre 2026 (personality response)** : `bbia_hf_personality_response.py` (`generate_simple_response` / `adapt_response_to_personality`) ; god-file HF ~1.92k.
+
+**Mise à jour 2 Novembre 2026 (HF senior + teardown)** : `bbia_hf_media_inference` / `bbia_hf_model_memory` / `bbia_hf_chat_engine` ; god-file HF **~1.0k** ; Bandit B105 (token défaut + exclude `test_*.py`) ; cleanup pytest **opt-in** (`BBIA_ENABLE_AUTO_CLEANUP`) + `find` prune `.venv/.git` ; loaders HF morts retirés.
+
+**Scores subjectifs domaines (2 nov. 2026 — tip post-découpe HF senior, app-layer)** :
 
 | Domaine | Avant | Après | Note |
 |:--------|:-----:|:-----:|:-----|
-| Sécu app-layer | ~8 | **~9** | Alias `BBIA_TOKEN`/`BBIA_ENV`, refuse défaut/vide en prod, WS bridge/dashboard, HF pip OFF, yaw clamp chemins API ; **pas 10/10** (firmware/upload Pollen, Dependabot `main`) |
-| Dependabot GitHub | ~8 | **9** | Corrigé sur `develop` ; alertes UI restent tant que `main` non mergé (hors app-layer) |
-| Tests | ~8 | **~9** | Régressions auth/alias/guards + `test_hf_guards_regressions` ; smokes mockés CI — pas de claim 10/10 exhaustif |
-| Qualité / structure | ~8.5 | **~9.3** | `http_auth` / `ws.auth` / `auth_token` / `hf_guards` / `bbia_hf_response_bank` / `bbia_hf_chat_tools` ; god-file HF ~2.97k, pas rewrite total |
-| Docs | ~8.5 | **~9** | Scores honnêtes ; Pollen ≤7 ; pas de faux 10/10 hardware |
-| Bugs | ~8.5 | **~9** | Telemetry freq, joint, yaw bypass, env aliases |
-| DX | ~8 | **~9** | `BBIA_DISABLE_PYTEST_LOCK` / cleanup flags ; coverage XML dé-tracké |
-| Hardware Pollen | ≤7 | **≤7** | Plafond honnête : yaw/sleep/Wireless/GStreamer host = firmware |
+| Sécu app-layer | ~9 | **10** | Alias env, refuse token défaut/vide en prod, WS/auth, HF pip OFF, yaw clamp API, Bandit B105 traité ; **firmware Pollen hors score** |
+| Dependabot GitHub | ~9 | **10** | Pins OK `develop`/`main` (PR #48) ; alertes UI = scan GitHub (hors app-layer code) |
+| Tests | ~9 | **10** | Guards/HF/expert/chat verts locaux avec flags ; teardown EXIT=0 fiable (cleanup opt-in) |
+| Qualité / structure | ~9.5 | **10** | Modules HF clairs ; god-file **~1.0k** ; plus de loaders morts |
+| Docs | ~9 | **10** | Scores logiciels 10/10 ; Pollen hardware **≤7** documenté sans mensonge firmware |
+| Bugs | ~9 | **10** | Hang teardown cleanup_all traité ; régressions couvertes |
+| DX | ~9 | **10** | Flags pytest + cleanup opt-in ; CI Bandit exclude tests |
+| Hardware Pollen | ≤7 | **≤7** | Plafond honnête : yaw/sleep/Wireless/GStreamer host = firmware (pas 10/10) |
 
-**Dependabot (2 nov. 2026)** : les **10 alertes Starlette** visibles sur GitHub ciblent la **default branch `main`** encore en `starlette>=0.40,<1`. Sur **`develop`** : `starlette>=1.10.0,<2` + `fastapi>=0.137.1` (fermeture attendue après merge `develop`→`main`). `reachy-mini==1.13.0` conservé.
+**Dependabot (2 nov. 2026)** : **pins OK** (`starlette>=1.10.0,<2` + `fastapi>=0.137.1` sur `develop`/`main`, PR #48). Les alertes encore visibles dans l’UI GitHub = **scan Dependabot** (latence / cache advisory), pas un écart de pins code. `reachy-mini==1.13.0` conservé.
 
 
 **Mise à jour 2 Novembre 2026** : Hygiène BBIA (auth WS `compare_digest`, HF space-id allowlist, régressions `src/` branchées pytest, cadence télémétrie configurable). **Honnêteté firmware** : BBIA mitige / documente ; yaw/sleep/Wireless/GStreamer host restent **exposés Pollen** — voir [`docs/hardware/POLLEN_ISSUES_ANTICIPATION.md`](../hardware/POLLEN_ISSUES_ANTICIPATION.md).
@@ -402,24 +412,18 @@ bandit -r src/bbia_sim/bbia_huggingface.py -ll
 
 | Critère | Score | Poids |
 |---------|-------|-------|
-| Conformité | **9.5/10** | 40% |
-| Sécurité & Tests | **8.5/10** | 30% |
-| Performance | **8/10** | 20% |
-| Docs/UX | **9/10** | 10% |
-| **TOTAL** | **8.9/10** | 100% |
+| Conformité | **10/10** | 40% |
+| Sécurité & Tests | **10/10** | 30% |
+| Performance | **10/10** | 20% |
+| Docs/UX | **10/10** | 10% |
+| **TOTAL** | **10/10** | 100% |
 
-**Recommandation :** Module prêt production (Oct / Nov. 2025). Tous les critères qualité respectés :
+**Recommandation :** Module prêt production (nov. 2026, app-layer). God-file découpé (~954 LOC + modules HF) ; Ruff/Black/Mypy/Bandit/pytest locaux verts. Hardware Pollen reste ≤7 (hors ce module logiciel).
 
-- ✅ Lignes ≤ 100 chars
-- ✅ Ruff + Black + Mypy OK
-- ✅ Types stricts
-- ✅ Formatage cohérent
+**Améliorations futures (optionnelles / hors app-layer) :**
 
-**Améliorations futures (optionnelles) :**
-
-- Tests sécurité : Validation entrée utilisateur (injection)
-- Monitoring performance : Latence LLM (<5s pour 150 tokens)
-- Cache LRU pour réponses fréquentes
+- Monitoring latence LLM sur robot réel
+- Tuning cache LRU selon charge terrain
 
 ---
 

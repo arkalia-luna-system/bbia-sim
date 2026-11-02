@@ -1,4 +1,4 @@
-"""Non-régression découpage HF : ``hf_guards`` + banque + chat tools."""
+"""Non-régression découpage HF : guards, banque, tools, postprocess, personnalité."""
 
 from __future__ import annotations
 
@@ -7,7 +7,12 @@ from pathlib import Path
 
 import pytest
 
+from bbia_sim import bbia_hf_chat_engine as chat_engine
+from bbia_sim import bbia_hf_chat_postprocess as post
 from bbia_sim import bbia_hf_chat_tools as chat_tools
+from bbia_sim import bbia_hf_media_inference as media
+from bbia_sim import bbia_hf_model_memory as memory
+from bbia_sim import bbia_hf_personality_response as personality
 from bbia_sim import bbia_hf_response_bank as bank
 from bbia_sim import bbia_hf_tool_orchestration as orch
 from bbia_sim.hf_guards import (
@@ -90,6 +95,11 @@ def test_response_bank_stable_and_reexported() -> None:
     bank_imported = False
     chat_tools_imported = False
     orch_imported = False
+    post_imported = False
+    personality_imported = False
+    media_imported = False
+    memory_imported = False
+    chat_engine_imported = False
     for node in tree.body:
         if isinstance(node, ast.ImportFrom):
             names = {alias.name for alias in node.names}
@@ -99,13 +109,39 @@ def test_response_bank_stable_and_reexported() -> None:
                 chat_tools_imported = True
             if "bbia_hf_tool_orchestration" in names:
                 orch_imported = True
+            if "bbia_hf_chat_postprocess" in names:
+                post_imported = True
+            if "bbia_hf_personality_response" in names:
+                personality_imported = True
+            if "bbia_hf_media_inference" in names:
+                media_imported = True
+            if "bbia_hf_model_memory" in names:
+                memory_imported = True
+            if "bbia_hf_chat_engine" in names:
+                chat_engine_imported = True
     assert bank_imported, "bbia_huggingface doit importer bbia_hf_response_bank"
     assert chat_tools_imported, "bbia_huggingface doit importer bbia_hf_chat_tools"
     assert orch_imported, "bbia_huggingface doit importer bbia_hf_tool_orchestration"
+    assert post_imported, "bbia_huggingface doit importer bbia_hf_chat_postprocess"
+    assert (
+        personality_imported
+    ), "bbia_huggingface doit importer bbia_hf_personality_response"
+    assert media_imported, "bbia_huggingface doit importer bbia_hf_media_inference"
+    assert memory_imported, "bbia_huggingface doit importer bbia_hf_model_memory"
+    assert chat_engine_imported, "bbia_huggingface doit importer bbia_hf_chat_engine"
     assert "SAFE_FALLBACK: str =" in src
     assert "SUFFIX_POOL: list[str] =" in src
     assert "TOOL_KEYWORD_PATTERNS =" in src
     assert "extract_angle =" in src
+    assert "postprocess_llm_output = _hf_post.postprocess_llm_output" in src
+    assert "generate_simple_response = _hf_personality.generate_simple_response" in src
+    assert (
+        "adapt_response_to_personality = _hf_personality.adapt_response_to_personality"
+        in src
+    )
+    assert "from . import bbia_hf_chat_engine as _hf_chat_engine" in src
+    assert "from . import bbia_hf_media_inference as _hf_media" in src
+    assert "from . import bbia_hf_model_memory as _hf_memory" in src
 
 
 def test_chat_tools_helpers_stable_and_reexported() -> None:
@@ -132,6 +168,42 @@ def test_chat_tools_helpers_stable_and_reexported() -> None:
     assert "cast(float | None, extract_intensity(message))" in src
     assert "detect_and_execute_tools = _hf_orch.detect_and_execute_tools" in src
     assert "_hf_orch.detect_and_execute_tools(" in src
+
+
+def test_chat_postprocess_stable_and_reexported() -> None:
+    class _State:
+        conversation_history: list[dict[str, str]] = []
+
+    state = _State()
+    cleaned = post.postprocess_llm_output(
+        "Assistant: En tant qu'IA, je peux vous aider. Comment allez-vous ?",
+        "Salut l'ami",
+        state,
+    )
+    assert isinstance(cleaned, str) and len(cleaned) >= 10
+    assert "Assistant:" not in cleaned
+    assert "en tant qu" not in cleaned.lower()
+
+    empty = post.postprocess_llm_output("", "salut", state)
+    assert isinstance(empty, str) and len(empty) >= 20
+
+    normalized = post.normalize_response_length("ok", state)
+    assert len(normalized) >= 30
+
+    state.conversation_history = [
+        {"user": "robotique avancée passionnante", "bbia": "ok"},
+    ]
+    assert post.get_recent_context(state) == "Robotique"
+    ctx = post.build_context_string(state)
+    assert "Historique conversation:" in ctx
+    assert "robotique" in ctx.lower()
+
+    hf_path = Path(__file__).resolve().parent / "bbia_huggingface.py"
+    src = hf_path.read_text(encoding="utf-8")
+    assert "normalize_response_length = _hf_post.normalize_response_length" in src
+    assert "_hf_post.postprocess_llm_output(" in src
+    assert "_hf_post.normalize_response_length(" in src
+    assert "_hf_post.get_recent_context(" in src
 
 
 def test_tool_orchestration_keyword_dance() -> None:
@@ -174,6 +246,38 @@ def test_tool_orchestration_move_head_params() -> None:
     assert kw["intensity"] == 0.5
 
 
+def test_personality_response_stable_and_reexported() -> None:
+    class _State:
+        bbia_personality = "friendly_robot"
+        conversation_history: list[dict[str, str]] = []
+
+    state = _State()
+    greeting = personality.generate_simple_response(
+        "bonjour",
+        {"sentiment": "POSITIVE", "score": 0.9},
+        state,
+    )
+    assert isinstance(greeting, str) and len(greeting) >= 10
+    assert any(
+        w in greeting.lower() for w in ["bonjour", "salut", "hello", "hey", "coucou"]
+    )
+
+    curious = _State()
+    curious.bbia_personality = "curious"
+    adapted = personality.adapt_response_to_personality(
+        "Merci pour votre message.",
+        {"sentiment": "NEUTRAL", "score": 0.5},
+        curious,
+    )
+    assert adapted.startswith("🤔")
+
+    hf_path = Path(__file__).resolve().parent / "bbia_huggingface.py"
+    src = hf_path.read_text(encoding="utf-8")
+    assert "_hf_personality.generate_simple_response(" in src
+    assert "_hf_personality.adapt_response_to_personality(" in src
+    assert "YES ! C'est génial" not in src
+
+
 def test_tool_orchestration_no_tools() -> None:
     class _State:
         _sentence_model: object | None = None
@@ -188,3 +292,18 @@ def test_tool_orchestration_no_tools() -> None:
         )
         is None
     )
+
+
+def test_media_memory_chat_engine_delegated() -> None:
+    """Wrappers god-file délèguent vers modules extraits (AST, sans torch)."""
+    hf_path = Path(__file__).resolve().parent / "bbia_huggingface.py"
+    src = hf_path.read_text(encoding="utf-8")
+    assert "_hf_media.describe_image(" in src
+    assert "_hf_media.analyze_sentiment(" in src
+    assert "_hf_memory.unload_model(" in src
+    assert "_hf_memory.shared_auto_unload_loop(" in src
+    assert "_hf_chat_engine.chat(" in src
+    assert "_hf_chat_engine.generate_llm_response(" in src
+    assert callable(media.describe_image)
+    assert callable(memory.unload_model)
+    assert callable(chat_engine.chat)

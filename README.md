@@ -2,15 +2,28 @@
 
 Moteur cognitif / simulation Python pour [Reachy Mini](https://github.com/pollen-robotics/reachy_mini) (émotions, vision, MuJoCo).
 
+**Sim-first** : sans `BBIA_ALLOW_HARDWARE=1`, aucun client matériel `ReachyMini()` — MuJoCo / simulation uniquement.
+
 [![Version](https://img.shields.io/badge/version-1.4.0-blue.svg)](https://github.com/arkalia-luna-system/bbia-sim)
-[![Python](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://python.org)
+[![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://python.org)
+[![SDK](https://img.shields.io/badge/SDK%20Pollen-1.13.0-blue.svg)](https://github.com/pollen-robotics/reachy_mini)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![CI Status](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml/badge.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml)
+[![CI main](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml?query=branch%3Amain)
+[![CI develop](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml/badge.svg?branch=develop)](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml?query=branch%3Adevelop)
+[![Coverage](https://img.shields.io/badge/coverage-Codecov%20CI-blue)](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim)
 [![Release](https://img.shields.io/github/v/release/arkalia-luna-system/bbia-sim)](https://github.com/arkalia-luna-system/bbia-sim/releases)
 
-## Moteur cognitif Python pour robot Reachy Mini
+## Statut honnête (vitrine)
 
-Simulation · IA · SDK Reachy Mini
+| Domaine | Réalité tip (2 nov. 2026) |
+|:--------|:--------------------------|
+| **Mode défaut** | **Sim-first** — robot physique seulement avec `BBIA_ALLOW_HARDWARE=1` |
+| **SDK Pollen** | Aligné **reachy-mini 1.13.0** via `pip install -e ".[reachy]"` (Python ≥3.11 pour cet extra) |
+| **Scores logiciels (app-layer)** | **10/10** subjectifs domaines logiciels — voir [`docs/reference/project-status.md`](docs/reference/project-status.md) |
+| **Hardware / firmware Pollen** | **≤7/10** volontaire — yaw/sleep/Wireless/GStreamer host restent exposés upstream |
+| **Robot réel « 100 % validé »** | **Non revendiqué** — dry-run + [`PREMIER_JOUR_ROBOT.md`](docs/hardware/PREMIER_JOUR_ROBOT.md) ; pas de preuve e2e hardware CI |
+
+**Sécurité robot** : [`docs/hardware/SECURITE_ROBOT.md`](docs/hardware/SECURITE_ROBOT.md) · **Politique** : [`SECURITY.md`](SECURITY.md)
 
 ---
 
@@ -22,35 +35,22 @@ Simulation · IA · SDK Reachy Mini
 
 ---
 
-## 📋 **EN 30 SECONDES**
+## En 30 secondes
 
-<div align="center">
+**BBIA-SIM** : moteur cognitif Python pour Reachy Mini — **12 émotions** (6 SDK + 6 étendues) · **simulation MuJoCo** · **IA optionnelle** · backend unifié sim ↔ réel (réel = opt-in explicite).
 
-### 🎯 BBIA-SIM : Moteur Cognitif Python pour Reachy Mini
+Logos / interface live : démarrer le dashboard (`http://localhost:8000`), puis `/test-logos` — ce n’est **pas** la preuve robot.
 
-**12 émotions robotiques** (6 SDK officiel + 6 étendues) • **Simulation 3D** • **IA**
+### Points clés
 
-**🎨 [Voir tous les logos BBIA →](http://localhost:8000/test-logos)** *(Lancez le dashboard d'abord)*
-
-</div>
-
-</div>
-
-### ✨ Points Clés
-
-<div align="center">
-
-| 🎯 **Caractéristique** | 📊 **Détails** |
-|:---:|:---|
-| ✅ **SDK Officiel** | Conforme Pollen Robotics |
-| 🔄 **Backend Unifié** | Simulation ↔ Robot réel |
-| 🧪 **Tests Automatisés** | 2311 tests collectés (2201 actifs + 110 désélectionnés) |
-| 📚 **Documentation** | 113 fichiers docs (109 Markdown) |
-| ⚡ **Performance** | Caches IA optimisés |
-| 🔒 **CI/CD** | Black, Ruff, MyPy, Bandit |
-| 🌟 **Open Source** | License MIT |
-
-</div>
+| Caractéristique | Détails |
+|:---|:---|
+| **SDK Pollen** | Alignement suivi **v1.13.0** (extra `.[reachy]`) — pas une certification Pollen |
+| **Backend unifié** | Même API sim / réel ; réel exige `BBIA_ALLOW_HARDWARE=1` |
+| **Tests** | Grande suite pytest (snapshot local historique ~2,3k collectés) — CI = lint + tests unitaires (e2e/benchmarks hors job unitaire) |
+| **Documentation** | ~115 fichiers Markdown dans `docs/` (inventaire évolutif) |
+| **CI/CD** | Black, Ruff, MyPy, Bandit, gitleaks — badges **main** et **develop** ci-dessus |
+| **Licence** | MIT |
 
 ## 🧠 Stack IA : Pourquoi ces Dépendances ?
 
@@ -68,18 +68,17 @@ BBIA utilise une stack IA pour permettre des interactions naturelles. Voici pour
 
 **Total approximatif** : ~6 GB (principalement PyTorch + Whisper). C'est normal pour un projet IA robotique avec vision, audio et LLM.
 
-## 📊 Statistiques
+## Statistiques (ordres de grandeur, tip local)
 
-- **Fichiers Python source**: 92 fichiers (35,988 lignes)
-- **Fichiers de tests**: 166 fichiers (39,200+ lignes)
-- **Tests collectés (local, 8 mai 2026)**: 2,311 tests (2,201 actifs + 110 désélectionnés via marqueurs)
-- **Coverage**: consulter Codecov pour la valeur CI de référence, et `python3 -m pytest --cov=src/bbia_sim --cov-report=term-missing` pour la mesure locale complète
-- **Coverage**: suivre la valeur de référence CI sur Codecov (la mesure locale varie selon le sous-ensemble de tests lancé)
-- **Modules BBIA**: 15+ modules spécialisés
-- **Comportements**: 21 comportements (7 de base + 14 étendus)
-- **Exemples**: 44 exemples disponibles
-- **Documentation**: 113 fichiers docs dont 109 Markdown (dans `docs/`)
-- **Identité visuelle**: 10 variantes émotionnelles, 3 formats de logos, interface live interactive
+Les chiffres exacts bougent avec le tip — préférer une mesure locale / Codecov plutôt qu’un badge figé.
+
+- **Sources Python** (`src/bbia_sim`) : ~145 modules `.py` (tip 2 nov. 2026)
+- **Fichiers de tests** : ~225 fichiers `test_*.py`
+- **Tests collectés** : snapshot historique local (8 mai 2026) ~2 311 ; relancer `pytest --collect-only` pour le tip courant
+- **Coverage** : référence = [Codecov CI](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim) ; local = `pytest --cov=src/bbia_sim`
+- **Exemples** : ~85 scripts Python sous `examples/`
+- **Documentation** : ~115 Markdown dans `docs/`
+- **Identité visuelle** : variantes logos + interface live (gadget ; la sim 3D = MuJoCo)
 
 ## 🎨 Identité Visuelle BBIA
 
@@ -107,29 +106,25 @@ Un README de provenance est disponible ici : `assets/branding/bbia_branding/READ
 
 Le dépôt `bbia_branding` est désormais déprécié et destiné à l'archivage en lecture seule.
 
-## 🏆 Qualité Code
+## Qualité code
 
-BBIA-SIM suit des standards de qualité:
+- **Coverage** : suivi CI Codecov (seuil progressif unitaire, pas un « 100 % projet »)
+- **Linting** : black, ruff, mypy, bandit
+- **Python** : cœur `>=3.10` ; extra SDK Reachy `>=3.11` ; CI 3.11 + 3.12
+- **CI/CD** : GitHub Actions (`main` / `develop`) + gitleaks
+- **Sécurité app** : Bandit + gitleaks ; politique [`SECURITY.md`](SECURITY.md)
+- **Scores** : 10/10 **app-layer** documentés ≠ robot / firmware Pollen (≤7)
 
-- **Tests de couverture**: suivi continu en CI (pas de seuil global unique figé)
-- **Linting**: black, ruff, mypy, bandit
-- **Python**: 3.11+ (3.12 testé dans CI)
-- **CI/CD**: GitHub Actions avec vérifications automatiques (Python 3.11 + 3.12, gitleaks)
-- **Sécurité**: Analyse statique avec Bandit + scan secrets (gitleaks)
-- **Performance**: Optimisations continues et monitoring (métriques Prometheus)
-
-**[🚀 Quick Start](#-démarrage-rapide)** | **[📚 Guide de Démarrage](docs/guides/GUIDE_DEMARRAGE.md)** | **[🔬 Documentation](docs/guides/GUIDE_AVANCE.md)** | **[🌐 English README](README_EN.md)** | **[🎬 Vidéos Démo](docs/guides/GUIDE_VIDEOS_DEMONSTRATION.md)** | **[🌍 Guide Communauté](docs/community/GUIDE_COMMUNAUTE.md)** | **[🤝 Contribuer](docs/community/CONTRIBUTION_GUIDE.md)**
+**[Quick Start](#-démarrage-rapide)** · **[Guide démarrage](docs/guides/GUIDE_DEMARRAGE.md)** · **[Guide avancé](docs/guides/GUIDE_AVANCE.md)** · **[Statut](docs/reference/project-status.md)** · **[Premier jour robot](docs/hardware/PREMIER_JOUR_ROBOT.md)** · **[English](README_EN.md)** · **[Contribuer](docs/community/CONTRIBUTION_GUIDE.md)**
 
 ---
 
-Version 1.4.0 – Simulation complète avec exemples fonctionnels, tests et documentation.
+**v1.4.0** — simulation MuJoCo + modules BBIA + alignement SDK Pollen **1.13.0** (extra `.[reachy]`). Projet **sim-first** ; pas une promesse « robot production-ready ».
 
-**Mise à jour 17 Août 2026** :
-- Alignement SDK officiel [Pollen Reachy Mini **v1.13.0**](https://github.com/pollen-robotics/reachy_mini) (`connection_mode`, `automatic_body_yaw=True`, extra `pip install -e ".[reachy]"` → `reachy-mini==1.13.0`, Python ≥3.11)
-- CI : les tests e2e/benchmarks ne s’exécutent plus dans le job unitaire (échec pipeline #1831)
-- Stub Pylance : dossier `typings/` pour supprimer l’erreur `stubPath is not a valid directory`
-
-Ce projet fournit une simulation du robot Reachy Mini dans MuJoCo, avec une intégration des modules BBIA (Bio-Inspired Artificial Intelligence) et une conformité avec le SDK officiel de Pollen Robotics. **Alignement suivi jusqu'à Pollen v1.13.0** (27 octobre 2026). Installer le SDK via `pip install -e ".[reachy]"` (Python 3.11+) pour rester au niveau officiel.
+**Repères tip (2 nov. 2026)** :
+- SDK [Pollen Reachy Mini **v1.13.0**](https://github.com/pollen-robotics/reachy_mini) — `connection_mode`, `automatic_body_yaw=True`, `pip install -e ".[reachy]"` → `reachy-mini==1.13.0`
+- Garde matériel : `BBIA_ALLOW_HARDWARE=1` (voir `src/bbia_sim/hardware_guard.py`)
+- CI : e2e/benchmarks hors job unitaire (corr. pipeline #1831)
 
 ## 🚀 Quick Start
 
@@ -187,25 +182,29 @@ mjpython examples/demo_emotion_ok.py
 python examples/demo_emotion_ok.py
 ```
 
-## 🤖 Première utilisation – Reachy Mini (robot réel)
+## Première utilisation – Reachy Mini (robot réel)
 
-- Prérequis:
-  - SDK Reachy Mini installé côté PC
-  - Robot allumé, alimenté, sur le même réseau Wi‑Fi que le PC
-  - Ports réseau nécessaires ouverts
+> **Opt-in obligatoire** : `export BBIA_ALLOW_HARDWARE=1`  
+> Sans ce flag, BBIA reste en simulation. Procédure : [`docs/hardware/PREMIER_JOUR_ROBOT.md`](docs/hardware/PREMIER_JOUR_ROBOT.md) · sécurité : [`docs/hardware/SECURITE_ROBOT.md`](docs/hardware/SECURITE_ROBOT.md).
 
-### ✅ Check‑list
+- Prérequis :
+  - SDK Reachy Mini (extra `.[reachy]` / daemon Pollen)
+  - Robot allumé, même réseau Wi‑Fi que le PC
+  - Espace libre + arrêt d’urgence connu
 
-- Alimentation/LED OK
-- Wi‑Fi opérationnel (SSID/mot de passe)
-- Version SDK compatible (voir docs/quality/compliance)
-- Dry‑run: connexion → wake_up → look_at_world → emergency_stop
+### Check-list
 
-### 📦 Dry‑run rapide
+- Alimentation / LED OK
+- Wi‑Fi opérationnel
+- SDK **1.13.x** côté host ; image robot **≥ 1.12.0** (PIN BT)
+- Dry-run : connexion → mouvements minimaux → `emergency_stop`
+
+### Dry-run rapide
 
 ```bash
-pip install -e .[dev,test]
-python scripts/hardware_dry_run_reachy_mini.py --output-dir artifacts
+export BBIA_ALLOW_HARDWARE=1
+pip install -e ".[dev,reachy]"
+python scripts/hardware_dry_run_reachy_mini.py --hardware --duration 10 --output-dir artifacts
 ```
 
 ### 🧩 Installation du SDK officiel + Daemon Reachy Mini
@@ -261,18 +260,11 @@ curl http://localhost:8000/metrics/readyz
 # Health détaillé
 curl http://localhost:8000/metrics/health
 
-# Métriques Prometheus (24 Nov. 2025)
-
-**Métriques disponibles** :
-- `bbia_watchdog_heartbeat_age_seconds` - âge heartbeat watchdog
-- `bbia_robot_connected` - statut connexion robot (1/0)
-- `bbia_latency_p50_ms`, `bbia_latency_p95_ms`, `bbia_latency_p99_ms` - latence percentiles
-
-Voir `docs/observabilite/OBSERVABILITE.md` pour plus de détails.
-
 # Métriques Prometheus
 curl http://localhost:8000/metrics/prometheus
 ```
+
+Métriques exposées (ex.) : `bbia_watchdog_heartbeat_age_seconds`, `bbia_robot_connected`, `bbia_latency_p50_ms` / `p95` / `p99`. Détail : [`docs/observabilite/OBSERVABILITE.md`](docs/observabilite/OBSERVABILITE.md).
 
 ### 🔧 Diagnostic Environnement
 
@@ -301,30 +293,21 @@ python scripts/bbia_doctor.py
 
 - `docs/guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md`
 
-## 🏆 Badges Qualité & CI/CD
+## Outils qualité (déclaratif)
 
-<div align="center">
+Badges CI branchés en tête de README. Outils locaux / CI : **mypy**, **ruff**, **bandit**, **black** — ce ne sont pas des scores « A+ » magiques.
 
-[![CI Status](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml/badge.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml)
-[![Coverage](https://img.shields.io/badge/coverage-live%20in%20CI-blue)](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim)
-[![Typing: mypy](https://img.shields.io/badge/typing-mypy-4B8BBE)](https://github.com/arkalia-luna-system/bbia-sim)
-[![Lint: ruff](https://img.shields.io/badge/lint-ruff-46A2F1)](https://github.com/arkalia-luna-system/bbia-sim)
-[![Security: bandit](https://img.shields.io/badge/security-bandit-2E5E82)](https://github.com/arkalia-luna-system/bbia-sim)
-[![Release](https://img.shields.io/github/v/release/arkalia-luna-system/bbia-sim)](https://github.com/arkalia-luna-system/bbia-sim/releases)
+## Vue d'ensemble
 
-</div>
+BBIA-SIM v1.4.0 — **simulation** Reachy Mini + couche cognitive BBIA :
 
-## 🎯 Vue d'ensemble
-
-BBIA-SIM v1.4.0 simule le robot Reachy Mini :
-
-- 12 émotions robotiques BBIA (6 émotions SDK officiel + 6 émotions étendues)
-- Conformité au SDK officiel Pollen Robotics
-- Backend unifié : même code pour simulation et robot réel
-- IA optionnelle : Hugging Face, reconnaissance d’émotions, comportements
-- Simulation 3D : MuJoCo avec modèle officiel
+- 12 émotions robotiques BBIA (6 SDK + 6 étendues)
+- Alignement API suivi sur SDK Pollen **1.13.0** (pas une certification officielle Pollen)
+- Backend unifié : même code sim / réel (**réel = opt-in** `BBIA_ALLOW_HARDWARE`)
+- IA optionnelle : Hugging Face, vision, comportements
+- Simulation 3D MuJoCo (modèle / assets issus de l’écosystème officiel)
 - API REST + WebSocket
-- Tests automatisés avec suivi de la couverture en CI
+- Tests automatisés + coverage suivie en CI
 
 ## 🏗️ Architecture BBIA-SIM
 
@@ -452,7 +435,7 @@ sequenceDiagram
 
 ### Voir le robot en 3D (Simulation MuJoCo)
 
-**BBIA-SIM simule le robot Reachy Mini avec une fidélité élevée** dans MuJoCo. Voici comment démarrer :
+BBIA-SIM simule Reachy Mini dans MuJoCo (modèle / STL issus de l’écosystème officiel). Démarrage :
 
 ```bash
 # 🎯 Démos principales
@@ -516,9 +499,9 @@ python scripts/demo_public_api.py
 # OpenAPI: http://localhost:8000/openapi.json
 ```
 
-### 📡 Endpoints REST Conformes SDK Officiel
+### Endpoints REST (alignement SDK)
 
-> **Note** : La conformité des endpoints REST est validée pour les méthodes SDK officielles. Les endpoints BBIA étendus sont en plus.
+> Alignement suivi sur les méthodes SDK documentées ; endpoints BBIA étendus en plus. Ce n’est pas une certification Pollen.
 
 - **`/api/move/*`** - Mouvements conformes SDK (goto, running, stop, play, set_target, ws/updates)
 - **`/api/motors/*`** - Contrôle moteurs (status, set_mode)
@@ -534,14 +517,15 @@ python scripts/demo_public_api.py
 # Backend MuJoCo (simulation)
 python -c "from bbia_sim.robot_factory import RobotFactory; robot = RobotFactory.create_backend('mujoco')"
 
-# Backend Reachy-Mini SDK Officiel (conforme)
+# Backend Reachy Mini (défaut = sim ; réel = use_sim=False + BBIA_ALLOW_HARDWARE=1)
 python -c "from bbia_sim.robot_factory import RobotFactory; robot = RobotFactory.create_backend('reachy_mini')"
 
 # Backend Reachy Mock (ancien)
 python -c "from bbia_sim.robot_factory import RobotFactory; robot = RobotFactory.create_backend('reachy')"
 
-# Test hardware complet
-python scripts/hardware_dry_run_reachy_mini.py --duration 30
+# Dry-run hardware (exige le flag + --hardware)
+# export BBIA_ALLOW_HARDWARE=1
+python scripts/hardware_dry_run_reachy_mini.py --hardware --duration 30
 ```
 
 ### 🧠 IA
@@ -566,9 +550,12 @@ python -c "from bbia_sim.bbia_huggingface import BBIAHuggingFace; import logging
 python -c "from bbia_sim.bbia_emotion_recognition import BBIAEmotionRecognition; import logging; er = BBIAEmotionRecognition(); logging.info(er.analyze_vocal_emotion('Je suis excité!'))"
 ```
 
-### ⚙️ Variables d’environnement utiles
+### Variables d’environnement utiles
 
 ```bash
+# Robot physique (opt-in) — absent = simulation uniquement
+# export BBIA_ALLOW_HARDWARE=1
+
 # Exécutions headless/CI (désactive audio matériel)
 export BBIA_DISABLE_AUDIO=1
 
@@ -591,14 +578,17 @@ python examples/demo_vision_ok.py --tracking-gain 0.8 --target-speed 0.05
 python examples/demo_behavior_ok.py --behavior greeting --intensity 1.2
 ```
 
-### 🔄 Backend Unifié
+### Backend unifié
 
 ```bash
-# Switch facile entre Sim et Robot
-python examples/demo_emotion_ok.py --backend mujoco --emotion happy --duration 5  # Simulation
-python examples/demo_emotion_ok.py --backend reachy --emotion happy --duration 5  # Robot réel
+# Simulation (défaut sûr)
+python examples/demo_emotion_ok.py --backend mujoco --emotion happy --duration 5
 
-# Tests smoke automatiques
+# Robot réel : exporter BBIA_ALLOW_HARDWARE=1 puis backend reachy / reachy_mini
+# export BBIA_ALLOW_HARDWARE=1
+# python examples/demo_emotion_ok.py --backend reachy_mini --emotion happy --duration 5
+
+# Smoke API (sim)
 python -m pytest tests/test_robot_api_smoke.py -v
 
 # Record & Replay
@@ -606,20 +596,13 @@ python examples/demo_emotion_ok.py --record artifacts/my_animation.jsonl --emoti
 python scripts/replay_viewer.py artifacts/my_animation.jsonl --speed 1.5
 ```
 
-### 📹 Vidéos de Démonstration
+### Vidéos / captures
 
-**Nouvelles vidéos disponibles** (Oct / Nov. 2025) : 3 captures vidéo de la simulation MuJoCo
+**Simulation MuJoCo** (fichiers présents sous `assets/videos/`, enregistrements écran **2025-11-01**) : 3 `.mov` issus de `examples/demo_mujoco_continue.py` (tête + corps). Noms exacts : voir le dossier (accents macOS).
 
-- `assets/videos/Enregistrement de l'écran Oct / Nov. 2025 à 17.00.52.mov` (2.7 MB)
-- `assets/videos/Enregistrement de l'écran Oct / Nov. 2025 à 17.01.27.mov` (3.4 MB)
-- `assets/videos/Enregistrement de l'écran Oct / Nov. 2025 à 17.01.56.mov` (3.1 MB)
+**Dashboard** : captures sous `assets/images/` (oct.–nov. 2025) — UI locale, **pas** une validation robot réel.
 
-**Source** : Toutes ces vidéos ont été enregistrées depuis `examples/demo_mujoco_continue.py` qui montre le robot en mouvement continu (tête + corps).
-
-**Captures d'écran dashboard** (Nov 2025) : 4 captures du dashboard BBIA Advanced Dashboard disponibles dans `assets/images/` montrant l'interface complète avec métriques temps réel, contrôles joints, vision et chat.
-
-**Inventaire complet** : Voir [`assets/MEDIAS_INVENTAIRE.md`](assets/MEDIAS_INVENTAIRE.md)
-**Roadmap vidéos** : Voir [`docs/guides/GUIDE_VIDEOS_DEMONSTRATION.md`](docs/guides/GUIDE_VIDEOS_DEMONSTRATION.md)
+Inventaire : [`assets/MEDIAS_INVENTAIRE.md`](assets/MEDIAS_INVENTAIRE.md) · guide : [`docs/guides/GUIDE_VIDEOS_DEMONSTRATION.md`](docs/guides/GUIDE_VIDEOS_DEMONSTRATION.md)
 
 ### 📋 Documentation
 
@@ -805,7 +788,7 @@ source venv/bin/activate
 mjpython examples/demo_emotion_ok.py --emotion happy --duration 10 --backend mujoco
 ```
 
-Pour les détails et recommandations matériel (webcam USB UVC) et les profils d'environnements, voir `docs/development/ENV_PROFILS.md`.
+Pour les détails et recommandations matériel (webcam USB UVC) et les profils d'environnements, voir [`docs/development/setup/environments.md`](docs/development/setup/environments.md).
 
 ## 🛠️ Scripts Utiles
 
@@ -889,7 +872,7 @@ python scripts/download_ALL_stl.py
 - **Format** : MJCF (MuJoCo XML)
 - **Assets** : 41 fichiers STL officiels
 - **Articulations** : 16 au total (1 yaw_body + 6 stewart + 2 antennes + 7 passifs)
-- **Dimensions** : Fidèles aux spécifications officielles
+- **Dimensions** : basées sur le modèle / assets officiels (pas une métrologie BBIA indépendante)
 
 ## 🔗 Ressources Officielles
 
@@ -956,19 +939,13 @@ pytest -q --disable-warnings \
 
 ### Résultats des Tests
 
-**📊 Qualité & Conformité :**
+**Qualité & alignement SDK :**
 
-- **Conformité SDK officiel** : Validée (47 tests de conformité) — [📊 Vérification](docs/quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md)
-- **Coverage** : valeur de référence sur Codecov (CI) ; utiliser `pytest --cov=src/bbia_sim` localement pour une mesure comparable
-- **Coverage** : valeur de référence sur Codecov (CI) — [📊 Rapport Codecov](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim) | [📁 Rapport HTML local](htmlcov/index.html)
-- **Tests totaux (snapshot local 8 mai 2026)** : 2,311 tests collectés — [📊 Détails CI](https://github.com/arkalia-luna-system/bbia-sim/actions)
-- **Fichiers Python** : 68 modules dans `src/bbia_sim/` — [📁 Source](src/bbia_sim)
-- **Qualité code** : Black, Ruff, MyPy, Bandit
-- **Tests** : Suite complète + SDK officiel
-
-> **Pour plus de détails** :
-> - 📊 [Rapport Codecov en ligne](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim)
-> - 📁 Rapport HTML local : `python -m pytest --cov=src/bbia_sim --cov-report=html && open htmlcov/index.html`
+- **Alignement SDK** : suite de conformité documentée — [`docs/quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md`](docs/quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md) (alignement API / tests ; ≠ « robot 100 % validé »)
+- **Coverage** : [Codecov CI](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim) ; local : `pytest --cov=src/bbia_sim --cov-report=html`
+- **Tests** : snapshot historique ~2,3k collectés (8 mai 2026) — [Actions](https://github.com/arkalia-luna-system/bbia-sim/actions) ; tip : `pytest --collect-only`
+- **Sources** : [`src/bbia_sim`](src/bbia_sim) (~145 `.py` tip 2 nov. 2026)
+- **Outils** : Black, Ruff, MyPy, Bandit
 
 ### Commandes de Tests
 
@@ -994,11 +971,10 @@ open htmlcov/index.html
 
 ## Statut du projet
 
-Le robot Reachy Mini est simulé avec une fidélité élevée aux spécifications officielles. La suite de tests fournit une couverture suivie et des mesures de performance documentées (dry-run matériel et démonstrations sur robot réel).
-
----
-
-## 📊 Projets & Portfolio
+- **Simulation** : MuJoCo + assets écosystème Reachy Mini — usage principal et recommandé.
+- **Logiciel / app-layer** : scores subjectifs **10/10** (2 nov. 2026) — [`docs/reference/project-status.md`](docs/reference/project-status.md).
+- **Hardware Pollen** : plafond **≤7/10** — bugs firmware documentés, hors correctifs BBIA.
+- **Robot réel** : reçu / monté (déc. 2025) ; pas de claim « 100 % validé en production » sans campagne e2e hardware publique.
 
 ---
 
@@ -1010,4 +986,4 @@ Le robot Reachy Mini est simulé avec une fidélité élevée aux spécification
 
 ---
 
-*Dernière mise à jour : 17 Août 2026*
+*Dernière mise à jour vitrine : 2 novembre 2026*

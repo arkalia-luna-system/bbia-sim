@@ -1,11 +1,13 @@
-# 🤝 Guide de Contribution - BBIA-SIM
+# Guide de Contribution — BBIA-SIM
 
-**Dernière mise à jour** : 26 Janvier 2026  
+**Dernière mise à jour** : 2 Novembre 2026  
 **Version** : 1.4.0
 
 > **Voir aussi** : [`docs/reference/INDEX_THEMATIQUE.md`](../reference/INDEX_THEMATIQUE.md) et [`docs/reference/project-status.md`](../reference/project-status.md)
 
 Ce guide décrit le processus de contribution au projet BBIA-SIM.
+
+**Cadre** : projet **sim-first** — sans `BBIA_ALLOW_HARDWARE=1`, pas de mouvement matériel. Ne pas documenter un robot « 100 % validé » ni un firmware Pollen « parfait » (plafond hardware **≤7**).
 
 > **💡 Nouveau contributeur ?**  
 > Commencez par consulter les [Good First Issues](../getting-started/contributing.md) pour trouver des tâches adaptées aux nouveaux contributeurs.
