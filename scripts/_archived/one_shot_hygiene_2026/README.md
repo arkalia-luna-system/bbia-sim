@@ -28,3 +28,12 @@ Scripts orphelins (0 référence hors `scripts/`), doublons joints / médias / d
 | `verify_project.py` | Remplacé par `verify_documentation.py` / `bbia_doctor.py` |
 | `voice_demo.py` / `voice_mac_say.sh` | Démos voix non référencées |
 | `veille_reachy_mini.py` | Veille one-shot ; deps optionnelles dans `requirements/requirements-veille.txt` |
+
+### `bandit_dashboard_orphans/` (2 Nov 2026)
+
+Wrappers / dashboard minimal sans référence CI/Makefile/docs actives.
+
+| Script | Raison |
+|--------|--------|
+| `bandit_safe.py` / `run_bandit_quiet.sh` | Bandit branché directement (CI, Makefile, pre-commit) |
+| `bbia_dashboard_server.py` | Remplacé par `bbia_advanced_dashboard_server.py` (docs archi) |

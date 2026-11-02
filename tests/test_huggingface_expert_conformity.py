@@ -20,11 +20,12 @@ class TestBBIAHuggingFaceExpertConformity:
 
     @staticmethod
     def _hf_source_paths() -> list[Path]:
-        """Fichiers source HF à scanner (god-file + banque extraite)."""
+        """Fichiers source HF à scanner (god-file + modules extraits)."""
         base = Path(__file__).parent.parent / "src" / "bbia_sim"
         return [
             base / "bbia_huggingface.py",
             base / "bbia_hf_response_bank.py",
+            base / "bbia_hf_chat_tools.py",
         ]
 
     def _read_hf_sources(self) -> str:

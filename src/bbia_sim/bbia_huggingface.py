@@ -17,6 +17,7 @@ import numpy as np
 import numpy.typing as npt
 from PIL import Image
 
+from . import bbia_hf_chat_tools as _hf_chat_tools
 from . import bbia_hf_response_bank as _hf_bank
 from .utils.types import ConversationEntry, SentimentDict, SentimentResult
 
@@ -26,6 +27,12 @@ SUFFIX_POOL: list[str] = _hf_bank.SUFFIX_POOL
 _expert_quality_padding = _hf_bank._expert_quality_padding
 _EXPERT_TEST_PADDING_RESPONSES = _hf_bank._EXPERT_TEST_PADDING_RESPONSES
 _EXPERT_TEST_CANONICAL_RESPONSES = _hf_bank._EXPERT_TEST_CANONICAL_RESPONSES
+
+# Réexports helpers chat / outils (API stable pour tests / imports)
+TOOL_KEYWORD_PATTERNS = _hf_chat_tools.TOOL_KEYWORD_PATTERNS
+TOOL_NLP_DESCRIPTIONS = _hf_chat_tools.TOOL_NLP_DESCRIPTIONS
+extract_angle = _hf_chat_tools.extract_angle
+extract_intensity = _hf_chat_tools.extract_intensity
 
 if TYPE_CHECKING:
     from .bbia_tools import BBIATools
@@ -1793,158 +1800,7 @@ class BBIAHuggingFace:
 
         # Détection améliorée : mots-clés étendus + NLP optionnel
         # Pattern: détecter intentions → appeler outils
-        tool_patterns = {
-            "move_head": {
-                "keywords": [
-                    # Variantes existantes
-                    "tourne la tête",
-                    "bouge la tête",
-                    "regarde à gauche",
-                    "regarde à droite",
-                    "regarde en haut",
-                    "regarde en bas",
-                    # NOUVEAUX: Formes verbales
-                    "tourne ta tête",
-                    "bouge ta tête",
-                    "orienter la tête",
-                    "orienter ta tête",
-                    "déplacer la tête",
-                    "diriger la tête",
-                    "pivoter la tête",
-                    "pivote la tête",
-                    "bouger la tête",
-                    "tourner la tête",
-                    # NOUVEAUX: Directions directes
-                    "regarde vers la gauche",
-                    "regarde vers la droite",
-                    "regarde vers le haut",
-                    "regarde vers le bas",
-                    "gauche",
-                    "droite",
-                    "haut",
-                    "bas",
-                    "à gauche",
-                    "à droite",
-                    "en haut",
-                    "en bas",
-                    # NOUVEAUX: Formes courtes
-                    "tourne tête",
-                    "bouge tête",
-                    "orienter tête",
-                    "regarde gauche",
-                    "regarde droite",
-                ],
-                "mappings": {
-                    "gauche": "left",
-                    "droite": "right",
-                    "haut": "up",
-                    "bas": "down",
-                },
-            },
-            "camera": {
-                "keywords": [
-                    # Variantes existantes
-                    "capture une image",
-                    "prends une photo",
-                    "regarde autour",
-                    "analyse l'environnement",
-                    "que vois-tu",
-                    # NOUVEAUX: Variantes naturelles
-                    "prends une image",
-                    "capture une photo",
-                    "prends une photo",
-                    "fais une photo",
-                    "fais une image",
-                    "photographie",
-                    "photo",
-                    "image",
-                    "regarde",
-                    "qu'est-ce que tu vois",
-                    "qu'est-ce que tu observes",
-                    "décris ce que tu vois",
-                    "analyse l'image",
-                    "analyse l'environnement",
-                    "que vois-tu autour",
-                    "qu'y a-t-il autour",
-                    "regarde ce qui t'entoure",
-                ],
-            },
-            "dance": {
-                "keywords": [
-                    # Variantes existantes
-                    "danse",
-                    "fais danser",
-                    "joue une danse",
-                    # NOUVEAUX: Variantes naturelles
-                    "danse un peu",
-                    "danse pour moi",
-                    "fais une danse",
-                    "lance une danse",
-                    "joue une danse",
-                    "montre une danse",
-                    "exécute une danse",
-                    "danser",
-                    "dance",
-                    "bouge au rythme",
-                    "bouge en rythme",
-                ],
-            },
-            "play_emotion": {
-                "keywords": [
-                    # Variantes existantes
-                    "sois heureux",
-                    "sois triste",
-                    "montre de la joie",
-                    "montre de la curiosité",
-                    # NOUVEAUX: Formes impératives
-                    "sois joyeux",
-                    "sois content",
-                    "sois excité",
-                    "sois calme",
-                    "sois neutre",
-                    "sois curieux",
-                    "montre de la joie",
-                    "montre de la tristesse",
-                    "montre de l'excitation",
-                    "montre de la curiosité",
-                    "montre du calme",
-                    # NOUVEAUX: Formes avec "être"
-                    "être heureux",
-                    "être triste",
-                    "être joyeux",
-                    "être calme",
-                    "être excité",
-                    # NOUVEAUX: Émotions directes
-                    "joie",
-                    "tristesse",
-                    "curiosité",
-                    "excitation",
-                    "calme",
-                    "neutre",
-                    "colère",
-                    "surprise",
-                ],
-                "mappings": {
-                    "heureux": "happy",
-                    "joyeux": "happy",
-                    "content": "happy",
-                    "joie": "happy",
-                    "triste": "sad",
-                    "tristesse": "sad",
-                    "curieux": "curious",
-                    "curiosité": "curious",
-                    "excité": "excited",
-                    "excitation": "excited",
-                    "calme": "calm",
-                    "neutre": "neutral",
-                    "colère": "angry",
-                    "angry": "angry",
-                    "surprise": "surprised",
-                    "surpris": "surprised",
-                },
-            },
-        }
-
+        tool_patterns = TOOL_KEYWORD_PATTERNS
         # Chercher correspondance avec patterns
         for tool_name, pattern in tool_patterns.items():
             for keyword in pattern["keywords"]:  # type: ignore[index]
@@ -1975,14 +1831,11 @@ class BBIAHuggingFace:
                                 # Détecter émotion depuis sentiment
                                 try:
                                     sentiment = self.analyze_sentiment(user_message)
-                                    emotion_map = {
-                                        "POSITIVE": "happy",
-                                        "NEGATIVE": "sad",
-                                        "NEUTRAL": "neutral",
-                                    }
-                                    params["emotion"] = emotion_map.get(
-                                        sentiment.get("sentiment", "NEUTRAL"),
-                                        "neutral",
+                                    params["emotion"] = (
+                                        _hf_chat_tools.SENTIMENT_TO_EMOTION.get(
+                                            sentiment.get("sentiment", "NEUTRAL"),
+                                            "neutral",
+                                        )
                                     )
                                 except (KeyError, ValueError, TypeError):
                                     params["emotion"] = "neutral"
@@ -1990,10 +1843,7 @@ class BBIAHuggingFace:
 
                         elif tool_name == "dance":
                             # Utiliser danse par défaut ou extraire nom
-                            params["move_name"] = "happy_dance"  # Par défaut
-                            params["dataset"] = (
-                                "pollen-robotics/reachy-mini-dances-library"
-                            )
+                            params.update(_hf_chat_tools.DEFAULT_DANCE_PARAMS)
 
                         # Exécuter outil avec gestion d'erreurs centralisée
                         try:
@@ -2093,34 +1943,8 @@ class BBIAHuggingFace:
             if not self._use_nlp_detection or self._sentence_model is None:
                 return None
 
-            # Descriptions des outils (en français pour meilleure correspondance)
-            tool_descriptions = {
-                "move_head": (
-                    "Déplacer ou tourner la tête du robot vers une direction "
-                    "(gauche, droite, haut, bas, orienter la tête)"
-                ),
-                "camera": (
-                    "Capturer une image, prendre une photo, analyser "
-                    "l'environnement visuel, "
-                    "regarder autour, que vois-tu"
-                ),
-                "dance": (
-                    "Faire danser le robot, jouer une danse, mouvement de danse, "
-                    "bouger au rythme"
-                ),
-                "play_emotion": (
-                    "Jouer une émotion sur le robot (joie, tristesse, curiosité, "
-                    "excitation, calme, colère, surprise)"
-                ),
-                "stop_dance": "Arrêter la danse en cours, stopper la danse",
-                "stop_emotion": "Arrêter l'émotion en cours, stopper l'émotion",
-                "head_tracking": (
-                    "Activer ou désactiver le suivi automatique du visage, "
-                    "tracking visage"
-                ),
-                "do_nothing": "Rester inactif, ne rien faire, reste tranquille",
-            }
-
+            # Descriptions des outils (module chat_tools)
+            tool_descriptions = TOOL_NLP_DESCRIPTIONS
             # Calculer similarité sémantique
             try:
                 from sklearn.metrics.pairwise import (
@@ -2142,7 +1966,7 @@ class BBIAHuggingFace:
             best_score = float(similarities[best_idx])
 
             # Seuil de confiance (ajustable)
-            confidence_threshold = 0.6
+            confidence_threshold = _hf_chat_tools.NLP_CONFIDENCE_THRESHOLD
 
             if best_score > confidence_threshold:
                 tool_name = list(tool_descriptions.keys())[best_idx]
@@ -2188,36 +2012,10 @@ class BBIAHuggingFace:
         if not self.tools:
             return None
 
-        # Patterns pour extraction paramètres
+        # Patterns pour extraction paramètres (module chat_tools)
         tool_patterns = {
-            "move_head": {
-                "mappings": {
-                    "gauche": "left",
-                    "droite": "right",
-                    "haut": "up",
-                    "bas": "down",
-                },
-            },
-            "play_emotion": {
-                "mappings": {
-                    "heureux": "happy",
-                    "joyeux": "happy",
-                    "content": "happy",
-                    "joie": "happy",
-                    "triste": "sad",
-                    "tristesse": "sad",
-                    "curieux": "curious",
-                    "curiosité": "curious",
-                    "excité": "excited",
-                    "excitation": "excited",
-                    "calme": "calm",
-                    "neutre": "neutral",
-                    "colère": "angry",
-                    "angry": "angry",
-                    "surprise": "surprised",
-                    "surpris": "surprised",
-                },
-            },
+            "move_head": {"mappings": _hf_chat_tools.MOVE_HEAD_MAPPINGS},
+            "play_emotion": {"mappings": _hf_chat_tools.PLAY_EMOTION_MAPPINGS},
         }
 
         try:
@@ -2265,12 +2063,7 @@ class BBIAHuggingFace:
                     # Détecter émotion depuis sentiment
                     try:
                         sentiment = self.analyze_sentiment(user_message)
-                        emotion_map = {
-                            "POSITIVE": "happy",
-                            "NEGATIVE": "sad",
-                            "NEUTRAL": "neutral",
-                        }
-                        params["emotion"] = emotion_map.get(
+                        params["emotion"] = _hf_chat_tools.SENTIMENT_TO_EMOTION.get(
                             sentiment.get("sentiment", "NEUTRAL"),
                             "neutral",
                         )
@@ -2280,8 +2073,7 @@ class BBIAHuggingFace:
 
             elif tool_name == "dance":
                 # Utiliser danse par défaut ou extraire nom
-                params["move_name"] = "happy_dance"  # Par défaut
-                params["dataset"] = "pollen-robotics/reachy-mini-dances-library"
+                params.update(_hf_chat_tools.DEFAULT_DANCE_PARAMS)
 
             elif tool_name in [
                 "stop_dance",
@@ -2333,68 +2125,7 @@ class BBIAHuggingFace:
             Angle en degrés, ou None si non trouvé
 
         """
-        import math
-
-        # Limiter la taille pour éviter toute dérive sur entrée hostile très longue.
-        message_lower = message.lower()[:1000]
-
-        def _extract_number_before(token: str) -> float | None:
-            idx = message_lower.find(token)
-            if idx <= 0:
-                return None
-            prefix = message_lower[:idx].rstrip()
-            chars: list[str] = []
-            for ch in reversed(prefix):
-                if ch.isdigit() or ch in {".", ","}:
-                    chars.append(ch)
-                    continue
-                if chars:
-                    break
-            if not chars:
-                return None
-            try:
-                return float("".join(reversed(chars)).replace(",", "."))
-            except ValueError:
-                return None
-
-        # Pattern 1: "X degrés"/"X degrees" sans regex.
-        for token in ("degrés", "degré", "degrees", "degree"):
-            value = _extract_number_before(token)
-            if value is not None:
-                return value
-
-        # Pattern 2: "X radians" ou "pi/X radians" sans regex.
-        for token in ("radians", "radian"):
-            idx = message_lower.find(token)
-            if idx <= 0:
-                continue
-            expr = (
-                message_lower[:idx].strip().split()[-1]
-                if message_lower[:idx].strip()
-                else ""
-            )
-            if "/" in expr and "pi" in expr:
-                parts = expr.replace(" ", "").split("/", maxsplit=1)
-                if len(parts) == 2:
-                    try:
-                        denom = float(parts[1])
-                        if denom != 0:
-                            return math.degrees(math.pi / denom)
-                    except ValueError:
-                        pass
-            else:
-                try:
-                    return math.degrees(float(expr.replace(",", ".")))
-                except ValueError:
-                    pass
-
-        # Pattern 3: "à X%" (approximation angle) sans regex.
-        if "%" in message_lower:
-            pct = _extract_number_before("%")
-            if pct is not None:
-                return (pct / 100.0) * 90.0
-
-        return None
+        return extract_angle(message)
 
     def _extract_intensity(self, message: str) -> float | None:
         """Extrait une intensité depuis un message (mots-clés comme
@@ -2407,52 +2138,7 @@ class BBIAHuggingFace:
             Intensité entre 0.0 et 1.0, ou None si non trouvé
 
         """
-        message_lower = message.lower()
-
-        # Mapping mots-clés → intensité
-        intensity_keywords = {
-            # Faible
-            "légèrement": 0.2,
-            "un peu": 0.2,
-            "subtilement": 0.2,
-            "doucement": 0.3,
-            # Moyen
-            "modérément": 0.5,
-            "moyennement": 0.5,
-            "normalement": 0.5,
-            # Fort
-            "beaucoup": 0.8,
-            "fortement": 0.8,
-            "énormément": 0.9,
-            "maximalement": 1.0,
-            "complètement": 1.0,
-            "totalement": 1.0,
-        }
-
-        for keyword, intensity in intensity_keywords.items():
-            if keyword in message_lower:
-                return intensity
-
-        # Pattern: "à X%" (intensité directe) sans regex.
-        msg = message_lower[:1000]
-        percent_idx = msg.find("%")
-        if percent_idx > 0:
-            prefix = msg[:percent_idx].rstrip()
-            chars: list[str] = []
-            for ch in reversed(prefix):
-                if ch.isdigit() or ch in {".", ","}:
-                    chars.append(ch)
-                    continue
-                if chars:
-                    break
-            if chars:
-                try:
-                    pct = float("".join(reversed(chars)).replace(",", "."))
-                    return min(pct / 100.0, 1.0)
-                except ValueError:
-                    pass
-
-        return None
+        return extract_intensity(message)
 
     def _postprocess_llm_output(self, text: str, user_message: str) -> str:
         """Nettoie et compacte la sortie LLM pour éviter la verbosité.

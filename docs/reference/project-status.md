@@ -12,6 +12,8 @@
 
 **Mise à jour 2 Novembre 2026 (suite senior)** : découpe HF non big-bang — `bbia_hf_response_bank.py` + `hf_guards.py` (space-id / pip opt-in) ; auth token partagée `daemon/auth_token.py` ; logs auth sans fragment de secret hors DEBUG.
 
+**Mise à jour 2 Novembre 2026 (chat tools)** : `bbia_hf_chat_tools.py` (patterns / NLP / extracteurs) ; god-file HF ~2.97k ; wrappers Bandit + dashboard minimal archivés.
+
 **Scores subjectifs domaines (2 nov. 2026 — tip `e99a6f7a`+ découpe HF)** :
 
 | Domaine | Avant | Après | Note |
@@ -19,7 +21,7 @@
 | Sécu app-layer | ~8 | **~9** | Alias `BBIA_TOKEN`/`BBIA_ENV`, refuse défaut/vide en prod, WS bridge/dashboard, HF pip OFF, yaw clamp chemins API ; **pas 10/10** (firmware/upload Pollen, Dependabot `main`) |
 | Dependabot GitHub | ~8 | **9** | Corrigé sur `develop` ; alertes UI restent tant que `main` non mergé (hors app-layer) |
 | Tests | ~8 | **~9** | Régressions auth/alias/guards + `test_hf_guards_regressions` ; smokes mockés CI — pas de claim 10/10 exhaustif |
-| Qualité / structure | ~8.5 | **~9.2** | `http_auth` / `ws.auth` / `auth_token` / `hf_guards` / `bbia_hf_response_bank` ; god-file HF allégé (~3.3k), pas rewrite total |
+| Qualité / structure | ~8.5 | **~9.3** | `http_auth` / `ws.auth` / `auth_token` / `hf_guards` / `bbia_hf_response_bank` / `bbia_hf_chat_tools` ; god-file HF ~2.97k, pas rewrite total |
 | Docs | ~8.5 | **~9** | Scores honnêtes ; Pollen ≤7 ; pas de faux 10/10 hardware |
 | Bugs | ~8.5 | **~9** | Telemetry freq, joint, yaw bypass, env aliases |
 | DX | ~8 | **~9** | `BBIA_DISABLE_PYTEST_LOCK` / cleanup flags ; coverage XML dé-tracké |
