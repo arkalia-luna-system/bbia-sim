@@ -5,17 +5,18 @@ from __future__ import annotations
 import asyncio
 import logging
 import os
-import re
 import shutil
 import subprocess
 from pathlib import Path
 from typing import Any
 
-logger = logging.getLogger(__name__)
+from bbia_sim.hf_guards import (
+    hf_pip_install_enabled,
+    normalize_hf_app_name,
+    validate_hf_space_id,
+)
 
-_APP_NAME_RE = re.compile(r"^[A-Za-z0-9._-]+$")
-# username/space — refuse URL injectée, traversal, espaces, protocoles
-_HF_SPACE_ID_RE = re.compile(r"^[A-Za-z0-9._-]+/[A-Za-z0-9._-]+$")
+logger = logging.getLogger(__name__)
 
 # Répertoire pour stocker les apps installées
 INSTALLED_APPS_DIR = Path("installed_apps")
@@ -39,10 +40,7 @@ class HFAppInstaller:
     @staticmethod
     def _normalize_space_name(name: str) -> str:
         """Normalise et valide un nom d'app local (allowlist, pas de séparateurs)."""
-        normalized = (name or "").strip()
-        if not normalized or not _APP_NAME_RE.fullmatch(normalized):
-            raise ValueError(f"Nom d'application invalide: {name!r}")
-        return normalized
+        return normalize_hf_app_name(name)
 
     def _safe_app_path(self, app_name: str) -> Path:
         """Construit un chemin d'app confiné sous apps_dir (sanitizer CodeQL)."""
@@ -80,11 +78,7 @@ class HFAppInstaller:
             ValueError: Si hf_space_id est invalide
             RuntimeError: Si l'installation échoue
         """
-        # Pas de strip silencieux : espaces / \\n / \\r dans l'ID = rejet (anti injection URL)
-        space_id = hf_space_id if isinstance(hf_space_id, str) else ""
-        if not _HF_SPACE_ID_RE.fullmatch(space_id):
-            raise ValueError(f"HF Space ID invalide: {hf_space_id}")
-        hf_space_id = space_id
+        hf_space_id = validate_hf_space_id(hf_space_id)
 
         local_name = self._normalize_space_name(app_name or hf_space_id.split("/")[-1])
         app_path = self._safe_app_path(local_name)
@@ -131,16 +125,11 @@ class HFAppInstaller:
             logger.info("App %s clonée avec succès", local_name)
 
             # pip install -r = exécution de deps arbitraires — OFF par défaut.
-            # Opt-in explicite : BBIA_HF_PIP_INSTALL=1
+            # Opt-in explicite : BBIA_HF_PIP_INSTALL=1 (voir hf_guards)
             requirements_file = self._ensure_under_apps_dir(
                 app_path / "requirements.txt"
             )
-            pip_opt_in = os.environ.get("BBIA_HF_PIP_INSTALL", "0").strip().lower() in {
-                "1",
-                "true",
-                "yes",
-                "on",
-            }
+            pip_opt_in = hf_pip_install_enabled()
             if requirements_file.exists() and pip_opt_in:
                 logger.info("Installation des dépendances depuis requirements.txt...")
                 await self._install_dependencies(requirements_file)
