@@ -1,19 +1,20 @@
 # 🚀 Innovations BBIA-SIM - Documentation Complète
 
-**Dernière mise à jour** : 8 Mai 2026  
+**Dernière mise à jour** : 2 Novembre 2026  
 **Version** : 1.4.0  
-**Objectif** : Documenter les fonctionnalités de BBIA-SIM
+**Objectif** : Documenter les fonctionnalités de BBIA-SIM  
+**Cadre** : **sim-first** · SDK Pollen **1.13** (app-layer) · hardware **≤7** · pas « robot 100 % validé »
 
 ---
 
-## 🎯 Vue d'Ensemble
+## Vue d'Ensemble
 
 **BBIA-SIM** apporte plusieurs fonctionnalités dans l'écosystème Reachy Mini :
 
-1. ✅ **RobotAPI Unifié** : Architecture unifiée
-2. ✅ **Solution 100% Gratuite** : Alternative aux solutions payantes
+1. ✅ **RobotAPI Unifié** : Architecture unifiée (réel = opt-in `BBIA_ALLOW_HARDWARE=1`)
+2. ✅ **Solution gratuite / open source** : Alternative aux stacks payantes
 3. ✅ **12 Émotions** : Plus d'émotions disponibles
-4. ✅ **IA** : 15+ modules
+4. ✅ **IA** : 15+ modules (optionnels)
 5. ✅ **Qualité** : Tests, documentation
 
 ---
@@ -27,16 +28,17 @@
 ### Architecture
 
 ```python
-# Même code pour simulation et robot réel
+# Même API pour simulation et robot réel (réel = opt-in)
+import os
 from bbia_sim.robot_factory import RobotFactory
 
-# Simulation
+# Simulation (défaut)
 robot_sim = RobotFactory.create_backend("mujoco")
 
-# Robot réel
+# Robot réel — exige BBIA_ALLOW_HARDWARE=1
+os.environ["BBIA_ALLOW_HARDWARE"] = "1"
 robot_real = RobotFactory.create_backend("reachy_mini")
 
-# Même interface, même code !
 robot_sim.goto_target(head=pose, duration=2.0)
 robot_real.goto_target(head=pose, duration=2.0)
 ```
