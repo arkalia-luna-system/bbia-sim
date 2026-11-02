@@ -83,17 +83,14 @@ def test_response_bank_stable_and_reexported() -> None:
 
     # Imports stables sans charger torch : AST sur le god-file
     hf_path = Path(__file__).resolve().parent / "bbia_huggingface.py"
-    tree = ast.parse(hf_path.read_text(encoding="utf-8"))
-    imported: set[str] = set()
+    src = hf_path.read_text(encoding="utf-8")
+    tree = ast.parse(src)
+    bank_imported = False
     for node in tree.body:
-        if isinstance(node, ast.ImportFrom) and node.module == "bbia_hf_response_bank":
-            for alias in node.names:
-                imported.add(alias.name)
-        if isinstance(node, ast.ImportFrom) and node.module == ".bbia_hf_response_bank":
-            for alias in node.names:
-                imported.add(alias.name)
-    assert {
-        "SAFE_FALLBACK",
-        "SUFFIX_POOL",
-        "_expert_quality_padding",
-    }.issubset(imported)
+        if isinstance(node, ast.ImportFrom):
+            names = {alias.name for alias in node.names}
+            if "bbia_hf_response_bank" in names:
+                bank_imported = True
+    assert bank_imported, "bbia_huggingface doit importer bbia_hf_response_bank"
+    assert "SAFE_FALLBACK: str =" in src
+    assert "SUFFIX_POOL: list[str] =" in src

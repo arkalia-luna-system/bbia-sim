@@ -18,6 +18,7 @@ import numpy.typing as npt
 from PIL import Image
 
 from . import bbia_hf_response_bank as _hf_bank
+from .utils.types import ConversationEntry, SentimentDict, SentimentResult
 
 # Réexports stables + aliases typés (garde mypy no-any-return)
 SAFE_FALLBACK: str = _hf_bank.SAFE_FALLBACK
@@ -25,7 +26,6 @@ SUFFIX_POOL: list[str] = _hf_bank.SUFFIX_POOL
 _expert_quality_padding = _hf_bank._expert_quality_padding
 _EXPERT_TEST_PADDING_RESPONSES = _hf_bank._EXPERT_TEST_PADDING_RESPONSES
 _EXPERT_TEST_CANONICAL_RESPONSES = _hf_bank._EXPERT_TEST_CANONICAL_RESPONSES
-from .utils.types import ConversationEntry, SentimentDict, SentimentResult
 
 if TYPE_CHECKING:
     from .bbia_tools import BBIATools
