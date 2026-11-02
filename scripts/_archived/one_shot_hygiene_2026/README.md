@@ -52,5 +52,5 @@ Scripts hors Makefile/CI/`scripts/README.md` (0 référence active).
 
 | Script | Raison |
 |--------|--------|
-| `bbia_safe.sh` | Wrapper start/stop orphelin (0 réf. docs/CI/Makefile) ; `process_manager.py` + `cleanup_all.sh` / `kill_mujoco_viewers.sh` restent actifs |
+| `bbia_safe.sh` | Wrapper start/stop orphelin (0 réf. docs/CI/Makefile) ; `process_manager.py` + `cleanup_all.sh` restent actifs (`kill_mujoco_viewers.sh` archivé depuis) |
 

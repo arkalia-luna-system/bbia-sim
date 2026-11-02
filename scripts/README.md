@@ -43,7 +43,7 @@ mindmap
 
 - ❌ **`start_api.py`** → Utiliser `start_public_api.py` (archivé dans `_archived/`)
 - ❌ **`kill_greedy_processes.sh`** → Utiliser `cleanup_all.sh --ram-only` (archivé dans `_archived/`)
-- ⚠️ **`kill_mujoco_viewers.sh`** → Utiliser `cleanup_all.sh --ram-only` ou `process_manager.py stop` (déprécié mais gardé)
+- ❌ **`kill_mujoco_viewers.sh`** → archivé dans `_archived/` ; utiliser `cleanup_all.sh --ram-only` ou `process_manager.py stop`
 - ❌ **`cleanup_project.sh` / `cleanup_metadata_files.sh` / `smart_process_cleanup.sh`** → archivés dans `_archived/cleanup_fused_2026/` (utiliser `cleanup_all.sh`)
 
 ### 🔄 **Scripts d'Audit Consolidés** (Oct / Nov. 2025)
@@ -424,6 +424,7 @@ scripts/
 
 - **✅ Actifs** : menu `quick_start.sh`, doctor, démos, hardware dry-run Mini, API, `cleanup_all.sh`, verify docs
 - **❌ Archivés récents** : `_archived/cleanup_fused_2026/`, `_archived/one_shot_hygiene_2026/`
+- **❌ Archivés 2 Nov 2026 (suite)** : `kill_mujoco_viewers.sh`, `docs_export/export_*.sh`, `utils/color_converter.py`, `onboarding/check_network.sh`
 - **🚀 Prioritaires** : `quick_start.sh`, `launch_complete_robot.py`, `start_public_api.py`, `cleanup_all.sh`, `verify_docs_complete.py`
 
 ---

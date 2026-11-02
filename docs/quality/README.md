@@ -1,84 +1,29 @@
 # ✅ Quality - Documentation BBIA-SIM
 
-<div align="center">
+**Dernière mise à jour** : 2 Novembre 2026
 
-### 🎯 Qualité, Conformité et Audits
+### Conformité SDK
 
-[![🔧 CI/CD](https://img.shields.io/badge/🔧-CI%2FCD%20Professionnel-blue)](../.github/workflows/ci.yml)
-[![🧪 Tests](https://img.shields.io/badge/🧪-Tests%20Automatisés-green)](#-validation)
-[![📊 Audits](https://img.shields.io/badge/📊-Audits%20Complets-orange)](#-audits)
-[![✅ Conformité](https://img.shields.io/badge/✅-Conformité%20SDK-purple)](#-conformité-sdk)
+- **[Conformité Reachy Mini](compliance/CONFORMITE_REACHY_MINI_COMPLETE.md)** — Tests / checklist SDK
+- **[Checklist finale](compliance/CHECKLIST_FINALE_CONFORMITE.md)**
 
-</div>
+### État courant & audits
 
----
+- **[project-status.md](../reference/project-status.md)** — Tableau de bord (source de vérité tip)
+- **[VERIFICATION_ALIGNEMENT_POLLEN.md](VERIFICATION_ALIGNEMENT_POLLEN.md)** — Alignement Pollen
+- **[INDEX_AUDITS.md](INDEX_AUDITS.md)** — Index (actifs + archivés)
+- **[CHECKLIST_RELEASE_STABLE.md](CHECKLIST_RELEASE_STABLE.md)** — Checklist release
 
-## 📚 Documentation Qualité
+### Performance
 
-### ✅ Conformité SDK
+- **[Watchdog](performance/WATCHDOG_IMPLEMENTATION.md)** — Implémentation watchdog
+- Optimisations déc. 2025 → [`../_archived/quality/performance/`](../_archived/quality/performance/)
 
-<div align="center">
+### Structure
 
-### 🎯 46 tests de conformité SDK officiel
+- `audits/` — pointeurs vers archives historiques
+- `compliance/` — conformité SDK
+- `performance/` — docs perf actives
+- `_archived/quality/` — snapshots hors valeur opérationnelle
 
-[![🔧 SDK](https://img.shields.io/badge/🔧-SDK%20Officiel-blue)](compliance/CONFORMITE_REACHY_MINI_COMPLETE.md)
-[![✅ Validé](https://img.shields.io/badge/✅-100%25%20Conforme-green)](compliance/CONFORMITE_REACHY_MINI_COMPLETE.md)
-
-</div>
-
-**[📋 Conformité Reachy Mini Complète](compliance/CONFORMITE_REACHY_MINI_COMPLETE.md)** - 46 tests de conformité SDK officiel
-
-### 🧪 Validation
-
-<div align="center">
-
-### 🔍 Rapports de validation complets
-
-[![🔍 Audit](https://img.shields.io/badge/🔍-Audit%20Consolidé-orange)](AUDIT_CONSOLIDE_DECEMBRE_2025.md)
-[![📊 Rapports](https://img.shields.io/badge/📊-Rapports%20Détaillés-blue)](AUDIT_CONSOLIDE_DECEMBRE_2025.md)
-
-</div>
-
-**[📋 Audit Consolidé](AUDIT_CONSOLIDE_DECEMBRE_2025.md)** - Rapports consolidés (black, ruff, mypy, bandit)
-
-### 📊 Audits
-
-<div align="center">
-
-### 🔎 Audits complets et état actuel
-
-[![📊 Index](https://img.shields.io/badge/📊-Index%20Audits-purple)](INDEX_AUDITS.md)
-[![📈 État](https://img.shields.io/badge/📈-État%20Actuel-green)](audits/RESUME_ETAT_ACTUEL_BBIA.md)
-
-</div>
-
-- **[📋 Index Audits](INDEX_AUDITS.md)** - Index de tous les audits
-- **[📈 État Actuel BBIA](audits/RESUME_ETAT_ACTUEL_BBIA.md)** - État actuel du projet
-
----
-
-## 🎯 Navigation
-
-<div align="center">
-
-[![🏠 Accueil](https://img.shields.io/badge/🏠-Documentation%20Principale-blue)](../README.md)
-[![📚 Guides](https://img.shields.io/badge/📚-Guides-green)](../guides/)
-[![🔧 Installation](https://img.shields.io/badge/🔧-Installation-orange)](../installation/)
-[![🚀 API](https://img.shields.io/badge/🚀-API%20Reference-purple)](../api/)
-
-</div>
-
-## 📁 Structure des Sous-dossiers
-
-- **`audits/`** - Audits complets et analyses (voir [INDEX_AUDITS.md](INDEX_AUDITS.md))
-- **`compliance/`** - Conformité SDK et checklists
-- **`performance/`** - Optimisations et analyses de performance
-- **`improvements/`** - Améliorations et évolutions
-- **`corrections/`** - Corrections appliquées
-- **`validation/`** - Validation et rapports qualité
-
----
-
-**Dernière mise à jour** : 26 Janvier 2026
-
-**Retour à la [documentation principale](../README.md)**
+**Retour** : [Documentation](../README.md)

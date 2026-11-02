@@ -267,7 +267,7 @@ docs/
 - `docs/guides/GUIDE_DEMARRAGE.md` - Guide de démarrage
 - `docs/guides/GUIDE_AVANCE.md` - Guide technique
 - `docs/development/architecture/ARCHITECTURE_OVERVIEW.md` - Vue d'ensemble architecture
-- `docs/quality/audits/RESUME_ETAT_ACTUEL_BBIA.md` - État actuel détaillé
+- `docs/reference/project-status.md` - État actuel détaillé
 
 ### Scripts principaux
 

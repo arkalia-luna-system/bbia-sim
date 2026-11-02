@@ -108,8 +108,9 @@ flowchart TB
 
 ### Qualité Code
 
-- 🎯 **[Performance](quality/performance/OPTIMISATIONS_PERFORMANCE_DEC2025.md)** — Optimisations
-- ✅ **[Audit Consolidé](quality/AUDIT_CONSOLIDE_DECEMBRE_2025.md)** — Rapports consolidés
+- 🎯 **[Watchdog / perf](quality/performance/WATCHDOG_IMPLEMENTATION.md)** — Perf active
+- ✅ **[Index Audits](quality/INDEX_AUDITS.md)** — Actifs + historiques archivés
+- 📦 **[Archives doc](_archived/README.md)** — Snapshots hors valeur tip
 
 ---
 
@@ -120,8 +121,6 @@ flowchart TB
 
 ---
 
----
-
 **💡 Aide** : [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) • [Troubleshooting](getting-started/troubleshooting.md)
 
-**Dernière mise à jour** : 17 Août 2026
+**Dernière mise à jour** : 2 Novembre 2026

@@ -111,7 +111,7 @@ Légende : **✅ Même / Aligné** = au même niveau fonctionnel ou mieux ; **�
 ## 10. Documentation
 
 - **Pollen** : doc sur Hugging Face ; README, install, wireless, reflash macOS, etc.
-- **BBIA** : docs hardware/quality/reference à jour (v1.9.0, 17 août 2026) ; [ISSUES_POLLEN_IMPACT_BBIA.md](../hardware/ISSUES_POLLEN_IMPACT_BBIA.md), [ANALYSE_REPO_OFFICIEL_JANVIER_2026.md](../hardware/ANALYSE_REPO_OFFICIEL_JANVIER_2026.md), conformité, audits.
+- **BBIA** : docs hardware/quality/reference à jour (v1.9.0, 17 août 2026) ; [ISSUES_POLLEN_IMPACT_BBIA.md](../hardware/ISSUES_POLLEN_IMPACT_BBIA.md), [ANALYSE_REPO_OFFICIEL_JANVIER_2026.md](../_archived/hardware/ANALYSE_REPO_OFFICIEL_JANVIER_2026.md), conformité, audits.
 
 **Verdict** : ✅ **À jour et cohérent.**
 

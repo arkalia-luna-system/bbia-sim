@@ -80,20 +80,22 @@ def check_documentation() -> bool:
     """Vérifie que la documentation est disponible."""
     print_header("2️⃣ VÉRIFICATION DE LA DOCUMENTATION")
 
-    docs_path = Path(__file__).parent.parent.parent / "docs" / "hardware"
+    docs_root = Path(__file__).parent.parent.parent / "docs"
     required_docs = [
-        "GUIDE_PREVENTION_PROBLEMES_MOTEURS.md",
-        "PROBLEME_MOTEURS_QC_BATCH_DEC2025.md",
-        "SUIVI_COMMUNICATION_POLLEN.md",
+        docs_root / "hardware" / "GUIDE_PREVENTION_PROBLEMES_MOTEURS.md",
+        docs_root
+        / "_archived"
+        / "hardware"
+        / "PROBLEME_MOTEURS_QC_BATCH_DEC2025.md",
+        docs_root / "hardware" / "SUIVI_COMMUNICATION_POLLEN.md",
     ]
 
     all_ok = True
-    for doc in required_docs:
-        doc_path = docs_path / doc
+    for doc_path in required_docs:
         if doc_path.exists():
-            print(f"✅ {doc}")
+            print(f"✅ {doc_path.relative_to(docs_root)}")
         else:
-            print(f"❌ {doc} - MANQUANT")
+            print(f"❌ {doc_path} - MANQUANT")
             all_ok = False
 
     if all_ok:

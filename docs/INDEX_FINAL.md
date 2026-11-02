@@ -49,8 +49,8 @@
 ### ✅ QA / Tests
 
 1. [Guide de Test](development/testing.md) — Guide
-2. [Index Audits](quality/INDEX_AUDITS.md) — Tous les audits
-3. [Audit Consolidé](quality/AUDIT_CONSOLIDE_DECEMBRE_2025.md) — Rapports consolidés
+2. [Index Audits](quality/INDEX_AUDITS.md) — Actifs + archives historiques
+3. [État projet](reference/project-status.md) — Tableau de bord tip
 
 ### 📊 Chef de Projet
 
@@ -81,8 +81,7 @@
 ### ✅ Qualité & Conformité
 
 - [Conformité Reachy-Mini](quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md) — Conformité SDK
-- [Audit Consolidé](quality/AUDIT_CONSOLIDE_DECEMBRE_2025.md) — Rapports consolidés
-- [Index Audits](quality/INDEX_AUDITS.md) — Tous les audits
+- [Index Audits](quality/INDEX_AUDITS.md) — Actifs + [`_archived/quality/`](_archived/quality/)
 - [Pipeline CI/CD](deployment/PIPELINE_CI.md) — Intégration continue
 
 ### 🧠 Intelligence & IA
@@ -107,8 +106,8 @@
 
 ### ⚡ Performance
 
-- [Optimisations Performance](quality/performance/OPTIMISATIONS_PERFORMANCE_DEC2025.md) — Optimisations
 - [Watchdog](quality/performance/WATCHDOG_IMPLEMENTATION.md) — Implémentation watchdog
+- [Optimisations (archivé déc. 2025)](_archived/quality/performance/OPTIMISATIONS_PERFORMANCE_DEC2025.md)
 
 ### 🎯 Simulation
 

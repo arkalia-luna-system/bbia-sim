@@ -17,7 +17,7 @@
 
 - État par axe (référence): `docs/reference/project-status.md`
 - Observabilité (logs JSON, /metrics, liveness/readiness): `docs/observabilite/OBSERVABILITE.md`
-- Performance (analyses, optimisations): `docs/quality/performance/OPTIMISATIONS_PERFORMANCE_DEC2025.md`
+- Performance (analyses, optimisations): `docs/_archived/quality/performance/OPTIMISATIONS_PERFORMANCE_DEC2025.md`
 
 ## API / SDK / Front
 
@@ -35,7 +35,7 @@
 - Audit IA modules pré-entraînés: `docs/ai/modules.md`
 - Intelligence LLM: `docs/ai/llm.md`
 - Analyse voix: `docs/ai/voice.md`
-- Améliorations IA: Voir `docs/quality/AUDIT_CONSOLIDE_DECEMBRE_2025.md` pour l'état actuel
+- Améliorations IA / état tip: Voir `docs/reference/project-status.md` (audit consolidé déc. 2025 archivé)
 
 ## Dashboard / UX
 

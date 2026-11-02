@@ -27,7 +27,7 @@
 
 1. **[Guide de Test](../development/testing.md)** — Guide complet
 2. **[Index Audits](../quality/INDEX_AUDITS.md)** — Tous les audits
-3. **[Audit Consolidé](../quality/AUDIT_CONSOLIDE_DECEMBRE_2025.md)** — Rapports consolidés
+3. **[État projet](../reference/project-status.md)** — Tableau de bord tip (audits datés → `_archived/`)
 
 ---
 
@@ -71,7 +71,7 @@ docs/
 
 **Performance**
 
-- [Optimisations Performance](../quality/performance/OPTIMISATIONS_PERFORMANCE_DEC2025.md)
+- [Optimisations Performance](../_archived/quality/performance/OPTIMISATIONS_PERFORMANCE_DEC2025.md)
 
 ---
 

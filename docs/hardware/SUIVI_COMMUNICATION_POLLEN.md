@@ -174,7 +174,7 @@
 - **Formulaire de remplacement** : https://forms.gle/JdhMzadeCnbynw7Q6
 - **Support Pollen Discord** : #support
 - **Documentation BBIA** :
-  - `PROBLEME_MOTEURS_QC_BATCH_DEC2025.md` - Détails problèmes moteurs
+  - `docs/_archived/hardware/PROBLEME_MOTEURS_QC_BATCH_DEC2025.md` - Détails problèmes moteurs
   - `REACHY_MINI_SDK_v1.2.4.md` - Version SDK recommandée
   - `REACHY_MINI_SDK_v1.2.6_v1.2.7.md` - Nouvelles releases (ne pas mettre à jour)
 

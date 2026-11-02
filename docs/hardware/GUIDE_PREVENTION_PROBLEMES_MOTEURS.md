@@ -274,8 +274,8 @@ Ce guide fournit une **checklist complète** et des **procédures de prévention
 - **Support Pollen** : <mailto:sales@pollen-robotics.com>
 - **Discord Pollen** : #support
 - **Documentation BBIA** :
-  - `PROBLEME_MOTEURS_QC_BATCH_DEC2025.md`
-  - `ANALYSE_REPO_OFFICIEL_JANVIER_2026.md`
+  - `docs/_archived/hardware/PROBLEME_MOTEURS_QC_BATCH_DEC2025.md`
+  - `docs/_archived/hardware/ANALYSE_REPO_OFFICIEL_JANVIER_2026.md`
   - `REACHY_MINI_SDK_v1.2.4.md`
 
 ---
