@@ -6,6 +6,8 @@ Pas de hardware / e2e / ML. Exécutables en CI.
 
 from __future__ import annotations
 
+import pytest
+
 from bbia_sim.robot_api import RobotAPI
 from bbia_sim.robot_factory import RobotFactory
 
@@ -66,3 +68,39 @@ def test_smoke_backend_info_switching_mock() -> None:
 def test_normalize_backend_aliases_smoke() -> None:
     assert RobotFactory._normalize_backend_type("MuJoCo") == "mujoco"
     assert RobotFactory._normalize_backend_type("reachy_mini") == "reachy_mini"
+
+
+def test_smoke_invalid_joint_rejected_mock() -> None:
+    robot = _SmokeRobot(n_joints=7)
+    assert robot.connect() is True
+    assert robot.set_joint_pos("invalid_joint", 0.1) is False
+    assert robot.get_joint_pos("invalid_joint") is None
+
+
+def test_smoke_factory_unknown_backend_returns_none(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Équivalent mock du smoke subprocess ``--backend invalid_backend``."""
+    monkeypatch.delenv("BBIA_ALLOW_HARDWARE", raising=False)
+    assert RobotFactory.create_backend("invalid_backend") is None
+
+
+def test_smoke_factory_auto_without_hardware_uses_mujoco(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.delenv("BBIA_ALLOW_HARDWARE", raising=False)
+    backend = RobotFactory.create_backend("auto")
+    assert backend is not None
+    info = RobotFactory.get_backend_info("mujoco")
+    assert info["name"]
+
+
+def test_smoke_performance_path_mock() -> None:
+    """Remplace le smoke performance subprocess (pose joints + step)."""
+    robot = _SmokeRobot(n_joints=7)
+    assert robot.connect() is True
+    for name in robot.get_available_joints():
+        assert robot.set_joint_pos(name, 0.05) is True
+        assert robot.step() is True
+    assert robot.emergency_stop() is True
+    assert robot.disconnect() is True

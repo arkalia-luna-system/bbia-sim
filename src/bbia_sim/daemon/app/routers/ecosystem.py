@@ -283,8 +283,11 @@ async def apply_emotion(
         emotions_module.current_emotion = emotion
         emotions_module.emotion_intensity = intensity
 
-        # Simuler les joints affectés
-        joints_affected = ["yaw_body"]  # Joint principal pour les émotions
+        # Joints affectés : paramètre API `joint` honoré s'il est fourni
+        if joint is not None and str(joint).strip():
+            joints_affected = [str(joint).strip()]
+        else:
+            joints_affected = ["yaw_body"]
 
         return EmotionResponse(
             emotion=emotion,

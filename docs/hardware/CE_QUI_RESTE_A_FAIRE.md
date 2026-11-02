@@ -7,6 +7,12 @@
 
 ---
 
+> **Archive historique (26 jan. 2026)** — suivi moteur QC batch.
+> Pour l’état **firmware / hardware Pollen vs mitigations BBIA** (à jour) :
+> voir [`POLLEN_ISSUES_ANTICIPATION.md`](POLLEN_ISSUES_ANTICIPATION.md).
+> Score « hardware Pollen » volontairement ≤7/10 tant que yaw/sleep/Wireless/GStreamer host restent exposés upstream.
+
+
 ## 🎯 **SITUATION ACTUELLE**
 
 ### ✅ **Ce qui est fait**

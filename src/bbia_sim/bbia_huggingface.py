@@ -1646,11 +1646,13 @@ class BBIAHuggingFace:
         Args:
             user_message: Message utilisateur
             use_context: Utiliser contexte historique
+            enable_tools: Réservé (API publique) — outils non branchés ici
 
         Returns:
             Réponse générée par LLM
 
         """
+        _ = enable_tools  # API stable ; outils non utilisés dans ce chemin
         try:
             if not self.chat_model or not self.chat_tokenizer:
                 msg = "LLM non chargé"

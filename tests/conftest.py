@@ -162,6 +162,9 @@ def acquire_lock(recursion_level: int = 0) -> bool:
     Returns:
         True si le lock est acquis, False sinon.
     """
+    # CI / ExFAT / runs ciblés : désactiver lock (+ handlers SIGINT/SIGTERM)
+    if os.environ.get("BBIA_DISABLE_PYTEST_LOCK", "0") == "1":
+        return True
     # Protection contre récursion infinie
     if recursion_level >= _MAX_RECURSION:
         print(

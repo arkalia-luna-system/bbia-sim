@@ -8,6 +8,7 @@
 > BBIA **n’a pas corrigé** le firmware ni le daemon Pollen. Ce document classe l’impact
 > et décrit les **gardes / docs / tests** côté BBIA pour ne pas reproduire les bugs
 > ou pour les contourner quand la surface est exposée.
+> **Score domaine « hardware Pollen »** : **≤7/10** volontaire (correctifs firmware hors BBIA).
 > **Honnêteté** : plusieurs symptômes (droop sleep, oscillation yaw servo, GStreamer
 > host, relay Wireless) restent **exposés firmware / hardware Pollen**.
 

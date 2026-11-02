@@ -1,24 +1,14 @@
-# 📊 Rapports de Couverture de Code
+# Rapports de couverture de code
 
-Ce dossier contient les rapports de couverture de code générés par pytest et coverage.
-
-## Fichiers
-
-- `coverage.xml` - Rapport XML de couverture (généré automatiquement)
-- `coverage.json` - Rapport JSON de couverture
-- `coverage_report.json` - Rapport détaillé de couverture
-- `coverage_analysis.xml` - Analyse XML de couverture
-- `test_results.xml` - Résultats des tests au format XML
+Ce dossier accueille les artefacts **générés localement / CI** (XML/JSON).
 
 ## Génération
-
-Ces fichiers sont générés automatiquement lors de l'exécution des tests :
 
 ```bash
 pytest --cov=src/bbia_sim --cov-report=xml --cov-report=json
 ```
 
-## Note
+## Git
 
-Ces fichiers sont ignorés par Git (voir `.gitignore`) et sont régénérés à chaque exécution des tests.
-
+Les `*.xml` / `*.json` de couverture **ne sont pas versionnés** (voir `.gitignore`).
+Seul ce `README.md` est suivi. Régénérer les rapports à chaque run de tests.

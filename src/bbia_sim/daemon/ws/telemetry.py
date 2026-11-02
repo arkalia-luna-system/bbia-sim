@@ -292,13 +292,17 @@ async def websocket_endpoint(websocket: WebSocket, token: str | None = None) -> 
 @router.get("/telemetry/info")
 async def get_telemetry_info() -> dict[str, Any]:
     """Informations sur le service de télémétrie."""
+    from bbia_sim.daemon.config import settings
+
+    freq = float(settings.telemetry_frequency)
     return {
         "service": "WebSocket Telemetry",
         "version": "1.0.0",
         "status": "running",
         "connections": len(manager.active_connections),
         "broadcasting": manager.is_broadcasting,
-        "frequency": "10Hz",
+        "frequency": f"{freq:g}Hz",
+        "frequency_hz": freq,
         "endpoint": "/ws/telemetry",
         "timestamp": datetime.now().isoformat(),
     }

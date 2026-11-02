@@ -8,6 +8,20 @@
 **Version** : 1.4.0 • **Dernière mise à jour** : 2 Novembre 2026
 **Prêt pour arrivée robot** 🤖
 
+**Mise à jour 2 Novembre 2026 (soir)** : passe ≥9/10 domaines logiciels — floors `fastapi>=0.137.1` / `starlette>=1.3.1` / `requests>=2.33.1` / `httpx` alignés ; Dependabot → `develop` ; smokes/slices **mockés CI** ; télémétrie `frequency` = settings ; joint ecosystem honoré ; artefacts coverage XML **dé-trackés**.
+
+**Scores subjectifs domaines (2 nov. 2026)** :
+
+| Domaine | Avant (~tip `55db1bdf`) | Après | Note |
+|:--------|:-----------------------:|:-----:|:-----|
+| Sécu / Dependabot | ~8 | **9** | Pins OK sur `develop` ; alertes GitHub restent ouvertes tant que `main` non mergé |
+| Tests | ~8 | **9** | Skips smoke/slices subprocess remplacés par mocks CI |
+| Qualité code | ~8.5 | **9** | Surfaces daemon/ws/guards/HF nettoyées |
+| Docs | ~8.5 | **9** | Status + honesty Pollen à jour ; MD archive banner |
+| Bugs | ~8.5 | **9** | Telemetry freq, joint ecosystem, factory/media gardés |
+| DX | ~8 | **9** | Plus de coverage.xml tracké ; conftest cleanup non régressé |
+| Hardware Pollen | ≤7 | **≤7** | Exposé firmware (yaw/sleep/Wireless/GStreamer) — normal |
+
 **Mise à jour 2 Novembre 2026** : Hygiène BBIA (auth WS `compare_digest`, HF space-id allowlist, régressions `src/` branchées pytest, cadence télémétrie configurable). **Honnêteté firmware** : BBIA mitige / documente ; yaw/sleep/Wireless/GStreamer host restent **exposés Pollen** — voir [`docs/hardware/POLLEN_ISSUES_ANTICIPATION.md`](../hardware/POLLEN_ISSUES_ANTICIPATION.md).
 
 **Mise à jour 27 Octobre 2026** : Alignement Pollen v1.13.0 (MISSION 026)
