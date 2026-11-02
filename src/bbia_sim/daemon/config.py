@@ -9,7 +9,9 @@ from pydantic import model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # Token publié dans .env.example / docker-compose — interdit en production.
-DEFAULT_DEV_API_TOKEN = "bbia-secret-key-dev"
+DEFAULT_DEV_API_TOKEN = (
+    "bbia-secret-key-dev"  # nosec B105 — défaut dev connu, refusé en prod
+)
 
 # Alias documentés (compose, .env.example, README) → champs Settings (env_prefix BBIA_).
 # pydantic-settings n'applique pas AliasChoices de façon fiable avec env_prefix ; on

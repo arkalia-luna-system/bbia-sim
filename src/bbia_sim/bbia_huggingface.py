@@ -4,7 +4,6 @@ Intégration avancée avec Hugging Face Hub pour enrichir les capacités IA de B
 """
 
 import logging
-import operator
 import os
 import threading
 import time
@@ -15,8 +14,11 @@ import numpy as np
 import numpy.typing as npt
 from PIL import Image
 
+from . import bbia_hf_chat_engine as _hf_chat_engine
 from . import bbia_hf_chat_postprocess as _hf_post
 from . import bbia_hf_chat_tools as _hf_chat_tools
+from . import bbia_hf_media_inference as _hf_media
+from . import bbia_hf_model_memory as _hf_memory
 from . import bbia_hf_personality_response as _hf_personality
 from . import bbia_hf_response_bank as _hf_bank
 from . import bbia_hf_tool_orchestration as _hf_orch
@@ -312,105 +314,6 @@ class BBIAHuggingFace:
         except (TypeError, KeyError, IndexError) as e:
             logger.warning("Erreur inattendue initialisation BBIAChat: %s", e)
             self.bbia_chat = None
-
-    def _load_vision_model(self, model_name: str) -> bool:
-        """Charge un modèle de vision (CLIP ou BLIP)."""
-        if "clip" in model_name.lower():
-            processor: Any = CLIPProcessor.from_pretrained(  # nosec B615
-                model_name,
-                cache_dir=self.cache_dir,
-                revision="main",
-            )
-            model = CLIPModel.from_pretrained(  # nosec B615
-                model_name,
-                cache_dir=self.cache_dir,
-                revision="main",
-            ).to(self.device)
-            self.processors[f"{model_name}_processor"] = processor
-            self.models[f"{model_name}_model"] = model
-            return True
-        if "blip" in model_name.lower():
-            blip_processor: Any = BlipProcessor.from_pretrained(  # nosec B615
-                model_name,
-                cache_dir=self.cache_dir,
-                revision="main",
-            )
-            model = BlipForConditionalGeneration.from_pretrained(  # nosec B615
-                model_name,
-                cache_dir=self.cache_dir,
-                revision="main",
-            ).to(self.device)
-            self.processors[f"{model_name}_processor"] = blip_processor
-            self.models[f"{model_name}_model"] = model
-            return True
-        return False
-
-    def _load_audio_model(self, model_name: str) -> bool:
-        """Charge un modèle audio (Whisper)."""
-        if "whisper" in model_name.lower():
-            whisper_processor = WhisperProcessor.from_pretrained(  # nosec B615
-                model_name,
-                cache_dir=self.cache_dir,
-                revision="main",
-            )
-            model = WhisperForConditionalGeneration.from_pretrained(  # nosec B615
-                model_name,
-                cache_dir=self.cache_dir,
-                revision="main",
-            ).to(self.device)
-            self.processors[f"{model_name}_processor"] = whisper_processor
-            self.models[f"{model_name}_model"] = model
-            return True
-        return False
-
-    def _load_chat_model(self, model_name: str) -> bool:
-        """Charge un modèle LLM conversationnel."""
-        try:
-            # isort: off
-            from transformers import AutoModelForCausalLM
-            from transformers import AutoTokenizer
-
-            # isort: on
-
-            logger.info(
-                "📥 Chargement LLM %s (peut prendre 1-2 minutes)...",
-                model_name,
-            )
-            self.chat_tokenizer = AutoTokenizer.from_pretrained(
-                model_name,
-                cache_dir=self.cache_dir,
-                revision="main",
-            )  # nosec B615
-
-            if (
-                self.chat_tokenizer is not None
-                and self.chat_tokenizer.pad_token is None
-            ):
-                self.chat_tokenizer.pad_token = self.chat_tokenizer.eos_token
-
-            self.chat_model = AutoModelForCausalLM.from_pretrained(  # nosec B615
-                model_name,
-                cache_dir=self.cache_dir,
-                revision="main",
-                device_map="auto",
-                torch_dtype=(torch.float16 if self.device != "cpu" else torch.float32),
-            )
-            logger.info("✅ LLM %s chargé avec succès", model_name)
-            self.use_llm_chat = True
-            return True
-        except (ImportError, RuntimeError, OSError, ValueError) as e:
-            logger.warning("⚠️  Échec de chargement LLM %s: %s", model_name, e)
-            logger.info("💡 Fallback activé: réponses enrichies (stratégie règles v1)")
-            return False
-        except (TypeError, KeyError, IndexError) as e:
-            logger.warning("⚠️  Erreur inattendue chargement LLM %s: %s", model_name, e)
-            logger.info("💡 Fallback activé: réponses enrichies (stratégie règles v1)")
-            # Nettoyage défensif pour éviter des états partiels
-            self.chat_model = None
-            return False
-            self.chat_tokenizer = None
-            self.use_llm_chat = False
-            return False
 
     def _load_multimodal_model(self, model_name: str) -> bool:
         """Charge un modèle multimodal (BLIP VQA, SmolVLM, Moondream2)."""
@@ -729,339 +632,41 @@ class BBIAHuggingFace:
         image: str | Image.Image | npt.NDArray[np.uint8],
         model_name: str = "blip",
     ) -> str:
-        """Décrit une image avec BLIP ou CLIP.
-
-        Args:
-            image: Image à décrire (chemin, PIL Image, ou numpy array)
-            model_name: Nom du modèle à utiliser
-
-        Returns:
-            Description textuelle de l'image
-
-        """
-        try:
-            # Conversion de l'image
-            if isinstance(image, str):
-                image = Image.open(image)
-            elif isinstance(image, np.ndarray):
-                image = Image.fromarray(image)
-
-            if "blip" in model_name.lower():
-                processor_key = f"{model_name}_processor"
-                model_key = f"{model_name}_model"
-
-                if processor_key not in self.processors or model_key not in self.models:
-                    self.load_model(model_name, "vision")
-
-                processor = self.processors[processor_key]
-                model = self.models[model_key]
-
-                # OPTIMISATION RAM: Mettre à jour usage modèle
-                self._update_model_usage(model_key)
-
-                inputs = processor(image, return_tensors="pt").to(self.device)
-                out = model.generate(**inputs, max_length=50)
-                description = processor.decode(out[0], skip_special_tokens=True)
-
-                return str(description)
-
-            if "clip" in model_name.lower():
-                processor_key = f"{model_name}_processor"
-                model_key = f"{model_name}_model"
-
-                if processor_key not in self.processors or model_key not in self.models:
-                    self.load_model(model_name, "vision")
-
-                processor = self.processors[processor_key]
-                model = self.models[model_key]
-
-                inputs = processor(
-                    text=["a photo of"],
-                    images=image,
-                    return_tensors="pt",
-                    padding=True,
-                ).to(self.device)
-                outputs = model(**inputs)
-                logits_per_image = outputs.logits_per_image
-                probs = logits_per_image.softmax(dim=1)
-
-                return f"CLIP analysis: {probs.cpu().numpy()}"
-
-            if "smolvlm" in model_name.lower() or "moondream" in model_name.lower():
-                # SmolVLM2 / Moondream2 (alternative gratuite à gpt-realtime)
-                processor_key = f"{model_name}_processor"
-                model_key = f"{model_name}_model"
-
-                if processor_key not in self.processors or model_key not in self.models:
-                    self.load_model(model_name, "multimodal")
-
-                processor = self.processors[processor_key]
-                model = self.models[model_key]
-
-                # Prompt pour description
-                prompt = "Décris cette image en détail."
-
-                inputs = processor(images=image, text=prompt, return_tensors="pt").to(
-                    self.device,
-                )
-
-                with torch.no_grad():
-                    outputs = model.generate(**inputs, max_new_tokens=100)
-
-                description = processor.decode(outputs[0], skip_special_tokens=True)
-                return str(description.strip())
-
-            return (
-                "Erreur (describe_image): modèle non supporté — vérifiez le nom choisi"
-            )
-
-        except (ValueError, RuntimeError, AttributeError, OSError):
-            logger.exception("❌ Erreur description image:")
-            return "Erreur (describe_image): échec de génération de description d'image"
-        except (TypeError, IndexError) as e:
-            logger.exception("❌ Erreur description image (type/index/os): %s", e)
-            return "Erreur (describe_image): échec de génération de description d'image"
-        except (
-            Exception
-        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
-            logger.exception("❌ Erreur inattendue description image: %s", e)
-            return "Erreur (describe_image): échec de génération de description d'image"
+        """Décrit une image (délègue à ``bbia_hf_media_inference``)."""
+        return cast(str, _hf_media.describe_image(self, image, model_name))
 
     def analyze_sentiment(
         self,
         text: str,
         model_name: str = "cardiffnlp/twitter-roberta-base-sentiment-latest",
     ) -> SentimentResult:
-        """Analyse le sentiment d'un texte.
-
-        Args:
-            text: Texte à analyser
-            model_name: Nom du modèle à utiliser (modèle Hugging Face complet)
-
-        Returns:
-            Dictionnaire avec sentiment et score
-
-        """
-        try:
-            model_key = f"{model_name}_pipeline"
-
-            if model_key not in self.models:
-                self.load_model(model_name, "nlp")
-
-            pipeline = self.models[model_key]
-
-            # Tronquer le texte si nécessaire (limite ~500 tokens pour RoBERTa)
-            # Utiliser le tokenizer du pipeline pour tronquer correctement
-            max_tokens = 512  # Limite RoBERTa
-            max_chars = 2000  # Fallback: ~500 tokens pour la plupart des modèles
-            text_truncated = text
-
-            try:
-                # Récupérer le tokenizer du pipeline
-                tokenizer = pipeline.tokenizer
-                if tokenizer is not None:
-                    # Tokeniser et tronquer
-                    tokens = tokenizer.encode(
-                        text,
-                        add_special_tokens=True,
-                        max_length=max_tokens,
-                        truncation=True,
-                    )
-                    text_truncated = tokenizer.decode(tokens, skip_special_tokens=True)
-                else:
-                    # Fallback: tronquer par caractères
-                    text_truncated = text[:max_chars] if len(text) > max_chars else text
-            except (AttributeError, TypeError):
-                # Fallback: tronquer par caractères si tokenizer non accessible
-                text_truncated = text[:max_chars] if len(text) > max_chars else text
-
-            result: Any = pipeline(text_truncated)
-
-            return {
-                "text": text_truncated,
-                "sentiment": str(result[0]["label"]),
-                "score": float(result[0]["score"]),
-                "model": model_name,
-            }
-
-        except (ValueError, RuntimeError, AttributeError, KeyError) as e:
-            logger.exception("❌ Erreur analyse sentiment:")
-            return {"error": str(e)}
-        except (TypeError, IndexError, OSError) as e:
-            logger.exception("❌ Erreur analyse sentiment (type/index/os): %s", e)
-            return {"error": str(e)}
-        except (
-            Exception
-        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
-            logger.exception("❌ Erreur inattendue analyse sentiment: %s", e)
-            return {"error": str(e)}
+        """Analyse le sentiment (délègue à ``bbia_hf_media_inference``)."""
+        return cast(
+            SentimentResult, _hf_media.analyze_sentiment(self, text, model_name)
+        )
 
     def analyze_emotion(
-        self,
-        text: str,
-        model_name: str = "emotion",
+        self, text: str, model_name: str = "emotion"
     ) -> SentimentResult:
-        """Analyse les émotions dans un texte.
+        """Analyse l'émotion (délègue à ``bbia_hf_media_inference``)."""
+        return cast(SentimentResult, _hf_media.analyze_emotion(self, text, model_name))
 
-        Args:
-            text: Texte à analyser
-            model_name: Nom du modèle à utiliser
-
-        Returns:
-            Dictionnaire avec émotion détectée et score
-
-        """
-        try:
-            model_key = f"{model_name}_pipeline"
-
-            if model_key not in self.models:
-                self.load_model(model_name, "nlp")
-
-            pipeline = self.models[model_key]
-            result = pipeline(text)
-
-            return {
-                "text": text,
-                "emotion": result[0]["label"],
-                "score": result[0]["score"],
-                "model": model_name,
-            }
-
-        except (ValueError, RuntimeError, AttributeError, KeyError) as e:
-            logger.exception("❌ Erreur analyse émotion:")
-            return {"error": str(e)}
-        except (TypeError, IndexError, OSError) as e:
-            logger.exception("❌ Erreur analyse émotion (type/index/os): %s", e)
-            return {"error": str(e)}
-        except (
-            Exception
-        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
-            logger.exception("❌ Erreur inattendue analyse émotion: %s", e)
-            return {"error": str(e)}
-
-    def transcribe_audio(self, audio_path: str, model_name: str = "whisper") -> str:
-        """Transcrit un fichier audio avec Whisper.
-
-        Args:
-            audio_path: Chemin vers le fichier audio
-            model_name: Nom du modèle Whisper à utiliser
-
-        Returns:
-            Texte transcrit
-
-        """
-        try:
-            processor_key = f"{model_name}_processor"
-            model_key = f"{model_name}_model"
-
-            if processor_key not in self.processors or model_key not in self.models:
-                self.load_model(model_name, "audio")
-
-            processor = self.processors[processor_key]
-            model = self.models[model_key]
-
-            # Chargement de l'audio
-            audio, sample_rate = processor.load_audio(audio_path)
-            inputs = processor(
-                audio,
-                sampling_rate=sample_rate,
-                return_tensors="pt",
-            ).to(self.device)
-
-            # Transcription
-            with torch.no_grad():
-                predicted_ids = model.generate(inputs["input_features"])
-
-            transcription = processor.batch_decode(
-                predicted_ids,
-                skip_special_tokens=True,
-            )[0]
-
-            return str(transcription)
-
-        except (OSError, RuntimeError, ValueError, AttributeError):
-            logger.exception("❌ Erreur transcription audio:")
-            return "Erreur (transcribe_audio): problème pendant la transcription audio"
-        except (TypeError, IndexError) as e:
-            logger.exception("❌ Erreur transcription audio (type/index/os): %s", e)
-            return "Erreur (transcribe_audio): problème pendant la transcription audio"
-        except (
-            Exception
-        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
-            logger.exception("❌ Erreur inattendue transcription audio: %s", e)
-            return "Erreur (transcribe_audio): problème pendant la transcription audio"
+    def transcribe_audio(
+        self,
+        audio_path: str,
+        model_name: str = "whisper",
+    ) -> str:
+        """Transcrit l'audio (délègue à ``bbia_hf_media_inference``)."""
+        return cast(str, _hf_media.transcribe_audio(self, audio_path, model_name))
 
     def answer_question(
         self,
-        image: str | Image.Image,
+        image: str | Image.Image | npt.NDArray[np.uint8],
         question: str,
         model_name: str = "blip_vqa",
     ) -> str:
-        """Répond à une question sur une image (VQA).
-
-        Args:
-            image: Image à analyser
-            question: Question à poser
-            model_name: Nom du modèle VQA à utiliser
-
-        Returns:
-            Réponse à la question
-
-        """
-        try:
-            # Conversion de l'image
-            if isinstance(image, str):
-                image = Image.open(image)
-            elif isinstance(image, np.ndarray):
-                image = Image.fromarray(image)
-
-            processor_key = f"{model_name}_processor"
-            model_key = f"{model_name}_model"
-
-            if processor_key not in self.processors or model_key not in self.models:
-                self.load_model(model_name, "multimodal")
-
-            # Vérifier que les clés existent après le chargement
-            if processor_key not in self.processors:
-                # Pas de log en CI (erreur attendue si dépendance optionnelle manquante)
-                import os
-
-                if os.environ.get("CI", "false").lower() != "true":
-                    logger.error(
-                        f"❌ Processeur {processor_key} "
-                        f"non disponible après chargement",
-                    )
-                return "Erreur (answer_question): processeur non disponible"
-            if model_key not in self.models:
-                # Pas de log en CI (erreur attendue si dépendance optionnelle manquante)
-                import os
-
-                if os.environ.get("CI", "false").lower() != "true":
-                    logger.error(
-                        f"❌ Modèle {model_key} non disponible après chargement"
-                    )
-                return "Erreur (answer_question): modèle non disponible"
-
-            processor = self.processors[processor_key]
-            model = self.models[model_key]
-
-            inputs = processor(image, question, return_tensors="pt").to(self.device)
-            out = model.generate(**inputs, max_length=50)
-            answer = processor.decode(out[0], skip_special_tokens=True)
-
-            return str(answer)
-
-        except (ValueError, RuntimeError, AttributeError, OSError):
-            logger.exception("❌ Erreur VQA:")
-            return "Erreur (answer_question): échec de l'analyse visuelle (VQA)"
-        except (TypeError, IndexError) as e:
-            logger.exception("❌ Erreur VQA (type/index/os): %s", e)
-            return "Erreur (answer_question): échec de l'analyse visuelle (VQA)"
-        except (
-            Exception
-        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
-            logger.exception("❌ Erreur inattendue VQA: %s", e)
-            return "Erreur (answer_question): échec de l'analyse visuelle (VQA)"
+        """VQA (délègue à ``bbia_hf_media_inference``)."""
+        return cast(str, _hf_media.answer_question(self, image, question, model_name))
 
     def get_available_models(self) -> dict[str, list[str]]:
         """Retourne la liste des modèles disponibles par catégorie."""
@@ -1078,209 +683,26 @@ class BBIAHuggingFace:
         return list(self.models.keys())
 
     def enable_llm_chat(self, model_name: str = "mistral") -> bool:
-        """Active le LLM conversationnel (optionnel, lourd).
-
-        Args:
-            model_name: Modèle LLM à charger (alias: "mistral", "llama",
-                "phi2", "tinyllama"
-                       ou ID complet Hugging Face)
-
-        Returns:
-            True si chargé avec succès
-
-        Note:
-            - Mistral 7B / Llama 3 8B : ~14-16GB RAM (pas pour RPi 5)
-            - Phi-2 : ~5GB RAM (recommandé pour RPi 5)
-            - TinyLlama : ~2GB RAM (ultra-léger)
-            - Premier chargement : 1-2 minutes
-            - Support Apple Silicon (MPS) automatique
-
-        """
-        # Résoudre alias vers ID complet si nécessaire
-        resolved_name = self._resolve_model_name(model_name, "chat")
-        logger.info(
-            "📥 Activation LLM conversationnel: %s → %s",
-            model_name,
-            resolved_name,
-        )
-        success = self.load_model(resolved_name, model_type="chat")
-        if success:
-            logger.info(
-                "✅ LLM conversationnel activé - Conversations intelligentes "
-                "disponibles",
-            )
-        else:
-            logger.warning("""⚠️  LLM non chargé - Utilisation réponses enrichies""")
-        return success
+        """Active le LLM chat (délègue à ``bbia_hf_model_memory``)."""
+        return cast(bool, _hf_memory.enable_llm_chat(self, model_name))
 
     def disable_llm_chat(self) -> None:
-        """Désactive le LLM conversationnel pour libérer mémoire."""
-        # Nettoyage défensif même si chargement a partiellement échoué
-        try:
-            if hasattr(self, "chat_model") and self.chat_model is not None:
-                del self.chat_model
-        except (AttributeError, RuntimeError) as e:
-            logger.debug("Erreur suppression chat_model: %s", e)
-        except (TypeError, KeyError, OSError) as e:
-            logger.debug("Erreur suppression chat_model (type/key/os): %s", e)
-        except (
-            Exception
-        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
-            logger.debug("Erreur inattendue suppression chat_model: %s", e)
-        try:
-            if hasattr(self, "chat_tokenizer") and self.chat_tokenizer is not None:
-                del self.chat_tokenizer
-        except (AttributeError, RuntimeError) as e:
-            logger.debug("Erreur suppression chat_tokenizer: %s", e)
-        except (TypeError, KeyError, OSError) as e:
-            logger.debug("Erreur suppression chat_tokenizer (type/key/os): %s", e)
-        except (
-            Exception
-        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
-            logger.debug("Erreur inattendue suppression chat_tokenizer: %s", e)
-
-        self.chat_model = None
-        self.chat_tokenizer = None
-        self.use_llm_chat = False
-
-        import gc
-
-        gc.collect()
-        if HF_AVAILABLE and torch.cuda.is_available():
-            torch.cuda.empty_cache()
-        logger.info("""🗑️ LLM conversationnel désactivé - Mémoire libérée""")
+        """Désactive le LLM chat (délègue à ``bbia_hf_model_memory``)."""
+        _hf_memory.disable_llm_chat(self)
 
     def _unload_lru_model(self) -> None:
-        """OPTIMISATION RAM: Décharge le modèle LRU (Least Recently Used).
-
-        Libère de la RAM en déchargant le modèle le moins récemment utilisé.
-        """
-        if not self._model_last_used:
-            return
-
-        # Trouver modèle avec timestamp le plus ancien
-        # OPTIMISATION: operator.itemgetter plus rapide que lambda
-        oldest_key = min(self._model_last_used.items(), key=operator.itemgetter(1))[0]
-
-        # Extraire nom modèle depuis clé (format: "model_name_type")
-        parts = oldest_key.rsplit("_", 1)
-        if len(parts) == 2:
-            model_name = parts[0]
-            # Décharger modèle
-            self.unload_model(model_name)
-            # Supprimer du tracking
-            if oldest_key in self._model_last_used:
-                del self._model_last_used[oldest_key]
-            logger.debug("♻️ Modèle LRU déchargé (optimisation RAM): %s", oldest_key)
+        """Décharge le modèle LRU (délègue à ``bbia_hf_model_memory``)."""
+        _hf_memory.unload_lru_model(self)
 
     def _update_model_usage(self, model_key: str) -> None:
-        """OPTIMISATION RAM: Met à jour timestamp d'usage d'un modèle."""
-        self._model_last_used[model_key] = time.time()
+        """Met à jour timestamp d'usage (délègue à ``bbia_hf_model_memory``)."""
+        _hf_memory.update_model_usage(self, model_key)
 
     @staticmethod
     def _shared_auto_unload_loop() -> None:
-        """Boucle de déchargement automatique partagée pour toutes les instances."""
-        while not (BBIAHuggingFace._shared_unload_thread_stop.is_set()):
-            try:
-                # Attendre 10 secondes entre vérifications
-                # (ou arrêt immédiat si demandé)
-                if BBIAHuggingFace._shared_unload_thread_stop.wait(10.0):
-                    break  # Arrêt demandé
-
-                current_time = time.time()
-                # OPTIMISATION RAM: deque avec maxlen pour limiter taille
-                models_to_unload: deque[tuple[BBIAHuggingFace, str, float]] = deque(
-                    maxlen=50,
-                )
-
-                # Identifier modèles inactifs
-                # pour toutes les instances actives
-                with BBIAHuggingFace._shared_unload_thread_lock:
-                    # Faire une copie de la liste
-                    # pour éviter modification pendant itération
-                    active_instances = list(BBIAHuggingFace._shared_instances)
-                    for instance in active_instances:
-                        try:
-                            # Vérifier si l'instance existe encore
-                            if not hasattr(instance, "_model_last_used"):
-                                continue
-                            model_last_used = getattr(
-                                instance,
-                                "_model_last_used",
-                                {},
-                            )
-                            inactivity_timeout = getattr(
-                                instance,
-                                "_inactivity_timeout",
-                                300.0,
-                            )
-                            for model_key, last_used in list(model_last_used.items()):
-                                inactivity = current_time - last_used
-                                if inactivity > inactivity_timeout:
-                                    models_to_unload.append(
-                                        (instance, model_key, inactivity),
-                                    )
-                        except (AttributeError, RuntimeError):
-                            # Instance détruite, continuer
-                            continue
-
-                # Décharger modèles inactifs (hors lock pour éviter deadlock)
-                for instance, model_key, inactivity in models_to_unload:
-                    try:
-                        # Vérifier que l'instance existe encore
-                        if not hasattr(instance, "unload_model"):
-                            continue
-                        # Extraire nom modèle depuis clé
-                        parts = model_key.rsplit("_", 1)
-                        if len(parts) == 2:
-                            model_name = parts[0]
-                            logger.debug(
-                                "🗑️ Déchargement auto modèle inactif (%.0fs): %s",
-                                inactivity,
-                                model_key,
-                            )
-                            instance.unload_model(model_name)
-                            # Supprimer du tracking
-                            model_last_used = getattr(
-                                instance,
-                                "_model_last_used",
-                                None,
-                            )
-                            if model_last_used is not None:
-                                with BBIAHuggingFace._shared_unload_thread_lock:
-                                    if model_key in model_last_used:
-                                        del model_last_used[model_key]
-                    except (AttributeError, RuntimeError, KeyError) as e:
-                        logger.debug("Erreur déchargement auto %s: %s", model_key, e)
-                    except (TypeError, IndexError, OSError) as e:
-                        logger.debug(
-                            "Erreur déchargement auto %s (type/index/os): %s",
-                            model_key,
-                            e,
-                        )
-                    except (
-                        Exception
-                    ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
-                        logger.debug(
-                            "Erreur inattendue déchargement auto %s: %s",
-                            model_key,
-                            e,
-                        )
-            except (RuntimeError, AttributeError) as e:
-                logger.debug("Erreur boucle déchargement auto partagée: %s", e)
-            except (TypeError, IndexError, KeyError, OSError) as e:
-                logger.debug(
-                    "Erreur boucle déchargement auto partagée (type/index/key/os): %s",
-                    e,
-                )
-            except (
-                Exception
-            ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
-                logger.debug(
-                    "Erreur inattendue boucle déchargement auto partagée: %s",
-                    e,
-                )
-                # Continuer même en cas d'erreur
+        """Boucle auto-unload partagée (délègue à ``bbia_hf_model_memory``)."""
+        _hf_memory.shared_auto_unload_loop()
+        # Continuer même en cas d'erreur
 
     def __del__(self) -> None:
         """Nettoyage lors de la destruction de l'instance."""
@@ -1321,62 +743,8 @@ class BBIAHuggingFace:
             pass
 
     def unload_model(self, model_name: str) -> bool:
-        """Décharge un modèle de la mémoire.
-
-        Args:
-            model_name: Nom du modèle à décharger
-
-        Returns:
-            True si déchargé avec succès
-
-        """
-        try:
-            # OPTIMISATION: Éviter création liste intermédiaire inutile
-            keys_to_remove = [key for key in self.models if model_name in key]
-            for key in keys_to_remove:
-                del self.models[key]
-
-            keys_to_remove = [
-                # OPTIMISATION: Éviter création liste intermédiaire inutile
-                key
-                for key in self.processors
-                if model_name in key
-            ]
-            for key in keys_to_remove:
-                del self.processors[key]
-
-            # OPTIMISATION RAM: Libérer la mémoire explicitement
-            import gc
-
-            gc.collect()
-            # Libérer le cache GPU si disponible
-            if HF_AVAILABLE:
-                try:
-                    import torch
-
-                    if torch.cuda.is_available():
-                        torch.cuda.empty_cache()
-                except ImportError:
-                    pass  # torch non disponible, ignorer
-
-            logger.info("🗑️ Modèle %s déchargé - Mémoire libérée", model_name)
-            return True
-
-        except (AttributeError, RuntimeError, KeyError):
-            logger.exception("❌ Erreur déchargement modèle %s:", model_name)
-            return False
-        except (TypeError, IndexError, OSError) as e:
-            logger.exception(
-                "❌ Erreur déchargement modèle %s (type/index/os): %s", model_name, e
-            )
-            return False
-        except (
-            Exception
-        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
-            logger.exception(
-                "❌ Erreur inattendue déchargement modèle %s: %s", model_name, e
-            )
-            return False
+        """Décharge un modèle (délègue à ``bbia_hf_model_memory``)."""
+        return cast(bool, _hf_memory.unload_model(self, model_name))
 
     def get_model_info(self) -> dict[str, Any]:
         """Retourne les informations sur les modèles chargés.
@@ -1400,204 +768,11 @@ class BBIAHuggingFace:
         use_context: bool = True,
         enable_tools: bool = True,
     ) -> str:
-        """Chat intelligent avec BBIA avec contexte et analyse sentiment.
-
-        Utilise LLM pré-entraîné (Mistral 7B) si disponible, sinon réponses enrichies.
-        Supporte function calling avec outils LLM si disponibles.
-
-        Args:
-            user_message: Message de l'utilisateur
-            use_context: Utiliser le contexte des messages précédents
-            enable_tools: Activer function calling avec outils (si disponibles)
-
-        Returns:
-            Réponse intelligente de BBIA
-
-        """
-        try:
-            # 1. Analyser sentiment du message (avec gestion erreur)
-            try:
-                sentiment = self.analyze_sentiment(user_message)
-            except (ValueError, RuntimeError, KeyError):
-                # Fallback si sentiment indisponible
-                sentiment = {"sentiment": "NEUTRAL", "score": 0.5}
-
-            # 2. Détecter et exécuter outils si demandés (function calling)
-            if enable_tools and self.tools:
-                tool_result = self._detect_and_execute_tools(user_message)
-                if tool_result:
-                    # Outil exécuté - retourner résultat
-                    return tool_result
-
-            # OPTIMISATION RAM: Lazy loading LLM - charger uniquement si chat() appelé
-            if (
-                not self.use_llm_chat
-                or self.chat_model is None
-                or self.chat_tokenizer is None
-            ):
-                # Essayer de charger LLM automatiquement si disponible (lazy loading)
-                try:
-                    # Utiliser modèle léger par défaut (phi2 ou tinyllama)
-                    # OPTIMISATION: Éviter double lookup avec variable temporaire
-                    chat_config = self.model_configs.get("chat", {})
-                    default_chat_model = chat_config.get("phi2") or chat_config.get(
-                        "tinyllama",
-                    )
-                    if default_chat_model:
-                        logger.info(
-                            "📥 Chargement LLM à la demande (lazy loading): %s",
-                            default_chat_model,
-                        )
-                        if self.load_model(default_chat_model, model_type="chat"):
-                            logger.info("✅ LLM chargé avec succès (lazy loading)")
-                except (ImportError, RuntimeError, OSError, ValueError) as e:
-                    logger.debug("Lazy loading LLM échoué (fallback enrichi): %s", e)
-                except KeyboardInterrupt:
-                    logger.debug(
-                        "Lazy loading LLM interrompu "
-                        "(KeyboardInterrupt, fallback enrichi)",
-                    )
-                except Exception as e:
-                    # Gérer erreurs cancellation (ex: "The operation was canceled")
-                    error_msg = str(e).lower()
-                    if "cancel" in error_msg or "interrupt" in error_msg:
-                        logger.debug(
-                            "Lazy loading LLM annulé (fallback enrichi): %s",
-                            e,
-                        )
-                    else:
-                        logger.debug(
-                            "Lazy loading LLM échoué inattendu (fallback enrichi): %s",
-                            e,
-                        )
-
-            # 3. Générer réponse avec LLM si disponible, sinon réponses enrichies
-            # Convertir SentimentResult en SentimentDict
-            # (nécessaire pour les deux branches)
-            sentiment_dict: SentimentDict = {
-                "label": sentiment.get("sentiment", "neutral"),
-                "score": sentiment.get("score", 0.5),
-                "sentiment": sentiment.get("sentiment", "neutral"),
-            }
-
-            # PRIORITÉ 1: Utiliser BBIAChat (LLM léger Phi-2/TinyLlama) si disponible
-            # OPTIMISATION RAM: Lazy loading strict
-            # Charger BBIAChat uniquement si nécessaire
-            if self.bbia_chat is None:
-                self._load_bbia_chat_lazy()
-            if self.bbia_chat and self.bbia_chat.llm_model:
-                logger.debug("Utilisation BBIAChat (LLM conversationnel léger)")
-                bbia_response = self.bbia_chat.chat(user_message)
-            # PRIORITÉ 2: Utiliser LLM pré-entraîné lourd (Mistral/Llama) si disponible
-            elif self.use_llm_chat and self.chat_model and self.chat_tokenizer:
-                # Utiliser LLM pré-entraîné (Mistral/Llama)
-                bbia_response = self._generate_llm_response(
-                    user_message,
-                    use_context,
-                    enable_tools=enable_tools,
-                )
-            # PRIORITÉ 3: Fallback vers réponses enrichies (règles + variété)
-            else:
-                # Fallback vers réponses enrichies (règles + variété)
-                bbia_response = self._generate_simple_response(
-                    user_message,
-                    sentiment_dict,
-                )
-
-            # 3. Sauvegarder dans l'historique
-            from datetime import datetime
-
-            # Extraire la valeur du sentiment (str) depuis SentimentResult
-            sentiment_str: str = (
-                sentiment.get("sentiment", "neutral")
-                if isinstance(sentiment, dict)
-                else "neutral"
-            )
-
-            self.conversation_history.append(
-                ConversationEntry(
-                    user=user_message,
-                    bbia=bbia_response,
-                    sentiment=sentiment_str,
-                    timestamp=datetime.now().isoformat(),
-                ),
-            )
-
-            # 4. Adapter réponse selon personnalité BBIA (si pas LLM)
-            # BBIAChat et LLM lourd gèrent déjà la personnalité
-            if self.bbia_chat and self.bbia_chat.llm_model:
-                # BBIAChat gère déjà la personnalité
-                adapted_response = bbia_response
-            elif self.use_llm_chat and self.chat_model:
-                # LLM lourd gère déjà la personnalité
-                adapted_response = bbia_response
-            else:
-                # Fallback: adapter selon personnalité BBIA
-                adapted_response = self._adapt_response_to_personality(
-                    bbia_response,
-                    sentiment_dict,
-                )
-
-            # Vérification spéciale pour les salutations : garantir qu'une salutation
-            # génère toujours une réponse contenant un mot de salutation
-            user_message_lower = user_message.lower()
-            is_greeting = any(
-                word in user_message_lower
-                for word in ["bonjour", "salut", "hello", "hi", "hey", "coucou"]
-            )
-            if is_greeting:
-                response_lower = adapted_response.lower()
-                has_greeting_word = any(
-                    word in response_lower
-                    for word in ["bonjour", "salut", "hello", "hi", "hey", "coucou"]
-                )
-                if not has_greeting_word:
-                    # Le LLM n'a pas généré de salutation, utiliser le fallback enrichi
-                    logger.debug(
-                        "Réponse LLM sans mot de salutation détectée, "
-                        "utilisation du fallback enrichi pour salutation",
-                    )
-                    adapted_response = self._generate_simple_response(
-                        user_message,
-                        sentiment_dict,
-                    )
-                    adapted_response = self._adapt_response_to_personality(
-                        adapted_response,
-                        sentiment_dict,
-                    )
-
-            # 5. Sauvegarder automatiquement dans mémoire persistante (si disponible)
-            try:
-                from .bbia_memory import save_conversation_to_memory
-
-                # Sauvegarder toutes les 10 messages pour éviter I/O excessif
-                if len(self.conversation_history) % 10 == 0:
-                    # Convertir ConversationEntry en dict pour compatibilité
-                    history_dicts: list[dict[str, Any]] = [
-                        {
-                            "user": entry.get("user", ""),
-                            "bbia": entry.get("bbia", ""),
-                            "sentiment": entry.get("sentiment", "neutral"),
-                            "timestamp": entry.get("timestamp", ""),
-                        }
-                        for entry in self.conversation_history
-                    ]
-                    save_conversation_to_memory(history_dicts)
-            except ImportError:
-                # Mémoire persistante optionnelle
-                pass
-
-            # Normaliser et finaliser (anti-doublons/sentinelles)
-            return self._normalize_response_length(adapted_response)
-
-        except (TypeError, IndexError, KeyError, OSError) as e:
-            logger.exception("❌ Erreur chat (type/index/key/os): %s", e)
-            return "Je ne comprends pas bien, peux-tu reformuler ?"
-        except (
-            Exception
-        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
-            logger.exception("❌ Erreur inattendue chat: %s", e)
-            return "Je ne comprends pas bien, peux-tu reformuler ?"
+        """Chat intelligent (délègue à ``bbia_hf_chat_engine``)."""
+        return cast(
+            str,
+            _hf_chat_engine.chat(self, user_message, use_context, enable_tools),
+        )
 
     def _generate_llm_response(
         self,
@@ -1605,159 +780,13 @@ class BBIAHuggingFace:
         use_context: bool = True,
         enable_tools: bool = True,
     ) -> str:
-        """Génère une réponse avec LLM pré-entraîné (Mistral/Llama).
-
-        Args:
-            user_message: Message utilisateur
-            use_context: Utiliser contexte historique
-            enable_tools: Réservé (API publique) — outils non branchés ici
-
-        Returns:
-            Réponse générée par LLM
-
-        """
-        _ = enable_tools  # API stable ; outils non utilisés dans ce chemin
-        try:
-            if not self.chat_model or not self.chat_tokenizer:
-                msg = "LLM non chargé"
-                raise ValueError(msg)
-
-            # Construire prompt avec personnalité BBIA enrichie
-            # AMÉLIORATION INTELLIGENCE: Prompt détaillé pour réponses naturelles
-            personality_descriptions = {
-                "friendly_robot": (
-                    "Tu es BBIA, un robot Reachy Mini amical, curieux et intelligent. "
-                    "Tu communiques en français de manière naturelle, chaleureuse "
-                    "et authentique, comme un véritable compagnon. "
-                    "Tu évites les phrases répétitives ou trop génériques. "
-                    "Tes réponses sont concises (max 2-3 phrases), engageantes "
-                    "et montrent que tu comprends vraiment l'interlocuteur. "
-                    "Tu utilises des expressions naturelles et varies tes formulations "
-                    "pour ne jamais sonner robotique."
-                ),
-                "curious": (
-                    "Tu es BBIA, un robot Reachy Mini extrêmement curieux "
-                    "et passionné par l'apprentissage. "
-                    "Tu poses des questions pertinentes et montres un véritable "
-                    "intérêt pour comprendre. "
-                    "Tes réponses sont exploratoires et invitent à approfondir."
-                ),
-                "enthusiastic": (
-                    "Tu es BBIA, un robot Reachy Mini plein d'enthousiasme "
-                    "et d'énergie positive. "
-                    "Tu transmets ta joie de communiquer et tu encourages "
-                    "l'interaction de manière vivante et authentique."
-                ),
-                "calm": (
-                    "Tu es BBIA, un robot Reachy Mini serein et apaisant. "
-                    "Tu communiques avec douceur et profondeur, en prenant "
-                    "le temps nécessaire. "
-                    "Tes réponses reflètent une sagesse tranquille."
-                ),
-            }
-            system_prompt = personality_descriptions.get(
-                self.bbia_personality,
-                personality_descriptions["friendly_robot"],
-            )
-
-            # Construire messages pour format instruct
-            messages = [{"role": "system", "content": system_prompt}]
-
-            # Ajouter contexte si demandé
-            if use_context and self.conversation_history:
-                # Derniers 2 échanges pour contexte
-                # OPTIMISATION: Convertir deque en list pour slicing
-                # et utiliser list comprehension
-                recent_history: list[ConversationEntry] = list(
-                    self.conversation_history,
-                )[-2:]
-                # OPTIMISATION: List comprehension plus efficace que append() en boucle
-                # Note: extend() avec list flatten pour éviter erreur type mypy
-                for entry in recent_history:
-                    messages.append({"role": "user", "content": entry["user"]})
-                    messages.append({"role": "assistant", "content": entry["bbia"]})
-
-            # Ajouter message actuel
-            messages.append({"role": "user", "content": user_message})
-
-            # Appliquer template de chat (Mistral/Llama format)
-            try:
-                # Format instruct standard
-                prompt = self.chat_tokenizer.apply_chat_template(
-                    messages,
-                    tokenize=False,
-                    add_generation_prompt=True,
-                )
-            except (ValueError, AttributeError, TypeError):
-                # Fallback si pas de chat template
-                prompt = f"{system_prompt}\n\nUser: {user_message}\nAssistant:"
-
-            # Tokeniser
-            inputs = self.chat_tokenizer(
-                prompt,
-                return_tensors="pt",
-                truncation=True,
-                max_length=1024,
-            ).to(self.device)
-
-            # Générer réponse
-            with torch.no_grad():
-                outputs = self.chat_model.generate(
-                    **inputs,
-                    max_new_tokens=160,
-                    min_new_tokens=32,
-                    temperature=0.3,
-                    top_p=0.9,
-                    no_repeat_ngram_size=3,
-                    do_sample=True,
-                    pad_token_id=self.chat_tokenizer.eos_token_id,
-                )
-
-            # Décoder réponse
-            generated_text = self.chat_tokenizer.decode(
-                outputs[0][inputs["input_ids"].shape[1] :],
-                skip_special_tokens=True,
-            ).strip()
-
-            # Post-traitement anti-bavardage et coupe propre
-            cleaned = self._postprocess_llm_output(generated_text, user_message)
-
-            logger.info("🤖 LLM réponse générée: %s...", cleaned[:100])
-            return (
-                self._normalize_response_length(cleaned)
-                if cleaned
-                else self._safe_fallback()
-            )
-
-        except (ValueError, RuntimeError, AttributeError, OSError) as e:
-            logger.warning("⚠️  Erreur génération LLM, fallback enrichi: %s", e)
-            # Fallback vers réponses enrichies
-            try:
-                sentiment_result = self.analyze_sentiment(user_message)
-                # Convertir SentimentResult en SentimentDict
-                sentiment_dict: SentimentDict = {
-                    "label": sentiment_result.get("sentiment", "neutral"),
-                    "score": sentiment_result.get("score", 0.5),
-                }
-            except (ValueError, RuntimeError, KeyError):
-                sentiment_dict = {"label": "NEUTRAL", "score": 0.5}
-            return self._generate_simple_response(user_message, sentiment_dict)
-        except Exception as e:
-            logger.warning(
-                "⚠️  Erreur inattendue génération LLM, fallback enrichi: %s",
-                e,
-            )
-            # Fallback vers réponses enrichies
-            try:
-                sentiment_result = self.analyze_sentiment(user_message)
-                # Convertir SentimentResult en SentimentDict
-                sentiment_dict_fallback: SentimentDict = {
-                    "label": sentiment_result.get("sentiment", "neutral"),
-                    "score": sentiment_result.get("score", 0.5),
-                }
-            except (ValueError, RuntimeError, KeyError):
-                sentiment_dict_fallback = {"label": "NEUTRAL", "score": 0.5}
-            return self._generate_simple_response(user_message, sentiment_dict_fallback)
+        """Génère une réponse via LLM (délègue à ``bbia_hf_chat_engine``)."""
+        return cast(
+            str,
+            _hf_chat_engine.generate_llm_response(
+                self, user_message, use_context, enable_tools
+            ),
+        )
 
     def _detect_and_execute_tools(self, user_message: str) -> str | None:
         """Détecte et exécute des outils depuis le message utilisateur.
@@ -1772,7 +801,9 @@ class BBIAHuggingFace:
                 user_message,
                 state=self,
                 execute_tool=self.tools.execute_tool,
-                analyze_sentiment=self.analyze_sentiment,
+                analyze_sentiment=lambda text: cast(
+                    dict[str, Any], self.analyze_sentiment(text)
+                ),
                 extract_angle_fn=self._extract_angle,
                 extract_intensity_fn=self._extract_intensity,
                 tools_available=True,
@@ -1805,7 +836,9 @@ class BBIAHuggingFace:
                 user_message,
                 message_lower,
                 execute_tool=self.tools.execute_tool,
-                analyze_sentiment=self.analyze_sentiment,
+                analyze_sentiment=lambda text: cast(
+                    dict[str, Any], self.analyze_sentiment(text)
+                ),
                 extract_angle_fn=self._extract_angle,
                 extract_intensity_fn=self._extract_intensity,
             ),

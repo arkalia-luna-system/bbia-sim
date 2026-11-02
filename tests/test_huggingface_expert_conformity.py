@@ -26,6 +26,12 @@ class TestBBIAHuggingFaceExpertConformity:
             base / "bbia_huggingface.py",
             base / "bbia_hf_response_bank.py",
             base / "bbia_hf_chat_tools.py",
+            base / "bbia_hf_chat_postprocess.py",
+            base / "bbia_hf_tool_orchestration.py",
+            base / "bbia_hf_personality_response.py",
+            base / "bbia_hf_media_inference.py",
+            base / "bbia_hf_model_memory.py",
+            base / "bbia_hf_chat_engine.py",
         ]
 
     def _read_hf_sources(self) -> str:
@@ -67,13 +73,7 @@ class TestBBIAHuggingFaceExpertConformity:
             pytest.skip("BBIAHuggingFace non disponible")
 
         # Lire le fichier source pour vérifier variété
-        hf_file = (
-            Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_huggingface.py"
-        )
-        if not hf_file.exists():
-            pytest.skip("Fichier bbia_huggingface.py introuvable")
-
-        content = hf_file.read_text(encoding="utf-8")
+        content = self._read_hf_sources()
 
         # Compter les variants de salutations friendly_robot
         import re
@@ -108,13 +108,7 @@ class TestBBIAHuggingFaceExpertConformity:
         if not self.hf_available:
             pytest.skip("BBIAHuggingFace non disponible")
 
-        hf_file = (
-            Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_huggingface.py"
-        )
-        if not hf_file.exists():
-            pytest.skip("Fichier bbia_huggingface.py introuvable")
-
-        content = hf_file.read_text(encoding="utf-8")
+        content = self._read_hf_sources()
 
         # Vérifier que les réponses questions incluent des éléments engageants
         # (pas juste "Je ne sais pas" ou "C'est intéressant" de manière répétitive)
@@ -148,13 +142,7 @@ class TestBBIAHuggingFaceExpertConformity:
         if not self.hf_available:
             pytest.skip("BBIAHuggingFace non disponible")
 
-        hf_file = (
-            Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_huggingface.py"
-        )
-        if not hf_file.exists():
-            pytest.skip("Fichier bbia_huggingface.py introuvable")
-
-        content = hf_file.read_text(encoding="utf-8")
+        content = self._read_hf_sources()
 
         # Vérifier que le code utilise le contexte récent
         has_context_check = (
@@ -180,13 +168,7 @@ class TestBBIAHuggingFaceExpertConformity:
         if not self.hf_available:
             pytest.skip("BBIAHuggingFace non disponible")
 
-        hf_file = (
-            Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_huggingface.py"
-        )
-        if not hf_file.exists():
-            pytest.skip("Fichier bbia_huggingface.py introuvable")
-
-        content = hf_file.read_text(encoding="utf-8")
+        content = self._read_hf_sources()
 
         # Vérifier que chaque personnalité a ses propres variantes (pas juste emoji)
         personalities = ["friendly_robot", "curious", "enthusiastic", "calm"]
@@ -212,13 +194,7 @@ class TestBBIAHuggingFaceExpertConformity:
         if not self.hf_available:
             pytest.skip("BBIAHuggingFace non disponible")
 
-        hf_file = (
-            Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_huggingface.py"
-        )
-        if not hf_file.exists():
-            pytest.skip("Fichier bbia_huggingface.py introuvable")
-
-        content = hf_file.read_text(encoding="utf-8")
+        content = self._read_hf_sources()
 
         # Vérifier que le code traite différemment POSITIVE et NEGATIVE
         has_positive_handling = (
@@ -332,13 +308,7 @@ class TestBBIAHuggingFaceExpertConformity:
         if not self.hf_available:
             pytest.skip("BBIAHuggingFace non disponible")
 
-        hf_file = (
-            Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_huggingface.py"
-        )
-        if not hf_file.exists():
-            pytest.skip("Fichier bbia_huggingface.py introuvable")
-
-        content = hf_file.read_text(encoding="utf-8")
+        content = self._read_hf_sources()
 
         # Vérifier que le code a des fallbacks gracieux
         has_llm_fallback = (

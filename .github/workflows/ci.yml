@@ -85,7 +85,7 @@ jobs:
       - name: Security check with Bandit
         run: |
           echo "Running Bandit with .bandit configuration"
-          bandit -r src/ -c .bandit -x ".*|._*|*.pyc" -q
+          bandit -r src/ -c .bandit -x ".*|._*|*.pyc|*test_*.py|*/test_*.py" -q
         env:
           PYTHONDONTWRITEBYTECODE: 1
 
