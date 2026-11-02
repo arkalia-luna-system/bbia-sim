@@ -13,10 +13,10 @@
 - **[Description problème et composants](DESCRIPTION_PROBLEME_ET_COMPOSANTS_REACHY_MINI.md)** - Diagnostic moteurs 12/14, commande pièces, procédure reconfig
 - **[Guide Installation Moteurs](GUIDE_INSTALLATION_MOTEURS_ETAPE_PAR_ETAPE.md)** - Guide complet d'installation
 - **[Guide Prévention Problèmes](GUIDE_PREVENTION_PROBLEMES_MOTEURS.md)** - Prévention et surveillance
-- **[Problèmes Moteurs QC Batch](PROBLEME_MOTEURS_QC_BATCH_DEC2025.md)** - Historique des problèmes
+- **[Problèmes Moteurs QC Batch](../_archived/hardware/PROBLEME_MOTEURS_QC_BATCH_DEC2025.md)** - Historique archivé (batch QC déc. 2025)
 - **[Ce Qui Reste À Faire](CE_QUI_RESTE_A_FAIRE.md)** - Checklist complète
 - **[Checklist redémontage – vérif moteurs/câbles](CHECKLIST_REDEMONTAGE_VERIF_MOTEURS_CABLES.md)** - Étapes quand tu redémonte pour vérifier câbles et moteurs
-- **[Résumé Final](RESUME_FINAL_26JAN2026.md)** - Résumé final (26 janvier 2026)
+- **[Résumé Final 26 jan 2026](../_archived/hardware/RESUME_FINAL_26JAN2026.md)** - Snapshot archivé (installation moteurs)
 
 ### 🎮 Mouvements et Contrôle
 
@@ -34,7 +34,7 @@
 - **[Vérification alignement Pollen](../quality/VERIFICATION_ALIGNEMENT_POLLEN.md)** - Même niveau que Pollen (SDK, API, outils, Zenoh, doc) — tous domaines
 - **[Anticipation issues/GHSA Pollen](POLLEN_ISSUES_ANTICIPATION.md)** - Tableau issue/GHSA → mitigation BBIA (gardes + doc)
 - **[Issues Pollen impact BBIA](ISSUES_POLLEN_IMPACT_BBIA.md)** - Historique Zenoh / caméra (complément)
-- **[Analyse Repo Officiel](ANALYSE_REPO_OFFICIEL_JANVIER_2026.md)** - Analyse du repo officiel
+- **[Analyse Repo Officiel](../_archived/hardware/ANALYSE_REPO_OFFICIEL_JANVIER_2026.md)** - Snapshot archivé (janv. 2026)
 - **[Impression 3D Stewart Arms](IMPRESSION_3D_STEWART_ARMS.md)** - Guide impression 3D
 - **[Analyse 3MF Stewart Arm](ANALYSE_3MF_STEWART_ARM.md)** - Analyse fichier 3MF
 

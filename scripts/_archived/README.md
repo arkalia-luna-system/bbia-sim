@@ -48,6 +48,17 @@
 - **Détail**: voir `one_shot_hygiene_2026/README.md` (+ sous-dossier `joints_media_demos/` du 2 Nov)
 - **Alternatives**: `verify_docs_complete.py`, `verify_documentation.py`, `compare_with_official_exhaustive.py`, `check_joints.py`, `generate_bbia_image.py`
 
+### Suite hygiène 2 Nov 2026
+
+| Élément | Raison | Alternative |
+|---------|--------|-------------|
+| `kill_mujoco_viewers.sh` | Déprécié, doublon cleanup | `cleanup_all.sh --ram-only` / `process_manager.py stop` |
+| `docs_export/export_md_dark.sh`, `export_onepager.sh` | 0 réf. docs/CI/Makefile | `scripts/docs/build_docs_html.sh` |
+| `utils/color_converter.py` | Utilitaire isolé, 0 réf. | — (CLI one-shot) |
+| `onboarding/check_network.sh` | Orphelin (non appelé par setup/run_demo) | ping manuel / `bbia_doctor.py` |
+
+Doc JSON déploiement racine → `docs/_archived/deployment/DEPLOYMENT_INSTRUCTIONS.json`.
+
 ## 💡 Notes
 
 Ces scripts sont conservés pour référence historique mais **ne doivent pas être utilisés**.

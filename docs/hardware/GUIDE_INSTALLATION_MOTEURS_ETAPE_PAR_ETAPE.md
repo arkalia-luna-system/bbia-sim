@@ -266,7 +266,7 @@ curl http://localhost:8000/api/motors/diagnostic
    ```
 
 4. **Consulter le guide de troubleshooting**
-   - `docs/hardware/PROBLEME_MOTEURS_QC_BATCH_DEC2025.md`
+   - `docs/_archived/hardware/PROBLEME_MOTEURS_QC_BATCH_DEC2025.md`
    - Documentation officielle Pollen
 
 5. **Contacter Pollen Robotics si nécessaire**
@@ -280,7 +280,7 @@ curl http://localhost:8000/api/motors/diagnostic
 ### **Documentation BBIA**
 
 - `GUIDE_PREVENTION_PROBLEMES_MOTEURS.md` - Guide de prévention complet
-- `PROBLEME_MOTEURS_QC_BATCH_DEC2025.md` - Historique des problèmes
+- `docs/_archived/hardware/PROBLEME_MOTEURS_QC_BATCH_DEC2025.md` - Historique des problèmes
 - `SUIVI_COMMUNICATION_POLLEN.md` - Communication avec Pollen
 
 ### **Documentation Officielle Pollen**

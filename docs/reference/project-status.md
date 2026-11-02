@@ -12,6 +12,8 @@
 
 **Mise à jour 2 Novembre 2026 (polish suite)** : `bbia_safe.sh` archivé (`process_orphans/`, 0 réf.) ; `verify_documentation.py` **conservé** (rôles distincts de `verify_docs_complete.py`) ; claim header complete corrigé ; date `INDEX_FINAL.md` alignée ; Bandit tip déjà vert (échecs B105 sur SHAs antérieurs).
 
+**Mise à jour 2 Novembre 2026 (hygiène archives)** : audits/perf datés + `RESUME_FINAL_26JAN` + `DEPLOYMENT_INSTRUCTIONS.json` → `docs/_archived/` ; `kill_mujoco_viewers` / `export_*` / `color_converter` / `check_network` → `scripts/_archived/` ; lien mort `RESUME_ETAT_ACTUEL_BBIA` → project-status.
+
 **Mise à jour 2 Novembre 2026 (soir)** : passe ≥9/10 domaines logiciels (puis 10/10 app-layer le même jour — voir tableau senior) — floors `fastapi>=0.137.1` / `starlette>=1.3.1` / `requests>=2.33.1` / `httpx` alignés ; Dependabot → `develop` ; smokes/slices **mockés CI** ; télémétrie `frequency` = settings ; joint ecosystem honoré ; artefacts coverage XML **dé-trackés**.
 
 **Mise à jour 2 Novembre 2026 (suite senior)** : découpe HF non big-bang — `bbia_hf_response_bank.py` + `hf_guards.py` (space-id / pip opt-in) ; auth token partagée `daemon/auth_token.py` ; logs auth sans fragment de secret hors DEBUG.

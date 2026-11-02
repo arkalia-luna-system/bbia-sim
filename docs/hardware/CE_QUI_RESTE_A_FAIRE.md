@@ -159,7 +159,7 @@
    - Guide de prévention
    - Surveillance continue
 
-3. **`PROBLEME_MOTEURS_QC_BATCH_DEC2025.md`**
+3. **`../_archived/hardware/PROBLEME_MOTEURS_QC_BATCH_DEC2025.md`**
    - Historique des problèmes
    - Solutions
 

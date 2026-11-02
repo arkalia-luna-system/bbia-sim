@@ -313,7 +313,7 @@ stewart_6:  43.51°
 - **SDK Officiel** : <https://github.com/pollen-robotics/reachy_mini>
 - **Documentation BBIA** :
   - `docs/hardware/REACHY_MINI_SDK_v1.2.4.md` - Mise à jour SDK v1.2.4
-  - `docs/hardware/PROBLEME_MOTEURS_QC_BATCH_DEC2025.md` - Problème batch QC
+  - `docs/_archived/hardware/PROBLEME_MOTEURS_QC_BATCH_DEC2025.md` - Problème batch QC
   - `docs/hardware/GUIDE_COMPLET_AVANT_RECEPTION.md` - Guide réception
 
 ---
