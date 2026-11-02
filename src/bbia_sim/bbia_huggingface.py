@@ -1776,14 +1776,17 @@ class BBIAHuggingFace:
         """
         if not self.tools:
             return None
-        return _hf_orch.detect_and_execute_tools(
-            user_message,
-            state=self,
-            execute_tool=self.tools.execute_tool,
-            analyze_sentiment=self.analyze_sentiment,
-            extract_angle_fn=self._extract_angle,
-            extract_intensity_fn=self._extract_intensity,
-            tools_available=True,
+        return cast(
+            str | None,
+            _hf_orch.detect_and_execute_tools(
+                user_message,
+                state=self,
+                execute_tool=self.tools.execute_tool,
+                analyze_sentiment=self.analyze_sentiment,
+                extract_angle_fn=self._extract_angle,
+                extract_intensity_fn=self._extract_intensity,
+                tools_available=True,
+            ),
         )
 
     def _detect_tool_with_nlp(
@@ -1791,7 +1794,10 @@ class BBIAHuggingFace:
         user_message: str,
     ) -> tuple[str, float] | None:
         """Détecte outil avec NLP (sentence-transformers) si disponible."""
-        return _hf_orch.detect_tool_with_nlp(user_message, self)
+        return cast(
+            tuple[str, float] | None,
+            _hf_orch.detect_tool_with_nlp(user_message, self),
+        )
 
     def _execute_detected_tool(
         self,
@@ -1802,14 +1808,17 @@ class BBIAHuggingFace:
         """Exécute un outil détecté (par NLP ou mots-clés)."""
         if not self.tools:
             return None
-        return _hf_orch.execute_detected_tool(
-            tool_name,
-            user_message,
-            message_lower,
-            execute_tool=self.tools.execute_tool,
-            analyze_sentiment=self.analyze_sentiment,
-            extract_angle_fn=self._extract_angle,
-            extract_intensity_fn=self._extract_intensity,
+        return cast(
+            str | None,
+            _hf_orch.execute_detected_tool(
+                tool_name,
+                user_message,
+                message_lower,
+                execute_tool=self.tools.execute_tool,
+                analyze_sentiment=self.analyze_sentiment,
+                extract_angle_fn=self._extract_angle,
+                extract_intensity_fn=self._extract_intensity,
+            ),
         )
 
     def _extract_angle(self, message: str) -> float | None:
@@ -1822,7 +1831,7 @@ class BBIAHuggingFace:
             Angle en degrés, ou None si non trouvé
 
         """
-        return extract_angle(message)
+        return cast(float | None, extract_angle(message))
 
     def _extract_intensity(self, message: str) -> float | None:
         """Extrait une intensité depuis un message (mots-clés comme
@@ -1835,7 +1844,7 @@ class BBIAHuggingFace:
             Intensité entre 0.0 et 1.0, ou None si non trouvé
 
         """
-        return extract_intensity(message)
+        return cast(float | None, extract_intensity(message))
 
     def _postprocess_llm_output(self, text: str, user_message: str) -> str:
         """Nettoie et compacte la sortie LLM pour éviter la verbosité.

@@ -136,7 +136,7 @@ def test_chat_tools_helpers_stable_and_reexported() -> None:
 
 def test_tool_orchestration_keyword_dance() -> None:
     class _State:
-        _sentence_model = None
+        _sentence_model: object | None = None
         _use_nlp_detection = False
 
     calls: list[tuple[str, dict[str, object]]] = []
@@ -176,7 +176,7 @@ def test_tool_orchestration_move_head_params() -> None:
 
 def test_tool_orchestration_no_tools() -> None:
     class _State:
-        _sentence_model = None
+        _sentence_model: object | None = None
         _use_nlp_detection = False
 
     assert (
