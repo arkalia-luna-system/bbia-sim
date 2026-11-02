@@ -14,20 +14,22 @@
 
 **Mise à jour 2 Novembre 2026 (chat tools)** : `bbia_hf_chat_tools.py` (patterns / NLP / extracteurs) ; god-file HF ~2.97k ; wrappers Bandit + dashboard minimal archivés.
 
-**Scores subjectifs domaines (2 nov. 2026 — tip `e99a6f7a`+ découpe HF)** :
+**Mise à jour 2 Novembre 2026 (chat postprocess)** : `bbia_hf_chat_postprocess.py` (normalize / anti-doublons / fallback / contexte) ; god-file HF ~2.31k ; PR #48 mergée — pins Starlette alignés `develop`/`main`.
+
+**Scores subjectifs domaines (2 nov. 2026 — tip `9957ffc7`+ postprocess HF)** :
 
 | Domaine | Avant | Après | Note |
 |:--------|:-----:|:-----:|:-----|
-| Sécu app-layer | ~8 | **~9** | Alias `BBIA_TOKEN`/`BBIA_ENV`, refuse défaut/vide en prod, WS bridge/dashboard, HF pip OFF, yaw clamp chemins API ; **pas 10/10** (firmware/upload Pollen, Dependabot `main`) |
-| Dependabot GitHub | ~8 | **9** | Corrigé sur `develop` ; alertes UI restent tant que `main` non mergé (hors app-layer) |
+| Sécu app-layer | ~8 | **~9** | Alias `BBIA_TOKEN`/`BBIA_ENV`, refuse défaut/vide en prod, WS bridge/dashboard, HF pip OFF, yaw clamp chemins API ; **pas 10/10** (firmware/upload Pollen) |
+| Dependabot GitHub | ~8 | **9** | Pins OK sur `develop`/`main` ; alertes UI = scan GitHub (hors app-layer) |
 | Tests | ~8 | **~9** | Régressions auth/alias/guards + `test_hf_guards_regressions` ; smokes mockés CI — pas de claim 10/10 exhaustif |
-| Qualité / structure | ~8.5 | **~9.3** | `http_auth` / `ws.auth` / `auth_token` / `hf_guards` / `bbia_hf_response_bank` / `bbia_hf_chat_tools` ; god-file HF ~2.97k, pas rewrite total |
+| Qualité / structure | ~8.5 | **~9.4** | `http_auth` / `ws.auth` / `auth_token` / `hf_guards` / `bbia_hf_response_bank` / `bbia_hf_chat_tools` / `bbia_hf_chat_postprocess` / `bbia_hf_tool_orchestration` ; god-file HF ~2.31k, pas rewrite total |
 | Docs | ~8.5 | **~9** | Scores honnêtes ; Pollen ≤7 ; pas de faux 10/10 hardware |
 | Bugs | ~8.5 | **~9** | Telemetry freq, joint, yaw bypass, env aliases |
 | DX | ~8 | **~9** | `BBIA_DISABLE_PYTEST_LOCK` / cleanup flags ; coverage XML dé-tracké |
 | Hardware Pollen | ≤7 | **≤7** | Plafond honnête : yaw/sleep/Wireless/GStreamer host = firmware |
 
-**Dependabot (2 nov. 2026)** : les **10 alertes Starlette** visibles sur GitHub ciblent la **default branch `main`** encore en `starlette>=0.40,<1`. Sur **`develop`** : `starlette>=1.10.0,<2` + `fastapi>=0.137.1` (fermeture attendue après merge `develop`→`main`). `reachy-mini==1.13.0` conservé.
+**Dependabot (2 nov. 2026)** : **pins OK** (`starlette>=1.10.0,<2` + `fastapi>=0.137.1` sur `develop`/`main`, PR #48). Les alertes encore visibles dans l’UI GitHub = **scan Dependabot** (latence / cache advisory), pas un écart de pins code. `reachy-mini==1.13.0` conservé.
 
 
 **Mise à jour 2 Novembre 2026** : Hygiène BBIA (auth WS `compare_digest`, HF space-id allowlist, régressions `src/` branchées pytest, cadence télémétrie configurable). **Honnêteté firmware** : BBIA mitige / documente ; yaw/sleep/Wireless/GStreamer host restent **exposés Pollen** — voir [`docs/hardware/POLLEN_ISSUES_ANTICIPATION.md`](../hardware/POLLEN_ISSUES_ANTICIPATION.md).

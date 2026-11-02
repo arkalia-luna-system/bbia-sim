@@ -1,4 +1,4 @@
-"""Non-régression découpage HF : ``hf_guards`` + banque + chat tools."""
+"""Non-régression découpage HF : ``hf_guards`` + banque + chat tools + postprocess."""
 
 from __future__ import annotations
 
@@ -7,6 +7,7 @@ from pathlib import Path
 
 import pytest
 
+from bbia_sim import bbia_hf_chat_postprocess as post
 from bbia_sim import bbia_hf_chat_tools as chat_tools
 from bbia_sim import bbia_hf_response_bank as bank
 from bbia_sim import bbia_hf_tool_orchestration as orch
@@ -90,6 +91,7 @@ def test_response_bank_stable_and_reexported() -> None:
     bank_imported = False
     chat_tools_imported = False
     orch_imported = False
+    post_imported = False
     for node in tree.body:
         if isinstance(node, ast.ImportFrom):
             names = {alias.name for alias in node.names}
@@ -99,13 +101,17 @@ def test_response_bank_stable_and_reexported() -> None:
                 chat_tools_imported = True
             if "bbia_hf_tool_orchestration" in names:
                 orch_imported = True
+            if "bbia_hf_chat_postprocess" in names:
+                post_imported = True
     assert bank_imported, "bbia_huggingface doit importer bbia_hf_response_bank"
     assert chat_tools_imported, "bbia_huggingface doit importer bbia_hf_chat_tools"
     assert orch_imported, "bbia_huggingface doit importer bbia_hf_tool_orchestration"
+    assert post_imported, "bbia_huggingface doit importer bbia_hf_chat_postprocess"
     assert "SAFE_FALLBACK: str =" in src
     assert "SUFFIX_POOL: list[str] =" in src
     assert "TOOL_KEYWORD_PATTERNS =" in src
     assert "extract_angle =" in src
+    assert "postprocess_llm_output = _hf_post.postprocess_llm_output" in src
 
 
 def test_chat_tools_helpers_stable_and_reexported() -> None:
@@ -132,6 +138,42 @@ def test_chat_tools_helpers_stable_and_reexported() -> None:
     assert "cast(float | None, extract_intensity(message))" in src
     assert "detect_and_execute_tools = _hf_orch.detect_and_execute_tools" in src
     assert "_hf_orch.detect_and_execute_tools(" in src
+
+
+def test_chat_postprocess_stable_and_reexported() -> None:
+    class _State:
+        conversation_history: list[dict[str, str]] = []
+
+    state = _State()
+    cleaned = post.postprocess_llm_output(
+        "Assistant: En tant qu'IA, je peux vous aider. Comment allez-vous ?",
+        "Salut l'ami",
+        state,
+    )
+    assert isinstance(cleaned, str) and len(cleaned) >= 10
+    assert "Assistant:" not in cleaned
+    assert "en tant qu" not in cleaned.lower()
+
+    empty = post.postprocess_llm_output("", "salut", state)
+    assert isinstance(empty, str) and len(empty) >= 20
+
+    normalized = post.normalize_response_length("ok", state)
+    assert len(normalized) >= 30
+
+    state.conversation_history = [
+        {"user": "robotique avancée passionnante", "bbia": "ok"},
+    ]
+    assert post.get_recent_context(state) == "Robotique"
+    ctx = post.build_context_string(state)
+    assert "Historique conversation:" in ctx
+    assert "robotique" in ctx.lower()
+
+    hf_path = Path(__file__).resolve().parent / "bbia_huggingface.py"
+    src = hf_path.read_text(encoding="utf-8")
+    assert "normalize_response_length = _hf_post.normalize_response_length" in src
+    assert "_hf_post.postprocess_llm_output(" in src
+    assert "_hf_post.normalize_response_length(" in src
+    assert "_hf_post.get_recent_context(" in src
 
 
 def test_tool_orchestration_keyword_dance() -> None:

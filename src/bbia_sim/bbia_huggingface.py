@@ -6,17 +6,16 @@ Intégration avancée avec Hugging Face Hub pour enrichir les capacités IA de B
 import logging
 import operator
 import os
-import re
 import threading
 import time
 from collections import deque
-from functools import lru_cache
 from typing import TYPE_CHECKING, Any, cast
 
 import numpy as np
 import numpy.typing as npt
 from PIL import Image
 
+from . import bbia_hf_chat_postprocess as _hf_post
 from . import bbia_hf_chat_tools as _hf_chat_tools
 from . import bbia_hf_response_bank as _hf_bank
 from . import bbia_hf_tool_orchestration as _hf_orch
@@ -38,6 +37,14 @@ detect_and_execute_tools = _hf_orch.detect_and_execute_tools
 detect_tool_with_nlp = _hf_orch.detect_tool_with_nlp
 execute_detected_tool = _hf_orch.execute_detected_tool
 build_tool_params = _hf_orch.build_tool_params
+postprocess_llm_output = _hf_post.postprocess_llm_output
+normalize_response_length = _hf_post.normalize_response_length
+safe_fallback = _hf_post.safe_fallback
+avoid_recent_duplicates = _hf_post.avoid_recent_duplicates
+get_recent_context = _hf_post.get_recent_context
+build_context_string = _hf_post.build_context_string
+get_compiled_regex = _hf_post.get_compiled_regex
+_get_compiled_regex = _hf_post.get_compiled_regex
 
 if TYPE_CHECKING:
     from .bbia_tools import BBIATools
@@ -46,26 +53,6 @@ if TYPE_CHECKING:
 os.environ["TRANSFORMERS_VERBOSITY"] = "error"
 
 logger = logging.getLogger(__name__)
-
-
-# OPTIMISATION PERFORMANCE: Utiliser @lru_cache pour regex
-# (plus efficace que cache manuel)
-@lru_cache(maxsize=128)
-def _get_compiled_regex(pattern: str, flags: int = 0) -> re.Pattern[str]:
-    """Retourne regex compilée depuis cache (évite recompilation répétée).
-
-    Args:
-        pattern: Pattern regex
-        flags: Flags re (ex: re.IGNORECASE)
-
-    Returns:
-        Regex compilée (cachée ou nouvellement compilée)
-
-    Note:
-        Utilise @lru_cache pour performance optimale (max 128 patterns en cache).
-
-    """
-    return re.compile(pattern, flags)
 
 
 # Import conditionnel des dépendances Hugging Face
@@ -1847,184 +1834,16 @@ class BBIAHuggingFace:
         return cast(float | None, extract_intensity(message))
 
     def _postprocess_llm_output(self, text: str, user_message: str) -> str:
-        """Nettoie et compacte la sortie LLM pour éviter la verbosité.
-
-        - Retire préfixes/étiquettes (Assistant:, User:, System:)
-        - Supprime disclaimers génériques et répétitions
-        - Évite l'écho direct de la question utilisateur
-        - Coupe proprement à la fin de phrase sous un budget de longueur
-
-        Args:
-            text: Sortie brute du modèle
-            user_message: Message utilisateur pour éviter l'écho
-
-        Returns:
-            Chaîne nettoyée et tronquée proprement
-
-        """
-        if not text:
-            # Fallback sûr pour éviter sorties vides
-            return self._safe_fallback()
-
-        # 1) Retirer étiquettes et espaces superflus
-        cleaned = _get_compiled_regex(
-            r"^(Assistant:|System:|User:)\s*",
-            flags=re.IGNORECASE,
-        ).sub("", text.strip())
-        cleaned = cleaned.replace("\u200b", "").strip()
-
-        # 2) Supprimer disclaimers/filler fréquents (OPTIMISATION: regex compilées)
-        filler_patterns = [
-            r"en tant qu'?ia",
-            r"je ne suis pas autoris[ée]",
-            r"je ne peux pas fournir",
-            r"je ne suis qu.?un mod[èe]le",
-            r"désol[ée]",
-        ]
-        for pat in filler_patterns:
-            cleaned = _get_compiled_regex(pat, flags=re.IGNORECASE).sub("", cleaned)
-
-        # 3) Éviter l'écho de la question (suppression de phrases quasi-identiques)
-        # OPTIMISATION: Regex compilées pour split et sub
-        um = user_message.strip().lower()
-        sentences = _get_compiled_regex(r"(?<=[.!?…])\s+").split(cleaned)
-        filtered: list[str] = []
-        seen = set()
-        whitespace_regex = _get_compiled_regex(r"\s+")
-        for s in sentences:
-            s_norm = whitespace_regex.sub(" ", s).strip()
-            if not s_norm:
-                continue
-            # supprimer écho direct
-            if um and (um in s_norm.lower() or s_norm.lower() in um):
-                continue
-            # déduplication simple
-            key = s_norm.lower()
-            if key in seen:
-                continue
-            seen.add(key)
-            filtered.append(s_norm)
-
-        if not filtered:
-            # Fallback si tout a été filtré
-            return self._safe_fallback()
-
-        # 4) Limiter à 2–3 phrases naturelles (conformément au prompt)
-        limited = filtered[:3]
-        result = " ".join(limited)
-
-        # 5) Coupe à budget de caractères en fin de phrase
-        max_chars = 2000
-        if len(result) > max_chars:
-            # recouper à la dernière ponctuation avant budget
-            cut = result[:max_chars]
-            m = _get_compiled_regex(r"[.!?…](?=[^.!?…]*$)").search(cut)
-            if m:
-                cut = cut[: m.end()]
-            result = cut.strip()
-
-        # 6) Normalisation espaces finaux (OPTIMISATION: réutiliser regex compilée)
-        result = whitespace_regex.sub(" ", result).strip()
-
-        # 7) Gardes-fous contre sorties non pertinentes ou trop courtes
-        sentinels = {"", ":", ": {", "if"}
-        if result in sentinels:
-            result = self._safe_fallback()
-
-        min_len, max_len = 30, 150
-        if len(result) < min_len:
-            import random as _r
-
-            result = (
-                result
-                + SUFFIX_POOL[
-                    _r.randrange(
-                        len(SUFFIX_POOL),
-                    )  # nosec B311 - Variété réponse non-crypto
-                ]
-            ).strip()
-            if len(result) < min_len:
-                result = (
-                    result
-                    + " "
-                    + SUFFIX_POOL[
-                        _r.randrange(
-                            len(SUFFIX_POOL),
-                        )  # nosec B311 - Variété réponse non-crypto
-                    ]
-                ).strip()
-        if len(result) > max_len:
-            cut = result[: max_len + 1]
-            last_stop = max(cut.rfind("."), cut.rfind("!"), cut.rfind("?"))
-            if last_stop >= min_len // 2:
-                result = cut[: last_stop + 1].strip()
-            else:
-                last_space = cut.rfind(" ")
-                result = (
-                    (cut[:last_space] if last_space >= min_len else cut[:max_len])
-                    + "..."
-                ).strip()
-
-        # 8) Éviter répétitions récentes dans l'historique
-        return self._avoid_recent_duplicates(result)
+        """Nettoie et compacte la sortie LLM (délègue à ``bbia_hf_chat_postprocess``)."""
+        return cast(str, _hf_post.postprocess_llm_output(text, user_message, self))
 
     def _avoid_recent_duplicates(self, text: str) -> str:
-        """Évite les duplications exactes avec les dernières réponses BBIA.
-
-        Si duplication détectée, ajoute une légère variante naturelle.
-        """
-        try:
-            # OPTIMISATION: List comprehension plus efficace que append() en boucle
-            if self.conversation_history:
-                recent_history = list(self.conversation_history)[-5:]
-                recent = [
-                    entry.get("bbia", "").strip()
-                    for entry in recent_history
-                    if entry.get("bbia", "").strip()
-                ]
-            else:
-                recent = []
-            if text and text in recent:
-                import random as _r
-
-                addition = SUFFIX_POOL[
-                    _r.randrange(
-                        len(SUFFIX_POOL),
-                    )  # nosec B311 - Variété réponse non-crypto
-                ]
-                candidate = f"{text} {addition}".strip()
-                return self._normalize_response_length(candidate)
-            return text
-        except (ValueError, RuntimeError, TypeError):
-            return text
+        """Évite les duplications exactes avec les dernières réponses BBIA."""
+        return cast(str, _hf_post.avoid_recent_duplicates(text, self))
 
     def _safe_fallback(self) -> str:
-        """Retourne un fallback naturel et varié pour éviter les chaînes vides.
-
-        Combine une formulation de base avec un suffixe choisi aléatoirement
-        pour réduire le risque de doublons dans les tests.
-        """
-        try:
-            import random as _r
-
-            base_pool = [
-                "Je peux préciser si besoin, qu'aimeriez-vous savoir exactement ?",
-                "D'accord, dites-m'en un peu plus pour que je vous réponde au mieux.",
-                "Merci pour votre message, souhaitez-vous que je détaille "
-                "un point précis ?",
-            ]
-            base = base_pool[
-                _r.randrange(len(base_pool))  # nosec B311 - Variété réponse non-crypto
-            ]
-            suffix = SUFFIX_POOL[
-                _r.randrange(
-                    len(SUFFIX_POOL),
-                )  # nosec B311 - Variété réponse non-crypto
-            ]
-            candidate = f"{base}{suffix}".strip()
-            return self._normalize_response_length(candidate)
-        except (ValueError, RuntimeError, TypeError):
-            return SAFE_FALLBACK
+        """Retourne un fallback naturel et varié pour éviter les chaînes vides."""
+        return cast(str, _hf_post.safe_fallback(self))
 
     def _generate_simple_response(self, message: str, sentiment: SentimentDict) -> str:
         """Génère réponse intelligente basée sur sentiment, contexte et personnalité.
@@ -2438,198 +2257,16 @@ class BBIAHuggingFace:
         return f"{emoji} {response}"
 
     def _normalize_response_length(self, text: str) -> str:
-        """Normalise la longueur de la réponse vers ~[30, 150] caractères.
-
-        - Si < 30: ajoute une brève précision.
-        - Si > 150: tronque sur ponctuation/espace proche de 150.
-        """
-        try:
-            t = (text or "").strip()
-            # Garde-fous: si réponse quasi vide ou non significative, proposer une
-            # réplique générique sûre et naturelle pour éviter les doublons vides
-            if not t or len(t) < 5 or t in {":", ": {", "if"}:
-                return SAFE_FALLBACK
-            min_len, max_len = 30, 150
-            if len(t) < min_len:
-                import random as _r
-
-                t = (
-                    t
-                    + SUFFIX_POOL[
-                        _r.randrange(
-                            len(SUFFIX_POOL),
-                        )  # nosec B311 - Variété réponse non-crypto
-                    ]
-                ).strip()
-                # Si c'est encore trop court, compléter une seconde fois
-                if len(t) < min_len:
-                    t = (
-                        t
-                        + " "
-                        + SUFFIX_POOL[
-                            _r.randrange(
-                                len(SUFFIX_POOL),
-                            )  # nosec B311 - Variété réponse non-crypto
-                        ]
-                    ).strip()
-            if len(t) <= max_len:
-                # Anti-duplication récente
-                try:
-                    t = self._avoid_recent_duplicates(t)
-                except (TypeError, IndexError, KeyError) as e:
-                    logger.debug(
-                        "Erreur évitement doublons récents (type/index/key): %s",
-                        e,
-                    )
-                except (
-                    Exception
-                ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
-                    logger.debug(
-                        "Erreur lors de l'évitement des doublons récents: %s",
-                        e,
-                    )
-                return t
-
-            cut = t[: max_len + 1]
-            last_stop = max(cut.rfind("."), cut.rfind("!"), cut.rfind("?"))
-            if last_stop >= min_len // 2:
-                t2 = cut[: last_stop + 1].strip()
-                try:
-                    t2 = self._avoid_recent_duplicates(t2)
-                except (TypeError, IndexError, KeyError) as e:
-                    logger.debug(
-                        "Erreur évitement doublons récents t2 (type/index/key): %s",
-                        e,
-                    )
-                except (
-                    Exception
-                ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
-                    logger.debug(
-                        "Erreur lors de l'évitement des doublons récents (t2): %s",
-                        e,
-                    )
-                return t2
-            last_space = cut.rfind(" ")
-            if last_space >= min_len:
-                t3 = (cut[:last_space] + "...").strip()
-                try:
-                    t3 = self._avoid_recent_duplicates(t3)
-                except (TypeError, IndexError, KeyError) as e:
-                    logger.debug(
-                        "Erreur évitement doublons récents t3 (type/index/key): %s",
-                        e,
-                    )
-                except (
-                    Exception
-                ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
-                    logger.debug(
-                        "Erreur lors de l'évitement des doublons récents (t3): %s",
-                        e,
-                    )
-                return t3
-            t4 = (t[:max_len] + "...").strip()
-            try:
-                t4 = self._avoid_recent_duplicates(t4)
-            except (TypeError, IndexError, KeyError) as e:
-                logger.debug(
-                    "Erreur évitement doublons récents t4 (type/index/key): %s",
-                    e,
-                )
-            except (
-                Exception
-            ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
-                logger.debug(
-                    "Erreur lors de l'évitement des doublons récents (t4): %s",
-                    e,
-                )
-            return t4
-        except (ValueError, RuntimeError, TypeError):
-            return text
+        """Normalise la longueur de la réponse vers ~[30, 150] caractères."""
+        return cast(str, _hf_post.normalize_response_length(text, self))
 
     def _get_recent_context(self) -> str | None:
-        """Extrait un mot-clé du contexte récent pour cohérence conversationnelle.
-
-        Returns:
-            Mot-clé du dernier message utilisateur (si disponible)
-
-        """
-        if not self.conversation_history:
-            return None
-
-        # Prendre le dernier message utilisateur
-        # OPTIMISATION: Accéder au dernier élément
-        # (deque supporte [-1] mais type checker se plaint)
-        last_entry = (
-            list(self.conversation_history)[-1] if self.conversation_history else None
-        )
-        if last_entry is None:
-            return None
-        user_msg = last_entry.get("user", "")
-
-        # Extraire les mots significatifs (exclure articles, prépositions)
-        stop_words = {
-            "le",
-            "la",
-            "les",
-            "un",
-            "une",
-            "de",
-            "du",
-            "des",
-            "et",
-            "ou",
-            "est",
-            "sont",
-            "je",
-            "tu",
-            "il",
-            "elle",
-            "nous",
-            "vous",
-            "ils",
-            "elles",
-            "à",
-            "pour",
-            "avec",
-            "dans",
-            "sur",
-            "par",
-            "ne",
-            "pas",
-            "que",
-            "qui",
-            "quoi",
-            "comment",
-        }
-        # OPTIMISATION: Cache .lower().split() pour éviter appel répété
-        words_lower = user_msg.lower().split()
-        words = [w for w in words_lower if len(w) > 3 and w not in stop_words]
-
-        # Retourner le premier mot significatif si disponible
-        return str(words[0].capitalize()) if words else None
+        """Extrait un mot-clé du contexte récent pour cohérence conversationnelle."""
+        return cast(str | None, _hf_post.get_recent_context(self))
 
     def _build_context_string(self) -> str:
-        """Construit le contexte pour la conversation.
-
-        Returns:
-            Chaîne de contexte basée sur l'historique
-
-        """
-        if not self.conversation_history:
-            return (
-                "Conversation avec BBIA (robot Reachy Mini). Soyez amical et curieux."
-            )
-
-        # OPTIMISATION: Convertir deque en list pour slicing
-        # et utiliser list comprehension
-        recent_history = list(self.conversation_history)[-3:]  # Derniers 3 échanges
-        # OPTIMISATION: List comprehension plus efficace que append() en boucle
-        context_lines = ["Historique conversation:"] + [
-            line
-            for entry in recent_history
-            for line in [f"User: {entry['user']}", f"BBIA: {entry['bbia']}"]
-        ]
-        return "\n".join(context_lines)
+        """Construit le contexte pour la conversation."""
+        return cast(str, _hf_post.build_context_string(self))
 
 
 def main() -> None:
