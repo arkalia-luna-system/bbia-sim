@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import logging
 from collections.abc import Callable
-from typing import Any, Protocol
+from typing import Any, Protocol, cast
 
 from . import bbia_hf_chat_tools as chat_tools
 
@@ -219,7 +219,7 @@ def execute_detected_tool(
             use_ner_extraction=True,
         )
         result = execute_tool(tool_name, params)
-        text = chat_tools.format_tool_result_text(result, tool_name)
+        text = cast(str, chat_tools.format_tool_result_text(result, tool_name))
         if result is not None and result.get("status") == "success":
             logger.info(
                 "✅ Outil '%s' exécuté: %s",
@@ -303,7 +303,7 @@ def detect_and_execute_tools(
                     use_ner_extraction=False,
                 )
                 result = _run_tool_safe(execute_tool, tool_name, params)
-                text = chat_tools.format_tool_result_text(result, tool_name)
+                text = cast(str, chat_tools.format_tool_result_text(result, tool_name))
                 if result is not None and result.get("status") == "success":
                     logger.info(
                         "✅ Outil '%s' exécuté: %s",
