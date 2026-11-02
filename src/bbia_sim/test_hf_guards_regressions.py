@@ -1,4 +1,4 @@
-"""Non-régression découpage HF : ``hf_guards`` + banque + chat tools + postprocess."""
+"""Non-régression découpage HF : guards, banque, tools, postprocess, personnalité."""
 
 from __future__ import annotations
 
@@ -9,6 +9,7 @@ import pytest
 
 from bbia_sim import bbia_hf_chat_postprocess as post
 from bbia_sim import bbia_hf_chat_tools as chat_tools
+from bbia_sim import bbia_hf_personality_response as personality
 from bbia_sim import bbia_hf_response_bank as bank
 from bbia_sim import bbia_hf_tool_orchestration as orch
 from bbia_sim.hf_guards import (
@@ -92,6 +93,7 @@ def test_response_bank_stable_and_reexported() -> None:
     chat_tools_imported = False
     orch_imported = False
     post_imported = False
+    personality_imported = False
     for node in tree.body:
         if isinstance(node, ast.ImportFrom):
             names = {alias.name for alias in node.names}
@@ -103,15 +105,25 @@ def test_response_bank_stable_and_reexported() -> None:
                 orch_imported = True
             if "bbia_hf_chat_postprocess" in names:
                 post_imported = True
+            if "bbia_hf_personality_response" in names:
+                personality_imported = True
     assert bank_imported, "bbia_huggingface doit importer bbia_hf_response_bank"
     assert chat_tools_imported, "bbia_huggingface doit importer bbia_hf_chat_tools"
     assert orch_imported, "bbia_huggingface doit importer bbia_hf_tool_orchestration"
     assert post_imported, "bbia_huggingface doit importer bbia_hf_chat_postprocess"
+    assert (
+        personality_imported
+    ), "bbia_huggingface doit importer bbia_hf_personality_response"
     assert "SAFE_FALLBACK: str =" in src
     assert "SUFFIX_POOL: list[str] =" in src
     assert "TOOL_KEYWORD_PATTERNS =" in src
     assert "extract_angle =" in src
     assert "postprocess_llm_output = _hf_post.postprocess_llm_output" in src
+    assert "generate_simple_response = _hf_personality.generate_simple_response" in src
+    assert (
+        "adapt_response_to_personality = _hf_personality.adapt_response_to_personality"
+        in src
+    )
 
 
 def test_chat_tools_helpers_stable_and_reexported() -> None:
@@ -214,6 +226,38 @@ def test_tool_orchestration_move_head_params() -> None:
         use_ner_extraction=False,
     )
     assert kw["intensity"] == 0.5
+
+
+def test_personality_response_stable_and_reexported() -> None:
+    class _State:
+        bbia_personality = "friendly_robot"
+        conversation_history: list[dict[str, str]] = []
+
+    state = _State()
+    greeting = personality.generate_simple_response(
+        "bonjour",
+        {"sentiment": "POSITIVE", "score": 0.9},
+        state,
+    )
+    assert isinstance(greeting, str) and len(greeting) >= 10
+    assert any(
+        w in greeting.lower() for w in ["bonjour", "salut", "hello", "hey", "coucou"]
+    )
+
+    curious = _State()
+    curious.bbia_personality = "curious"
+    adapted = personality.adapt_response_to_personality(
+        "Merci pour votre message.",
+        {"sentiment": "NEUTRAL", "score": 0.5},
+        curious,
+    )
+    assert adapted.startswith("🤔")
+
+    hf_path = Path(__file__).resolve().parent / "bbia_huggingface.py"
+    src = hf_path.read_text(encoding="utf-8")
+    assert "_hf_personality.generate_simple_response(" in src
+    assert "_hf_personality.adapt_response_to_personality(" in src
+    assert "YES ! C'est génial" not in src
 
 
 def test_tool_orchestration_no_tools() -> None:

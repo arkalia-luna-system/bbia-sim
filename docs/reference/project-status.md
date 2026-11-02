@@ -16,14 +16,16 @@
 
 **Mise à jour 2 Novembre 2026 (chat postprocess)** : `bbia_hf_chat_postprocess.py` (normalize / anti-doublons / fallback / contexte) ; god-file HF ~2.31k ; PR #48 mergée — pins Starlette alignés `develop`/`main`.
 
-**Scores subjectifs domaines (2 nov. 2026 — tip `9957ffc7`+ postprocess HF)** :
+**Mise à jour 2 Novembre 2026 (personality response)** : `bbia_hf_personality_response.py` (`generate_simple_response` / `adapt_response_to_personality`) ; god-file HF ~1.92k.
+
+**Scores subjectifs domaines (2 nov. 2026 — tip post-personality HF)** :
 
 | Domaine | Avant | Après | Note |
 |:--------|:-----:|:-----:|:-----|
 | Sécu app-layer | ~8 | **~9** | Alias `BBIA_TOKEN`/`BBIA_ENV`, refuse défaut/vide en prod, WS bridge/dashboard, HF pip OFF, yaw clamp chemins API ; **pas 10/10** (firmware/upload Pollen) |
 | Dependabot GitHub | ~8 | **9** | Pins OK sur `develop`/`main` ; alertes UI = scan GitHub (hors app-layer) |
 | Tests | ~8 | **~9** | Régressions auth/alias/guards + `test_hf_guards_regressions` ; smokes mockés CI — pas de claim 10/10 exhaustif |
-| Qualité / structure | ~8.5 | **~9.4** | `http_auth` / `ws.auth` / `auth_token` / `hf_guards` / `bbia_hf_response_bank` / `bbia_hf_chat_tools` / `bbia_hf_chat_postprocess` / `bbia_hf_tool_orchestration` ; god-file HF ~2.31k, pas rewrite total |
+| Qualité / structure | ~8.5 | **~9.5** | `http_auth` / `ws.auth` / `auth_token` / `hf_guards` / `bbia_hf_response_bank` / `bbia_hf_chat_tools` / `bbia_hf_chat_postprocess` / `bbia_hf_tool_orchestration` / `bbia_hf_personality_response` ; god-file HF ~1.92k, pas rewrite total |
 | Docs | ~8.5 | **~9** | Scores honnêtes ; Pollen ≤7 ; pas de faux 10/10 hardware |
 | Bugs | ~8.5 | **~9** | Telemetry freq, joint, yaw bypass, env aliases |
 | DX | ~8 | **~9** | `BBIA_DISABLE_PYTEST_LOCK` / cleanup flags ; coverage XML dé-tracké |
