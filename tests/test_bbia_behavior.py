@@ -53,7 +53,7 @@ class TestWakeUpBehavior(unittest.TestCase):
         self.assertEqual(behavior.name, "wake_up")
         self.assertEqual(behavior.priority, 10)
 
-    @patch("bbia_sim.bbia_behavior.dire_texte")
+    @patch("bbia_sim.bbia_behavior._dire_texte_safe")
     def test_wake_up_execute(self, mock_dire_texte):
         """Test d'exécution du comportement de réveil."""
         behavior = WakeUpBehavior()
@@ -71,7 +71,7 @@ class TestGreetingBehavior(unittest.TestCase):
         self.assertIsInstance(behavior.greetings, list)
         self.assertGreater(len(behavior.greetings), 0)
 
-    @patch("bbia_sim.bbia_behavior.dire_texte")
+    @patch("bbia_sim.bbia_behavior._dire_texte_safe")
     def test_greeting_execute(self, mock_dire_texte):
         """Test d'exécution du comportement de salutation."""
         behavior = GreetingBehavior()
@@ -111,7 +111,7 @@ class TestHideBehavior(unittest.TestCase):
         self.assertEqual(behavior.name, "hide")
         self.assertEqual(behavior.priority, 9)
 
-    @patch("bbia_sim.bbia_behavior.dire_texte")
+    @patch("bbia_sim.bbia_behavior._dire_texte_safe")
     def test_hide_execute(self, mock_dire_texte):
         """Test d'exécution du comportement 'se cacher'."""
         behavior = HideBehavior()
@@ -142,7 +142,7 @@ class TestHideBehavior(unittest.TestCase):
 
         try:
             # Correction : patcher dire_texte dans le namespace du module bbia_behavior
-            with patch("bbia_sim.bbia_behavior.dire_texte") as mock_dire_texte:
+            with patch("bbia_sim.bbia_behavior._dire_texte_safe") as mock_dire_texte:
                 result = behavior.execute({})
 
             # Vérification de la sortie console (depuis les logs)
@@ -192,7 +192,7 @@ class TestBBIABehaviorManager(unittest.TestCase):
         self.manager.register_behavior(custom_behavior)
         self.assertIn("custom", self.manager.behaviors)
 
-    @patch("bbia_sim.bbia_behavior.dire_texte")
+    @patch("bbia_sim.bbia_behavior._dire_texte_safe")
     def test_execute_behavior(self, mock_dire_texte):
         """Test d'exécution d'un comportement."""
         result = self.manager.execute_behavior("greeting")

@@ -17,6 +17,8 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "src"))
 
 from bbia_sim.daemon.app.main import app, lifespan
 
+pytestmark = pytest.mark.e2e
+
 
 class TestWebSocketTelemetry:
     """Tests E2E pour le WebSocket télémétrie."""
