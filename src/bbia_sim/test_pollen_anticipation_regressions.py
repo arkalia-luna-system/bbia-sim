@@ -24,6 +24,7 @@ from bbia_sim.head_tracking_guard import (
 from bbia_sim.media_guard import (
     is_dangerous_media_backend,
     looks_like_shell_amixer,
+    looks_like_usb_reachy_audio,
     refuse_shell_audio_command,
     resolve_media_backend,
 )
@@ -158,6 +159,18 @@ def test_media_guard_refuses_dangerous_backends(
     assert is_dangerous_media_backend("alsa_amixer")
     assert resolve_media_backend("audiomixer") == "no_media"
     assert resolve_media_backend("no_media") == "no_media"
+
+
+def test_media_guard_detects_usb_reachy_audio(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """#1507 : détection/refus clair du chemin USB Reachy Mini Audio."""
+    monkeypatch.delenv("BBIA_DISABLE_AUDIO", raising=False)
+    assert looks_like_usb_reachy_audio("reachy_mini_audio")
+    assert looks_like_usb_reachy_audio("usb_xmos")
+    assert not looks_like_usb_reachy_audio("sounddevice")
+    assert resolve_media_backend("reachy_mini_audio") == "no_media"
+    assert resolve_media_backend("pulse_usb") == "no_media"
 
 
 def test_refuse_shell_amixer() -> None:

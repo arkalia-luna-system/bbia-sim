@@ -33,7 +33,21 @@ _DANGEROUS_MEDIA_TOKENS: Final[frozenset[str]] = frozenset(
         "amixer",
         "pulse_usb",
         "xmos",
+        "usb_audio",
+        "usb_xmos",
+        "reachy_mini_audio",
+        "reachy_audio",
+        "no_reachy_mini_audio",
     }
+)
+
+# Indices explicites « device USB Reachy Mini Audio » (#1507)
+_USB_AUDIO_HINTS: Final[tuple[str, ...]] = (
+    "usb",
+    "xmos",
+    "reachy_mini_audio",
+    "reachy_audio",
+    "pulse_usb",
 )
 
 _SAFE_MEDIA_BACKENDS: Final[frozenset[str]] = frozenset(
@@ -67,6 +81,19 @@ def is_dangerous_media_backend(media_backend: str | None) -> bool:
     if token in _DANGEROUS_MEDIA_TOKENS:
         return True
     return any(danger in token for danger in _DANGEROUS_MEDIA_TOKENS)
+
+
+def looks_like_usb_reachy_audio(media_backend: str | None) -> bool:
+    """True si le nom évoque le device USB « Reachy Mini Audio » (Pollen #1507).
+
+    BBIA ne peut pas garantir la présence du device host ; on détecte le
+    *chemin demandé* pour refuser clairement plutôt que laisser échouer
+    en « No Reachy Mini Audio » côté GStreamer/ALSA.
+    """
+    if not media_backend:
+        return False
+    token = media_backend.strip().lower().replace("-", "_").replace(" ", "_")
+    return any(hint in token for hint in _USB_AUDIO_HINTS)
 
 
 def looks_like_shell_amixer(command: str | None) -> bool:
@@ -110,12 +137,19 @@ def resolve_media_backend(
             )
         return "no_media"
 
-    if is_dangerous_media_backend(raw):
+    if is_dangerous_media_backend(raw) or looks_like_usb_reachy_audio(raw):
+        reason = (
+            "USB Reachy Mini Audio / XMOS (#1507 — device host souvent absent)"
+            if looks_like_usb_reachy_audio(raw)
+            else "GStreamer/ALSA shell (#1525/#1521)"
+        )
         logger.warning(
-            "%s: media_backend dangereux %r refusé → no_media "
-            "(Pollen #1525 GStreamer / #1507 USB audio)",
+            "%s: media_backend %r refusé → no_media (%s). "
+            "Contournement: media_backend=no_media ou BBIA_DISABLE_AUDIO=1. "
+            "Le firmware/host Pollen reste exposé si audio USB forcé ailleurs.",
             context,
             raw,
+            reason,
         )
         return "no_media"
 

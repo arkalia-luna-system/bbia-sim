@@ -48,9 +48,12 @@ async def receive_text_with_keepalive(
     """
     limit = get_ws_keepalive_timeout() if timeout is None else float(timeout)
     if limit <= 0:
-        return await websocket.receive_text()
+        # Starlette stub: receive_text → Any ; forcer str pour mypy no-any-return
+        text = await websocket.receive_text()
+        return str(text)
     try:
-        return await asyncio.wait_for(websocket.receive_text(), timeout=limit)
+        text = await asyncio.wait_for(websocket.receive_text(), timeout=limit)
+        return str(text)
     except TimeoutError:
         raise
     except Exception as exc:

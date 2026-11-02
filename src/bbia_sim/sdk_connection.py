@@ -110,7 +110,13 @@ def call_with_reconnect(
         try:
             result = factory()
             if attempt > 1:
-                logger.info("%s réussi après %s tentative(s)", label, attempt)
+                logger.info(
+                    "%s réussi après %s/%s tentative(s) "
+                    "(timeout/reconnect BBIA — Pollen #1494/#1466 soft)",
+                    label,
+                    attempt,
+                    total,
+                )
             return result
         except (
             OSError,
@@ -120,14 +126,24 @@ def call_with_reconnect(
             ValueError,
         ) as exc:
             last_exc = exc
+            remaining = total - attempt
             logger.warning(
-                "%s échec %s/%s: %s",
+                "%s échec %s/%s: %s — reste %s tentative(s) "
+                "(si Wireless: check Zenoh/relay ; #1466/#1465 exposé Pollen si auth OK)",
                 label,
                 attempt,
                 total,
                 exc,
+                remaining,
             )
             if attempt < total and pause > 0:
                 time.sleep(pause)
     assert last_exc is not None
+    logger.error(
+        "%s épuisé après %s tentative(s): %s — "
+        "BBIA soft only (pas de fix firmware Wireless/relay)",
+        label,
+        total,
+        last_exc,
+    )
     raise last_exc

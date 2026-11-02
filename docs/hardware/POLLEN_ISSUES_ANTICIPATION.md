@@ -55,8 +55,8 @@ Correctif PIN upstream : **1.12.0** (advisory). Upload / traversal : mettre à j
 | [#1516](https://github.com/pollen-robotics/reachy_mini/issues/1516) / [#1514](https://github.com/pollen-robotics/reachy_mini/issues/1514) | Erreurs JSON-RPC / data-channel sans nom de commande | doc seule | Bridge BBIA loggue la commande ; pas de relay WebRTC Pollen | documenté |
 | [#1512](https://github.com/pollen-robotics/reachy_mini/issues/1512) | Move « finished » alors qu’un autre tourne | wrapper/guard | `create_move_task` refuse le concurrent (HTTP 409) sauf `BBIA_ALLOW_CONCURRENT_MOVES=1` | implémenté |
 | [#1508](https://github.com/pollen-robotics/reachy_mini/issues/1508) | WebRTC audio queue non flushée | N/A BBIA | Pas de `stop_recording` WebRTC Pollen dans BBIA | documenté |
-| [#1507](https://github.com/pollen-robotics/reachy_mini/issues/1507) | USB audio « No Reachy Mini Audio » | wrapper/guard | `resolve_media_backend` + `BBIA_DISABLE_AUDIO` → `no_media` | **code** (+ exposé device USB) |
-| [#1494](https://github.com/pollen-robotics/reachy_mini/issues/1494) | WS keepalive non configurable | wrapper/guard | `BBIA_WS_KEEPALIVE_TIMEOUT` (uvicorn + receive) **et** `BBIA_SDK_CONNECT_TIMEOUT` / `BBIA_SDK_RECONNECT_*` côté client SDK | **code** |
+| [#1507](https://github.com/pollen-robotics/reachy_mini/issues/1507) | USB audio « No Reachy Mini Audio » | wrapper/guard | `looks_like_usb_reachy_audio` + `resolve_media_backend` + `BBIA_DISABLE_AUDIO` → `no_media` (logs refus explicites) | **code** (+ exposé device USB host) |
+| [#1494](https://github.com/pollen-robotics/reachy_mini/issues/1494) | WS keepalive non configurable | wrapper/guard | `BBIA_WS_KEEPALIVE_TIMEOUT` (uvicorn + receive, mypy-safe) **et** `BBIA_SDK_CONNECT_TIMEOUT` / `BBIA_SDK_RECONNECT_*` + logs reconnect | **code** |
 | [#1493](https://github.com/pollen-robotics/reachy_mini/issues/1493) | Pin exact `onnxruntime==1.27.0` | N/A BBIA | BBIA ne pinne pas onnxruntime en cœur ; SDK via extra optionnel | documenté |
 | [#1479](https://github.com/pollen-robotics/reachy_mini/issues/1479) | Oscillation yaw ~3 Hz | wrapper/guard + exposé Pollen | `clamp_yaw_amplitude` / `BBIA_YAW_SAFE_AMPLITUDE` + watchdog ; **gain servo = firmware** | **code soft** |
 | [#1478](https://github.com/pollen-robotics/reachy_mini/issues/1478) | Sleep droop après coupe couple | wrapper/guard + exposé Pollen | `prepare_goto_sleep` (re-check pose, warning) ; `BBIA_SLEEP_HOLD_TORQUE=1` best-effort `enable_motors` — **ne corrige pas le firmware** | **code soft** |
@@ -108,11 +108,10 @@ export REACHY_ZENOH_CONNECT="tcp://<IP_ROBOT>:7447"
 | `src/bbia_sim/backends/reachy_mini_backend.py` | Câblage gardes + wobbler #1517 |
 | `src/bbia_sim/test_pollen_anticipation_regressions.py` + suites state/move/apps/media | Preuves |
 
-**Suite pytest ciblée (VÉRIFIÉ local 1 Nov 2026, `--cov=` off)** :
-- `test_pollen_anticipation_*` + websocket_auth + move + media → **31** collected / **31** passed
-- state + apps regressions → **7** collected / **7** passed
-- `tests/test_capabilities_optimized.py` → **10** collected / **10** passed (dont `ConnectionManager`)
-- Total ciblé : **48** passed. Re-collect avant toute déclaration CI.
+**Suite pytest ciblée (re-collect après chaque change ; `--cov=` off)** :
+- `test_pollen_anticipation_*` + websocket_auth + move + media → compte local courant (voir preuves mission)
+- state + apps regressions → suite courte séparée
+- Firmware yaw/sleep/Wireless : **exposé Pollen** — docs honnêtes seulement ; soft BBIA ≠ correctif firmware.
 
 ## Voir aussi
 
