@@ -1,7 +1,6 @@
 """Application FastAPI principale pour BBIA-SIM."""
 
 import asyncio
-import hmac
 import logging
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
@@ -11,7 +10,6 @@ from typing import Any
 from fastapi import APIRouter, Depends, FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, JSONResponse
-from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
@@ -45,8 +43,6 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Configuration de sécurité
-security = HTTPBearer()
-
 # Variables globales pour l'état de l'application
 app_state: dict[str, Any] = {
     "simulator": None,
@@ -61,39 +57,8 @@ app_state: dict[str, Any] = {
 }
 
 
-def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)) -> str:
-    """Vérifie le token d'authentification.
-
-    Args:
-        credentials: Credentials HTTP Bearer
-
-    Returns:
-        Token vérifié
-
-    Raises:
-        HTTPException: Si le token est invalide
-
-    """
-    if not hmac.compare_digest(credentials.credentials, settings.api_token):
-        # Log sécurisé sans exposer le token
-        logger.warning(
-            "Tentative d'authentification avec token invalide: %s",
-            settings.mask_token(credentials.credentials),
-        )
-        raise HTTPException(
-            status_code=401,
-            detail="Token d'authentification invalide",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-
-    # Log de succès en mode debug uniquement
-    if settings.log_level.upper() == "DEBUG":
-        logger.debug(
-            "Authentification réussie avec token: %s",
-            settings.mask_token(credentials.credentials),
-        )
-
-    return str(credentials.credentials)
+# verify_token : module léger (tests sans import Jinja)
+from bbia_sim.daemon.app.http_auth import verify_token  # noqa: E402
 
 
 @asynccontextmanager

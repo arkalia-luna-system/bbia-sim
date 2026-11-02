@@ -1,33 +1,13 @@
-"""Tests de non-regression pour l'authentification HTTP de main.py.
-
-Évite le hang ExFAT : stub ``jinja2`` avant import de ``main`` (Jinja2Templates).
-"""
+"""Tests de non-regression auth HTTP — via ``http_auth`` (sans import ``main``/Jinja)."""
 
 from __future__ import annotations
-
-import sys
-from types import ModuleType
 
 import pytest
 from fastapi import HTTPException
 from fastapi.security import HTTPAuthorizationCredentials
 
-
-def _ensure_jinja2_stub() -> None:
-    if "jinja2" in sys.modules:
-        return
-    stub = ModuleType("jinja2")
-    stub.Environment = object  # type: ignore[attr-defined]
-    stub.BaseLoader = object  # type: ignore[attr-defined]
-    stub.TemplateNotFound = type("TemplateNotFound", (Exception,), {})  # type: ignore[attr-defined]
-    stub.select_autoescape = lambda *a, **k: None  # type: ignore[attr-defined]
-    sys.modules["jinja2"] = stub
-
-
-_ensure_jinja2_stub()
-
-from bbia_sim.daemon.app.main import verify_token  # noqa: E402
-from bbia_sim.daemon.config import settings  # noqa: E402
+from bbia_sim.daemon.app.http_auth import verify_token
+from bbia_sim.daemon.config import settings
 
 
 def _creds(token: str) -> HTTPAuthorizationCredentials:
@@ -54,3 +34,23 @@ def test_verify_token_logs_masked_token(
     with pytest.raises(HTTPException):
         verify_token(_creds("bad-token"))
     assert "bad-token" not in caplog.text
+
+
+def test_main_reexports_verify_token_from_http_auth() -> None:
+    """Garde le câblage ``main`` → ``http_auth`` (sans exécuter l'app)."""
+    import ast
+    from pathlib import Path
+
+    src = Path(__file__).resolve().parent / "daemon" / "app" / "main.py"
+    tree = ast.parse(src.read_text(encoding="utf-8"))
+    found = False
+    for node in tree.body:
+        if (
+            isinstance(node, ast.ImportFrom)
+            and node.module == "bbia_sim.daemon.app.http_auth"
+        ):
+            names = {a.name for a in node.names}
+            if "verify_token" in names:
+                found = True
+                break
+    assert found, "main.py doit importer verify_token depuis http_auth"
