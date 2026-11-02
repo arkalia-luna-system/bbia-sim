@@ -63,7 +63,7 @@ python scripts/verify_docs_complete.py --fix
 - **`scripts/launch_complete_robot.py`** - Lanceur robot complet
 - **`scripts/start_public_api.py`** - API publique robuste
 - **`scripts/hardware_dry_run_reachy_mini.py`** - Tests hardware Reachy Mini
-- **`scripts/smart_process_cleanup.sh`** - Nettoyage processus sécurisé
+- **`scripts/cleanup_all.sh`** - Nettoyage cache + RAM (`--ram-only` pour les processus)
 
 ### 3. Scripts d'audit (consolidés)
 

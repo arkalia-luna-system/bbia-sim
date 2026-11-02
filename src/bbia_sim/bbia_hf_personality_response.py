@@ -432,7 +432,7 @@ def generate_simple_response(
 
 def adapt_response_to_personality(
     response: str,
-    sentiment: SentimentDict,  # noqa: ARG002
+    sentiment: SentimentDict,  # noqa: ARG001
     state: PersonalityResponseState,
 ) -> str:
     """Adapte la réponse selon la personnalité BBIA avec nuances expressives.

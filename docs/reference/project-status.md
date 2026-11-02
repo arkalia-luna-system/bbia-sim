@@ -5,8 +5,12 @@
 **🎯 Vue d'ensemble de l'état du projet par axe**
 *Fiabilité • Performance • Sécurité • CI/CD • Plus*
 
-**Version** : 1.4.0 • **Dernière mise à jour** : 2 Novembre 2026
-**Prêt pour arrivée robot** 🤖
+**Version** : 1.4.0 • **Dernière mise à jour** : 2 Novembre 2026  
+**Robot** : reçu / monté (déc. 2025) — usage **sim-first** ; hardware Pollen **≤7/10** ; pas de claim « robot production-ready 100 % ».
+
+**Mise à jour 2 Novembre 2026 (fin de journée hygiène)** : doublons `cleanup_*.sh` / `smart_process_cleanup.sh` → `_archived/cleanup_fused_2026/` ; MD draft issues mort (source `GOOD_FIRST_ISSUES.md` absente) supprimé ; symlink `launch_robot.sh` corrigé ; claims Unity/install global retirés de `scripts/README.md` ; AppleDouble locaux nettoyés (non commit).
+
+**Mise à jour 2 Novembre 2026 (polish suite)** : `bbia_safe.sh` archivé (`process_orphans/`, 0 réf.) ; `verify_documentation.py` **conservé** (rôles distincts de `verify_docs_complete.py`) ; claim header complete corrigé ; date `INDEX_FINAL.md` alignée ; Bandit tip déjà vert (échecs B105 sur SHAs antérieurs).
 
 **Mise à jour 2 Novembre 2026 (soir)** : passe ≥9/10 domaines logiciels (puis 10/10 app-layer le même jour — voir tableau senior) — floors `fastapi>=0.137.1` / `starlette>=1.3.1` / `requests>=2.33.1` / `httpx` alignés ; Dependabot → `develop` ; smokes/slices **mockés CI** ; télémétrie `frequency` = settings ; joint ecosystem honoré ; artefacts coverage XML **dé-trackés**.
 

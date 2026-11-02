@@ -1,6 +1,8 @@
-# 🤝 Guide de contribution
+# Guide de contribution
 
-Merci de vouloir contribuer à BBIA Reachy Mini Wireless !
+Merci de vouloir contribuer à **BBIA-SIM** (simulation / moteur cognitif Reachy Mini).
+
+Le projet est **sim-first** : sans `BBIA_ALLOW_HARDWARE=1`, pas de mouvement matériel. Ne pas documenter le robot réel comme « 100 % validé » ou le firmware Pollen comme « parfait » sans preuve.
 
 ## Comment contribuer
 
@@ -13,19 +15,23 @@ Merci de vouloir contribuer à BBIA Reachy Mini Wireless !
 
 3. **Décrivez clairement** votre modification dans la Pull Request (PR).
 4. **Référencez** les issues concernées si besoin.
-5. **Respectez le style de code** (utilisez `black`, `isort`, `ruff`).
+5. **Respectez le style de code** (`black`, `ruff` ; `isort` si utilisé localement).
 6. **Ajoutez des tests** si possible.
-7. **Vérifiez que les tests passent** avant de soumettre la PR :
+7. **Vérifiez** avant la PR (sous-ensemble pertinent suffit souvent) :
 
    ```bash
-   pytest tests/ -v
+   ruff check src/bbia_sim
+   pytest tests/ -q --tb=line
    ```
+
+Python : **3.10+** (extra SDK Reachy **3.11+**).
 
 ## Bonnes pratiques
 
 - Code lisible, commenté si nécessaire
 - Commits clairs et concis
 - Respect de la licence MIT
+- Impact robot : cocher la section dédiée du template PR
 
 ## Processus de revue
 

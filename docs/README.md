@@ -1,13 +1,14 @@
 # 📚 Documentation BBIA-SIM — Navigation Rapide
 
-**Dernière mise à jour :** 27 Octobre 2026
+**Dernière mise à jour :** 2 Novembre 2026  
 **Version** : v1.4.0  
-**Statut Robot** : ✅ Reçu le 18 déc 2025, monté le 20 déc 2025. **Installation moteurs 1, 2, 4 effectuée** (slots 1 et 2 = QC 2549, slot 4 = QC 2548). En attente de premier rallumage et validation.  
-**SDK Reachy Mini (référence)** : **v1.13.0** (PyPI, 27 oct. 2026) — aligné sur Pollen ([reachy_mini](https://github.com/pollen-robotics/reachy_mini))
-**Alignement v1.13.0** : ✅ `connection_mode`, `automatic_body_yaw`, extra `.[reachy]` (`reachy-mini==1.13.0`, Python ≥3.11), huggingface-hub ≥1.20.1, starlette ≥1.3.1,&lt;2, FastAPI ≥0.135
+**Mode** : **sim-first** — robot physique uniquement avec `BBIA_ALLOW_HARDWARE=1` ([PREMIER_JOUR](hardware/PREMIER_JOUR_ROBOT.md), [SÉCURITÉ](hardware/SECURITE_ROBOT.md)).  
+**Statut Robot (déclaratif lab)** : reçu 18 déc 2025, monté 20 déc 2025 ; moteurs 1/2/4 (QC 2549 / 2548). Campagne e2e hardware publique **non** revendiquée comme « 100 % validée ».  
+**Scores** : app-layer logiciels **10/10** (subjectifs tip) · hardware Pollen **≤7** — [`reference/project-status.md`](reference/project-status.md).  
+**SDK Reachy Mini** : **v1.13.0** (PyPI) — extra `.[reachy]`, Python ≥3.11 pour le SDK.
 
-> **Moteur cognitif Python pour robot Reachy Mini**
-> *Simulation • IA • SDK conforme*
+> **Moteur cognitif Python pour Reachy Mini**  
+> *Simulation-first • IA optionnelle • Alignement SDK 1.13 (pas certification Pollen)*
 
 ---
 

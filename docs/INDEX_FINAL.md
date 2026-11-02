@@ -15,7 +15,7 @@
 | **Dashboard** | `python src/bbia_sim/dashboard_advanced.py` | Instant | [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) |
 | **Premier robot** | Voir guide | 5 min | [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) ⭐ |
 
-**Version** : v1.4.0 • **Dernière mise à jour** : 7 Février 2026
+**Version** : v1.4.0 • **Dernière mise à jour** : 2 Novembre 2026
 
 > **💡 Départ** : [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md)
 
