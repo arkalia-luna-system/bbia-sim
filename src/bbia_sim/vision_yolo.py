@@ -151,7 +151,9 @@ class YOLODetector:
 
         with _yolo_cache_lock:
             if cache_key in _yolo_model_cache:
-                logger.debug("♻️ Réutilisation modèle YOLO depuis cache (%s)", cache_key)
+                logger.debug(
+                    "♻️ Réutilisation modèle YOLO depuis cache (%s)", cache_key
+                )
                 self.model = _yolo_model_cache[cache_key]
                 # OPTIMISATION RAM: Mettre à jour timestamp usage
                 _yolo_model_last_used[cache_key] = time_module.time()
