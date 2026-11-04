@@ -14,8 +14,13 @@ import numpy as np
 import numpy.typing as npt
 
 from bbia_sim.hardware_guard import resolve_use_sim
+from bbia_sim.head_pose_guard import clamp_head_pitch_roll
 from bbia_sim.head_tracking_guard import should_skip_head_tracking
 from bbia_sim.media_guard import resolve_media_backend
+from bbia_sim.motors_settle_guard import (
+    await_motors_settle_if_needed,
+    mark_motors_enabled,
+)
 from bbia_sim.robot_api import RobotAPI
 from bbia_sim.sdk_connection import (
     call_with_reconnect,
@@ -159,6 +164,8 @@ def _create_cached_head_pose(
         Matrice de transformation 4x4 (numpy array)
 
     """
+    # #1449 : clamp soft pitch/roll (±40° doc Pollen) avant création pose
+    pitch, roll = clamp_head_pitch_roll(pitch, roll, degrees=degrees)
     pose_fn = _get_create_head_pose()
     try:
         # SDK si déjà chargé, sinon fallback local (évite import réseau au démarrage)
@@ -1600,6 +1607,7 @@ class ReachyMiniBackend(RobotAPI):
         """
         if not self.is_connected or not self.robot:
             logger.debug("Mode simulation: enable_motors")
+            mark_motors_enabled()  # #1430 : settle aussi en sim
             return
 
         try:
@@ -1607,6 +1615,7 @@ class ReachyMiniBackend(RobotAPI):
                 self.robot.enable_motors(ids=ids)
             except TypeError:
                 self.robot.enable_motors()
+            mark_motors_enabled()  # #1430 : démarre fenêtre settle soft
             # Issue #323: S'assurer que le mode est position controlled après enable
             # NOTE: SDK v1.2.4+ gère automatiquement, mais on garde ce code pour
             # compatibilité avec anciennes versions (< v1.2.4) où le bug existait
@@ -1714,6 +1723,10 @@ class ReachyMiniBackend(RobotAPI):
         body_yaw: float | None = None,
     ) -> None:
         """Définit une cible complète (tête + antennes + corps)."""
+        # #1430 : éviter stream immédiat post-enable depuis sleep
+        await_motors_settle_if_needed(context="set_target")
+        if body_yaw is not None:
+            body_yaw = clamp_yaw_amplitude(float(body_yaw))
         if not self.is_connected or not self.robot:
             logger.debug("Mode simulation: set_target")
             return
@@ -2128,6 +2141,8 @@ class ReachyMiniBackend(RobotAPI):
 
     def set_target_head_pose(self, pose: "HeadPose") -> None:
         """Alias SDK officiel pour set_joint_pos avec pose."""
+        # #1430 : settle soft si enable_motors récent
+        await_motors_settle_if_needed(context="set_target_head_pose")
         if not self.is_connected or not self.robot:
             logger.debug("Mode simulation: set_target_head_pose")
             return
