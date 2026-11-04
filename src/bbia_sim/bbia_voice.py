@@ -115,7 +115,9 @@ def _get_cached_voice_id() -> str:
             if os.environ.get("CI", "false").lower() == "true":
                 logging.debug("pyttsx3 non disponible, utilisation voix par défaut")
             else:
-                logging.warning("⚠️ pyttsx3 non disponible, utilisation voix par défaut")
+                logging.warning(
+                    "⚠️ pyttsx3 non disponible, utilisation voix par défaut"
+                )
             _bbia_voice_id_cache = (
                 "com.apple.speech.voice.Amelie.fr-FR"  # Fallback macOS
             )

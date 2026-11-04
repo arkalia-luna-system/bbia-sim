@@ -140,7 +140,9 @@ class TestReachyMiniAdvancedConformity:
         )
 
         if methods_used < 2:
-            print("⚠️  Diversité faible - recommander utilisation CARTOON pour émotions")
+            print(
+                "⚠️  Diversité faible - recommander utilisation CARTOON pour émotions"
+            )
         else:
             print("✅ Diversité acceptable")
 

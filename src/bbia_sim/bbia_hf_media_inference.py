@@ -230,7 +230,7 @@ def transcribe_audio(state: Any, audio_path: str, model_name: str = "whisper") -
             state.load_model(model_name, "audio")
         processor = state.processors[processor_key]
         model = state.models[model_key]
-        (audio, sample_rate) = processor.load_audio(audio_path)
+        audio, sample_rate = processor.load_audio(audio_path)
         inputs = processor(audio, sampling_rate=sample_rate, return_tensors="pt").to(
             state.device
         )

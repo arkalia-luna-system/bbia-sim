@@ -25,8 +25,7 @@ class TestViewerSmoke:
 
         # Test avec un modèle minimal
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
-            f.write(
-                """<?xml version="1.0"?>
+            f.write("""<?xml version="1.0"?>
 <mujoco>
   <worldbody>
     <body name="torso">
@@ -37,8 +36,7 @@ class TestViewerSmoke:
       </body>
     </body>
   </worldbody>
-</mujoco>"""
-            )
+</mujoco>""")
             temp_model = f.name
 
         try:
