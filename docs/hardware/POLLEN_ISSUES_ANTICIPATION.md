@@ -1,8 +1,9 @@
 # Anticipation issues & GHSA Pollen — mitigations BBIA
 
-**Date** : 1 Nov 2026  
+**Date** : 4 Nov 2026 (échantillon `gh issue list` open Pollen)  
 **Lieu** : dépôt `bbia-reachy-sim` uniquement (pas de patch firmware / daemon Pollen)  
 **SDK BBIA** : extra `reachy-mini==1.13.0` (≥ correctifs PIN documentés) + `certifi>=2026.10.19`  
+**Ref locale** : `/Users/athalia/Documents/dev/reachy_mini` @ **v1.13.0** (lecture RO)  
 **Sources** : [issues ouvertes reachy_mini](https://github.com/pollen-robotics/reachy_mini/issues) + GHSA listés ci-dessous
 
 > BBIA **n’a pas corrigé** le firmware ni le daemon Pollen. Ce document classe l’impact
@@ -29,9 +30,12 @@
 | WS keepalive / SDK connect timeout+reconnect | `BBIA_WS_KEEPALIVE_TIMEOUT`, `BBIA_SDK_CONNECT_TIMEOUT`, `BBIA_SDK_RECONNECT_*` ; auth WS prod via `hmac.compare_digest` (`daemon/ws/auth.py`) ; cadence télémétrie = `BBIA_TELEMETRY_FREQUENCY` | Comportement keepalive daemon Pollen lui-même |
 | USB audio / GStreamer / amixer | `media_guard` → `no_media` ; `BBIA_DISABLE_AUDIO` ; volume Pydantic ; refus shell | Crash GStreamer / device « No Reachy Mini Audio » sur host/robot |
 | Head tracking sim / freeze / intrinsics | Skip sim (`BBIA_HEAD_TRACKING_SIM=0`) ; clamp look ; logs | Loops tracking / calib caméra daemon Pollen |
+| Head pitch/roll ±40° (#1449) | `head_pose_guard.clamp_head_pitch_roll` + câblage `_create_cached_head_pose` | IK / NaN daemon Pollen hors euler BBIA |
+| `set_target` post-`enable_motors` (#1430) | `motors_settle_guard` (`BBIA_MOTORS_SETTLE_S`) | Crash daemon si client bypasse BBIA |
 | Yaw ~3 Hz / sleep droop | `safe_amplitude` + `BBIA_YAW_SAFE_AMPLITUDE` ; watchdog ; garde `goto_sleep` + `BBIA_SLEEP_HOLD_TORQUE` best-effort | Gain servo / coupe couple firmware |
 | Wireless onboarding / relay | Timeout+reconnect + heartbeat ; checklist Zenoh | Auth / relay hardware Wireless |
 | `certifi` CA bundle | Pin `certifi>=2026.10.19` (alignement 1.13) | — |
+| Dep hygiene Pollen (#1551/#1549) | Suivi ; BBIA garde floors `asgiref`/`log-throttling` tant que SDK 1.13 les tire | Drop upstream dans une future release SDK |
 
 ## GHSA (chaîne compromission BT + upload)
 
@@ -43,10 +47,14 @@
 
 Correctif PIN upstream : **1.12.0** (advisory). Upload / traversal : mettre à jour le daemon robot dès qu’une release Pollen les intègre ; BBIA ne les reproduit pas.
 
-## Issues prioritaires (liste citée)
+## Issues prioritaires (liste citée + échantillon open 4 nov. 2026)
 
 | Issue | Sujet | Classe | Mitigation BBIA | Statut |
 |-------|--------|--------|-----------------|--------|
+| [#1551](https://github.com/pollen-robotics/reachy_mini/issues/1551) | Drop dépendance `asgiref` | N/A BBIA / suivi | Pas de `async_to_sync` play_move Pollen dans BBIA ; floors BBIA inchangés jusqu’au drop SDK | documenté |
+| [#1549](https://github.com/pollen-robotics/reachy_mini/issues/1549) | Drop `log-throttling` | N/A BBIA / suivi | BBIA ne pinne pas `==0.0.3` en cœur ; suivi release SDK | documenté |
+| [#1547](https://github.com/pollen-robotics/reachy_mini/issues/1547) | Rerun viewer : pas de frames caméra remote | N/A BBIA | Pas d’exemple `rerun_viewer` / thread caméra LOCAL Pollen dans BBIA | documenté |
+| [#1545](https://github.com/pollen-robotics/reachy_mini/issues/1545) | Wheel Pollen : STL non référencés (~7 MB) | N/A BBIA | Packaging wheel Pollen ; BBIA ne redistribue pas ces assets | documenté |
 | [#1527](https://github.com/pollen-robotics/reachy_mini/issues/1527) | `GET /state/full?with_target_head_pose` → 500 si target absent | wrapper/guard | `get_full_state` : lectures optionnelles en `_safe_call` ; `as_any_pose` tolérant | implémenté |
 | [#1525](https://github.com/pollen-robotics/reachy_mini/issues/1525) | GStreamer audiomixer segfault | wrapper/guard | `media_guard` refuse backends gstreamer ; `BBIA_DISABLE_AUDIO` → `no_media` | **code** (+ exposé host si forcé ailleurs) |
 | [#1523](https://github.com/pollen-robotics/reachy_mini/issues/1523) | AppManager stop bloqué « stopping » | wrapper/guard | `stop-current-app` : `finally` libère toujours `current_app` → `stopped` | implémenté |
@@ -64,6 +72,8 @@ Correctif PIN upstream : **1.12.0** (advisory). Upload / traversal : mettre à j
 | [#1466](https://github.com/pollen-robotics/reachy_mini/issues/1466) / [#1465](https://github.com/pollen-robotics/reachy_mini/issues/1465) | Wireless onboarding / relay après auth | wrapper/guard + exposé Pollen | Timeout/reconnect SDK + `BBIA_SDK_HEARTBEAT_TIMEOUT` ; checklist Zenoh ci-dessous | **code soft** |
 | [#1462](https://github.com/pollen-robotics/reachy_mini/issues/1462) / [#1459](https://github.com/pollen-robotics/reachy_mini/issues/1459) | Audio barge-in / WebRTC phonèmes | N/A BBIA | Stack audio BBIA distincte (sounddevice / SDK media) | documenté |
 | [#1453](https://github.com/pollen-robotics/reachy_mini/issues/1453) / [#1451](https://github.com/pollen-robotics/reachy_mini/issues/1451) / [#1450](https://github.com/pollen-robotics/reachy_mini/issues/1450) | Head tracking (freeze / sim / intrinsics) | wrapper/guard | `BBIA_HEAD_TRACKING_SIM=0` (défaut) → skip/no-op ; clamp UV / direction | **code** |
+| [#1449](https://github.com/pollen-robotics/reachy_mini/issues/1449) | Clamp doc ±40° pitch/roll absent du SDK | wrapper/guard | `clamp_head_pitch_roll` + `_create_cached_head_pose` ; `BBIA_HEAD_PITCH_ROLL_LIMIT_DEG` | **code soft** |
+| [#1430](https://github.com/pollen-robotics/reachy_mini/issues/1430) | Stream `set_target` juste après `enable_motors` (sleep) | wrapper/guard + exposé Pollen | `mark_motors_enabled` + `await_motors_settle_if_needed` ; préférer `goto_target` interpolé | **code soft** |
 
 ## Checklist Wireless (#1466 / #1465) — soft BBIA
 
@@ -87,6 +97,8 @@ export BBIA_SDK_HEARTBEAT_TIMEOUT=2   # watchdog sans heartbeat (s)
 export BBIA_HEAD_TRACKING_SIM=0       # défaut sûr : pas de tracking loops en sim
 export BBIA_SLEEP_HOLD_TORQUE=0       # 1 = enable_motors best-effort avant sleep
 export BBIA_YAW_SAFE_AMPLITUDE=0.3    # clamp soft yaw_body (rad)
+export BBIA_HEAD_PITCH_ROLL_LIMIT_DEG=40  # #1449 ; 0 = désactive
+export BBIA_MOTORS_SETTLE_S=0.35      # #1430 settle post-enable ; 0 = off
 export REACHY_ZENOH_CONNECT="tcp://<IP_ROBOT>:7447"
 ```
 
@@ -105,6 +117,8 @@ export REACHY_ZENOH_CONNECT="tcp://<IP_ROBOT>:7447"
 | `src/bbia_sim/sdk_connection.py` | Timeout / reconnect / heartbeat SDK |
 | `src/bbia_sim/media_guard.py` | #1507/#1525/#1521 |
 | `src/bbia_sim/head_tracking_guard.py` | #1453/#1451/#1450 |
+| `src/bbia_sim/head_pose_guard.py` | #1449 pitch/roll ±40° |
+| `src/bbia_sim/motors_settle_guard.py` | #1430 settle post-enable |
 | `src/bbia_sim/sleep_guard.py` | #1478/#1479 soft |
 | `src/bbia_sim/backends/reachy_mini_backend.py` | Câblage gardes + wobbler #1517 |
 | `src/bbia_sim/test_pollen_anticipation_regressions.py` + suites state/move/apps/media | Preuves |

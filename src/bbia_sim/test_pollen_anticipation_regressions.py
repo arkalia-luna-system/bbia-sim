@@ -16,6 +16,10 @@ from bbia_sim.daemon.ws.keepalive import (
     receive_text_with_keepalive,
     uvicorn_ws_keepalive_kwargs,
 )
+from bbia_sim.head_pose_guard import (
+    clamp_head_pitch_roll,
+    get_head_pitch_roll_limit_rad,
+)
 from bbia_sim.head_tracking_guard import (
     clamp_look_direction_rad,
     clamp_look_image_uv,
@@ -27,6 +31,12 @@ from bbia_sim.media_guard import (
     looks_like_usb_reachy_audio,
     refuse_shell_audio_command,
     resolve_media_backend,
+)
+from bbia_sim.motors_settle_guard import (
+    await_motors_settle_if_needed,
+    get_motors_settle_seconds,
+    mark_motors_enabled,
+    reset_motors_settle_state,
 )
 from bbia_sim.sdk_connection import (
     call_with_reconnect,
@@ -244,3 +254,36 @@ def test_certifi_floor_declared_in_pyproject() -> None:
 
     text = Path("pyproject.toml").read_text(encoding="utf-8")
     assert "certifi>=2026.10.19" in text
+    assert "reachy-mini==1.13.0" in text
+
+
+def test_head_pitch_roll_clamp_40deg(monkeypatch: pytest.MonkeyPatch) -> None:
+    """#1449 : clamp soft ±40° pitch/roll (doc Pollen absente du SDK)."""
+    monkeypatch.delenv("BBIA_HEAD_PITCH_ROLL_LIMIT_DEG", raising=False)
+    lim = get_head_pitch_roll_limit_rad()
+    assert lim is not None
+    assert abs(lim - __import__("math").radians(40)) < 1e-9
+    p, r = clamp_head_pitch_roll(50.0, -55.0, degrees=True)
+    assert p == pytest.approx(40.0)
+    assert r == pytest.approx(-40.0)
+    monkeypatch.setenv("BBIA_HEAD_PITCH_ROLL_LIMIT_DEG", "0")
+    assert get_head_pitch_roll_limit_rad() is None
+    p2, r2 = clamp_head_pitch_roll(50.0, -55.0, degrees=True)
+    assert p2 == 50.0 and r2 == -55.0
+
+
+def test_motors_settle_after_enable(monkeypatch: pytest.MonkeyPatch) -> None:
+    """#1430 : settle soft après enable_motors avant set_target."""
+    monkeypatch.setenv("BBIA_MOTORS_SETTLE_S", "0.05")
+    reset_motors_settle_state()
+    assert get_motors_settle_seconds() == pytest.approx(0.05)
+    assert await_motors_settle_if_needed() == 0.0  # pas encore d'enable
+    mark_motors_enabled()
+    waited = await_motors_settle_if_needed(context="test")
+    assert waited > 0.0
+    # deuxième appel : fenêtre déjà écoulée
+    assert await_motors_settle_if_needed() == 0.0
+    monkeypatch.setenv("BBIA_MOTORS_SETTLE_S", "0")
+    reset_motors_settle_state()
+    mark_motors_enabled()
+    assert await_motors_settle_if_needed() == 0.0
