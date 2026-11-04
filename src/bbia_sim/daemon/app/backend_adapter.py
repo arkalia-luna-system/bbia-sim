@@ -480,7 +480,11 @@ class BackendAdapter:
             sound: Si True, joue l'audio associé au move
 
         """
+        from bbia_sim.play_move_guard import get_play_move_initial_goto_seconds
+
         self.connect_if_needed()
+        # #1417 : ne plus forcer 0.0 (jump waiting→yes1 → tête inerte)
+        initial_goto = get_play_move_initial_goto_seconds()
 
         if hasattr(self._robot, "play_move"):
             # Si play_move est async dans le SDK
@@ -488,7 +492,7 @@ class BackendAdapter:
                 await self._robot.play_move(
                     move,
                     play_frequency=100.0,
-                    initial_goto_duration=0.0,
+                    initial_goto_duration=initial_goto,
                     sound=sound,
                 )
             else:
@@ -499,7 +503,7 @@ class BackendAdapter:
                     self._robot.play_move,
                     move,
                     100.0,
-                    0.0,
+                    initial_goto,
                     sound,
                 )
         elif hasattr(self._robot, "async_play_move"):
@@ -510,7 +514,7 @@ class BackendAdapter:
                 self._robot.async_play_move,
                 move,
                 100.0,
-                0.0,
+                initial_goto,
                 sound,
             )
         else:

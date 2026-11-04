@@ -32,6 +32,7 @@
 | Head tracking sim / freeze / intrinsics | Skip sim (`BBIA_HEAD_TRACKING_SIM=0`) ; clamp look ; logs | Loops tracking / calib caméra daemon Pollen |
 | Head pitch/roll ±40° (#1449) | `clamp_head_pitch_roll` + `clamp_head_pose_matrix` (4×4) + `_create_cached_head_pose` / `set_target*` / `goto_target` | IK / NaN daemon Pollen si client bypasse BBIA |
 | `set_target` post-`enable_motors` (#1430) | `motors_settle_guard` (`BBIA_MOTORS_SETTLE_S`) | Crash daemon si client bypasse BBIA |
+| Chaining moves tête basse → jump (#1417) | `play_move_guard` (`BBIA_PLAY_MOVE_INITIAL_GOTO_S`, défaut 1.0) | Gel tête firmware si client bypasse BBIA / force `0.0` |
 | Yaw ~3 Hz / sleep droop | `safe_amplitude` + `BBIA_YAW_SAFE_AMPLITUDE` ; watchdog ; garde `goto_sleep` + `BBIA_SLEEP_HOLD_TORQUE` best-effort | Gain servo / coupe couple firmware |
 | Wireless onboarding / relay | Timeout+reconnect + heartbeat ; checklist Zenoh | Auth / relay hardware Wireless |
 | `certifi` CA bundle | Pin `certifi>=2026.10.19` (alignement 1.13) | — |
@@ -76,13 +77,13 @@ Correctif PIN upstream : **1.12.0** (advisory). Upload / traversal : mettre à j
 | [#1430](https://github.com/pollen-robotics/reachy_mini/issues/1430) | Stream `set_target` juste après `enable_motors` (sleep) | wrapper/guard + exposé Pollen | `mark_motors_enabled` + `await_motors_settle_if_needed` ; préférer `goto_target` interpolé | **code soft** |
 | [#1501](https://github.com/pollen-robotics/reachy_mini/issues/1501) | Chemin App connexion / rswebrtc (non localisé) | N/A BBIA | Pas de stack rswebrtc Pollen dans BBIA | documenté |
 | [#1464](https://github.com/pollen-robotics/reachy_mini/issues/1464) | LED power / bouton rubber Wireless | N/A BBIA | Hardware physique | documenté |
-| [#1439](https://github.com/pollen-robotics/reachy_mini/issues/1439) | Relay : backoff reconnect après chaque token change | N/A BBIA / exposé Pollen | Relay Wireless Pollen ; reconnect BBIA ne remplace pas | documenté |
+| [#1439](https://github.com/pollen-robotics/reachy_mini/issues/1439) | Relay : backoff reconnect après chaque token change | N/A BBIA / exposé Pollen | Bug `_reconnect_now` / `_token_updated` **dans le daemon relay Pollen** — pas de surface BBIA. `BBIA_SDK_RECONNECT_DELAY` = délai fixe soft client ≠ ce backoff | documenté |
 | [#1436](https://github.com/pollen-robotics/reachy_mini/issues/1436) | `play_sound` bloque ~1.1 s (Wireless WebRTC) | doc seule + exposé Pollen | Surface `play_sound` BBIA existe ; blocage = backend WebRTC Pollen — pas de timeout firmware | documenté |
 | [#1435](https://github.com/pollen-robotics/reachy_mini/issues/1435) | Licence STL/URDF / redistribution GLB | N/A BBIA | Packaging / assets Pollen | documenté |
 | [#1434](https://github.com/pollen-robotics/reachy_mini/issues/1434) | Caméra Wireless : exposure libcamerasrc | N/A BBIA | Pipeline caméra robot | documenté |
 | [#1431](https://github.com/pollen-robotics/reachy_mini/issues/1431) | CI physique WebRTC LAN | N/A BBIA | Infra Pollen | documenté |
 | [#1425](https://github.com/pollen-robotics/reachy_mini/issues/1425) | Micro Reachy Mini ne capture pas | N/A BBIA / hardware | Garantie / hardware | documenté |
-| [#1417](https://github.com/pollen-robotics/reachy_mini/issues/1417) | Saut `waiting`→`yes1` : tête inert jusqu'à re-enable | wrapper/guard + exposé Pollen | Proche #1430 : `motors_settle_guard` + préférer `goto_target` ; re-`enable_motors` si gel | **code soft** |
+| [#1417](https://github.com/pollen-robotics/reachy_mini/issues/1417) | Saut `waiting`→`yes1` : tête inert jusqu'à re-enable | wrapper/guard + exposé Pollen | `play_move_guard` : défaut `initial_goto_duration=1.0` (`BBIA_PLAY_MOVE_INITIAL_GOTO_S`) sur backend + adapter ; si gel : `disable_motors` puis `enable_motors` (+ settle #1430) | **code soft** |
 | [#1416](https://github.com/pollen-robotics/reachy_mini/issues/1416) | webrtcsink deadlock 1ʳᵉ session + IPC caméra | N/A BBIA | Daemon média Pollen | documenté |
 | [#1407](https://github.com/pollen-robotics/reachy_mini/issues/1407) | Jitter buffer WebRTC configurable | N/A BBIA | Pas de jitter buffer WebRTC Pollen dans BBIA | documenté |
 | [#1402](https://github.com/pollen-robotics/reachy_mini/issues/1402) | Motors Input Voltage Error (0x01) batterie | exposé Pollen | Firmware / couple silencieux ; pas d'API BBIA dédiée | documenté |
@@ -117,6 +118,7 @@ export BBIA_SLEEP_HOLD_TORQUE=0       # 1 = enable_motors best-effort avant slee
 export BBIA_YAW_SAFE_AMPLITUDE=0.3    # clamp soft yaw_body (rad)
 export BBIA_HEAD_PITCH_ROLL_LIMIT_DEG=40  # #1449 ; 0 = désactive
 export BBIA_MOTORS_SETTLE_S=0.35      # #1430 settle post-enable ; 0 = off
+export BBIA_PLAY_MOVE_INITIAL_GOTO_S=1.0  # #1417 ; 0 = jump instantané (risqué)
 export REACHY_ZENOH_CONNECT="tcp://<IP_ROBOT>:7447"
 ```
 
@@ -137,6 +139,7 @@ export REACHY_ZENOH_CONNECT="tcp://<IP_ROBOT>:7447"
 | `src/bbia_sim/head_tracking_guard.py` | #1453/#1451/#1450 |
 | `src/bbia_sim/head_pose_guard.py` | #1449 pitch/roll ±40° (euler + matrices 4×4) |
 | `src/bbia_sim/motors_settle_guard.py` | #1430 settle post-enable |
+| `src/bbia_sim/play_move_guard.py` | #1417 `initial_goto_duration` soft |
 | `src/bbia_sim/sleep_guard.py` | #1478/#1479 soft |
 | `src/bbia_sim/backends/reachy_mini_backend.py` | Câblage gardes + wobbler #1517 |
 | `src/bbia_sim/test_pollen_anticipation_regressions.py` + suites state/move/apps/media | Preuves |
