@@ -14,10 +14,14 @@ from bbia_sim.daemon.auth_token import (
 from bbia_sim.daemon.config import settings
 
 logger = logging.getLogger(__name__)
-security = HTTPBearer()
+# auto_error=False : sans header Authorization, on passe par verify_token → 401
+# (Starlette<1.10 renvoyait 403 via HTTPBearer ; 1.10+ renvoie 401 — unifier).
+security = HTTPBearer(auto_error=False)
 
 
-def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)) -> str:
+def verify_token(
+    credentials: HTTPAuthorizationCredentials | None = Depends(security),
+) -> str:
     """Vérifie le token d'authentification (temps constant)."""
     provided = (
         credentials.credentials

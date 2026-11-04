@@ -109,9 +109,9 @@ class TestAPIIntegration:
 
     def test_state_full_without_auth(self, client):
         """Test endpoint state/full sans authentification."""
-        # /api/state/full est protégé: sans token, HTTPBearer → 403 Forbidden.
+        # Sans token : verify_token (HTTPBearer auto_error=False) → 401 + WWW-Authenticate.
         response = client.get("/api/state/full")
-        assert response.status_code == 403
+        assert response.status_code == 401
 
     def test_state_full_invalid_token(self, client):
         """Test endpoint state/full avec token invalide."""
