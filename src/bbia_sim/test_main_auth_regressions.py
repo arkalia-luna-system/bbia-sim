@@ -19,6 +19,18 @@ def test_verify_token_accepts_valid_token(monkeypatch: pytest.MonkeyPatch) -> No
     assert verify_token(_creds("secret-token")) == "secret-token"
 
 
+def test_verify_token_rejects_missing_credentials(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Sans credentials (HTTPBearer auto_error=False) → 401, pas 403."""
+    monkeypatch.setattr(settings, "api_token", "secret-token")
+    monkeypatch.setattr(settings, "environment", "dev")
+    with pytest.raises(HTTPException) as exc:
+        verify_token(None)  # type: ignore[arg-type]
+    assert exc.value.status_code == 401
+    assert exc.value.headers == {"WWW-Authenticate": "Bearer"}
+
+
 def test_verify_token_rejects_invalid_token(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(settings, "api_token", "secret-token")
     with pytest.raises(HTTPException) as exc:
