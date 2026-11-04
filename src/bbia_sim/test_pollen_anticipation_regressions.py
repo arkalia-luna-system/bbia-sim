@@ -18,6 +18,7 @@ from bbia_sim.daemon.ws.keepalive import (
 )
 from bbia_sim.head_pose_guard import (
     clamp_head_pitch_roll,
+    clamp_head_pose_matrix,
     get_head_pitch_roll_limit_rad,
 )
 from bbia_sim.head_tracking_guard import (
@@ -287,3 +288,36 @@ def test_motors_settle_after_enable(monkeypatch: pytest.MonkeyPatch) -> None:
     reset_motors_settle_state()
     mark_motors_enabled()
     assert await_motors_settle_if_needed() == 0.0
+
+
+def test_head_pose_matrix_clamp_pitch_roll(monkeypatch: pytest.MonkeyPatch) -> None:
+    """#1449 : matrices 4×4 hors create_head_pose aussi clampées."""
+    import math
+
+    import numpy as np
+    from scipy.spatial.transform import Rotation as R
+
+    monkeypatch.setenv("BBIA_HEAD_PITCH_ROLL_LIMIT_DEG", "40")
+    # pitch 55° > 40°
+    pose = np.eye(4, dtype=np.float64)
+    pose[:3, :3] = R.from_euler("xyz", [0.0, math.radians(55.0), 0.0]).as_matrix()
+    pose[0, 3] = 0.01  # translation préservée
+    out = clamp_head_pose_matrix(pose)
+    assert out is not pose
+    roll, pitch, yaw = R.from_matrix(np.asarray(out)[:3, :3]).as_euler("xyz")
+    assert abs(pitch) <= math.radians(40.0) + 1e-9
+    assert abs(roll) <= math.radians(40.0) + 1e-9
+    assert abs(float(np.asarray(out)[0, 3]) - 0.01) < 1e-12
+
+
+def test_head_pose_matrix_clamp_disabled(monkeypatch: pytest.MonkeyPatch) -> None:
+    import math
+
+    import numpy as np
+    from scipy.spatial.transform import Rotation as R
+
+    monkeypatch.setenv("BBIA_HEAD_PITCH_ROLL_LIMIT_DEG", "0")
+    pose = np.eye(4, dtype=np.float64)
+    pose[:3, :3] = R.from_euler("xyz", [0.0, math.radians(55.0), 0.0]).as_matrix()
+    out = clamp_head_pose_matrix(pose)
+    assert out is pose
