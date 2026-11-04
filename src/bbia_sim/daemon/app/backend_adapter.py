@@ -568,9 +568,25 @@ class BackendAdapter:
         else:
             logger.debug("set_automatic_body_yaw non disponible, enabled: %s", enabled)
 
+    def _head_tracking_use_sim(self) -> bool:
+        """Heuristique sim pour gardes #1453/#1451/#1450 (défense adapter)."""
+        use_sim = bool(getattr(self._robot, "use_sim", True))
+        robot = getattr(self._robot, "robot", True)
+        return use_sim or not robot
+
     def start_head_tracking(self, weight: float = 1.0) -> None:
-        """Active le suivi de visage (SDK officiel)."""
+        """Active le suivi de visage (SDK officiel).
+
+        Garde soft #1453/#1451/#1450 : no-op en sim sauf ``BBIA_HEAD_TRACKING_SIM=1``.
+        """
+        from bbia_sim.head_tracking_guard import should_skip_head_tracking
+
         self.connect_if_needed()
+        if should_skip_head_tracking(
+            use_sim=self._head_tracking_use_sim(),
+            context="BackendAdapter.start_head_tracking",
+        ):
+            return
         if hasattr(self._robot, "start_head_tracking"):
             self._robot.start_head_tracking(weight=weight)
         else:
@@ -578,7 +594,14 @@ class BackendAdapter:
 
     def stop_head_tracking(self) -> None:
         """Arrête le suivi de visage (SDK officiel)."""
+        from bbia_sim.head_tracking_guard import should_skip_head_tracking
+
         self.connect_if_needed()
+        if should_skip_head_tracking(
+            use_sim=self._head_tracking_use_sim(),
+            context="BackendAdapter.stop_head_tracking",
+        ):
+            return
         if hasattr(self._robot, "stop_head_tracking"):
             self._robot.stop_head_tracking()
         else:
@@ -588,7 +611,14 @@ class BackendAdapter:
         self, wait: bool = True, timeout: float = 5.0
     ) -> dict[str, Any] | None:
         """Retourne la cible visage suivie, ou None en simulation."""
+        from bbia_sim.head_tracking_guard import should_skip_head_tracking
+
         self.connect_if_needed()
+        if should_skip_head_tracking(
+            use_sim=self._head_tracking_use_sim(),
+            context="BackendAdapter.get_tracked_face",
+        ):
+            return None
         if hasattr(self._robot, "get_tracked_face"):
             face = self._robot.get_tracked_face(wait=wait, timeout=timeout)
             return face if isinstance(face, dict) else None
