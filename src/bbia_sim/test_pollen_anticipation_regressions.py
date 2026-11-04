@@ -39,6 +39,7 @@ from bbia_sim.motors_settle_guard import (
     mark_motors_enabled,
     reset_motors_settle_state,
 )
+from bbia_sim.play_move_guard import get_play_move_initial_goto_seconds
 from bbia_sim.sdk_connection import (
     call_with_reconnect,
     get_sdk_connect_timeout,
@@ -321,3 +322,35 @@ def test_head_pose_matrix_clamp_disabled(monkeypatch: pytest.MonkeyPatch) -> Non
     pose[:3, :3] = R.from_euler("xyz", [0.0, math.radians(55.0), 0.0]).as_matrix()
     out = clamp_head_pose_matrix(pose)
     assert out is pose
+
+
+def test_play_move_initial_goto_default_safe(monkeypatch: pytest.MonkeyPatch) -> None:
+    """#1417 : défaut soft 1.0 s (workaround waiting→yes1)."""
+    monkeypatch.delenv("BBIA_PLAY_MOVE_INITIAL_GOTO_S", raising=False)
+    assert get_play_move_initial_goto_seconds() == pytest.approx(1.0)
+    assert get_play_move_initial_goto_seconds(None) == pytest.approx(1.0)
+    # override explicite 0.0 autorisé (caller assume le risque)
+    assert get_play_move_initial_goto_seconds(0.0) == pytest.approx(0.0)
+    monkeypatch.setenv("BBIA_PLAY_MOVE_INITIAL_GOTO_S", "0")
+    assert get_play_move_initial_goto_seconds() == pytest.approx(0.0)
+    monkeypatch.setenv("BBIA_PLAY_MOVE_INITIAL_GOTO_S", "2.5")
+    assert get_play_move_initial_goto_seconds() == pytest.approx(2.5)
+
+
+def test_backend_play_move_applies_initial_goto_guard(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """#1417 : ReachyMiniBackend.play_move ne force plus 0.0 par défaut."""
+    from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
+
+    monkeypatch.setenv("BBIA_PLAY_MOVE_INITIAL_GOTO_S", "1.0")
+    backend = ReachyMiniBackend()
+    backend.is_connected = True
+    robot = MagicMock()
+    backend.robot = robot
+    backend.play_move(MagicMock(name="move"))
+    assert robot.play_move.called
+    args, _kwargs = robot.play_move.call_args
+    # play_move(move, play_frequency, duration, sound=...)
+    assert len(args) >= 3
+    assert args[2] == pytest.approx(1.0)

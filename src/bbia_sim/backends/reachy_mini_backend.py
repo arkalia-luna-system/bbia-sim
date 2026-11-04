@@ -21,6 +21,7 @@ from bbia_sim.motors_settle_guard import (
     await_motors_settle_if_needed,
     mark_motors_enabled,
 )
+from bbia_sim.play_move_guard import get_play_move_initial_goto_seconds
 from bbia_sim.robot_api import RobotAPI
 from bbia_sim.sdk_connection import (
     call_with_reconnect,
@@ -1781,7 +1782,7 @@ class ReachyMiniBackend(RobotAPI):
         self,
         move: object,
         play_frequency: float = 100.0,
-        initial_goto_duration: float = 0.0,
+        initial_goto_duration: float | None = None,
         sound: bool = True,
     ) -> None:
         """Joue un mouvement enregistré (conforme SDK officiel).
@@ -1793,7 +1794,8 @@ class ReachyMiniBackend(RobotAPI):
             move: Objet Move du SDK reachy_mini.motion.move
             play_frequency: Fréquence de lecture (Hz, défaut 100.0)
             initial_goto_duration: Durée goto initial vers position de départ
-                (s, défaut 0.0)
+                (s). ``None`` → ``BBIA_PLAY_MOVE_INITIAL_GOTO_S`` (défaut 1.0, #1417).
+                Passer ``0.0`` pour forcer le jump SDK instantané.
             sound: Si True, joue l'audio associé au move (SDK officiel)
 
         """
@@ -1801,17 +1803,18 @@ class ReachyMiniBackend(RobotAPI):
             logger.debug("Mode simulation: play_move")
             return
 
+        duration = get_play_move_initial_goto_seconds(initial_goto_duration)
         try:
             # SDK officiel : play_move = async_to_sync(async_play_move)
             try:
                 self.robot.play_move(
                     move,
                     play_frequency,
-                    initial_goto_duration,
+                    duration,
                     sound=sound,
                 )
             except TypeError:
-                self.robot.play_move(move, play_frequency, initial_goto_duration)
+                self.robot.play_move(move, play_frequency, duration)
         except (
             ValueError,
             AttributeError,
@@ -1828,7 +1831,7 @@ class ReachyMiniBackend(RobotAPI):
         self,
         move: object,
         play_frequency: float = 100.0,
-        initial_goto_duration: float = 0.0,
+        initial_goto_duration: float | None = None,
         sound: bool = True,
     ) -> None:
         """Joue un mouvement enregistré de manière asynchrone."""
@@ -1836,19 +1839,20 @@ class ReachyMiniBackend(RobotAPI):
             logger.debug("Mode simulation: async_play_move")
             return
 
+        duration = get_play_move_initial_goto_seconds(initial_goto_duration)
         try:
             try:
                 self.robot.async_play_move(
                     move,
                     play_frequency,
-                    initial_goto_duration,
+                    duration,
                     sound=sound,
                 )
             except TypeError:
                 self.robot.async_play_move(
                     move,
                     play_frequency,
-                    initial_goto_duration,
+                    duration,
                 )
         except (
             ValueError,
