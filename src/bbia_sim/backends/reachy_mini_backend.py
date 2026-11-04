@@ -14,7 +14,7 @@ import numpy as np
 import numpy.typing as npt
 
 from bbia_sim.hardware_guard import resolve_use_sim
-from bbia_sim.head_pose_guard import clamp_head_pitch_roll
+from bbia_sim.head_pose_guard import clamp_head_pitch_roll, clamp_head_pose_matrix
 from bbia_sim.head_tracking_guard import should_skip_head_tracking
 from bbia_sim.media_guard import resolve_media_backend
 from bbia_sim.motors_settle_guard import (
@@ -1581,6 +1581,9 @@ class ReachyMiniBackend(RobotAPI):
             # Appel SDK avec validation (conforme SDK officiel)
             # body_yaw=None signifie "garder position actuelle" dans le SDK
             # Clamp soft #1479 si yaw fourni (évite bypass via goto_target)
+            # #1449 : clamp pitch/roll matrice 4×4 hors create_head_pose
+            if head is not None:
+                head = clamp_head_pose_matrix(head)  # type: ignore[assignment]
             safe_body_yaw = (
                 None if body_yaw is None else clamp_yaw_amplitude(float(body_yaw))
             )
@@ -1725,6 +1728,8 @@ class ReachyMiniBackend(RobotAPI):
         """Définit une cible complète (tête + antennes + corps)."""
         # #1430 : éviter stream immédiat post-enable depuis sleep
         await_motors_settle_if_needed(context="set_target")
+        if head is not None:
+            head = clamp_head_pose_matrix(head)  # type: ignore[assignment]
         if body_yaw is not None:
             body_yaw = clamp_yaw_amplitude(float(body_yaw))
         if not self.is_connected or not self.robot:
@@ -2143,6 +2148,8 @@ class ReachyMiniBackend(RobotAPI):
         """Alias SDK officiel pour set_joint_pos avec pose."""
         # #1430 : settle soft si enable_motors récent
         await_motors_settle_if_needed(context="set_target_head_pose")
+        # #1449 : clamp pitch/roll même si matrice 4×4 fournie hors create_head_pose
+        pose = clamp_head_pose_matrix(pose)  # type: ignore[assignment]
         if not self.is_connected or not self.robot:
             logger.debug("Mode simulation: set_target_head_pose")
             return

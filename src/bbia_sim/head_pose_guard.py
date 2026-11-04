@@ -3,7 +3,8 @@
 
 La doc Pollen promet un clamp ±40° pitch/roll ; le SDK 1.13 ne l'applique pas
 (IK accepte ~50° ou ignore silencieusement). BBIA clamp côté app avant
-``create_head_pose`` / cibles euler.
+``create_head_pose`` / cibles euler, et les matrices 4×4 passées à
+``set_target`` / ``goto_target`` / ``set_target_head_pose``.
 
 Variables::
 
@@ -83,3 +84,58 @@ def clamp_head_pitch_roll(
             lim,
         )
     return cp, cr
+
+
+def clamp_head_pose_matrix(
+    pose: object,
+    *,
+    limit_rad: float | None = None,
+) -> object:
+    """Clamp pitch/roll d'une matrice homogène 4×4 (#1449), translation inchangée.
+
+    Utilise l'extraction Euler XYZ (comme ``create_head_pose`` Pollen). Si la
+    pose n'est pas une matrice 4×4 exploitable, retourne l'entrée telle quelle.
+    ``None`` / désactivation env → no-op.
+    """
+    if pose is None:
+        return pose
+    lim = get_head_pitch_roll_limit_rad() if limit_rad is None else limit_rad
+    if lim is None:
+        return pose
+
+    try:
+        import numpy as np
+        from scipy.spatial.transform import Rotation as R
+    except ImportError:
+        logger.debug("clamp_head_pose_matrix: numpy/scipy indisponible — no-op")
+        return pose
+
+    try:
+        arr = np.asarray(pose, dtype=np.float64)
+    except (TypeError, ValueError):
+        return pose
+    if arr.shape != (4, 4):
+        return pose
+
+    try:
+        roll, pitch, yaw = R.from_matrix(arr[:3, :3]).as_euler("xyz", degrees=False)
+    except (ValueError, np.linalg.LinAlgError) as exc:
+        logger.debug("clamp_head_pose_matrix: rotation invalide (%s) — no-op", exc)
+        return pose
+
+    cp, cr = clamp_head_pitch_roll(
+        float(pitch), float(roll), degrees=False, limit_rad=lim
+    )
+    if cp == float(pitch) and cr == float(roll):
+        return pose
+
+    out = arr.copy()
+    out[:3, :3] = R.from_euler("xyz", [cr, cp, float(yaw)], degrees=False).as_matrix()
+    logger.debug(
+        "head pose matrix clampée (#1449): pitch %.4f→%.4f roll %.4f→%.4f",
+        pitch,
+        cp,
+        roll,
+        cr,
+    )
+    return out

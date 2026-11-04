@@ -37,24 +37,26 @@ class TestBBIAChatErrorHandling:
     @pytest.mark.fast
     def test_bbia_chat_chat_error_handling(self):
         """Test que chat() gère les erreurs correctement."""
-        # Ne pas charger de modèle LLM pour économiser RAM
+        # Ne pas charger de modèle LLM (évite download HF / timeout CI 30s)
         chat = BBIAChat(robot_api=None)
-        chat.llm_model = None
-        chat.llm_tokenizer = None
+        # Sentinelles truthy pour court-circuiter le lazy-load dans chat()
+        chat.llm_model = MagicMock(name="llm_model_stub")
+        chat.llm_tokenizer = MagicMock(name="llm_tokenizer_stub")
 
-        # Simuler une erreur lors du chat
         mock_logger = MagicMock(spec=logging.Logger)
         with patch("bbia_sim.bbia_chat.logger", mock_logger):
-            with patch.object(
-                chat, "generate", side_effect=RuntimeError("Erreur chat")
-            ):
-                result = chat.chat("test")
-                # Doit retourner un message d'erreur sans crasher
-                assert isinstance(result, str)
-                assert "comprends" in result.lower() or "reformuler" in result.lower()
-                # Vérifier que logger.error a été appelé
-                mock_logger.error.assert_called()
-                assert "critique" in str(mock_logger.error.call_args).lower()
+            with patch.object(chat, "_load_llm") as load_llm:
+                with patch.object(
+                    chat, "generate", side_effect=RuntimeError("Erreur chat")
+                ):
+                    result = chat.chat("test")
+                    load_llm.assert_not_called()
+                    assert isinstance(result, str)
+                    assert (
+                        "comprends" in result.lower() or "reformuler" in result.lower()
+                    )
+                    mock_logger.error.assert_called()
+                    assert "critique" in str(mock_logger.error.call_args).lower()
 
     @pytest.mark.unit
     @pytest.mark.fast
