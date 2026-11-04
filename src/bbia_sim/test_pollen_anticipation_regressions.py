@@ -250,6 +250,26 @@ def test_backend_head_tracking_noop_in_sim(
     backend.disconnect()
 
 
+def test_adapter_head_tracking_noop_in_sim(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """#145x : BackendAdapter skip tracking en sim même si robot brut exposé."""
+    monkeypatch.setenv("BBIA_HEAD_TRACKING_SIM", "0")
+    from bbia_sim.daemon.app.backend_adapter import BackendAdapter
+
+    raw = MagicMock()
+    raw.use_sim = True
+    raw.robot = MagicMock()
+    adapter = BackendAdapter(robot=raw)
+    adapter._connected = True
+    adapter.start_head_tracking(weight=0.8)
+    adapter.stop_head_tracking()
+    assert adapter.get_tracked_face() is None
+    raw.start_head_tracking.assert_not_called()
+    raw.stop_head_tracking.assert_not_called()
+    raw.get_tracked_face.assert_not_called()
+
+
 def test_certifi_floor_declared_in_pyproject() -> None:
     """Alignement Pollen 1.13 : certifi>=2026.10.19 dans pyproject."""
     from pathlib import Path
