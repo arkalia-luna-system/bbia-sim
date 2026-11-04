@@ -5,7 +5,7 @@
 TTS==0.22.0
 
 # Audio I/O
-sounddevice==0.5.3
+sounddevice==0.5.6
 soundfile==0.14.0
 
 # Versions NumPy/Scipy compatibles avec ce stack sur macOS (évite conflits)
